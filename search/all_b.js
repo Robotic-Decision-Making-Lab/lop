@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setup_27',['setup',['../namespacesetup.html',1,'']]],
-  ['setup_2epy_28',['setup.py',['../setup_8py.html',1,'']]]
+  ['operator_43',['operator',['../classlop_1_1kernels_1_1kernel__func_1_1dual__kern.html#a5bf4982fffa117101dff9d559fb30930',1,'lop::kernels::kernel_func::dual_kern']]]
 ];

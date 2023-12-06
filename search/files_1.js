@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['preference_5fpairs_2epy_48',['preference_pairs.py',['../preference__pairs_8py.html',1,'']]]
+  ['kernel_5ffunc_2epy_101',['kernel_func.py',['../kernel__func_8py.html',1,'']]]
 ];
