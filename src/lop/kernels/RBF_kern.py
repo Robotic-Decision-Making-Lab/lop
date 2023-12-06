@@ -28,14 +28,14 @@ if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
 else:
     from collections import Sequence
 
-from lop.kernels import kernel_func
+from lop.kernels import KernelFunc
 
 ## RBF_kern
 # Radial basis function for two points.
 # This is a single input sample (v (k) and u (k))
 # @param u - a single input sample
 # @param v - a second input sample of the same dimension
-class RBF_kern(kernel_func):
+class RBF_kern(KernelFunc):
 
     ## Constructor
     # @param sigma - the sigma for the rbf kernel

@@ -16,11 +16,11 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# kernel_func.py
+# KernelFunc.py
 # Written Ian Rankin - September 2021
 #
 # The base class for all kernel functions in lop.
-# Additionally adds the dual_kern function to handle adding or 
+# Additionally adds the DualKern function to handle adding or 
 # multiplying kernel functions.
 
 import numpy as np
@@ -33,7 +33,7 @@ else:
 
 
 ## Base kernel function class
-class kernel_func:
+class KernelFunc:
     def __init__(self):
         pass
 
@@ -72,7 +72,7 @@ class kernel_func:
     # update the parameters
     # @param theta - vector of parameters to update
     def set_param(self, theta):
-        raise NotImplementedError('kernel_func update function not implemented')
+        raise NotImplementedError('KernelFunc update function not implemented')
 
     # get_param
     # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
@@ -80,22 +80,22 @@ class kernel_func:
         return np.empty(0)
 
     def gradient(self, u, v):
-        raise NotImplementedError('kernel_func gradient function not implemented')
+        raise NotImplementedError('KernelFunc gradient function not implemented')
 
     def __call__(self, u, v):
-        raise NotImplementedError('kernel_func __call__ function not implemented')
+        raise NotImplementedError('KernelFunc __call__ function not implemented')
 
     # self + other
     def __add__(self, other):
-        if isinstance(other, kernel_func):
-            return dual_kern(self, other, '+')
+        if isinstance(other, KernelFunc):
+            return DualKern(self, other, '+')
         else:
             raise TypeError('kernel function add passed a type ' + str(type(other)))
 
     # self * other
     def __mul__(self, other):
-        if isinstance(other, kernel_func):
-            return dual_kern(self, other, '*')
+        if isinstance(other, KernelFunc):
+            return DualKern(self, other, '*')
         else:
             raise TypeError('kernel function multiply passed a type ' + str(type(other)))
 
@@ -107,14 +107,14 @@ class kernel_func:
 # kernel functions together.
 # allows stacking of kernel function such as.
 # (gr.RBF_kern(1,1) * gr.periodic_kern(1,1,1)) + gr.linear_kern(1,1,1)
-class dual_kern(kernel_func):
+class DualKern(KernelFunc):
     ## Constructor
-    # @param kern_1 - the first kernel_func
-    # @param kern_2 - the second kernel_func
+    # @param kern_1 - the first KernelFunc
+    # @param kern_2 - the second KernelFunc
     # @param operator - the operator to apply between the two kernel function
     #           supports ['+', '*']
     def __init__(self, kern_1, kern_2, operator='+'):
-        super(dual_kern, self).__init__()
+        super(DualKern, self).__init__()
         self.a = kern_1
         self.b = kern_2
 
@@ -132,7 +132,7 @@ class dual_kern(kernel_func):
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X
-    # overiding the kernel_func get covariance matrix in order to vectorize
+    # overiding the KernelFunc get covariance matrix in order to vectorize
     # and increase the speed of computation.
     # @param X - samples (n1,k) numpy array where n is the number of samples,
     #        and k is the dimension of the samples
@@ -148,7 +148,7 @@ class dual_kern(kernel_func):
         elif self.operator == '*':
             return a_f * b_f
         else:
-            raise NotImplementedError('dual_kern does not have operator `'+self.operator+'` implemented')
+            raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
 
     # get_param
     # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
@@ -166,7 +166,7 @@ class dual_kern(kernel_func):
             a_grad = self.a.gradient(u,v) * self.b(u,v)
             b_grad = self.b.gradient(u,v) * self.a(u,v)
         else:
-            raise NotImplementedError('dual_kern does not have operator `'+self.operator+'` implemented')
+            raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
 
         return np.append(a_grad, b_grad, axis=0)
 
@@ -179,7 +179,7 @@ class dual_kern(kernel_func):
         elif self.operator == '*':
             return a_f * b_f
         else:
-            raise NotImplementedError('dual_kern does not have operator `'+self.operator+'` implemented')
+            raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
 
     def __len__(self):
         return len(self.a)+len(self.b)

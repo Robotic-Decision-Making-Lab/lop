@@ -51,7 +51,7 @@ def test_vectorization_rbf():
             assert cov[i,j] == cov_vec[i,j]
 
 def test_vectorization_linear():
-    k = lop.linear_kern(1,0.8, 0.5)
+    k = lop.LinearKern(1,0.8, 0.5)
 
     X = np.array([1,3,4,5,6,7])
     Y = np.array([-1,-0.5,0,1,2,3])
@@ -72,7 +72,7 @@ def test_vectorization_linear():
             assert cov[i,j] == cov_vec[i,j]
 
 def test_vectorization_periodic():
-    k = lop.periodic_kern(1,0.8, 10)
+    k = lop.PeriodicKern(1,0.8, 10)
 
     X = np.array([1,3,4,5,6,7])
     Y = np.array([-1,-0.5,0,1,2,3])
@@ -94,7 +94,7 @@ def test_vectorization_periodic():
 
 
 def test_vectorization_dual():
-    k = lop.RBF_kern(1,0.8) + (lop.periodic_kern(1,0.8, 10) * lop.linear_kern(1,0.8, 0.5))
+    k = lop.RBF_kern(1,0.8) + (lop.PeriodicKern(1,0.8, 10) * lop.LinearKern(1,0.8, 0.5))
 
     X = np.array([1,3,4,5,6,7])
     Y = np.array([-1,-0.5,0,1,2,3])
@@ -122,23 +122,23 @@ def test_rbf():
     assert rbf(1,2) > 0.5 # probably right
     assert rbf(1,2) < 0.7 # probably right
 
-def test_periodic_kern():
-    perd = lop.periodic_kern(1,1,3)
+def test_PeriodicKern():
+    perd = lop.PeriodicKern(1,1,3)
     assert perd(1,2) > 0.15 # probably right
     assert perd(1,2) < 0.3 # probably right
 
-def test_linear_kern():
-    lin = lop.linear_kern(1,1,1)
+def test_LinearKern():
+    lin = lop.LinearKern(1,1,1)
     assert lin(1,2) == 1
 
 def test_combined_kern():
     rbf = lop.RBF_kern(1, 1)
-    kern2 = lop.periodic_kern(1,1, 3)
-    kern3 = lop.linear_kern(1,1,1)
+    kern2 = lop.PeriodicKern(1,1, 3)
+    kern3 = lop.LinearKern(1,1,1)
 
     combined = rbf + (kern2 * kern3)
 
-    assert type(combined) is lop.dual_kern
+    assert type(combined) is lop.DualKern
     assert combined(1,2) > 0.8 # probably right
     assert combined(1,2) < 0.9 # probably right
 

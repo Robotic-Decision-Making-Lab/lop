@@ -16,10 +16,10 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# periodic_kern.py
+# LinearKern.py
 # Written Ian Rankin - September 2021
 #
-# The periodic kernel Function for GPs.
+# The linear kernel Function for GPs.
 
 import numpy as np
 import sys
@@ -28,27 +28,40 @@ if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
 else:
     from collections import Sequence
 
-from lop.kernels import kernel_func
+from lop.kernels import KernelFunc
 
 
-## periodic_kern
-# A periodic kernel for gaussian processes
+
+## LinearKern
+# A linear kernel for gaussian processes
 # @param u - a single input sample
 # @param v - a second input sample of the same dimension
-class periodic_kern(kernel_func):
+class LinearKern(KernelFunc):
 
     ## Constructor
-    # @param sigma - the sigma for the rbf kernel
-    # @param - sigma, the sigma for the periodic kernel
-    # @param - l, the lengthscale for the periodic kernel
-    # @param - p, the periodicity of the periodic kernel
-    def __init__(self, sigma, l, p):
-        super(periodic_kern, self).__init__()
+    # @param sigma - the sigma for the linear kernel
+    # @param - sigma, the sigma for the linear kernel
+    # @param - sigma_b, the sigma_b for the linear
+    # @param - c, the offset for the linear kernel
+    def __init__(self, sigma, sigma_b, c):
+        super(LinearKern, self).__init__()
 
         self.sigma = sigma
-        self.l = l
-        self.p = p
+        self.sigma_b = sigma_b
+        self.c = c
 
+    # update the parameters
+    # @param theta - vector of parameters to update
+    def set_param(self, theta):
+        self.sigma = theta[0]
+        self.sigma_b = theta[1]
+        self.c = theta[2]
+
+    # get_param
+    # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
+    def get_param(self):
+        theta = np.array([self.sigma, self.sigma_b, self.c])
+        return theta
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X
@@ -70,50 +83,24 @@ class periodic_kern(kernel_func):
 
         X_expanded = np.repeat(X[:,np.newaxis,:], M, axis=1)
         Y_expanded = np.repeat(Y[np.newaxis,:,:], N, axis=0)
-        diff = X_expanded - Y_expanded
-        uv_norm = np.sum(np.abs(diff), axis=2)
         
-        sin_tmp = np.sin(np.pi*uv_norm / self.p)
-        exp_tmp = -2 * sin_tmp * sin_tmp / (self.l * self.l)
+        tmp = np.sum((X_expanded-self.c) * ( Y_expanded-self.c), axis=2)
 
-        cov = self.sigma * self.sigma * np.exp(exp_tmp)
+        cov = (self.sigma_b**2) + ((self.sigma**2) * tmp)
         return cov
 
 
-    # update the parameters
-    # @param theta - vector of parameters to update
-    def set_param(self, theta):
-        self.sigma = theta[0]
-        self.l = theta[1]
-        self.p = theta[2]
-
-    # get_param
-    # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
-    def get_param(self):
-        theta = np.array([self.sigma, self.l, self.p])
-        return theta
-
     def gradient(self, u, v):
-        uv_norm = np.sum(np.abs(u-v)) #np.linalg.norm(u-v, ord=1)
-        sin_tmp = np.sin(np.pi*uv_norm / self.p)
-        exp_int = - 2 * sin_tmp * sin_tmp / (self.l*self.l)
-        exp_x = np.exp(exp_int)
+        dSigma_b = 2 * self.sigma_b
 
-        dSigma = 2 * self.sigma * exp_x
+        dSigma = np.sum(2*self.sigma*(u-self.c)*(v-self.c))
+        dc = self.sigma*self.sigma*np.sum(2*self.c - u - v)
 
-        dl = -2 * self.sigma*self.sigma * exp_x * uv_norm / (self.l*self.l*self.l)
-
-        dp = 2 * np.pi * self.sigma * self.sigma * uv_norm * exp_x * \
-            np.cos(np.pi * uv_norm / self.p) / (self.l*self.l * self.p*self.p)
-
-        return np.array([dSigma, dl, dp])
+        return np.array([dSigma, dSigma_b, dc])
 
     def __call__(self, u, v):
-        uv_norm = np.sum(np.abs(u-v)) #np.linalg.norm(u-v, ord=1)
-        sin_tmp = np.sin(np.pi*uv_norm / self.p)
-        exp_int = - 2 * sin_tmp * sin_tmp / (self.l*self.l)
-
-        return self.sigma*self.sigma * np.exp(exp_int)
+        return (self.sigma_b**2) + ((self.sigma**2) * np.sum((u-self.c) * (v-self.c)))
 
     def __len__(self):
         return 3
+
