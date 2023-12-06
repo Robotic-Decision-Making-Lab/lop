@@ -26,7 +26,7 @@ sudo apt-get install doxygen
 cd doc
 doxygen Doxyfile
 ```
-Or using the automatically generated [documentation](http://todo).
+Or using the automatically generated [documentation](https://robotic-decision-making-lab.github.io/lop/index.html).
 
 
 
@@ -44,7 +44,7 @@ import lop
 ### Pairwise preferences
 
 Encoding a single pairwise preference (example1 > example2) for the GP.
-These are encoded as (preference, index1, index2).
+These are encoded as ```(preference, index1, index2)```.
 Where, preference/dk is -1 indicates f(index1) > f(index2), 1 indicates f(index1) < f(index2).
 This can be automatically encoded using lop.dk(value1, value2).
 

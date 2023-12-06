@@ -36,7 +36,8 @@ import pdb
 # @param u - the output value of the first input
 # @param v - output value of the second input
 def get_dk(u, v):
-    if (not isinstance(u, (int, float))) or (not isinstance(v, (int, float))):
+    #if (isinstance(u, (int, float))) or (not isinstance(v, (int, float))):
+    if isinstance(u, (Sequence, np.ndarray)) or isinstance(v, (Sequence, np.ndarray)):
         raise TypeError("get_dk was not passed a scalar value")
     if u > v:
         return -1
@@ -84,7 +85,7 @@ def ranked_pairs_from_fake(X, fake_f):
 def generate_fake_pairs(X, real_f, pair_i, data=None):
     Y = real_f(X, data=data)
 
-    pairs = [(get_dk(Y[pair_i], y),pair_i, i) for i, y in enumerate(Y)]
+    pairs = [(get_dk(Y[pair_i], y),pair_i, i) for i, y in enumerate(Y) if i != pair_i]
     return pairs
 
 
