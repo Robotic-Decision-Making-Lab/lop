@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['sigma_161',['sigma',['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a29ff842beb7df771c64a93f319a53088',1,'lop.kernels.LinearKern.LinearKern.sigma()'],['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#ae659b602e657e5566f89daa758daaefa',1,'lop.kernels.PeriodicKern.PeriodicKern.sigma()'],['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a91e9745db998afde89e10e9b3eac1c2d',1,'lop.kernels.RBF_kern.RBF_kern.sigma()']]],
-  ['sigma_5fb_162',['sigma_b',['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a725e3844ae046143b2ea66b9515babc9',1,'lop::kernels::LinearKern::LinearKern']]]
+  ['p_215',['p',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a38d769653cc0e6dcfbbf58fa54678bac',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
+  ['package_5fdir_216',['package_dir',['../namespacesetup.html#afd7273d426fd6e1796ec17175f6521c3',1,'setup']]],
+  ['packages_217',['packages',['../namespacesetup.html#aff2375a361fd5865c77bd9aa093be747',1,'setup']]],
+  ['python_5frequires_218',['python_requires',['../namespacesetup.html#aa7ca7bc9391b217e81efeb03689d8dbf',1,'setup']]]
 ];

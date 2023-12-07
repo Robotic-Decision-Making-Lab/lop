@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['c_148',['c',['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#ae1890850ac50f739d6e5e40aba8d4618',1,'lop::kernels::LinearKern::LinearKern']]]
+  ['b_204',['b',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a8676e509bf10a01bcd5da0fa226bcf76',1,'lop::kernels::KernelFunc::DualKern']]]
 ];

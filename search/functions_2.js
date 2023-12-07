@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['f_5flin_118',['f_lin',['../namespacetest__utility.html#a35631d3bcd5f3b02a2ed829ab7ed381b',1,'test_utility']]],
-  ['f_5fsin_119',['f_sin',['../namespacetest__utility.html#a8cc29464ae987f264d35591c12f007f8',1,'test_utility']]],
-  ['f_5fsq_120',['f_sq',['../namespacetest__utility.html#a494de74dcd12a3caeb63a7d994037659',1,'test_utility']]]
+  ['calc_5fpdf_5fcdf_5fratio_157',['calc_pdf_cdf_ratio',['../namespacelop_1_1probits_1_1ProbitBase.html#a2cb71b2c84f11edbd174fd378480b6f4',1,'lop::probits::ProbitBase']]],
+  ['calc_5fw_158',['calc_W',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a8a402a4822defd4a7ea627400678e687',1,'lop::probits::PreferenceProbit::PreferenceProbit']]],
+  ['cov_159',['cov',['../classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a04c828de70c3684f29c89a21dd1f9d42',1,'lop.kernels.KernelFunc.KernelFunc.cov()'],['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#ab99a623b6bbd7c7aa98925e32570f23c',1,'lop.kernels.KernelFunc.DualKern.cov()'],['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a57b04b2e244369a32a1891fe033e9f9d',1,'lop.kernels.LinearKern.LinearKern.cov()'],['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a88a49d29df921d32b8e774af69448b8a',1,'lop.kernels.PeriodicKern.PeriodicKern.cov()'],['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f',1,'lop.kernels.RBF_kern.RBF_kern.cov()']]],
+  ['cov_5fgradient_160',['cov_gradient',['../classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ac5d2f34b72674325819e82928b4968c5',1,'lop::kernels::KernelFunc::KernelFunc']]]
 ];

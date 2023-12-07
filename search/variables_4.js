@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['install_5frequires_150',['install_requires',['../namespacesetup.html#abead4f26b530856f858f0d44c7cf2588',1,'setup']]]
+  ['description_206',['description',['../namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0',1,'setup']]]
 ];

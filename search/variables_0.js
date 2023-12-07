@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['a_144',['a',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a5a6f3ab63294d4e2c58178531a23af0e',1,'lop::kernels::KernelFunc::DualKern']]],
-  ['author_145',['author',['../namespacesetup.html#a3a57a4772d418a06835249cbade0d86a',1,'setup']]],
-  ['author_5femail_146',['author_email',['../namespacesetup.html#a5b08034343aa2be607722a8b315f3625',1,'setup']]]
+  ['_5fi2var_199',['_i2var',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ab7c38342f7f6384e838ab341b7185343',1,'lop::probits::PreferenceProbit::PreferenceProbit']]],
+  ['_5fisqrt2sig_200',['_isqrt2sig',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ab7b99249c20212d929ac79d860ebe84b',1,'lop::probits::PreferenceProbit::PreferenceProbit']]]
 ];

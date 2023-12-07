@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zip_5fsafe_165',['zip_safe',['../namespacesetup.html#a13510753661cb74083a0c664db11dde9',1,'setup']]]
+  ['url_222',['url',['../namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb',1,'setup']]]
 ];
