@@ -28,7 +28,7 @@ if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence
 else:
     from collections import Sequence
-from rdml_graph.gaussian_process import get_dk
+from lop.utilities import get_dk
 
 
 class PreferenceModel():
