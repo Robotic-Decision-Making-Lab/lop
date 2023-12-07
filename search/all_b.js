@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_58',['operator',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a1c464d25fea9ab784692a79fe6f766b8',1,'lop::kernels::KernelFunc::DualKern']]]
+  ['name_59',['name',['../namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f',1,'setup']]]
 ];

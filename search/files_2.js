@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['linearkern_2epy_138',['LinearKern.py',['../LinearKern_8py.html',1,'']]]
+  ['kernelfunc_2epy_151',['KernelFunc.py',['../KernelFunc_8py.html',1,'']]]
 ];
