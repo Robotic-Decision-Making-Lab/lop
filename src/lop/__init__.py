@@ -6,3 +6,6 @@ from .kernels import *
 
 from . import probits
 from .probits import *
+
+from . import models
+from .models import *

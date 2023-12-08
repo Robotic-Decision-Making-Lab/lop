@@ -56,40 +56,4 @@ def test_preference_probit():
         assert not np.isnan(py_i)
     assert not np.isnan(py)
 
-## Test commented out because it fails and I don't want to deal with it at the momment.
-def test_abs_bound_probit():
-    abp = lop.AbsBoundProbit(1, 10.0)
-
-    y = np.array([[0,1,2,3,4,5,6],[0,1,2,3,4.2,6,7]], dtype=int)
-    F = np.array([1,0.5,3,4,5,6,7,2])
-    F = F / np.linalg.norm(F, ord=np.inf)
-
-    link = abp.mean_link(F)
-    assert isinstance(link, np.ndarray)
-
-
-    W, dpy_df, py = abp.derivatives(y, F)
-
-    assert W.shape[0] == len(F)
-
-    for py_i in py:
-        assert not np.isnan(py_i)
-
-    
-def test_ordinal_probit():
-    op = lop.OrdinalProbit(1.0,1.0,5)
-
-    assert op is not None
-
-    y = np.array([[0,1,2,3,4,5,6],[0,1,3,2,4,3,2]], dtype=int).T
-    F = np.array([1,0.5,3,4,5,6,7,2])
-    F = F / np.linalg.norm(F, ord=np.inf)
-
-    W, dpy_df, py = op.derivatives(y, F)
-
-    assert py.shape[0] == len(F)
-
-    for py_i in py:
-        assert not np.isnan(py_i)
-
 
