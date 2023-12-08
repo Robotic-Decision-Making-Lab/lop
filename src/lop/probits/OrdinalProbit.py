@@ -30,6 +30,8 @@
 
 import numpy as np
 import scipy.stats as st
+import copy
+import pdb
 
 from lop.probits import ProbitBase
 from lop.probits import std_norm_pdf, std_norm_cdf, calc_pdf_cdf_ratio
@@ -100,21 +102,21 @@ class OrdinalProbit(ProbitBase):
     #
     # @return the vector of z_k values
     def z_k(self, y, F):
-        if isinstance(y, np.ndarray):
-            f = F[y[:,1]]
-            y = y[:,0]
+        if isinstance(y, tuple):
+            f = F[y[1]]
+            y = y[0]
         else:
             f = F
         return self._isigma*(self.b[y] - f)
 
     def norm_pdf(self, y, F):
-        if isinstance(y, np.ndarray):
-            f = F[y[:,1]]
-            y = y[:,0]
+        if isinstance(y, tuple):
+            f = F[y[1]]
+            y = y[0]
         else:
             f = F
 
-        if isinstance(y, np.ndarray):
+        if isinstance(y, tuple):
             f = f*np.ones(y.shape, dtype='float')       # This ensures the number of f values matches the number of y
             out = np.zeros(y.shape, dtype='float')
             for i in range(out.shape[0]):
@@ -129,9 +131,9 @@ class OrdinalProbit(ProbitBase):
         return out
 
     def norm_cdf(self, y, F, var_x=0.0):
-        if isinstance(y, np.ndarray):
-            f = F[y[:,1]]
-            y = y[:,0]
+        if isinstance(y, tuple):
+            f = F[y[1]]
+            y = y[0]
         else:
             f = F
         ivar = self._isigma + var_x
@@ -155,10 +157,10 @@ class OrdinalProbit(ProbitBase):
     #       dpy_df - the derivative of P(y|x,theta) with respect to F
     #       py - P(y|x,theta) for the given probit
     def derivatives(self, y, F):
-        f = F[y[:,1]]
+        f = F[y[1]]
         y_orig = y
-        y = y[:,0]
-        l = self.likelihood(y_orig, F)
+        y = y[0]
+        l = self.likelihood_each(y_orig, F)
         py = np.log(l)
 
         # First derivative - Chu and Gharamani
@@ -189,7 +191,15 @@ class OrdinalProbit(ProbitBase):
                 d2py_df2[i] = -(dpy_df[i]**2 + self._ivar*(self.norm_pdf(y[i], f[i]) - self.norm_pdf(y[i]-1, f[i])) / l[i])
 
         W = np.diagflat(-d2py_df2)
-        return W, dpy_df, py
+        return W, dpy_df, np.sum(py)
+
+
+    def likelihood_each(self, y, F):
+        y_modified = (y[0]-1, y[1])
+        if (y_modified[0] < 0).any():
+            raise Exception("Can't pass likelihood with 0 rating (must all be positive ordinal values)")
+        
+        return self.norm_cdf(y, F) - self.norm_cdf(y_modified, F)
 
 
     ## likelihood
@@ -199,7 +209,5 @@ class OrdinalProbit(ProbitBase):
     #
     # @return P(y|F)
     def likelihood(self, y, F):
-        y_modified = np.copy(y)
-        y_modified[:,0] -= 1
-        return self.norm_cdf(y, F) - self.norm_cdf(y_modified, F)
+        return np.prod(self.likelihood_each(y, F))
 

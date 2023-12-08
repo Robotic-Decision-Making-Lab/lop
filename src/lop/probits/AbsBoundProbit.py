@@ -146,7 +146,7 @@ class AbsBoundProbit(ProbitBase):
         full_dpy_df[y[1]] = dpy_df
         full_py[y[1]] = py
 
-        return -full_W, full_dpy_df, full_py
+        return -full_W, full_dpy_df, np.sum(full_py)
 
 
     ## likelihood
@@ -159,7 +159,12 @@ class AbsBoundProbit(ProbitBase):
         y_selected = y[0]
         f = F[y[1]]
         aa, bb = self.get_alpha_beta(f)
-        return beta.pdf(y, aa, bb)
+
+        py = np.log(beta.pdf(y_selected, aa, bb))
+        full_py = np.zeros(F.shape[0])
+        full_py[y[1]] = py
+        
+        return np.exp(np.sum(full_py))
 
     ## cdf for the beta function.
     def cdf(self, y, F):

@@ -29,6 +29,7 @@ if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
 else:
     from collections import Sequence
 from lop.utilities import get_dk
+from lop.probits import PreferenceProbit, AbsBoundProbit, OrdinalProbit
 
 
 class PreferenceModel():
@@ -39,7 +40,8 @@ class PreferenceModel():
         self.optimized = False
 
         self.pareto_pairs = pareto_pairs
-        self.probit_idxs = {'relative_discrete': 0}
+        self.probits = [PreferenceProbit(sigma = 0.5), OrdinalProbit(), AbsBoundProbit()]
+        self.probit_idxs = {'relative_discrete': 0, 'ordinal': 1, 'abs': 2}
 
         i = 1
         for key in other_probits:
@@ -162,6 +164,9 @@ class PreferenceModel():
     #                       vk = index of the second input
     #                       @NOTE That this function updates the indicies if there
     #                       is already training data.
+    #                       If inputing ordinal or abs data, it should be a vector of the same
+    #                       length as the input data (one y for each x)
+    # @param type - type of input ['relative_discrete', 'ordinal', 'abs']
     # @param training_sigma - [opt] sets the uncertianty in the training data
     #                          accepts scalars or a vector if each sample has
     #                          a different uncertianty.
@@ -196,11 +201,20 @@ class PreferenceModel():
                 new_y[:,1] = np.arange(0, y.shape[0])
             else:
                 new_y = y
+
+            if (new_y[:,0] <= 0).any():
+                raise Exception("Can't pass ordinal with 0 rating (must all be positive ordinal values)")
+
             if self.y_train[self.probit_idxs[type]] is None:
-                self.y_train[self.probit_idxs[type]] = new_y
+                self.y_train[self.probit_idxs[type]] = (new_y[:,0], new_y[:,1])
             else:
+                # restet index for matching to X_train
+                new_y[:,1] += len_X
+                old_v = self.y_train[self.probit_idxs[type]][0]
+                old_idx = self.y_train[self.probit_idxs[type]][1]
+
                 self.y_train[self.probit_idxs[type]] = \
-                    np.append(self.y_train[self.probit_idxs[type]], new_y, axis=0)
+                    (np.append(old_v, new_y[:,0]), np.append(old_idx, new_y[:,1]))
         elif type == 'abs':
             if isinstance(y, tuple):
                 v = y[0]

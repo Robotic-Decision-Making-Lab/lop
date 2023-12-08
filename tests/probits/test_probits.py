@@ -25,13 +25,13 @@ import pytest
 import lop
 
 import numpy as np
-
+import pdb
 
 def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 
-def test_preference_probit():
+def test_preference_probit_likelihood():
     pp = lop.PreferenceProbit(2.0)
 
     X_train = np.array([0,1,2,3,4.2,6,7])
@@ -49,11 +49,61 @@ def test_preference_probit():
 
     W, dpy_df, py = pp.derivatives(pairs, F)
 
-    for z_i in z:
-        assert not np.isnan(z_i)
-
-    for py_i in dpy_df:
-        assert not np.isnan(py_i)
+    assert not np.isnan(W).any()
+    assert np.isfinite(W).all()
+    assert not np.isnan(dpy_df).any()
+    assert np.isfinite(dpy_df).all()
     assert not np.isnan(py)
+    assert np.isfinite(py)
+
+
+def test_abs_bound_probit_likelihood():
+    probit = lop.AbsBoundProbit(0.5, 4.0)
+
+    X_train = np.array([0,1,2,3])
+    v = np.array([0.1,0.2,0.5, 0.4])
+    idxs = np.arange(0,4,1)
+
+    W, dpy_df, py = probit.derivatives((v, idxs), X_train)
+
+    py2 = probit.likelihood((v, idxs), X_train)
+
+    assert not np.isnan(py2)
+    assert np.isfinite (py2)
+
+    assert (np.log(py2) - py) < 0.001
+    assert (np.log(py2) - py) > -0.001
+
+    assert not np.isnan(W).any()
+    assert np.isfinite(W).all()
+    assert not np.isnan(dpy_df).any()
+    assert np.isfinite(dpy_df).all()
+    assert not np.isnan(py)
+    assert np.isfinite(py)
+
+def test_ordinal_probit_likelihood():
+    probit = lop.OrdinalProbit()
+
+    X_train = np.array([0,1.0,2,3])
+    v = np.array([2,1,1,3], dtype=int)
+    idxs = np.arange(0,4,1)
+
+    W, dpy_df, py = probit.derivatives((v, idxs), X_train)
+
+    py2 = probit.likelihood((v, idxs), X_train)
+
+    assert not np.isnan(py2)
+    assert np.isfinite (py2)
+
+    assert (np.log(py2) - py) < 0.001
+    assert (np.log(py2) - py) > -0.001
+
+
+    assert not np.isnan(W).any()
+    assert np.isfinite(W).all()
+    assert not np.isnan(dpy_df).any()
+    assert np.isfinite(dpy_df).all()
+    assert not np.isnan(py)
+    assert np.isfinite(py)
 
 
