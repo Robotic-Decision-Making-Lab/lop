@@ -107,3 +107,46 @@ def test_ordinal_probit_likelihood():
     assert np.isfinite(py)
 
 
+
+def test_preference_hyper_modification():
+    probit = lop.PreferenceProbit()
+
+    param = probit.get_hyper()
+
+    assert param.shape[0] == 1
+
+    probit.set_hyper(np.array([0.1]))
+    assert probit.sigma == 0.1
+    param = probit.get_hyper()
+
+    assert param[0] == 0.1
+
+def test_abs_bound_hyper_modification():
+    probit = lop.AbsBoundProbit()
+
+    param = probit.get_hyper()
+
+    assert param.shape[0] == 2
+
+    probit.set_hyper(np.array([0.1, 4.23]))
+    assert probit.sigma == 0.1
+    assert probit.v == 4.23
+    param = probit.get_hyper()
+
+    assert param[0] == 0.1
+    assert param[1] == 4.23
+
+def test_ordinal_hyper_modification():
+    probit = lop.OrdinalProbit()
+
+    param = probit.get_hyper()
+
+    assert param.shape[0] == 2
+
+    probit.set_hyper(np.array([0.1, 4.23]))
+    assert probit.sigma == 0.1
+    assert probit.b[-2] == 4.23
+    param = probit.get_hyper()
+
+    assert param[0] == 0.1
+    assert param[1] == 4.23

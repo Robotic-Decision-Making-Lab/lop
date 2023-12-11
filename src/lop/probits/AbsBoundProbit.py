@@ -68,6 +68,11 @@ class AbsBoundProbit(ProbitBase):
         self.set_sigma(hyper[0])
         self.set_v(hyper[1])
 
+    ## get_hyper
+    # Gets a numpy array of hyperparameters for the probit
+    def get_hyper(self):
+        return np.array([self.sigma, self.v])
+
     ## set_sigma
     # Sets the sigma on the absolute bounded probit.
     # Also calculates inverse to the sigma for fast calculation.

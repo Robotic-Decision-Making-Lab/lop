@@ -64,6 +64,15 @@ class OrdinalProbit(ProbitBase):
     def set_hyper(self, hyper):
         self.set_sigma(hyper[0])
         self.set_b(hyper[1])
+    ## get_hyper
+    # Gets a numpy array of hyperparameters for the probit
+    def get_hyper(self):
+        if hasattr(self.b, '__len__'):
+            b = self.b[-2]
+        else:
+            b = self.b
+        return np.array([self.sigma, b])
+    
 
     ## set_b
     # Sets the bias hyperparameter
@@ -71,7 +80,7 @@ class OrdinalProbit(ProbitBase):
     def set_b(self, b):
         if not hasattr(b, "__len__"):
             b = abs(b)
-            self.b = np.hstack(([-np.Inf],np.linspace(-b, b, self.n_ordinals-1), [np.Inf]))
+            self.b = np.hstack(([-np.Inf],np.linspace(0, b, self.n_ordinals-1), [np.Inf]))
         elif len(b) == self.n_ordinals+1:
             self.b = b
         elif len(b) == self.n_ordinals-1:

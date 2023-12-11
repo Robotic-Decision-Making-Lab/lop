@@ -47,7 +47,7 @@ class PreferenceProbit(ProbitBase):
     y_type = 'discrete'
 
     ## constructor
-    def __init__(self, sigma):
+    def __init__(self, sigma=1.0):
         self.set_sigma(sigma)
         self.log2pi = np.log(2.0*np.pi)
 

@@ -103,13 +103,6 @@ def test_adding_multiple_types():
 
     assert pm is not None
 
-    # pdb.set_trace()
-    # log_like = pm.log_likelyhood_training(np.array([0,0,1,1,1,1]))
-
-    
-
-    # assert not np.isnan(log_like)
-
 
 
 
