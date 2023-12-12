@@ -28,15 +28,19 @@ if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence
 else:
     from collections import Sequence
+from lop.models import Model
 from lop.utilities import get_dk
 from lop.probits import PreferenceProbit, AbsBoundProbit, OrdinalProbit
 
 
-class PreferenceModel():
+class PreferenceModel(Model):
 
     # init function to setup all needed varaibles
-    # @param 
-    def __init__(self, pareto_pairs=False, other_probits={}):
+    # @param pareto_pairs - [opt] sets whether adding point should include pareto pairs
+    # @param other_probits - [opt] sets additional probit functions for the preference model
+    # @param active_learner - [opt] set the active learner for the model.
+    def __init__(self, pareto_pairs=False, other_probits={}, active_learner=None):
+        super(PreferenceModel, self).__init__(active_learner)
         self.optimized = False
 
         self.pareto_pairs = pareto_pairs
@@ -147,6 +151,7 @@ class PreferenceModel():
         else:
             return None
 
+    
     ## reset
     # This function resets all points for the GP
     def reset(self):
