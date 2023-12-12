@@ -81,6 +81,7 @@ Inheritance diagram for lop.models.PreferenceModel.PreferenceModel:</div>
 <div class="center"><img src="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel__inherit__graph.png" border="0" usemap="#alop_8models_8PreferenceModel_8PreferenceModel_inherit__map" alt="Inheritance graph"/></div>
 <map name="alop_8models_8PreferenceModel_8PreferenceModel_inherit__map" id="alop_8models_8PreferenceModel_8PreferenceModel_inherit__map">
 <area shape="rect" title=" " alt="" coords="5,80,217,121"/>
+<area shape="rect" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="17,169,205,211"/>
 <area shape="rect" href="classlop_1_1models_1_1Model_1_1Model.html" title=" " alt="" coords="20,5,203,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -115,9 +116,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac26e25c6d80896f4d80f3cc68bd60f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98bb57765e6de3ce3f795b895bd0bba1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a98bb57765e6de3ce3f795b895bd0bba1">log_likelyhood_training</a> (self, F)</td></tr>
 <tr class="separator:a98bb57765e6de3ce3f795b895bd0bba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ed1931039f1424492f2eaf91a2d4c4c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a0ed1931039f1424492f2eaf91a2d4c4c">loss_func</a> (self, F)</td></tr>
+<tr class="memdesc:a0ed1931039f1424492f2eaf91a2d4c4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates the loss function of the log liklihood with prior this is equation (139)  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a0ed1931039f1424492f2eaf91a2d4c4c">More...</a><br /></td></tr>
+<tr class="separator:a0ed1931039f1424492f2eaf91a2d4c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2232fd09f45ec3bf4788bc4593261f7a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a">optimize</a> (self, optimize_hyperparameter=False)</td></tr>
 <tr class="memdesc:a2232fd09f45ec3bf4788bc4593261f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimize Runs the optimization step required by the user preference <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a>.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a">More...</a><br /></td></tr>
 <tr class="separator:a2232fd09f45ec3bf4788bc4593261f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac32629759bfaa2cfdac4f3493f8f7e61"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac32629759bfaa2cfdac4f3493f8f7e61">newton_update</a> (self, F, gradient, hess, invert_function=np.linalg.inv, lambda_type=&quot;static&quot;, line_search_max_itr=5)</td></tr>
+<tr class="memdesc:ac32629759bfaa2cfdac4f3493f8f7e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimization functions for preference models  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac32629759bfaa2cfdac4f3493f8f7e61">More...</a><br /></td></tr>
+<tr class="separator:ac32629759bfaa2cfdac4f3493f8f7e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c0a979b7da6e09243a0aab667f33e94"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a8c0a979b7da6e09243a0aab667f33e94">binary_line_search</a> (self, F, descent, min_lambda=0.0, max_lambda=1.5, max_itr=5)</td></tr>
+<tr class="memdesc:a8c0a979b7da6e09243a0aab667f33e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">binary_line_search performs a binary line search by splitting the search along the descent direction to find the best location.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a8c0a979b7da6e09243a0aab667f33e94">More...</a><br /></td></tr>
+<tr class="separator:a8c0a979b7da6e09243a0aab667f33e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a271e8f8510244e3285f5e84c888053da"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a271e8f8510244e3285f5e84c888053da">iterative_line_search</a> (self, F, descent, min_lambda=0.01, max_lambda=1.5, max_itr=10)</td></tr>
+<tr class="separator:a271e8f8510244e3285f5e84c888053da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlop_1_1models_1_1Model_1_1Model"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlop_1_1models_1_1Model_1_1Model')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html">lop.models.Model.Model</a></td></tr>
 <tr class="memitem:a316afa91f5c49f0f948eec033b3390bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">__init__</a> (self, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a>=None)</td></tr>
 <tr class="memdesc:a316afa91f5c49f0f948eec033b3390bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor constructor for the base model  <a href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">More...</a><br /></td></tr>
@@ -312,6 +324,71 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a8c0a979b7da6e09243a0aab667f33e94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c0a979b7da6e09243a0aab667f33e94">&#9670;&nbsp;</a></span>binary_line_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.PreferenceModel.PreferenceModel.binary_line_search </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>descent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>min_lambda</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>max_lambda</em> = <code>1.5</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>max_itr</em> = <code>5</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>binary_line_search performs a binary line search by splitting the search along the descent direction to find the best location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">F</td><td>- the input parameters </td></tr>
+    <tr><td class="paramname">descent</td><td>- the desecent direction scaled to the taylor polynomial </td></tr>
+    <tr><td class="paramname">min_lambda</td><td>- [opt] the minumum lambda location to search (0.01 default) </td></tr>
+    <tr><td class="paramname">max_lambda</td><td>- [opt] the maxmimum lambda to search (1.5, default) </td></tr>
+    <tr><td class="paramname">max_itr</td><td>- [opt] the maximum number of iterations allowed to search</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>lambda for the binary search. </dd></dl>
+
+</div>
+</div>
 <a id="a92618d0a934a31e7e3db77a53b5a6703"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92618d0a934a31e7e3db77a53b5a6703">&#9670;&nbsp;</a></span>get_prior_pts()</h2>
 
@@ -330,6 +407,58 @@ Public Attributes</h2></td></tr>
 
 <p>get_prior_pts get the set of prior points if they exist </p>
 <dl class="section return"><dt>Returns</dt><dd>numpy array of X_train if it exists, None otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a271e8f8510244e3285f5e84c888053da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a271e8f8510244e3285f5e84c888053da">&#9670;&nbsp;</a></span>iterative_line_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.PreferenceModel.PreferenceModel.iterative_line_search </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>descent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>min_lambda</em> = <code>0.01</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>max_lambda</em> = <code>1.5</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>max_itr</em> = <code>10</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -358,6 +487,117 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0ed1931039f1424492f2eaf91a2d4c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ed1931039f1424492f2eaf91a2d4c4c">&#9670;&nbsp;</a></span>loss_func()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.PreferenceModel.PreferenceModel.loss_func </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>calculates the loss function of the log liklihood with prior this is equation (139) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">F</td><td>- the estimated training values </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a23c9eed92bd35d9d93b932e300cd06a8">lop.models.PreferenceGP.PreferenceGP</a>.</p>
+
+</div>
+</div>
+<a id="ac32629759bfaa2cfdac4f3493f8f7e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac32629759bfaa2cfdac4f3493f8f7e61">&#9670;&nbsp;</a></span>newton_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.PreferenceModel.PreferenceModel.newton_update </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>gradient</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>hess</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>invert_function</em> = <code>np.linalg.inv</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>lambda_type</em> = <code>&quot;static&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>line_search_max_itr</em> = <code>5</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>optimization functions for preference models </p>
+<p>newton_update This function runs a damped newton update to calculate the next step of the optimization. Can be used with or without line search for selecting the lambda function </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">F</td><td>- the current estimate of the parameters </td></tr>
+    <tr><td class="paramname">K</td><td>- the current covariance matrix </td></tr>
+    <tr><td class="paramname">W</td><td>- the Hessian of the loss function </td></tr>
+    <tr><td class="paramname">grad_ll</td><td>- the gradient of the loss function </td></tr>
+    <tr><td class="paramname">invert_function</td><td>- [opt] the matrix inversion function to use </td></tr>
+    <tr><td class="paramname">lambda_type</td><td>- [opt default "static"] sets the type of lambda search, options include ("static", "binary", "iter") </td></tr>
+    <tr><td class="paramname">line_search_max_itr</td><td>- [opt (5)] line_search_max_itr</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>F_new after the update function </dd></dl>
 
 </div>
 </div>
@@ -394,6 +634,8 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a36cfebeabc0f503f5a932171074f82fe">lop.models.PreferenceGP.PreferenceGP</a>.</p>
 
 </div>
 </div>

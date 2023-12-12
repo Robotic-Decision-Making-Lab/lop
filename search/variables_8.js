@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mean_5ffunc_376',['mean_func',['../classlop_1_1models_1_1GP_1_1GP.html#a64a18efb16a9f061bb88114d34995480',1,'lop::models::GP::GP']]]
+  ['k_405',['K',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#ace2e4b98edc57d1af8a3f6c892fd334b',1,'lop::models::PreferenceGP::PreferenceGP']]]
 ];

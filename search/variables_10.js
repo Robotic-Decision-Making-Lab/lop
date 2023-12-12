@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['x_5ftrain_396',['X_train',['../classlop_1_1models_1_1GP_1_1GP.html#a71b7d75c1cace9c7deb99b3af711604f',1,'lop.models.GP.GP.X_train()'],['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21',1,'lop.models.PreferenceModel.PreferenceModel.X_train()']]]
+  ['url_433',['url',['../namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb',1,'setup']]],
+  ['use_5fhyper_5foptimization_434',['use_hyper_optimization',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#afd677d1d608d09111b94c47bc77dc898',1,'lop::models::PreferenceGP::PreferenceGP']]]
 ];
