@@ -4,3 +4,4 @@ from .Model import Model, SimplelestModel
 from .PreferenceModel import PreferenceModel
 from .GP import GP
 from .PreferenceGP import PreferenceGP
+from .PreferenceLinear import PreferenceLinear

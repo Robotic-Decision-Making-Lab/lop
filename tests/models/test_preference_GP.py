@@ -11,6 +11,9 @@ import numpy as np
 def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
+def f_sq(x, data=None):
+    return (x/10.0)**2
+
 def test_pref_GP_construction():
     gp = lop.PreferenceGP(lop.RBF_kern(1.0, 1.0))
 
@@ -67,5 +70,60 @@ def test_pref_GP_function():
             assert y[0] > y[i]
         if i!= 1:
             assert y[1] < y[i]
+
+
+def test_pref_GP_abs_bound():
+    gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.7), normalize_positive=True)
+
+    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
+    y_train = f_sq(X_train)
+
+    gp.add(X_train, y_train, type='abs')
+    
+    assert gp is not None
+
+    gp.optimize()
+
+    assert gp is not None
+    assert gp.optimized
+    assert gp.n_loops > 0 and gp.n_loops < 90
+
+    X = np.array([1.5,1.7,3.2])
+    y = gp(X)
+
+    assert isinstance(y, np.ndarray)
+    assert not np.isnan(y).any()
+
+def test_pref_GP_multiple_probits_does_not_crash():
+    gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.7), normalize_positive=True)
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sq, 0) + \
+            lop.generate_fake_pairs(X_train, f_sq, 1) + \
+            lop.generate_fake_pairs(X_train, f_sq, 2) + \
+            lop.generate_fake_pairs(X_train, f_sq, 3) + \
+            lop.generate_fake_pairs(X_train, f_sq, 4)
+
+   
+    gp.add(X_train, pairs)
+
+    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
+    y_train = f_sq(X_train)
+
+    gp.add(X_train, y_train, type='abs')
+    
+    assert gp is not None
+
+    gp.optimize()
+
+    assert gp is not None
+    assert gp.optimized
+    assert gp.n_loops > 0 and gp.n_loops < 90
+
+    X = np.array([1.5,1.7,3.2])
+    y = gp(X)
+
+    assert isinstance(y, np.ndarray)
+    assert not np.isnan(y).any()
 
 

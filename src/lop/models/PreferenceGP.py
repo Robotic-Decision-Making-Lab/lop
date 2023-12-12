@@ -79,6 +79,7 @@ class PreferenceGP(PreferenceModel):
 
         self.delta_f = 0.0002 # set the convergence to stop
         self.maxloops = 100
+        
 
     def optimize(self, optimize_hyperparameter=False):
         if optimize_hyperparameter:
@@ -138,6 +139,10 @@ class PreferenceGP(PreferenceModel):
     #
     # @return an array of output values (n), other output data (variance, covariance,etc)
     def predict_large(self,X):
+        # lazy optimization of GP
+        if not self.optimized:
+            self.optimize(optimize_hyperparameter=self.use_hyper_optimization)
+
         num_at_a_time = 15
 
         num_runs = int(math.ceil(X.shape[0] / num_at_a_time))
@@ -249,6 +254,7 @@ class PreferenceGP(PreferenceModel):
         if debug:
             print('Optimization ran for: '+str(n_loops))
         
+        self.n_loops = n_loops
 
         self.F = F
         # calculate W with final F

@@ -56,6 +56,7 @@ class PreferenceModel(Model):
         self.X_train = None
 
         self.prior_idx = None
+        self.n_loops = -1
 
 
     ## add_prior
@@ -327,8 +328,6 @@ class PreferenceModel(Model):
             lamb = self.lambda_gp
         else:
             raise ValueError("newton update given bad lambda type of: " + str(lambda_type))
-
-        print("\t lambda = " + str(lamb))
 
         F_new = F - lamb * descent
         return F_new
