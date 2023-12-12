@@ -2,4 +2,4 @@
 
 from .Model import Model, SimplelestModel
 from .PreferenceModel import PreferenceModel
-
+from .GP import GP
