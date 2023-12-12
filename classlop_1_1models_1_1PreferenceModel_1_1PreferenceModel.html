@@ -80,9 +80,10 @@ Inheritance diagram for lop.models.PreferenceModel.PreferenceModel:</div>
 <div class="dyncontent">
 <div class="center"><img src="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel__inherit__graph.png" border="0" usemap="#alop_8models_8PreferenceModel_8PreferenceModel_inherit__map" alt="Inheritance graph"/></div>
 <map name="alop_8models_8PreferenceModel_8PreferenceModel_inherit__map" id="alop_8models_8PreferenceModel_8PreferenceModel_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,217,121"/>
-<area shape="rect" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="17,169,205,211"/>
-<area shape="rect" href="classlop_1_1models_1_1Model_1_1Model.html" title=" " alt="" coords="20,5,203,32"/>
+<area shape="rect" title=" " alt="" coords="105,80,317,121"/>
+<area shape="rect" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="5,169,193,211"/>
+<area shape="rect" href="classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html" title=" " alt="" coords="218,169,429,211"/>
+<area shape="rect" href="classlop_1_1models_1_1Model_1_1Model.html" title=" " alt="" coords="120,5,303,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -166,6 +167,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a703b49ff1bef69bcc07d8d62789b3d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3000fbae4591c21b97a5c05037a9f6d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3000fbae4591c21b97a5c05037a9f6d3">prior_idx</a></td></tr>
 <tr class="separator:a3000fbae4591c21b97a5c05037a9f6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55734ab061a5fd4cfbb0944ed1265008"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a55734ab061a5fd4cfbb0944ed1265008">n_loops</a></td></tr>
+<tr class="separator:a55734ab061a5fd4cfbb0944ed1265008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classlop_1_1models_1_1Model_1_1Model"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classlop_1_1models_1_1Model_1_1Model')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html">lop.models.Model.Model</a></td></tr>
 <tr class="memitem:a945e63343cca2a4d42652f017b9496a7 inherit pub_attribs_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a></td></tr>
 <tr class="separator:a945e63343cca2a4d42652f017b9496a7 inherit pub_attribs_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -524,7 +527,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a23c9eed92bd35d9d93b932e300cd06a8">lop.models.PreferenceGP.PreferenceGP</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#a94123b5fba5f8a84c4871296aec30536">lop.models.PreferenceLinear.PreferenceLinear</a>, and <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a23c9eed92bd35d9d93b932e300cd06a8">lop.models.PreferenceGP.PreferenceGP</a>.</p>
 
 </div>
 </div>
@@ -635,7 +638,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a36cfebeabc0f503f5a932171074f82fe">lop.models.PreferenceGP.PreferenceGP</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#abca3533194863a636e03a2fd982cc515">lop.models.PreferenceLinear.PreferenceLinear</a>, and <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a36cfebeabc0f503f5a932171074f82fe">lop.models.PreferenceGP.PreferenceGP</a>.</p>
 
 </div>
 </div>
@@ -693,6 +696,20 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a55734ab061a5fd4cfbb0944ed1265008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55734ab061a5fd4cfbb0944ed1265008">&#9670;&nbsp;</a></span>n_loops</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.models.PreferenceModel.PreferenceModel.n_loops</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a35a1bb5aa50902b646e7efe81828a3a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35a1bb5aa50902b646e7efe81828a3a7">&#9670;&nbsp;</a></span>optimized</h2>
 

@@ -3,5 +3,6 @@
 <area shape="rect" id="node2" href="$classlop_1_1models_1_1GP_1_1GP.html" title=" " alt="" coords="274,5,410,32"/>
 <area shape="rect" id="node3" href="$classlop_1_1models_1_1Model_1_1SimplelestModel.html" title="SimplelestModel A simple model that just outputs exactly it&#39;s input no matter what." alt="" coords="237,57,447,98"/>
 <area shape="rect" id="node4" href="$classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="236,122,448,163"/>
-<area shape="rect" id="node5" href="$classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="496,122,684,163"/>
+<area shape="rect" id="node5" href="$classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="507,89,695,130"/>
+<area shape="rect" id="node6" href="$classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html" title=" " alt="" coords="496,154,707,195"/>
 </map>

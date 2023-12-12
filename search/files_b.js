@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['test_5fgp_2epy_281',['test_GP.py',['../test__GP_8py.html',1,'']]],
-  ['test_5fgp_5fkernel_2epy_282',['test_gp_kernel.py',['../test__gp__kernel_8py.html',1,'']]],
-  ['test_5fhuman_5fchoice_2epy_283',['test_human_choice.py',['../test__human__choice_8py.html',1,'']]],
-  ['test_5fmodel_2epy_284',['test_model.py',['../test__model_8py.html',1,'']]],
-  ['test_5fpreference_5fgp_2epy_285',['test_preference_GP.py',['../test__preference__GP_8py.html',1,'']]],
-  ['test_5fpreference_5fmodel_2epy_286',['test_preference_model.py',['../test__preference__model_8py.html',1,'']]],
-  ['test_5fprobits_2epy_287',['test_probits.py',['../test__probits_8py.html',1,'']]],
-  ['test_5futility_2epy_288',['test_utility.py',['../test__utility_8py.html',1,'']]],
-  ['training_5futility_2epy_289',['training_utility.py',['../training__utility_8py.html',1,'']]]
+  ['test_5fgp_2epy_297',['test_GP.py',['../test__GP_8py.html',1,'']]],
+  ['test_5fgp_5fkernel_2epy_298',['test_gp_kernel.py',['../test__gp__kernel_8py.html',1,'']]],
+  ['test_5fhuman_5fchoice_2epy_299',['test_human_choice.py',['../test__human__choice_8py.html',1,'']]],
+  ['test_5fmodel_2epy_300',['test_model.py',['../test__model_8py.html',1,'']]],
+  ['test_5fpreference_5fgp_2epy_301',['test_preference_GP.py',['../test__preference__GP_8py.html',1,'']]],
+  ['test_5fpreference_5flinear_2epy_302',['test_preference_linear.py',['../test__preference__linear_8py.html',1,'']]],
+  ['test_5fpreference_5fmodel_2epy_303',['test_preference_model.py',['../test__preference__model_8py.html',1,'']]],
+  ['test_5fprobits_2epy_304',['test_probits.py',['../test__probits_8py.html',1,'']]],
+  ['test_5futility_2epy_305',['test_utility.py',['../test__utility_8py.html',1,'']]],
+  ['training_5futility_2epy_306',['training_utility.py',['../training__utility_8py.html',1,'']]]
 ];
