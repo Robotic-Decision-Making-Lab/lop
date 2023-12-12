@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['simplelestmodel_199',['SimplelestModel',['../classlop_1_1models_1_1Model_1_1SimplelestModel.html',1,'lop::models::Model']]]
+  ['rbf_5fkern_211',['RBF_kern',['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html',1,'lop::kernels::RBF_kern']]]
 ];

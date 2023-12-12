@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['operator_355',['operator',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a1c464d25fea9ab784692a79fe6f766b8',1,'lop::kernels::KernelFunc::DualKern']]],
-  ['optimized_356',['optimized',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a35a1bb5aa50902b646e7efe81828a3a7',1,'lop::models::PreferenceModel::PreferenceModel']]]
+  ['n_5fordinals_377',['n_ordinals',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a11399dc4eab5a07a98bfbb6bb41fc151',1,'lop::probits::OrdinalProbit::OrdinalProbit']]],
+  ['name_378',['name',['../namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f',1,'setup']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['v_369',['v',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#ad11b75425620ba4d3ca8d925a8b02b5e',1,'lop::probits::AbsBoundProbit::AbsBoundProbit']]],
-  ['version_370',['version',['../namespacesetup.html#a2aa722b36a933088812b50ea79b97a5c',1,'setup']]]
+  ['url_393',['url',['../namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb',1,'setup']]]
 ];

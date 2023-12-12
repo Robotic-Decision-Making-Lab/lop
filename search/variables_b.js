@@ -1,5 +1,11 @@
 var searchData=
 [
-  ['sigma_365',['sigma',['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a29ff842beb7df771c64a93f319a53088',1,'lop.kernels.LinearKern.LinearKern.sigma()'],['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#ae659b602e657e5566f89daa758daaefa',1,'lop.kernels.PeriodicKern.PeriodicKern.sigma()'],['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a91e9745db998afde89e10e9b3eac1c2d',1,'lop.kernels.RBF_kern.RBF_kern.sigma()'],['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a3649796e1cb4da1ed8dc7ec8fba370c6',1,'lop.probits.AbsBoundProbit.AbsBoundProbit.sigma()'],['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a2b3691e9eacc79f2e7b501438cc0c0ce',1,'lop.probits.OrdinalProbit.OrdinalProbit.sigma()'],['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#afd61078798c5deaf3274259190ccb76d',1,'lop.probits.PreferenceProbit.PreferenceProbit.sigma()']]],
-  ['sigma_5fb_366',['sigma_b',['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a725e3844ae046143b2ea66b9515babc9',1,'lop::kernels::LinearKern::LinearKern']]]
+  ['p_381',['p',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a38d769653cc0e6dcfbbf58fa54678bac',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
+  ['package_5fdir_382',['package_dir',['../namespacesetup.html#afd7273d426fd6e1796ec17175f6521c3',1,'setup']]],
+  ['packages_383',['packages',['../namespacesetup.html#aff2375a361fd5865c77bd9aa093be747',1,'setup']]],
+  ['pareto_5fpairs_384',['pareto_pairs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3293f47051ab5b8f128d3dcd0514b86f',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['prior_5fidx_385',['prior_idx',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3000fbae4591c21b97a5c05037a9f6d3',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['probit_5fidxs_386',['probit_idxs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#acf0df71371980b7ab3bc13ab11f61797',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['probits_387',['probits',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3befb70a2abbede7f4fa150afc5237d7',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['python_5frequires_388',['python_requires',['../namespacesetup.html#aa7ca7bc9391b217e81efeb03689d8dbf',1,'setup']]]
 ];

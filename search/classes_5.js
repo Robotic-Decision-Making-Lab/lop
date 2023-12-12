@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ordinalprobit_193',['OrdinalProbit',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html',1,'lop::probits::OrdinalProbit']]]
+  ['model_205',['Model',['../classlop_1_1models_1_1Model_1_1Model.html',1,'lop::models::Model']]]
 ];

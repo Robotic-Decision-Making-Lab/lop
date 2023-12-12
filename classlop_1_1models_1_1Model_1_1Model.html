@@ -80,9 +80,10 @@ Inheritance diagram for lop.models.Model.Model:</div>
 <div class="dyncontent">
 <div class="center"><img src="classlop_1_1models_1_1Model_1_1Model__inherit__graph.png" border="0" usemap="#alop_8models_8Model_8Model_inherit__map" alt="Inheritance graph"/></div>
 <map name="alop_8models_8Model_8Model_inherit__map" id="alop_8models_8Model_8Model_inherit__map">
-<area shape="rect" title=" " alt="" coords="137,5,319,32"/>
-<area shape="rect" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html" title="SimplelestModel A simple model that just outputs exactly it&#39;s input no matter what." alt="" coords="5,80,216,121"/>
-<area shape="rect" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="239,80,451,121"/>
+<area shape="rect" title=" " alt="" coords="5,64,188,91"/>
+<area shape="rect" href="classlop_1_1models_1_1GP_1_1GP.html" title=" " alt="" coords="274,5,410,32"/>
+<area shape="rect" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html" title="SimplelestModel A simple model that just outputs exactly it&#39;s input no matter what." alt="" coords="237,57,447,98"/>
+<area shape="rect" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="236,122,448,163"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -97,7 +98,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9f66d88d137b6c6b36d5dd03d9451ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the model at new locations.  <a href="classlop_1_1models_1_1Model_1_1Model.html#a9f66d88d137b6c6b36d5dd03d9451ffd">More...</a><br /></td></tr>
 <tr class="separator:a9f66d88d137b6c6b36d5dd03d9451ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa27c9d7184eb5465fc431a0904f972bc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">predict_large</a> (self, X)</td></tr>
-<tr class="memdesc:aa27c9d7184eb5465fc431a0904f972bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the GP at new locations for large numbers of data points.  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">More...</a><br /></td></tr>
+<tr class="memdesc:aa27c9d7184eb5465fc431a0904f972bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> at new locations for large numbers of data points.  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">More...</a><br /></td></tr>
 <tr class="separator:aa27c9d7184eb5465fc431a0904f972bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4313075dfbcf09935ab7317b7bf3761"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa4313075dfbcf09935ab7317b7bf3761">__call__</a> (self, X)</td></tr>
 <tr class="memdesc:aa4313075dfbcf09935ab7317b7bf3761"><td class="mdescLeft">&#160;</td><td class="mdescRight">() operator This is just a wrapper around the predict function, without any additional variance of other model information  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa4313075dfbcf09935ab7317b7bf3761">More...</a><br /></td></tr>
@@ -218,7 +219,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an array of output values (n), other output data (variance, covariance,etc) </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html#ab5665aa8d5bc29694012b2aba80a2b7f">lop.models.Model.SimplelestModel</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html#ab5665aa8d5bc29694012b2aba80a2b7f">lop.models.Model.SimplelestModel</a>, and <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3cc662004c48dcb15dd72ff71f951ba7">lop.models.GP.GP</a>.</p>
 
 </div>
 </div>
@@ -248,8 +249,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Predicts the output of the GP at new locations for large numbers of data points. </p>
-<p>Useful for GP where entire Covariance might not be needed, just mean and variance </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Predicts the output of the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> at new locations for large numbers of data points. </p>
+<p>Useful for <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> where entire Covariance might not be needed, just mean and variance </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">X</td><td>- the input test samples (n,k).</td></tr>
   </table>
@@ -275,7 +276,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">lop.models.PreferenceModel.PreferenceModel</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">lop.models.PreferenceModel.PreferenceModel</a>, and <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3a8b374c0d226fc4f09a9057230d7df5">lop.models.GP.GP</a>.</p>
 
 </div>
 </div>

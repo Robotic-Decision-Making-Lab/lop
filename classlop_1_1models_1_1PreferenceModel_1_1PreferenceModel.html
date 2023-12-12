@@ -99,7 +99,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a46741f2be1e0efffc32ad6e3bb59fb66"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a46741f2be1e0efffc32ad6e3bb59fb66">__init__</a> (self, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3293f47051ab5b8f128d3dcd0514b86f">pareto_pairs</a>=False, other_probits={}, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a>=None)</td></tr>
 <tr class="separator:a46741f2be1e0efffc32ad6e3bb59fb66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33add0c3a6db74ff9713f45d93b090d0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a33add0c3a6db74ff9713f45d93b090d0">add_prior</a> (self, bounds=np.array([[0, 1],[0, 1]]), num_pts=100, method='random', pts=None)</td></tr>
-<tr class="memdesc:a33add0c3a6db74ff9713f45d93b090d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_prior this function adds prioir data to the GP if desired.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a33add0c3a6db74ff9713f45d93b090d0">More...</a><br /></td></tr>
+<tr class="memdesc:a33add0c3a6db74ff9713f45d93b090d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_prior this function adds prioir data to the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> if desired.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a33add0c3a6db74ff9713f45d93b090d0">More...</a><br /></td></tr>
 <tr class="separator:a33add0c3a6db74ff9713f45d93b090d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9a18938f778eecea9c51536de22e7ed"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ae9a18938f778eecea9c51536de22e7ed">remove_without_reference</a> (self, remove_prior=True)</td></tr>
 <tr class="memdesc:ae9a18938f778eecea9c51536de22e7ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function removes all training points with no references This is used because prior points can have no references and cause problems during optimization because of it.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ae9a18938f778eecea9c51536de22e7ed">More...</a><br /></td></tr>
@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a92618d0a934a31e7e3db77a53b5a6703"><td class="mdescLeft">&#160;</td><td class="mdescRight">get_prior_pts get the set of prior points if they exist  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a92618d0a934a31e7e3db77a53b5a6703">More...</a><br /></td></tr>
 <tr class="separator:a92618d0a934a31e7e3db77a53b5a6703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa570d118010effe4a50637e40da25e75"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">reset</a> (self)</td></tr>
-<tr class="memdesc:aa570d118010effe4a50637e40da25e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset This function resets all points for the GP  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">More...</a><br /></td></tr>
+<tr class="memdesc:aa570d118010effe4a50637e40da25e75"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset This function resets all points for the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a>  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">More...</a><br /></td></tr>
 <tr class="separator:aa570d118010effe4a50637e40da25e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac26e25c6d80896f4d80f3cc68bd60f87"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac26e25c6d80896f4d80f3cc68bd60f87">add</a> (self, X, y, type='relative_discrete', training_sigma=0)</td></tr>
 <tr class="memdesc:ac26e25c6d80896f4d80f3cc68bd60f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_training adds training data to the gaussian process appends the data if there already is some training data  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac26e25c6d80896f4d80f3cc68bd60f87">More...</a><br /></td></tr>
@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a98bb57765e6de3ce3f795b895bd0bba1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a98bb57765e6de3ce3f795b895bd0bba1">log_likelyhood_training</a> (self, F)</td></tr>
 <tr class="separator:a98bb57765e6de3ce3f795b895bd0bba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2232fd09f45ec3bf4788bc4593261f7a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a">optimize</a> (self, optimize_hyperparameter=False)</td></tr>
-<tr class="memdesc:a2232fd09f45ec3bf4788bc4593261f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimize Runs the optimization step required by the user preference GP.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a">More...</a><br /></td></tr>
+<tr class="memdesc:a2232fd09f45ec3bf4788bc4593261f7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimize Runs the optimization step required by the user preference <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a>.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a">More...</a><br /></td></tr>
 <tr class="separator:a2232fd09f45ec3bf4788bc4593261f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlop_1_1models_1_1Model_1_1Model"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlop_1_1models_1_1Model_1_1Model')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html">lop.models.Model.Model</a></td></tr>
 <tr class="memitem:a316afa91f5c49f0f948eec033b3390bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">__init__</a> (self, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a>=None)</td></tr>
@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9f66d88d137b6c6b36d5dd03d9451ffd inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the model at new locations.  <a href="classlop_1_1models_1_1Model_1_1Model.html#a9f66d88d137b6c6b36d5dd03d9451ffd">More...</a><br /></td></tr>
 <tr class="separator:a9f66d88d137b6c6b36d5dd03d9451ffd inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa27c9d7184eb5465fc431a0904f972bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">predict_large</a> (self, X)</td></tr>
-<tr class="memdesc:aa27c9d7184eb5465fc431a0904f972bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the GP at new locations for large numbers of data points.  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">More...</a><br /></td></tr>
+<tr class="memdesc:aa27c9d7184eb5465fc431a0904f972bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">Predicts the output of the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> at new locations for large numbers of data points.  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa27c9d7184eb5465fc431a0904f972bc">More...</a><br /></td></tr>
 <tr class="separator:aa27c9d7184eb5465fc431a0904f972bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4313075dfbcf09935ab7317b7bf3761 inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa4313075dfbcf09935ab7317b7bf3761">__call__</a> (self, X)</td></tr>
 <tr class="memdesc:aa4313075dfbcf09935ab7317b7bf3761 inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">() operator This is just a wrapper around the predict function, without any additional variance of other model information  <a href="classlop_1_1models_1_1Model_1_1Model.html#aa4313075dfbcf09935ab7317b7bf3761">More...</a><br /></td></tr>
@@ -301,7 +301,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>add_prior this function adds prioir data to the GP if desired. </p>
+<p>add_prior this function adds prioir data to the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> if desired. </p>
 <p>Desigend to work with the pareto_pairs constraint to generate a function that ensures pareto_pairs </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">bounds</td><td>- the bounds for the prior pts numpy array (nxn) </td></tr>
@@ -387,7 +387,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>optimize Runs the optimization step required by the user preference GP. </p>
+<p>optimize Runs the optimization step required by the user preference <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">optimize_hyperparameter</td><td>- [opt] sets whether to optimize the hyperparameters </td></tr>
@@ -444,7 +444,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>reset This function resets all points for the GP </p>
+<p>reset This function resets all points for the <a class="el" href="namespacelop_1_1models_1_1GP.html">GP</a> </p>
 
 <p>Reimplemented from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa380053a09f7bc154d132180d036a295">lop.models.Model.Model</a>.</p>
 

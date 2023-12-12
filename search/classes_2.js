@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernelfunc_190',['KernelFunc',['../classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html',1,'lop::kernels::KernelFunc']]]
+  ['gp_202',['GP',['../classlop_1_1models_1_1GP_1_1GP.html',1,'lop::models::GP']]]
 ];

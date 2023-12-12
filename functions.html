@@ -83,6 +83,7 @@ $(function() {
 , <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#aaca5847e7e149c27bc7c5e4a083b18ff">lop.kernels.LinearKern.LinearKern</a>
 , <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a9cea5c004a71793c427061f28fa91305">lop.kernels.PeriodicKern.PeriodicKern</a>
 , <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a6ac054eacf3114c48174495cb321d6b2">lop.kernels.RBF_kern.RBF_kern</a>
+, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#adbcacf380a4d66a04a996da175786245">lop.models.GP.GP</a>
 , <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">lop.models.Model.Model</a>
 , <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a46741f2be1e0efffc32ad6e3bb59fb66">lop.models.PreferenceModel.PreferenceModel</a>
 , <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a0c4dbff7148513eaacbda922fc23c792">lop.probits.AbsBoundProbit.AbsBoundProbit</a>
@@ -124,7 +125,8 @@ $(function() {
 : <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">lop.models.Model.Model</a>
 </li>
 <li>add()
-: <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac26e25c6d80896f4d80f3cc68bd60f87">lop.models.PreferenceModel.PreferenceModel</a>
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a21577678f5adc08e107de7380502acfe">lop.models.GP.GP</a>
+, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ac26e25c6d80896f4d80f3cc68bd60f87">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 <li>add_prior()
 : <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a33add0c3a6db74ff9713f45d93b090d0">lop.models.PreferenceModel.PreferenceModel</a>
@@ -165,6 +167,10 @@ $(function() {
 , <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a57b04b2e244369a32a1891fe033e9f9d">lop.kernels.LinearKern.LinearKern</a>
 , <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a88a49d29df921d32b8e774af69448b8a">lop.kernels.PeriodicKern.PeriodicKern</a>
 , <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f">lop.kernels.RBF_kern.RBF_kern</a>
+, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a6c899d18686534e2fd86ce55ea1f8725">lop.models.GP.GP</a>
+</li>
+<li>cov_func
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a33cff6fe7462d15a9ab1108693216cfe">lop.models.GP.GP</a>
 </li>
 <li>cov_gradient()
 : <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ac5d2f34b72674325819e82928b4968c5">lop.kernels.KernelFunc.KernelFunc</a>
@@ -222,6 +228,13 @@ $(function() {
 </ul>
 
 
+<h3><a id="index_i"></a>- i -</h3><ul>
+<li>invert_function
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a304587ba10a2c09c99cb19ad198829bb">lop.models.GP.GP</a>
+</li>
+</ul>
+
+
 <h3><a id="index_l"></a>- l -</h3><ul>
 <li>l
 : <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a858f98977b01e75eaaa8b5d01fb3ee6d">lop.kernels.PeriodicKern.PeriodicKern</a>
@@ -250,6 +263,9 @@ $(function() {
 
 
 <h3><a id="index_m"></a>- m -</h3><ul>
+<li>mean_func
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a64a18efb16a9f061bb88114d34995480">lop.models.GP.GP</a>
+</li>
 <li>mean_link()
 : <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a1033281a92467ed96d5591bf87cc0b2f">lop.probits.AbsBoundProbit.AbsBoundProbit</a>
 </li>
@@ -290,7 +306,8 @@ $(function() {
 : <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3293f47051ab5b8f128d3dcd0514b86f">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 <li>predict()
-: <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a9f66d88d137b6c6b36d5dd03d9451ffd">lop.models.Model.Model</a>
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3cc662004c48dcb15dd72ff71f951ba7">lop.models.GP.GP</a>
+, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a9f66d88d137b6c6b36d5dd03d9451ffd">lop.models.Model.Model</a>
 , <a class="el" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html#ab5665aa8d5bc29694012b2aba80a2b7f">lop.models.Model.SimplelestModel</a>
 </li>
 <li>predict_large()
@@ -319,7 +336,8 @@ $(function() {
 : <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ae9a18938f778eecea9c51536de22e7ed">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 <li>reset()
-: <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa380053a09f7bc154d132180d036a295">lop.models.Model.Model</a>
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3a8b374c0d226fc4f09a9057230d7df5">lop.models.GP.GP</a>
+, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aa380053a09f7bc154d132180d036a295">lop.models.Model.Model</a>
 , <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#aa570d118010effe4a50637e40da25e75">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 </ul>
@@ -371,6 +389,9 @@ $(function() {
 
 
 <h3><a id="index_t"></a>- t -</h3><ul>
+<li>training_sigma
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a92bad70657d787b0fc1b29d396f6b8de">lop.models.GP.GP</a>
+</li>
 <li>type
 : <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a1d9ca7dd2c3fe40607e81f9c5ce66bd9">lop.probits.AbsBoundProbit.AbsBoundProbit</a>
 , <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a3750d292ca2b1b8ee503e0409428a0a8">lop.probits.OrdinalProbit.OrdinalProbit</a>
@@ -389,7 +410,8 @@ $(function() {
 
 <h3><a id="index_x"></a>- x -</h3><ul>
 <li>X_train
-: <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21">lop.models.PreferenceModel.PreferenceModel</a>
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a71b7d75c1cace9c7deb99b3af711604f">lop.models.GP.GP</a>
+, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 </ul>
 
@@ -399,7 +421,8 @@ $(function() {
 : <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a12d564305cd16f4e0d39244e02dc1768">lop.probits.OrdinalProbit.OrdinalProbit</a>
 </li>
 <li>y_train
-: <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a7f6931376d8179e154b4fe3284617f56">lop.models.PreferenceModel.PreferenceModel</a>
+: <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#ab34d5dbdee223ef9c2c4d2b81648e426">lop.models.GP.GP</a>
+, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a7f6931376d8179e154b4fe3284617f56">lop.models.PreferenceModel.PreferenceModel</a>
 </li>
 <li>y_type
 : <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#ab80e1b2d7cf943ac8cbb1ee759c58100">lop.probits.AbsBoundProbit.AbsBoundProbit</a>
