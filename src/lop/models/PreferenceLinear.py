@@ -138,4 +138,4 @@ class PreferenceLinear(PreferenceModel):
     # @param w - the weights of the function
     def loss_func(self, w):
         F = (self.X_train @ w[:,np.newaxis])[:,0]
-        return -self.log_likelyhood_training(F)
+        return self.log_likelyhood_training(F)
