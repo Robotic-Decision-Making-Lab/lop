@@ -83,8 +83,10 @@ Inheritance diagram for lop.probits.ProbitBase.ProbitBase:</div>
 <div class="dyncontent">
 <div class="center"><img src="classlop_1_1probits_1_1ProbitBase_1_1ProbitBase__inherit__graph.png" border="0" usemap="#alop_8probits_8ProbitBase_8ProbitBase_inherit__map" alt="Inheritance graph"/></div>
 <map name="alop_8probits_8ProbitBase_8ProbitBase_inherit__map" id="alop_8probits_8ProbitBase_8ProbitBase_inherit__map">
-<area shape="rect" title="ProbitBase Abstract class for a probit for the user GP." alt="" coords="5,5,244,32"/>
-<area shape="rect" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html" title="PreferenceProbit A relative discrete probit Partially taken from Nick&#39;s code this calculates the prob..." alt="" coords="21,80,228,121"/>
+<area shape="rect" title="ProbitBase Abstract class for a probit for the user GP." alt="" coords="5,78,244,105"/>
+<area shape="rect" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html" title="AbsBoundProbit This is almost directly Nick&#39;s code, for absolute bounded inputs." alt="" coords="294,5,497,47"/>
+<area shape="rect" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html" title="OrdinalProbit This is almost directly Nick&#39;s code, for Ordinal regression." alt="" coords="303,71,487,112"/>
+<area shape="rect" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html" title="PreferenceProbit A relative discrete probit Partially taken from Nick&#39;s code this calculates the prob..." alt="" coords="292,136,499,177"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -161,7 +163,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>- W, dpy_df, py W - is the second order derivative of the probit with respect to F dpy_df - the derivative of P(y|x,theta) with respect to F py - P(y|x,theta) for the given probit </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ae2a6408314e8a3c864b9bedc4fa88a88">lop.probits.PreferenceProbit.PreferenceProbit</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ae2a6408314e8a3c864b9bedc4fa88a88">lop.probits.PreferenceProbit.PreferenceProbit</a>, <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a6d4327da88ac7801e8f74d134e666642">lop.probits.OrdinalProbit.OrdinalProbit</a>, and <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a3a4a3e287cfc36ca0ee0db7ad60f2871">lop.probits.AbsBoundProbit.AbsBoundProbit</a>.</p>
 
 </div>
 </div>
@@ -183,7 +185,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>get_hyper Gets a numpy array of hyperparameters for the probit </p>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aaccea44dd5f5fd5f2022c90e853afdac">lop.probits.PreferenceProbit.PreferenceProbit</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aaccea44dd5f5fd5f2022c90e853afdac">lop.probits.PreferenceProbit.PreferenceProbit</a>, <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#ae285d1811b68ba62e922070093464bca">lop.probits.OrdinalProbit.OrdinalProbit</a>, and <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a34e16fc1fe492e8cb4efab2870ab6a57">lop.probits.AbsBoundProbit.AbsBoundProbit</a>.</p>
 
 </div>
 </div>
@@ -229,7 +231,7 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>P(y|F) </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aac8ee554b33f63030a41dc7eb46c42ab">lop.probits.PreferenceProbit.PreferenceProbit</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aac8ee554b33f63030a41dc7eb46c42ab">lop.probits.PreferenceProbit.PreferenceProbit</a>, <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a3ab7edec64f8d4683802089c9fb145e9">lop.probits.OrdinalProbit.OrdinalProbit</a>, and <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a354327db2d82293f12318f06b6d8762a">lop.probits.AbsBoundProbit.AbsBoundProbit</a>.</p>
 
 </div>
 </div>
@@ -295,7 +297,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>print_hyperparameters prints the hyperparameter of the probit </p>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a991029d57b9d6d8bbfe0f539ffcac91a">lop.probits.PreferenceProbit.PreferenceProbit</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a991029d57b9d6d8bbfe0f539ffcac91a">lop.probits.PreferenceProbit.PreferenceProbit</a>, <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#ad1ecbf699cf0d4f980ab85d78899e76e">lop.probits.OrdinalProbit.OrdinalProbit</a>, and <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a5170422afb529b6396f3a7630aef9bd3">lop.probits.AbsBoundProbit.AbsBoundProbit</a>.</p>
 
 </div>
 </div>
@@ -327,7 +329,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>set_hyper Sets the hyperparameters for the probit </p>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a5c5d1bd3cba41171157b54d7d5f9bd9b">lop.probits.PreferenceProbit.PreferenceProbit</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a5c5d1bd3cba41171157b54d7d5f9bd9b">lop.probits.PreferenceProbit.PreferenceProbit</a>, <a class="el" href="classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#ae09fa88d48ea4ac938b8e3733e58e8ac">lop.probits.OrdinalProbit.OrdinalProbit</a>, and <a class="el" href="classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a153394968e931a8e5edcb602357b6d3f">lop.probits.AbsBoundProbit.AbsBoundProbit</a>.</p>
 
 </div>
 </div>

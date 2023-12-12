@@ -1,21 +1,7 @@
 var searchData=
 [
-  ['p_69',['p',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a38d769653cc0e6dcfbbf58fa54678bac',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
-  ['p_5fhuman_5fchoice_70',['p_human_choice',['../namespacelop_1_1utilities_1_1human__choice__model.html#a0367d58344c717b1b12e0c9a28dbd48f',1,'lop::utilities::human_choice_model']]],
-  ['package_5fdir_71',['package_dir',['../namespacesetup.html#afd7273d426fd6e1796ec17175f6521c3',1,'setup']]],
-  ['packages_72',['packages',['../namespacesetup.html#aff2375a361fd5865c77bd9aa093be747',1,'setup']]],
-  ['pareto_5fpairs_73',['pareto_pairs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3293f47051ab5b8f128d3dcd0514b86f',1,'lop::models::PreferenceModel::PreferenceModel']]],
-  ['periodickern_74',['PeriodicKern',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html',1,'lop::kernels::PeriodicKern']]],
-  ['periodickern_2epy_75',['PeriodicKern.py',['../PeriodicKern_8py.html',1,'']]],
-  ['preference_5fpairs_2epy_76',['preference_pairs.py',['../preference__pairs_8py.html',1,'']]],
-  ['preferencemodel_77',['PreferenceModel',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html',1,'lop::models::PreferenceModel']]],
-  ['preferencemodel_2epy_78',['PreferenceModel.py',['../PreferenceModel_8py.html',1,'']]],
-  ['preferenceprobit_79',['PreferenceProbit',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html',1,'lop::probits::PreferenceProbit']]],
-  ['preferenceprobit_2epy_80',['PreferenceProbit.py',['../PreferenceProbit_8py.html',1,'']]],
-  ['print_5fhyperparameters_81',['print_hyperparameters',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a991029d57b9d6d8bbfe0f539ffcac91a',1,'lop.probits.PreferenceProbit.PreferenceProbit.print_hyperparameters()'],['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#a942bf83e10201a0b9a04e3022e150c1f',1,'lop.probits.ProbitBase.ProbitBase.print_hyperparameters()']]],
-  ['prior_5fidx_82',['prior_idx',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3000fbae4591c21b97a5c05037a9f6d3',1,'lop::models::PreferenceModel::PreferenceModel']]],
-  ['probit_5fidxs_83',['probit_idxs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#acf0df71371980b7ab3bc13ab11f61797',1,'lop::models::PreferenceModel::PreferenceModel']]],
-  ['probitbase_84',['ProbitBase',['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html',1,'lop::probits::ProbitBase']]],
-  ['probitbase_2epy_85',['ProbitBase.py',['../ProbitBase_8py.html',1,'']]],
-  ['python_5frequires_86',['python_requires',['../namespacesetup.html#aa7ca7bc9391b217e81efeb03689d8dbf',1,'setup']]]
+  ['n_5fordinals_81',['n_ordinals',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a11399dc4eab5a07a98bfbb6bb41fc151',1,'lop::probits::OrdinalProbit::OrdinalProbit']]],
+  ['name_82',['name',['../namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f',1,'setup']]],
+  ['norm_5fcdf_83',['norm_cdf',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a5c9f549449c46e3a6e1b209a34e4137d',1,'lop::probits::OrdinalProbit::OrdinalProbit']]],
+  ['norm_5fpdf_84',['norm_pdf',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a8056009a4adb2a1c19e6a4bb58661a7d',1,'lop::probits::OrdinalProbit::OrdinalProbit']]]
 ];

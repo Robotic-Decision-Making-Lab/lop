@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['url_282',['url',['../namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb',1,'setup']]]
+  ['type_367',['type',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a1d9ca7dd2c3fe40607e81f9c5ce66bd9',1,'lop.probits.AbsBoundProbit.AbsBoundProbit.type()'],['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a3750d292ca2b1b8ee503e0409428a0a8',1,'lop.probits.OrdinalProbit.OrdinalProbit.type()'],['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ac2acd016271717e975601eed791cc66d',1,'lop.probits.PreferenceProbit.PreferenceProbit.type()'],['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#aad2ed3c4a70383b16368ca7aae7edeaf',1,'lop.probits.ProbitBase.ProbitBase.type()']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['p_5fhuman_5fchoice_221',['p_human_choice',['../namespacelop_1_1utilities_1_1human__choice__model.html#a0367d58344c717b1b12e0c9a28dbd48f',1,'lop::utilities::human_choice_model']]],
-  ['print_5fhyperparameters_222',['print_hyperparameters',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a991029d57b9d6d8bbfe0f539ffcac91a',1,'lop.probits.PreferenceProbit.PreferenceProbit.print_hyperparameters()'],['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#a942bf83e10201a0b9a04e3022e150c1f',1,'lop.probits.ProbitBase.ProbitBase.print_hyperparameters()']]]
+  ['norm_5fcdf_281',['norm_cdf',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a5c9f549449c46e3a6e1b209a34e4137d',1,'lop::probits::OrdinalProbit::OrdinalProbit']]],
+  ['norm_5fpdf_282',['norm_pdf',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a8056009a4adb2a1c19e6a4bb58661a7d',1,'lop::probits::OrdinalProbit::OrdinalProbit']]]
 ];

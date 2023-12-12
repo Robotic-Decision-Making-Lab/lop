@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['operator_66',['operator',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a1c464d25fea9ab784692a79fe6f766b8',1,'lop::kernels::KernelFunc::DualKern']]],
-  ['optimize_67',['optimize',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a2232fd09f45ec3bf4788bc4593261f7a',1,'lop::models::PreferenceModel::PreferenceModel']]],
-  ['optimized_68',['optimized',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a35a1bb5aa50902b646e7efe81828a3a7',1,'lop::models::PreferenceModel::PreferenceModel']]]
+  ['mean_5flink_78',['mean_link',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a1033281a92467ed96d5591bf87cc0b2f',1,'lop::probits::AbsBoundProbit::AbsBoundProbit']]],
+  ['model_79',['Model',['../classlop_1_1models_1_1Model_1_1Model.html',1,'lop::models::Model']]],
+  ['model_2epy_80',['Model.py',['../Model_8py.html',1,'']]]
 ];

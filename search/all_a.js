@@ -1,28 +1,6 @@
 var searchData=
 [
-  ['human_5fchoice_5fmodel_40',['human_choice_model',['../namespacelop_1_1utilities_1_1human__choice__model.html',1,'lop::utilities']]],
-  ['kernelfunc_41',['KernelFunc',['../namespacelop_1_1kernels_1_1KernelFunc.html',1,'lop::kernels']]],
-  ['kernels_42',['kernels',['../namespacelop_1_1kernels.html',1,'lop']]],
-  ['l_43',['l',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a858f98977b01e75eaaa8b5d01fb3ee6d',1,'lop.kernels.PeriodicKern.PeriodicKern.l()'],['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a895b6a105c0884ce561dd50520300777',1,'lop.kernels.RBF_kern.RBF_kern.l()']]],
-  ['learning_20objective_20functions_20from_20preferences_20_28lop_29_44',['Learning Objective functions from Preferences (LOP)',['../md_README.html',1,'']]],
-  ['license_45',['license',['../namespacesetup.html#a8ed6f50a28bd6a8794f8e1153baa6de9',1,'setup']]],
-  ['likelihood_46',['likelihood',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aac8ee554b33f63030a41dc7eb46c42ab',1,'lop.probits.PreferenceProbit.PreferenceProbit.likelihood()'],['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#ac61a755d2479a20027a0a51274945711',1,'lop.probits.ProbitBase.ProbitBase.likelihood()']]],
-  ['linearkern_47',['LinearKern',['../namespacelop_1_1kernels_1_1LinearKern.html',1,'lop.kernels.LinearKern'],['../classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html',1,'lop.kernels.LinearKern.LinearKern']]],
-  ['linearkern_2epy_48',['LinearKern.py',['../LinearKern_8py.html',1,'']]],
-  ['log2pi_49',['log2pi',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#afe4bb715c75fc888fd94a9a7fa056c2c',1,'lop::probits::PreferenceProbit::PreferenceProbit']]],
-  ['log_5flikelihood_50',['log_likelihood',['../classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#a9dcd0718fe0f03dadc400c24e6714c79',1,'lop::probits::ProbitBase::ProbitBase']]],
-  ['log_5flikelyhood_5ftraining_51',['log_likelyhood_training',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a98bb57765e6de3ce3f795b895bd0bba1',1,'lop::models::PreferenceModel::PreferenceModel']]],
-  ['long_5fdescription_52',['long_description',['../namespacesetup.html#a4cda9dbfb952875376a0749fe08a5bde',1,'setup']]],
-  ['long_5fdescription_5fcontent_5ftype_53',['long_description_content_type',['../namespacesetup.html#a3796ea10c998699d07d391414ff5d720',1,'setup']]],
-  ['lop_54',['lop',['../namespacelop.html',1,'']]],
-  ['models_55',['models',['../namespacelop_1_1models.html',1,'lop']]],
-  ['periodickern_56',['PeriodicKern',['../namespacelop_1_1kernels_1_1PeriodicKern.html',1,'lop::kernels']]],
-  ['preference_5fpairs_57',['preference_pairs',['../namespacelop_1_1utilities_1_1preference__pairs.html',1,'lop::utilities']]],
-  ['preferencemodel_58',['PreferenceModel',['../namespacelop_1_1models_1_1PreferenceModel.html',1,'lop::models']]],
-  ['preferenceprobit_59',['PreferenceProbit',['../namespacelop_1_1probits_1_1PreferenceProbit.html',1,'lop::probits']]],
-  ['probitbase_60',['ProbitBase',['../namespacelop_1_1probits_1_1ProbitBase.html',1,'lop::probits']]],
-  ['probits_61',['probits',['../namespacelop_1_1probits.html',1,'lop']]],
-  ['rbf_5fkern_62',['RBF_kern',['../namespacelop_1_1kernels_1_1RBF__kern.html',1,'lop::kernels']]],
-  ['training_5futility_63',['training_utility',['../namespacelop_1_1utilities_1_1training__utility.html',1,'lop::utilities']]],
-  ['utilities_64',['utilities',['../namespacelop_1_1utilities.html',1,'lop']]]
+  ['k_5ffold_5fhalf_46',['k_fold_half',['../namespacelop_1_1utilities_1_1training__utility.html#a76b58fbba391bfeedab90a49f7fedf6f',1,'lop::utilities::training_utility']]],
+  ['kernelfunc_47',['KernelFunc',['../classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html',1,'lop::kernels::KernelFunc']]],
+  ['kernelfunc_2epy_48',['KernelFunc.py',['../KernelFunc_8py.html',1,'']]]
 ];

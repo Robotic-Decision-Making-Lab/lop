@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['install_5frequires_36',['install_requires',['../namespacesetup.html#abead4f26b530856f858f0d44c7cf2588',1,'setup']]]
+  ['human_5fchoice_5fmodel_2epy_44',['human_choice_model.py',['../human__choice__model_8py.html',1,'']]]
 ];

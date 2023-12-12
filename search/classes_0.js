@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dualkern_144',['DualKern',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html',1,'lop::kernels::KernelFunc']]]
+  ['absboundprobit_188',['AbsBoundProbit',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html',1,'lop::probits::AbsBoundProbit']]]
 ];

@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['k_5ffold_5fhalf_37',['k_fold_half',['../namespacelop_1_1utilities_1_1training__utility.html#a76b58fbba391bfeedab90a49f7fedf6f',1,'lop::utilities::training_utility']]],
-  ['kernelfunc_38',['KernelFunc',['../classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html',1,'lop::kernels::KernelFunc']]],
-  ['kernelfunc_2epy_39',['KernelFunc.py',['../KernelFunc_8py.html',1,'']]]
+  ['install_5frequires_45',['install_requires',['../namespacesetup.html#abead4f26b530856f858f0d44c7cf2588',1,'setup']]]
 ];

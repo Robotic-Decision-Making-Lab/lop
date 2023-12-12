@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['z_5fk_142',['z_k',['../classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ade19dcea1af7dd6f17c3ad9990ced35f',1,'lop::probits::PreferenceProbit::PreferenceProbit']]],
-  ['zip_5fsafe_143',['zip_safe',['../namespacesetup.html#a13510753661cb74083a0c664db11dde9',1,'setup']]]
+  ['x_5ftrain_182',['X_train',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21',1,'lop::models::PreferenceModel::PreferenceModel']]]
 ];
