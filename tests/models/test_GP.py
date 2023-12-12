@@ -1,4 +1,4 @@
-# test_model.py
+# test_GP.py
 # Written Ian Rankin - December 2023
 #
 #

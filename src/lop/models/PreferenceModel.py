@@ -357,8 +357,8 @@ class PreferenceModel(Model):
             lam_1 = lam_dis * 0.25 + min_lambda
             lam_2 = lam_dis * 0.75 + min_lambda
 
-            loss_1 = self.loss_F(F - lam_1 * descent)
-            loss_2 = self.loss_F(F - lam_2 * descent)
+            loss_1 = self.loss_func(F - lam_1 * descent)
+            loss_2 = self.loss_func(F - lam_2 * descent)
 
             if loss_1 > loss_2:
                 max_lambda = mid_lambda
@@ -381,7 +381,7 @@ class PreferenceModel(Model):
         best_loss = -np.inf
 
         for lamb in lambda_search_pts:
-            loss = self.loss_F(F - lamb * descent)
+            loss = self.loss_func(F - lamb * descent)
             if loss > best_loss:
                 best_lamb = lamb
                 best_loss = loss

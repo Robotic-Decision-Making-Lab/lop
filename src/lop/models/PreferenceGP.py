@@ -67,6 +67,9 @@ class PreferenceGP(PreferenceModel):
                 use_hyper_optimization=False, active_learner=None):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
 
+        self.cov_func = cov_func
+        self.invert_function = mat_inv
+
         self.lambda_gp = 0.9
 
         self.normalize_gp = normalize_gp
