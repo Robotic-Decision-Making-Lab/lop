@@ -77,7 +77,7 @@ class Model:
 
 
     ## select
-    # This function calls the active learner and specifies the
+    # This function calls the active learner and specifies the number of alternatives to select
     def select(self, candidate_pts, num_alts, prefer_num=-1):
         return self.active_learner.select(candidate_pts, num_alts, prefer_num)
 
@@ -92,7 +92,7 @@ class SimplelestModel(Model):
     def predict(self, X):
         return X, None
 
-    def clear(self):
+    def reset(self):
         pass
 
 
