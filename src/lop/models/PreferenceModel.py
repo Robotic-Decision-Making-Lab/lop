@@ -59,6 +59,12 @@ class PreferenceModel(Model):
         self.n_loops = -1
 
 
+    def set_num_ordinals(self, num_ordinals):
+        self.probits[self.probit_idxs['ordinal']].n_ordinals = num_ordinals
+        b = self.probits[self.probit_idxs['ordinal']].get_hyper()[1]
+        self.probits[self.probit_idxs['ordinal']].set_b(b)
+
+
     ## add_prior
     # this function adds prioir data to the GP if desired. Desigend to work with
     # the pareto_pairs constraint to generate a function that ensures pareto_pairs

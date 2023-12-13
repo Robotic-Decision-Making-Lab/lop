@@ -200,7 +200,16 @@ class OrdinalProbit(ProbitBase):
                 d2py_df2[i] = -(dpy_df[i]**2 + self._ivar*(self.norm_pdf(y[i], f[i]) - self.norm_pdf(y[i]-1, f[i])) / l[i])
 
         W = np.diagflat(-d2py_df2)
-        return W, dpy_df, np.sum(py)
+
+        # setup the indexing to reshape into full gradient of F
+        full_W = np.zeros((F.shape[0], F.shape[0]))
+        idx_grid = np.meshgrid(y_orig[1],y_orig[1])
+        full_W[tuple(idx_grid)] = W
+
+        full_dpy_df = np.zeros(F.shape[0])
+        full_dpy_df[y_orig[1]] = dpy_df
+
+        return full_W, full_dpy_df, np.sum(py)
 
 
     def likelihood_each(self, y, F):
