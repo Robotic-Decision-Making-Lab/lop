@@ -41,5 +41,5 @@ def test_active_learner_prefered_points_func():
         prefs = al.get_prefered_set_of_pts(pts, -1)
 
     with pytest.raises(ValueError):
-        prefs = al.get_prefered_set_of_pts(pts, 'walks into a bar and order asdklfjaskldfjadslf drinks')
+        prefs = al.get_prefered_set_of_pts(pts, 'walks into a bar and order asdfge drinks')
 
