@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html" title="ProbitBase Abstract class for a probit for the user GP." alt="" coords="5,78,244,105"/>
+<area shape="rect" id="node2" href="$classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html" title="AbsBoundProbit This is almost directly Nick&#39;s code, for absolute bounded inputs." alt="" coords="294,5,497,47"/>
+<area shape="rect" id="node3" href="$classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html" title="OrdinalProbit This is almost directly Nick&#39;s code, for Ordinal regression." alt="" coords="303,71,487,112"/>
+<area shape="rect" id="node4" href="$classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html" title="PreferenceProbit A relative discrete probit Partially taken from Nick&#39;s code this calculates the prob..." alt="" coords="292,136,499,177"/>
+</map>
