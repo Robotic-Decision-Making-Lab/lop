@@ -55,10 +55,3 @@ def test_fake_pairs():
         assert p[1] == 0
         assert p[2] == i+1
 
-
-
-
-
-def test_the_test():
-    assert True
-

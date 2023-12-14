@@ -9,3 +9,6 @@ from .probits import *
 
 from . import models
 from .models import *
+
+from . import active_learning
+from .active_learning import *

@@ -21,6 +21,7 @@
 #
 # A set of utility functions for training.
 
+import numpy as np
 
 ## k_fold_split
 # A function to split the datasets for training the PreferenceGP
