@@ -43,3 +43,24 @@ def test_active_learner_prefered_points_func():
     with pytest.raises(ValueError):
         prefs = al.get_prefered_set_of_pts(pts, 'walks into a bar and order asdfge drinks')
 
+
+
+def test_select_crashes_without_input():
+    al = lop.ActiveLearner()
+    model = lop.Model(active_learner=al)
+
+    pts = np.array([[3,4,5], [2, 3,4], [5,2,1], [3,4,6], [3, 2, 1], [2, 7,2]])
+
+    with pytest.raises(NotImplementedError):
+        sel_idxs = al.select(pts, 3)
+
+
+def test_select():
+    al = lop.ActiveLearner()
+    model = lop.GP(lop.RBF_kern(1,1), active_learner=al)
+
+    pts = np.array([[3,4,5], [2, 3,4], [5,2,1], [3,4,6], [3, 2, 1], [2, 7,2]])
+
+    sel_idxs = al.select(pts, 3)
+
+    assert len(sel_idxs) == 3

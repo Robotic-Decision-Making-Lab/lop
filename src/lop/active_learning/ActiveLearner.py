@@ -1,4 +1,4 @@
-# Copyright 202 Ian Rankin
+# Copyright 2023 Ian Rankin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -54,29 +54,76 @@ class ActiveLearner:
     #                   c. 'pareto' to indicate 
     #                   d. Enter 0 explicitly ignore selections
     #                   e. None (default) assumes 0 unless default to pareto is true.
-    # @param return_not - [opt default-false] returns the not selected points when there
+    # @param return_not_selected - [opt default-false] returns the not selected points when there
     #                   a preference to selecting to certian points. [] if not but set to true.
     #                   
     #
     # @return [highest_mean, highest_selection, next highest selection, ...],
     #          selection values for candidate_pts,
     #          only returns highest mean if "always select best is set"
-    def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, not_selected=False):
+    def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False):
         prefer_pts = self.get_prefered_set_of_pts(candidate_pts, prefer_pts)
+        prev_selection = set(prev_selection)
+
+        # each model will predict slightly different values for data.
+        # select_greedy will need to implement this
+        mu, data = self.model.predict(candidate_pts)
+
+        sel_pts = []
+
+        # check if always_select the best value is given
+        if self.always_select_best and len(prev_selection) == 0:
+            best_idx = [self.select_best(mu, prefer_pts, prev_selection)]
+            sel_pts = [best_idx]
+            prev_selection.add(best_idx)
+
+        pref_not_sel = prefer_pts - prev_selection
         
-        # if self.always_select_best and len(prev_selection) == 0:
-        #     sel_paths
+        if return_not_selected:
+            all_not_selected = set(range(len(candidate_pts))) - prev_selection
+            not_selected = []
 
-        # # previous points not already selected
-        # prev_not_sel = prefer_pts - 
+            while len(sel_pts) < num_alts and len(all_not_selected) > 0:
+                # weird case where points have been selected already but out of 'prefered points'
+                # take the first index of the list then.
+                if len(pref_not_sel) == 0 and len(not_selected) > 0:
+                    selected_idx = not_selected[0]
+                    not_selected.pop(0) 
+                else:
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected)
 
-        # prev_selection = set(prev_selection)
-        # sel_paths = set()
 
-        # while len(sel_paths) < num_alts:
+                if selected_idx in pref_not_sel or len(pref_not_sel) == 0:
+                    sel_pts.append(selected_idx)
+                    pref_not_sel.discard(selected_idx)
+                else:
+                    not_selected.append(selected_idx)
+                all_not_selected.discard(selected_idx)
 
+            if len(selected_idx) != num_alts:
+                raise Exception("Something happened and there was not enough points to select")
 
-        raise NotImplementedError('ActiveLearner select is not implemented')
+            return selected_idx, all_not_selected
+        else:
+            all_not_selected = None            
+
+            while len(sel_pts) < num_alts:
+                # only select from the prefered points if they still exist
+                if len(pref_not_sel) > 0:
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel)
+                    pref_not_sel.remove(selected_idx)
+                else:
+                    # get if the set of points not selected and not prefered if not already defined
+                    if all_not_selected is None:
+                        all_not_selected = set(range(len(candidate_pts))) - prev_selection
+                    # ensure that there is at least some pts left to select from
+                    if len(all_not_selected) == 0:
+                        raise Exception("Not enough points for select to create a full set")
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected)
+                    all_not_selected.remove(all_not_selected)
+            # end while loop
+            return selected_idx   
+
 
     ## get_prefered_set_of_pts
     # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
@@ -90,7 +137,9 @@ class ActiveLearner:
     #
     # @return indicies of prefered points
     def get_prefered_set_of_pts(self, candidate_pts, prefer_pts=None):
-        if prefer_pts is None and self.default_to_pareto == False:
+        if isinstance(prefer_pts, set):
+            return prefer_pts
+        elif prefer_pts is None and self.default_to_pareto == False:
             return set(range(candidate_pts.shape[0]))
         elif (prefer_pts is None and self.default_to_pareto) or (prefer_pts == 'pareto'):
             return set(get_pareto(candidate_pts))
@@ -104,16 +153,41 @@ class ActiveLearner:
         else:
             raise ValueError("get_prefered_set_of_pts/select passed unknown prefer_pts number")
 
+    ## select_best
+    # Selects the best path given the data outputed by predict
+    # @param mu - the mean of the canidate paths
+    # @param prefer_pts - the set of prefered points
+    # @param prev_selected - [opt] a set of indicies of previously selected points
+    def select_best(self, mu, prefer_pts, prev_selection=set()):
+        if isinstance(prev_selection, list):
+            prev_selection = set(prev_selection)
+
+        pref_not_sel = prefer_pts - prev_selection
+        if len(pref_not_sel) <= 0:
+            # if all points have been selected already from prefer_pts, then include all not selected
+            pref_not_sel = set(range(len(mu))) - prev_selection
+
+        if len(pref_not_sel) <= 0:
+            raise Exception("Select best not given enough not selected points to select a best point")
+
+        pref_not_sel = list(pref_not_sel)
+        mu_prefered = pref_not_sel[np.argmax(mu[pref_not_sel])]
+
+        return mu_prefered
+
+        
 
 
     ## select_greedy
     # This function greedily selects the best single data point
     # Depending on the selection method, you are not forced to implement this function
-    # @param prev_selection - a list of previously selected points
-    # @param data - a user defined tuple of data (determined by the select function)
+    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    # @param data - a user defined tuple of data (determined by the predict function of the model)
+    # @param indicies - a list or set of indicies in candidate points to consider.
     #
     # @return the index of the greedy selection.
-    def select_greedy(self, cur_selection, data):
+    def select_greedy(self, candidate_pts, mu, data, indicies):
         raise NotImplementedError("ActiveLearner select_greedy is not implemented and has been called")
 
     # select_greedy_k
