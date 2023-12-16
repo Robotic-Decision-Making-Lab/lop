@@ -90,7 +90,10 @@ class SimplelestModel(Model):
     #
     # @return an array of output values (n), other output data (variance, covariance,etc)
     def predict(self, X):
-        return X, None
+        if len(X.shape) > 1:
+            return np.sum(X, axis=1), None
+        else:
+            return X, None
 
     def reset(self):
         pass

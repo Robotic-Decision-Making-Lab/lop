@@ -22,9 +22,10 @@
 # Active learning selection algorithms objective functions
 
 import numpy as np
-from copy import copy
 
 from lop.utilities import get_pareto
+
+import pdb
 
 ## Base Active Learning class.
 #
@@ -32,11 +33,17 @@ from lop.utilities import get_pareto
 # gaussian proccess.
 class ActiveLearner:
 
-    def __init__(self, default_to_pareto=False, always_select_best=True):
+    ## Constructor
+    # @param default_to_pareto - [opt default=False] sets whether to always assume
+    #               prefering pareto optimal choices when selecting points, if not particulary told not to
+    # @param alaways_select_best - [opt default=False] sets whether the select function should append the
+    #               the top solution to the front of the solution set every time.
+    def __init__(self, default_to_pareto=False, always_select_best=False):
         self.model = None
         self.default_to_pareto=default_to_pareto
         self.always_select_best = always_select_best
 
+    ## set_model
     # sets the model being used by the active learning framework.
     # should only be called inside a model class,
     def set_model(self, model):
@@ -73,14 +80,14 @@ class ActiveLearner:
 
         # check if always_select the best value is given
         if self.always_select_best and len(prev_selection) == 0:
-            best_idx = [self.select_best(mu, prefer_pts, prev_selection)]
+            best_idx = self.select_best(mu, prefer_pts, prev_selection)
             sel_pts = [best_idx]
             prev_selection.add(best_idx)
 
         pref_not_sel = prefer_pts - prev_selection
         
         if return_not_selected:
-            all_not_selected = set(range(len(candidate_pts))) - prev_selection
+            all_not_selected = (set(range(len(candidate_pts))) - prev_selection) - set(sel_pts)
             not_selected = []
 
             while len(sel_pts) < num_alts and len(all_not_selected) > 0:
@@ -100,10 +107,10 @@ class ActiveLearner:
                     not_selected.append(selected_idx)
                 all_not_selected.discard(selected_idx)
 
-            if len(selected_idx) != num_alts:
+            if len(sel_pts) != num_alts:
                 raise Exception("Something happened and there was not enough points to select")
 
-            return selected_idx, all_not_selected
+            return sel_pts, not_selected
         else:
             all_not_selected = None            
 
@@ -115,14 +122,17 @@ class ActiveLearner:
                 else:
                     # get if the set of points not selected and not prefered if not already defined
                     if all_not_selected is None:
-                        all_not_selected = set(range(len(candidate_pts))) - prev_selection
+                        all_not_selected = (set(range(len(candidate_pts))) - prev_selection) - set(sel_pts)
                     # ensure that there is at least some pts left to select from
                     if len(all_not_selected) == 0:
                         raise Exception("Not enough points for select to create a full set")
                     selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected)
-                    all_not_selected.remove(all_not_selected)
+                    all_not_selected.remove(selected_idx)
+                
+                # add the selected index
+                sel_pts.append(selected_idx)
             # end while loop
-            return selected_idx   
+            return sel_pts   
 
 
     ## get_prefered_set_of_pts
@@ -139,6 +149,8 @@ class ActiveLearner:
     def get_prefered_set_of_pts(self, candidate_pts, prefer_pts=None):
         if isinstance(prefer_pts, set):
             return prefer_pts
+        elif isinstance(prefer_pts, list):
+            return set(prefer_pts)
         elif prefer_pts is None and self.default_to_pareto == False:
             return set(range(candidate_pts.shape[0]))
         elif (prefer_pts is None and self.default_to_pareto) or (prefer_pts == 'pareto'):
@@ -205,3 +217,6 @@ class ActiveLearner:
             sel_values.append(sel_value)
 
         return cur_selection, sel_values
+
+
+
