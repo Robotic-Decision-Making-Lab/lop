@@ -29,62 +29,33 @@ from lop.models import PreferenceGP, GP, PreferenceLinear
 class UCBLearner(ActiveLearner):
     ## Constructor
     # @param alpha - the scaler value on the UCB equation UCB = mean + alpha*sqrt(variance)
-    def __init__(self, alpha=1):
-        super(UCBLearner, self).__init__()
+    # @param default_to_pareto - [opt default=False] sets whether to always assume
+    #               prefering pareto optimal choices when selecting points, if not particulary told not to
+    # @param alaways_select_best - [opt default=False] sets whether the select function should append the
+    #               the top solution to the front of the solution set every time.
+    def __init__(self, alpha=1, default_to_pareto=False, always_select_best=False):
+        super(UCBLearner, self).__init__(default_to_pareto,always_select_best)
         self.alpha = alpha
 
-    ## select
-    # Selects the given points
+
+
+    ## select_greedy
+    # This function greedily selects the best single data point
+    # Depending on the selection method, you are not forced to implement this function
     # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
-    # @param num_alts - the number of alterantives to selec (including the highest mean)
-    # @param prev_selection - [opt, default = []]a list of indicies that 
-    # @param prefer_num - [default = None] the points at the start of the candidates
-    #                   to prefer selecting from. Returned as:
-    #                   a. A number of points at the start of canididate_pts to prefer
-    #                   b. A set of points to prefer to select.
-    #                   c. 'pareto' to indicate 
-    #                   d. Enter 0 explicitly ignore selections
-    #                   e. None (default) assumes 0 unless default to pareto is true.
-    # @param return_not - [opt default-false] returns the not selected points when there
-    #                   a preference to selecting to certian points. [] if not but set to true.
-    #                   
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    # @param data - a user defined tuple of data (determined by the predict function of the model)
+    # @param indicies - a list or set of indicies in candidate points to consider.
+    # @param prev_selection - a set ofindicies of previously selected points
     #
-    # @return [highest_mean, highest_selection, next highest selection, ...],
-    #          selection values for candidate_pts,
-    #          only returns highest mean if "always select best is set"
-    def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, not_selected=False):
-        prefer_pts = self.get_prefered_set_of_pts(candidate_pts, prefer_pts)
-
+    # @return the index of the greedy selection.
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
         if isinstance(self.model, (PreferenceGP, GP)):
-            mu, variance = self.gp.predict(candidate_pts)
-            UCB = mu + self.alpha*np.sqrt(variance)
+            variance = data
         elif isinstance(self.model, PreferenceLinear):
-            UCB = 1 # TODO
-        else:
-            raise Exception("UCBLearner does not know how to handle model of type: " + str(type(self.model)))
+            raise NotImplementedError("Have not implemented UCB with linear preferences")
+        indicies = list(indicies)
 
-        best_idx = np.argmax(mu)
+        selected_UCB = mu[indicies] + self.alpha*np.sqrt(variance[indicies])
 
-        selected_idx = self.select_best_k(UCB, num_alts, best_idx, prefer_num)
-
-        return selected_idx, UCB[selected_idx], mu[best_idx]
-
-
-
-    def select_greedy(self, cur_selection, data):
-        mu, variance, cov, prefer_num = data
-
-        best_v = -float('inf')
-        best_i = -1
-
-        exp_v = 1.0 / (len(cur_selection) + 1)
-        for i in [x for x in range(len(mu)) if x not in cur_selection]:
-            vari = variance[i]
-
-            value = (1-self.alpha)*mu[i] + self.alpha*np.sqrt(vari)
-
-            if value > best_v:
-                best_v = value
-                best_i = i
-
-        return best_i, best_v
+        return indicies[np.argmax(selected_UCB)]

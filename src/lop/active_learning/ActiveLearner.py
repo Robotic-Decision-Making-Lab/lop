@@ -97,7 +97,7 @@ class ActiveLearner:
                     selected_idx = not_selected[0]
                     not_selected.pop(0) 
                 else:
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected)
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
 
 
                 if selected_idx in pref_not_sel or len(pref_not_sel) == 0:
@@ -117,7 +117,7 @@ class ActiveLearner:
             while len(sel_pts) < num_alts:
                 # only select from the prefered points if they still exist
                 if len(pref_not_sel) > 0:
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel)
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
                     pref_not_sel.remove(selected_idx)
                 else:
                     # get if the set of points not selected and not prefered if not already defined
@@ -126,7 +126,7 @@ class ActiveLearner:
                     # ensure that there is at least some pts left to select from
                     if len(all_not_selected) == 0:
                         raise Exception("Not enough points for select to create a full set")
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected)
+                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
                     all_not_selected.remove(selected_idx)
                 
                 # add the selected index
@@ -197,9 +197,10 @@ class ActiveLearner:
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
     # @param data - a user defined tuple of data (determined by the predict function of the model)
     # @param indicies - a list or set of indicies in candidate points to consider.
+    # @param prev_selection - a set ofindicies of previously selected points
     #
     # @return the index of the greedy selection.
-    def select_greedy(self, candidate_pts, mu, data, indicies):
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
         raise NotImplementedError("ActiveLearner select_greedy is not implemented and has been called")
 
     # select_greedy_k

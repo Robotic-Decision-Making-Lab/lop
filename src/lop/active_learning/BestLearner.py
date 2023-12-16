@@ -37,9 +37,10 @@ class BestLearner(ActiveLearner):
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
     # @param data - a user defined tuple of data (determined by the predict function of the model)
     # @param indicies - a list or set of indicies in candidate points to consider.
+    # @param prev_selection - a set ofindicies of previously selected points
     #
     # @return the index of the greedy selection.
-    def select_greedy(self, candidate_pts, mu, data, indicies):
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
         indicies = list(indicies)
 
         select_mu = mu[indicies]
@@ -56,9 +57,10 @@ class WorstLearner(ActiveLearner):
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
     # @param data - a user defined tuple of data (determined by the predict function of the model)
     # @param indicies - a list or set of indicies in candidate points to consider.
+    # @param prev_selection - a set ofindicies of previously selected points
     #
     # @return the index of the greedy selection.
-    def select_greedy(self, candidate_pts, mu, data, indicies):
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
         indicies = list(indicies)
 
         select_mu = mu[indicies]
