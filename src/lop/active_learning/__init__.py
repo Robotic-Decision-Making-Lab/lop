@@ -2,3 +2,4 @@
 
 from .ActiveLearner import ActiveLearner
 from .BestLearner import BestLearner, WorstLearner
+from .UCBLearner import UCBLearner

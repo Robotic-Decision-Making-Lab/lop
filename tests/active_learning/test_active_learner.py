@@ -66,6 +66,15 @@ def test_active_learning_select_best():
     with pytest.raises(Exception):
         best_idx = al.select_best(pts,{0,4,5}, {0,1,2,3,4,5,6})
 
+def test_model_calls_select_function_correctly():
+    al = lop.BestLearner()
+    model = lop.SimplelestModel(active_learner=al)
+
+    idxs = model.select(np.array([0,1,2,4,4.6]), 2)
+
+    assert len(idxs) == 2
+    assert model is not None
+
 
 
 
