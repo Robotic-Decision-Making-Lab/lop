@@ -9,9 +9,9 @@ import lop
 
 
 
+# the function to approximate
 def f_sin(x, data=None):
-    x = 6-x
-    return 2 * np.cos(np.pi * (x[:]-2)) * np.exp(-(0.9*x[:]))
+    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 
 def test_UCB_learner_constructs():
@@ -44,5 +44,5 @@ def test_UCB_learner_trains_basic_GP():
     y_test = f_sin(x_test)
     y_pred = model(x_test)
 
-    assert (np.abs(y_pred - y_test) < 2.0).all()
+    assert (np.abs(y_pred - y_test) < 0.2).all()
 
