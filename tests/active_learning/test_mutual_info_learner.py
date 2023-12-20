@@ -1,4 +1,4 @@
-# test_GV_UCB_learner.py
+# test_UCB_learner.py
 # Written Ian Rankin - December 2023
 #
 
@@ -14,15 +14,15 @@ def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 
-def test_GV_UCB_learner_constructs():
-    al = lop.GV_UCBLearner()
+def test_mutual_info_learner_constructs():
+    al = lop.MutualInfoLearner()
     model = lop.Model(active_learner=al)
 
-    assert isinstance(al, lop.GV_UCBLearner)
+    assert isinstance(al, lop.MutualInfoLearner)
     assert isinstance(model, lop.Model)
 
-def test_GV_UCB_learner_trains_basic_GP():
-    al = lop.GV_UCBLearner()
+def test_mutual_info_learner_trains_basic_GP():
+    al = lop.MutualInfoLearner()
     model = lop.GP(lop.RBF_kern(0.5,1.0), active_learner=al)
 
 
@@ -40,7 +40,7 @@ def test_GV_UCB_learner_trains_basic_GP():
         model.add(x_train, y_train)
 
 
-    x_test = np.array([1.6,1.8,2.1,2.3,2.5,2.7])
+    x_test = np.array([0,1,2,3,4.5,7,9])
     y_test = f_sin(x_test)
     y_pred = model(x_test)
 

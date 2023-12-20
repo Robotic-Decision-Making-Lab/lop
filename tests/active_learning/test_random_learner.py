@@ -14,14 +14,14 @@ def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 
-def test_UCB_learner_constructs():
+def test_random_learner_constructs():
     al = lop.RandomLearner()
     model = lop.Model(active_learner=al)
 
     assert isinstance(al, lop.RandomLearner)
     assert isinstance(model, lop.Model)
 
-def test_UCB_learner_trains_basic_GP():
+def test_random_learner_trains_basic_GP():
     al = lop.RandomLearner()
     model = lop.GP(lop.RBF_kern(0.5,1.0), active_learner=al)
 
