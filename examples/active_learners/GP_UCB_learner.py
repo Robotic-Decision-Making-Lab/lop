@@ -35,7 +35,7 @@ def f_sin(x, data=None):
 
 def main():
     al = lop.UCBLearner()
-    model = lop.GP(lop.RBF_kern(0.5,1.0), active_learner=al)
+    model = lop.GP(lop.RBF_kern(2.0,1.0), active_learner=al)
 
 
     # Generate active learning point and add it to the model
@@ -52,17 +52,19 @@ def main():
         model.add(x_train, y_train)
 
     # Create test output of model
-    x_test = np.arange(0,10,0.01)
+    x_test = np.arange(0,10,0.005)
     y_test = f_sin(x_test)
     y_pred,y_sigma = model.predict(x_test)
     std = np.sqrt(y_sigma)
 
-    # Pring output of model with uncertianty
+    print(std)
+
+    # Plot output of model with uncertianty
     sigma_to_plot = 1.96
-    plt.plot(x_test, y_test)
-    plt.plot(x_test, y_pred)
-    plt.scatter(model.X_train, model.y_train)
-    plt.gca().fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd')
+    plt.plot(x_test, y_test, zorder=5)
+    plt.plot(x_test, y_pred, zorder=5)
+    plt.scatter(model.X_train, model.y_train, zorder=10)
+    plt.gca().fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd', zorder=1)
     plt.xlabel('input values')
     plt.ylabel('GP output')
     plt.legend(['Real function', 'Predicted function', 'Active learning points', '95% condidence region'])
