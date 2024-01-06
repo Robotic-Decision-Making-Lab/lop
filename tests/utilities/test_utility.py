@@ -55,3 +55,22 @@ def test_fake_pairs():
         assert p[1] == 0
         assert p[2] == i+1
 
+
+
+def test_gen_pairs_from_idx():
+    y_train = np.array([0,1,2,3])
+
+    y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
+
+    assert len(y_pairs) == 3
+    assert y_pairs[0][0] == -1
+    assert y_pairs[0][1] == 3
+    assert y_pairs[0][2] == 0
+    assert y_pairs[1][0] == -1
+    assert y_pairs[1][1] == 3
+    assert y_pairs[1][2] == 1
+    assert y_pairs[2][0] == -1
+    assert y_pairs[2][1] == 3
+    assert y_pairs[2][2] == 2
+    
+

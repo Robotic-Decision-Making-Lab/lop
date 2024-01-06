@@ -46,3 +46,32 @@ def test_GV_UCB_learner_trains_basic_GP():
 
     assert (np.abs(y_pred - y_test) < 0.2).all()
 
+
+def test_GV_UCB_learner_trains_preference_GP():
+    al = lop.GV_UCBLearner()
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,1.0), active_learner=al, normalize_positive=True)
+
+
+    np.random.seed(5) # just to ensure it doesn't break the test on a bad dice roll
+    for i in range(10):
+        # generate random test set to select test point from
+        x_canidiates = np.random.random(20)*10
+
+        test_pt_idxs = model.select(x_canidiates, 3)
+
+
+        x_train = x_canidiates[test_pt_idxs]
+        y_train = f_sin(x_train)
+
+        y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
+
+        model.add(x_train, y_pairs)
+
+    x_test = np.array([1.6,1.8,2.1,2.3,2.5,2.7])
+    y_test = f_sin(x_test)
+    y_pred = model(x_test)
+
+    assert not np.isnan(y_pred).any()
+
+    assert (np.abs(y_pred - y_test) < 0.5).all()
+
