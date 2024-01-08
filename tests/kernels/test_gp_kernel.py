@@ -166,3 +166,5 @@ def test_rbf_kern_cov():
     
     assert c[-1,0] < 0.0001
     assert c[0,-1] < 0.0001
+
+    assert np.linalg.det(c) > 0

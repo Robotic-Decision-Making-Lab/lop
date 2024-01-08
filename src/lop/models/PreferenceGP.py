@@ -275,7 +275,18 @@ class PreferenceGP(PreferenceModel):
         log_py_f = self.log_likelyhood_training(F)
         K_inv = self.invert_function(K)
         term1 = 0.5*(np.transpose(F) @ K_inv @ F)
-        term2 = np.log(np.linalg.det(K))
+        det_K = np.linalg.det(K)
+        while det_K <= 0:
+            #K = K + np.eye(K.shape[0])*0.01
+            rand_arr = np.random.normal(0, 0.1, size=K.shape[0])
+            K = K + np.diag(np.where(rand_arr<0, 0, rand_arr))
+            print('Adding noise to covariance matrix to avoid being singular')
+            det_K = np.linalg.det(K)
+        term2 = np.log(det_K)
+
         term3 = 0.5*len(F) * np.log(2 * np.pi)
+
+        #log_py_f = 0
+
         log_prior = log_py_f - term1 - term2 - term3
         return log_prior

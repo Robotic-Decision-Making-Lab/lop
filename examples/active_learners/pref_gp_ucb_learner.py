@@ -26,6 +26,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from matplotlib.animation import FFMpegWriter
+
 import lop
 
 
@@ -33,42 +35,72 @@ import lop
 def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
-def main():
-    al = lop.GV_UCBLearner()
-    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=True)
 
-
-    # Generate active learning point and add it to the model
-    for i in range(10):
-        # generate random test set to select test point from
-        x_canidiates = np.random.random(20)*10
-
-        test_pt_idxs = model.select(x_canidiates, 2)
-
-
-        x_train = x_canidiates[test_pt_idxs]
-        y_train = f_sin(x_train)
-        y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
-
-        model.add(x_train, y_pairs)
-
+def plot_data(model, new_selections=None):
     # Create test output of model
     x_test = np.arange(0,10,0.005)
     y_test = f_sin(x_test)
     y_pred,y_sigma = model.predict(x_test)
     std = np.sqrt(y_sigma)
 
-    print(std)
-
     # Plot output of model with uncertianty
     sigma_to_plot = 1.96
+
+    plt.clf()
     plt.plot(x_test, y_test, zorder=5)
     plt.plot(x_test, y_pred, zorder=5)
-    plt.scatter(model.X_train, model.F, zorder=10)
+
+    if hasattr(model, "F"):
+        plt.scatter(model.X_train, model.F, zorder=10)
+    
     plt.gca().fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd', zorder=1)
+    if new_selections is not None:
+        print('Show scatter?')
+        print(new_selections)
+        print(model.F[-len(new_selections):])
+        plt.scatter(new_selections, model.F[-len(new_selections):], color='orange', zorder=20)
     plt.xlabel('input values')
     plt.ylabel('GP output')
     plt.legend(['Real function', 'Predicted function', 'Active learning points', '95% condidence region'])
+
+
+def main():
+    al = lop.GV_UCBLearner()
+    #al = lop.RandomLearner()
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False)
+    model.probits[0].set_sigma(0.5)
+
+    fig = plt.figure()
+    writer = FFMpegWriter(fps=2)
+
+    with writer.saving(fig, "write_test.gif", 100):
+
+        plot_data(model)
+        writer.grab_frame()
+
+        # Generate active learning point and add it to the model
+        for i in range(10):
+            # generate random test set to select test point from
+            x_canidiates = np.random.random(20)*10
+
+            test_pt_idxs = model.select(x_canidiates, 2)
+
+
+            x_train = x_canidiates[test_pt_idxs]
+            y_train = f_sin(x_train)
+            y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
+            # y_pairs = lop.generate_fake_pairs(x_train, f_sin, 0) + \
+            #             lop.generate_fake_pairs(x_train, f_sin, 1) + \
+            #             lop.generate_fake_pairs(x_train, f_sin, 2)
+
+            model.add(x_train, y_pairs)
+
+            plot_data(model, x_train)
+            writer.grab_frame()
+        
+        # plot_data(model)
+        # writer.grab_frame()
+    
     plt.show()
 
 if __name__ == '__main__':
