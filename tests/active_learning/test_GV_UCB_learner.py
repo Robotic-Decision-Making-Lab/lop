@@ -49,7 +49,7 @@ def test_GV_UCB_learner_trains_basic_GP():
 
 def test_GV_UCB_learner_trains_preference_GP():
     al = lop.GV_UCBLearner()
-    model = lop.PreferenceGP(lop.RBF_kern(0.5,1.0), active_learner=al, normalize_positive=True)
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,1.0), active_learner=al, normalize_positive=True, normalize_gp=True)
 
 
     np.random.seed(5) # just to ensure it doesn't break the test on a bad dice roll
