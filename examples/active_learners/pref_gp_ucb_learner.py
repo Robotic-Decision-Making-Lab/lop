@@ -71,9 +71,9 @@ def main():
     model.probits[0].set_sigma(0.5)
 
     fig = plt.figure()
-    writer = FFMpegWriter(fps=2)
+    writer = FFMpegWriter(fps=1)
 
-    with writer.saving(fig, "write_test.gif", 100):
+    with writer.saving(fig, "pref_gp.gif", 100):
 
         plot_data(model)
         writer.grab_frame()
