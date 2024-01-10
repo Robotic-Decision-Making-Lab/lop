@@ -140,7 +140,7 @@ class PreferenceGP(PreferenceModel):
     # @return an array of output values (n), other output data (variance, covariance,etc)
     def predict_large(self,X):
         # lazy optimization of GP
-        if not self.optimized:
+        if not self.optimized and self.X_train is not None:
             self.optimize(optimize_hyperparameter=self.use_hyper_optimization)
 
         num_at_a_time = 15

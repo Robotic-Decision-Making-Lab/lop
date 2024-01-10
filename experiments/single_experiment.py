@@ -30,12 +30,15 @@ from tqdm import tqdm
 
 import lop
 
+from experiment_helper import train_and_eval
+
 import sys
 import os
 import time
+import pdb
 
 
-test_short_plans=False
+
 plan_file_header='./'
 
 train_files =  [['1.plan', '2.plan', '3.plan', '4.plan', '5.plan', '6.plan', '7.plan', '8.plan', '9.plan', '10.plan', '11.plan', '12.plan', '13.plan', '14.plan', '15.plan', '16.plan', '17.plan', '18.plan', '19.plan', '20.plan', ],
@@ -91,34 +94,47 @@ def str_timestamp():
     timestamp = time.strftime('%Y-%m-%d_%H-%M-%S', t)
     return timestamp
 
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF']
+possible_selection_types = ['choose1', 'ranking', 'rating']
+possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp']
+possible_models = ['gp', 'linear']
 
 def main():
     # Read in arguments required
     parser = argparse.ArgumentParser(description='User preferences')
-    parser.add_argument('--config', type=str, default='../explainability/cfg/config.yaml')
+    parser.add_argument('--config', type=str, default='./config.yaml')
     parser.add_argument('--dir', type=str, default='')
     parser.add_argument('--env', type=int, default=2, help='environment number, using 2,4,7 [0,9] allowed')
-    parser.add_argument('--model', type=str, default='gp', help='Set the model to [gp, linear]')
-    parser.add_argument('--selector', type=str, default='SGV_UCB', help='Set the selectors to use options [UCB SGV_UCB random RATINGS RANKING_SGV_UCB RANKING_UCB RANKING_SGV_UCB MUTUAL_INFO RANKING_MUTUAL_INFO]')
+    parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
+    parser.add_argument('--selector', type=str, default='SGV_UCB', help='Set the selectors to use options '+str(possible_selectors))
+    parser.add_argument('--sel_type', type=str, default='choose1', help='Set the selection type to use options '+str(possible_selection_types))
     parser.add_argument('--num_runs', type=int, default=100, help='The number of runs')
+    parser.add_argument('--num_alts', type=int, default=4, help='The number of alternatives to show to the user')
     parser.add_argument('--user', type=str, default='human_choice', help='Set the synthetic user type to use options [ perfect human_choice ]')
-    parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: [linear, squared, logistic, sin_exp]')
+    parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
     args = parser.parse_args()
 
+    global train_files
+    global eval_files
     if args.test_experiment:
         train_files = train_files_short
         eval_files = eval_files_short
+    train_files = [[plan_header+file for file in env] for env in train_files]
+    eval_files = [[plan_header+file for file in env] for env in eval_files]
 
-    if args.selector not in ['UCB', 'random', 'SGV_UCB', 'RATINGS', 'RANKING_UCB', 'RANKING_SGV_UCB', 'MUTUAL_INFO', 'RANKING_MUTUAL_INFO']:
-        print('Selector should be one of these [UCB SGV_UCB random RATINGS RANKING_SGV_UCB RANKING_UCB MUTUAL_INFO RANKING_MUTUAL_INFO] not ' + str(args.selector))
+    if args.selector not in possible_selectors:
+        print('Selector should be one of these '+str(possible_selectors)+' not ' + str(args.selector))
         sys.exit(0)
-    if args.fake_func not in ['linear', 'squared', 'logistic', 'sin_exp']:
-        print('fake_func should be one of these [linear, squared, logistic, sin_exp] not ' + str(args.fake_func))
+    if args.fake_func not in possible_fake_funcs:
+        print('fake_func should be one of these '+str(possible_fake_funcs)+' not ' + str(args.fake_func))
         sys.exit(0)
-    if args.model not in ['gp', 'linear']:
-        print('model should be one of these [gp, linear] not ' + str(args.model))
+    if args.model not in possible_models:
+        print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
+        sys.exit(0)
+    if args.sel_type not in possible_selection_types:
+        print('selection types should be one of these '+str(possible_selection_types)+' not ' + str(args.model))
         sys.exit(0)
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
@@ -129,17 +145,6 @@ def main():
 
 
     os.mkdir(folder_name)
-
-    # get fake functions
-    func = None
-    if args.fake_func == 'linear':
-        func = lop.FakeLinear()
-    elif args.fake_func == 'squared':
-        func = lop.FakeSquared()
-    elif args.fake_func == 'logistic':
-        func = lop.FakeLogistic()
-    elif args.fake_func == 'sin_exp':
-        func = lop.FakeSinExp()
 
     num_runs = args.num_runs
     num_eval = len(eval_files[0])
@@ -160,16 +165,16 @@ def main():
             cur_run = j
             run_folder = folder_name+'run_'+str(j)+'/'
             os.mkdir(run_folder)
-            func.randomize()
             print('VERBOSE: ' + str(args.v))
             accuracy, avg_selection, all_ranks, est_score, real_score, s_diff = \
                             train_and_eval( args.config, \
                                             env_num=args.env, \
-                                            utility_f=func, \
+                                            fake_func_desc=args.fake_func, \
                                             folder=run_folder, \
                                             selector=args.selector, \
-                                            rbf_sigma=rbf_sigma, \
-                                            UCB_scaler=UCB_scaler, \
+                                            selection_type=args.sel_type,
+                                            model_desc=args.model, \
+                                            num_alts = args.num_alts, \
                                             synth_user=args.user, \
                                             verbose = args.v)
 
@@ -205,9 +210,6 @@ def main():
 
 if __name__ == '__main__':
     plan_header = plan_file_header+'saved_plans/'
-
-    train_files = [[plan_header+file for file in env] for env in train_files]
-    eval_files = [[plan_header+file for file in env] for env in eval_files]
 
     main()
 

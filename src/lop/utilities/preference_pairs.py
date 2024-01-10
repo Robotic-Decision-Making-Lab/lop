@@ -88,7 +88,20 @@ def generate_fake_pairs(X, real_f, pair_i, data=None):
     pairs = [(get_dk(Y[pair_i], y),pair_i, i) for i, y in enumerate(Y) if i != pair_i]
     return pairs
 
+## generate_ranking_pairs
+# generate a set of ranking pairs from real fake data.
+# @param X - the inputs to the function
+# @param real_f - the real function to estimate.
+def generate_ranking_pairs(X, real_f):
+    real_y = real_f(X)
 
+    sorted_idx = np.argsort(real_y)
+    sorted_idx = sorted_idx[::-1]
+
+    pairs = []
+    for i, idx1 in enumerate(sorted_idx[:-1]):
+        for j, idx2 in enumerate(sorted_idx[i+1:]):
+            pairs.append((get_dk(1,0), idx1, idx2))
 
 
 

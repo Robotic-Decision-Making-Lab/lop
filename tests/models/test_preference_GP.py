@@ -22,6 +22,8 @@ def test_pref_GP_construction():
     assert gp is not None
 
 
+
+
 def test_pref_GP_training_does_not_crash():
     gp = lop.PreferenceGP(lop.RBF_kern(1.0, 1.0))
 
@@ -39,6 +41,27 @@ def test_pref_GP_training_does_not_crash():
     assert isinstance(y, np.ndarray)
     assert not np.isnan(y).any()
 
+def test_pref_gp_predict_without_training():
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+
+    X = np.arange(-0.5, 8, 0.1)
+    mu, sigma = gp.predict(X)
+    std = np.sqrt(sigma)
+
+    assert not np.isnan(mu).any()
+    assert not np.isnan(sigma).any()
+    assert not np.isnan(std).any()
+
+def test_pref_gp_predict_large_without_training():
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+
+    X = np.arange(-0.5, 8, 0.1)
+    mu, sigma = gp.predict_large(X)
+    std = np.sqrt(sigma)
+
+    assert not np.isnan(mu).any()
+    assert not np.isnan(sigma).any()
+    assert not np.isnan(std).any()
 
 def test_pref_GP_function():
     X_train = np.array([0,1,2,3,4.2,6,7])
