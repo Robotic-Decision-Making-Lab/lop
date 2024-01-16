@@ -134,4 +134,52 @@ def test_preference_model_likelyhood_multiple():
 
 
 
+def test_preference_model_adding_2D_pref():
+    pm = lop.PreferenceModel()
+
+    f = lop.FakeFunction(2)
+
+    X_train = np.array([[0,0],[1,2],[2,4],[3,2],[4.2, 5.6],[6,2],[7,8]])
+    pairs = lop.generate_fake_pairs(X_train, f, 0) + \
+            lop.generate_fake_pairs(X_train, f, 1) + \
+            lop.generate_fake_pairs(X_train, f, 2) + \
+            lop.generate_fake_pairs(X_train, f, 3) + \
+            lop.generate_fake_pairs(X_train, f, 4)
+
+   
+    pm.add(X_train, pairs)
+
+    assert pm is not None
+    with pytest.raises(TypeError):
+        log_like = pm.log_likelyhood_training()
+    log_like = pm.log_likelyhood_training(np.array([0,0,0,1,1,1,0.5,0.1,0.05,0.2,0.8,0.9,0.9,0.5]))
+
+    assert not np.isnan(log_like)
+
+def test_preference_model_adding_2D_pref():
+    pm = lop.PreferenceModel()
+
+    f = lop.FakeLinear(2)
+
+    X_train = np.array([[0,0],[1,2],[2,4],[3,2],[4.2, 5.6],[6,2],[7,8]])
+    pairs = lop.generate_fake_pairs(X_train, f, 0) + \
+            lop.generate_fake_pairs(X_train, f, 1) + \
+            lop.generate_fake_pairs(X_train, f, 2) + \
+            lop.generate_fake_pairs(X_train, f, 3) + \
+            lop.generate_fake_pairs(X_train, f, 4)
+
+   
+    pm.add(X_train, pairs)
+
+    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
+    y_train = f(X_train)
+
+    pm.add(X_train, y_train, type='abs')
+
+    with pytest.raises(TypeError):
+        log_like = pm.log_likelyhood_training()
+    log_like = pm.log_likelyhood_training(np.array([0,0,0,1,1,1,0.5,0.1,0.05,0.2,0.8,0.9,0.9,0.5]))
+
+    assert not np.isnan(log_like)
+
 

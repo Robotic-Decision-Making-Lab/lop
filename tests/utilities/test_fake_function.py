@@ -104,3 +104,86 @@ def test_fake_sin_exp():
 
     assert z3 < 1.0
     assert z3 != z
+
+
+
+def test_fake_linear_1d():
+    f = lop.FakeLinear(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0
+
+def test_fake_sqared_1d():
+    f = lop.FakeSquared(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0
+
+def test_fake_logistic_1d():
+    f = lop.FakeLogistic(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0
+
+
+def test_fake_sin_exp_1d():
+    f = lop.FakeSinExp(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0

@@ -46,9 +46,15 @@ class PreferenceLinear(PreferenceModel):
     #
     # @return an array of output values (n)
     def predict(self, X):
-        # lazy optimization of GP
-        if not self.optimized:
+        # lazy optimization of the model
+        if not self.optimized and self.X_train is not None:
             self.optimize()
+        elif self.X_train is None:
+            if len(X.shape) == 1:
+                print('Only 1 reward parameter... linear model practically does not make sense')
+                raise Exception("PreferenceLinear can't optimize a single reward value (just scales it)")
+            w = np.random.random(X.shape[1])
+            self.w = w / np.linalg.norm(w, ord=2)
 
         F = (X @ self.w[:,np.newaxis])[:,0]
         return F, None

@@ -50,52 +50,95 @@ class FakeLinear(FakeFunction):
         self.w = w / np.sum(w)
 
     def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            if isinstance(rewards, np.ndarray):
+                return rewards * self.w
+            else:
+                return (rewards * self.w)[0]
         return np.dot(rewards, self.w)
 
 ## Fake squared
 # A randomized squared function
 class FakeSquared(FakeFunction):
     def __init__(self, dimension=2):
-        #self.w = np.zeros(dimension)
+        self.w = np.zeros(dimension)
         self.randomize()
 
 
-    # def randomize(self):
-    #     w = np.random.random(self.w.shape)
-    #     self.w = w / np.sum(w)
+    def randomize(self):
+        w = np.random.random(self.w.shape)
+        self.w = w / np.sum(w)
 
-    # def calc(self, rewards):
-    #     return rewards[:,0] * rewards[:,1]
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            if isinstance(rewards, np.ndarray):
+                return rewards*rewards * self.w[0]
+            else:
+                return (rewards*rewards * self.w[0])
+
+        return np.dot(rewards*rewards, self.w)
 
 ## Fake logistic
-# A randomized squared function
+# A randomized logistic function
 class FakeLogistic(FakeFunction):
     def __init__(self, dimension=2):
-        #self.w = np.zeros(dimension)
+        self.w = np.zeros(dimension)
         self.randomize()
 
 
-    # def randomize(self):
-    #     w = np.random.random(self.w.shape)
-    #     self.w = w / np.sum(w)
+    def randomize(self):
+        w = np.random.random(self.w.shape) * 2
+        self.w = w
 
-    # def calc(self, rewards):
-    #     return rewards[:,0] * rewards[:,1]
+        self.A = 0
+        self.K = 1.0
+        self.C = 1.0
+        self.Q = (np.random.random()*3)**2
+        self.v = np.random.random()*2
+
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            wx = rewards * self.w[0]
+        else:
+            wx = np.dot(rewards, self.w)
+        
+        logi = self.A + ((self.K - self.A) / (self.C + self.Q*np.exp(-wx)**(1/self.v)))
+        return logi
 
 ## Fake sin with dimenshing exponenent.
-# A randomized squared function
+#
 class FakeSinExp(FakeFunction):
     def __init__(self, dimension=2):
-        #self.w = np.zeros(dimension)
+        self.w = np.zeros(dimension)
         self.randomize()
 
 
-    # def randomize(self):
-    #     w = np.random.random(self.w.shape)
-    #     self.w = w / np.sum(w)
+    def randomize(self):
+        w = np.random.random(self.w.shape)
+        self.w = w
 
-    # def calc(self, rewards):
-    #     return rewards[:,0] * rewards[:,1]
+        k = np.random.random(self.w.shape)
+        self.k = k / np.sum(k)
+
+        self.phase = np.random.random()*np.pi
+
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            wr = rewards * self.w[0]
+            kr = rewards * self.k[0]
+        else:
+            kr = np.dot(rewards, self.k)
+            wr = np.dot(rewards, self.w)
+
+        return np.sin(kr+self.phase) * np.exp(-wr)
 
 
 

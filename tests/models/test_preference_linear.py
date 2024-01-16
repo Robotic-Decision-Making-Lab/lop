@@ -24,6 +24,15 @@ def test_pref_linear_construction():
 
     assert gp is not None
 
+def test_pref_linear_not_optimized():
+    pm = lop.PreferenceLinear()
+    X_train = np.array([[0,0],[1,2],[2,4],[3,2],[4.2, 5.6],[6,2],[7,8]])
+
+
+    y,_ = pm.predict(X_train)
+
+    assert not np.isnan(y).any()
+
 
 def test_pref_linear_function():
     pm = lop.PreferenceLinear()
