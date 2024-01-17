@@ -59,3 +59,20 @@ def test_pref_linear_function():
         if i!= 0:
             assert y[0] < y[i]
 
+def test_pref_linear_function_2_way_pair():
+    pm = lop.PreferenceLinear()
+
+    X_train = np.array([[0,0],[1,2]])
+    pairs = lop.generate_fake_pairs(X_train, f_lin, 0)
+
+    pm.add(X_train, pairs)
+    pm.optimize()
+
+    assert pm is not None
+    assert pm.optimized
+    assert pm.n_loops > 0 and pm.n_loops < 15
+
+    y, _ = pm.predict(X_train)
+
+    assert not np.isnan(y).any()
+

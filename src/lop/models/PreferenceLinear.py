@@ -22,6 +22,7 @@
 # A linear latent function to learn the given preferences.
 
 import numpy as np
+import pdb
 
 from lop.models import PreferenceModel
 

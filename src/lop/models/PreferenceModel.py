@@ -323,7 +323,10 @@ class PreferenceModel(Model):
         
 
         # positive since we are searching for the max.
-        descent = gradient @ invert_function(hess)
+        try:
+            descent = gradient @ invert_function(hess)
+        except:
+            descent = gradient
 
         if lambda_type == "binary":
             # search along the descent direction for the min point.

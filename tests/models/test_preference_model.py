@@ -171,7 +171,6 @@ def test_preference_model_adding_2D_pref():
    
     pm.add(X_train, pairs)
 
-    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
     y_train = f(X_train)
 
     pm.add(X_train, y_train, type='abs')

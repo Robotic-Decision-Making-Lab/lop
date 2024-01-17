@@ -34,7 +34,7 @@ class FakeFunction:
     def randomize(self):
         raise NotImplementedError('FakeFunction randomize is not implemented')
 
-    def __call__(self, rewards):
+    def __call__(self, rewards, data=None):
         return self.calc(rewards)
 
 ## Fake linear
