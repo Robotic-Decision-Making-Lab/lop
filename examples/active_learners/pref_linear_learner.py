@@ -49,17 +49,19 @@ def plot_data(model, new_selections=None, w=None):
 
 
     plt.clf()
+    ax = plt.gca()
 
-    plt.contour(xv,yv, y_pred.reshape(xv.shape))
+    ax.contour(xv,yv, y_pred.reshape(xv.shape))
 
     if hasattr(model, "X_train") and model.X_train is not None:
-        plt.scatter(model.X_train[:,0], model.X_train[:,1], zorder=10)
+        ax.scatter(model.X_train[:,0], model.X_train[:,1], zorder=10)
 
     if new_selections is not None:
-        plt.scatter(new_selections[:,0], new_selections[:,1], color='orange', zorder=20)
+        ax.scatter(new_selections[:,0], new_selections[:,1], color='orange', zorder=20)
 
     if w is not None:
-        plt.arrow(0,0,w[0]*2,w[1]*2)
+        ax.arrow(0,0,w[0]*2,w[1]*2, width=0.008)
+    model.plot_preference(ax)
 
 def main():
     al = lop.GV_UCBLearner()

@@ -23,6 +23,7 @@
 # 
 
 import numpy as np
+import matplotlib.pyplot as plt
 import sys
 if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence
@@ -399,3 +400,51 @@ class PreferenceModel(Model):
 
         return best_lamb
 
+
+    ## plot_preference
+    # This function plots the preference training data defined by the preference model
+    # This defines a set of arrows to show the preferences between each different
+    # point.
+    # Handles both 1d and 2d plots. If it detects something either than that, it will
+    # raise an exception.
+    # @param ax - [opt] the axes to plot on
+    # @param color - [opt default='blue] the color of the arrows drawn. 
+    def plot_preference(self, ax=plt.gca(), color='#E69F00', alpha=0.3, width=0.005, head_width=0.015):
+        # Ensure there is points to plot
+        if self.X_train is not None:
+            if len(self.X_train.shape) > 1 and self.X_train.shape[1] > 2:
+                raise ValueError("plot_preference was given larger than 2 dimmension: X_train.shape="+str(self.X_train.shape))
+            
+            pref_pairs = self.y_train[self.probit_idxs['relative_discrete']]
+            if pref_pairs is not None:
+
+                # Go through each pair and determine which is the larger index
+                for pair in pref_pairs:
+                    if pair[0] == get_dk(1,0):
+                        lg_idx = pair[1]
+                        sm_idx = pair[2]
+                    else:
+                        lg_idx = pair[2]
+                        sm_idx = pair[1]
+                    sm_pt = self.X_train[sm_idx]
+                    lg_pt = self.X_train[lg_idx]
+
+
+                    # handle 1d case
+                    if len(self.X_train.shape) == 1:
+                        sm_pt = np.array([sm_pt, self.F[sm_idx]])
+                        lg_pt = np.array([lg_pt, self.F[lg_idx]])
+
+                    diff = lg_pt - sm_pt
+                    loc=0.5
+                    line = ax.plot([sm_pt[0], lg_pt[0]], [sm_pt[1], lg_pt[1]], \
+                            color=color, alpha=alpha)[0]
+                    line.axes.annotate('',
+                            xytext=(sm_pt[0]+diff[0]*loc, sm_pt[1]+diff[1]*loc),
+                            xy=(sm_pt[0]+diff[0]*(loc+0.001), sm_pt[1]+diff[1]*(loc+0.001)),
+                            arrowprops=dict(arrowstyle='->', color=color, alpha=alpha),
+                            size=15
+                    )
+
+                    # ax.arrow(sm_pt[0], sm_pt[1], diff[0]/2, diff[1]/2, \
+                    #             color=color, alpha=alpha, head_width=head_width)

@@ -47,22 +47,24 @@ def plot_data(model, new_selections=None):
     sigma_to_plot = 1.96
 
     plt.clf()
-    plt.plot(x_test, y_test, zorder=5)
-    plt.plot(x_test, y_pred, zorder=5)
+    ax = plt.gca()
+    ax.plot(x_test, y_test, zorder=5)
+    ax.plot(x_test, y_pred, zorder=5)
 
     if hasattr(model, "F"):
-        plt.scatter(model.X_train, model.F, zorder=10)
+        ax.scatter(model.X_train, model.F, zorder=10)
+
     
-    plt.gca().fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd', zorder=1)
+    ax.fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd', zorder=1)
     if new_selections is not None:
         print('Show scatter?')
         print(new_selections)
         print(model.F[-len(new_selections):])
-        plt.scatter(new_selections, model.F[-len(new_selections):], color='orange', zorder=20)
+        ax.scatter(new_selections, model.F[-len(new_selections):], color='orange', zorder=20)
     plt.xlabel('input values')
     plt.ylabel('GP output')
     plt.legend(['Real function', 'Predicted function', 'Active learning points', '95% condidence region'])
-
+    model.plot_preference(ax)
 
 def main():
     al = lop.GV_UCBLearner()

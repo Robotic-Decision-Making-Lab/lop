@@ -63,6 +63,7 @@ def main():
     Y_actual = f_sin(X)
     Y_max = np.linalg.norm(Y_actual, ord=np.inf)
     Y_actual = Y_actual / Y_max
+    gp.plot_preference(head_width=0.1)
     plt.plot(X, Y_actual)
     plt.scatter(X_train, gp.F)
 
