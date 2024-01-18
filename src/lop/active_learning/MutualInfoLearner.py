@@ -16,17 +16,24 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# UCBLearner.py
+# MutualInfLearner.py
 # Written Ian Rankin - December 2023
 #
-# Upper confidence bound learning algorithm
+# A set of code to select active learning algorithms for user preferences.
+# This code implements the mutual information model described in 
+# [1] Asking Easy Questions: A User-Friendly Approach to Active Reward Learning (2019) 
+#    E. Biyik, M. Palan, N.C. Landolfi, D.P. Losey, D. Sadigh
+#
+#  This method only needs
+# p(q|w,Q) human choice model given w = rewards and Q is the particular query.
+# by sampling from the distribution of potential weights. 
 
 import numpy as np
 
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 
-from lop.utilities.human_choice_model import p_human_choice
+from lop.utilities import p_human_choice, metropolis_hastings
 
 class MutualInfoLearner(ActiveLearner):
     ## Constructor
@@ -63,22 +70,21 @@ class MutualInfoLearner(ActiveLearner):
 
             # sample M possible parameters w (reward values of the GP)
             all_w = np.random.multivariate_normal(mu, cov, size=self.M)
-
-            if self.fake_func is not None:
-                fake_f_mean = np.mean(self.fake_func(candidate_pts))
-                samp_mean = np.mean(all_w)
-
-                print('Scaling using fake function: ' + str(fake_f_mean / samp_mean))
-                all_w = all_w * (fake_f_mean / samp_mean)
-
-
-            info_gain = [self.calc_info_gain(prev_selection + [idx], all_w) for idx in indicies]
-
-            return indicies[np.argmax(info_gain)]
-            
-
         elif isinstance(self.model, PreferenceLinear):
-            raise NotImplementedError("Have not implemented UCB with linear preferences")
+            w_samples = metropolis_hastings(self.model.loss_func, self.M, dim=candidate_pts.shape[1])
+            # generate possible outputs from weighted samples
+            #### TODO HERE
+        if self.fake_func is not None:
+            fake_f_mean = np.mean(self.fake_func(candidate_pts))
+            samp_mean = np.mean(all_w)
+
+            print('Scaling using fake function: ' + str(fake_f_mean / samp_mean))
+            all_w = all_w * (fake_f_mean / samp_mean)
+
+
+        info_gain = [self.calc_info_gain(prev_selection + [idx], all_w) for idx in indicies]
+
+        return indicies[np.argmax(info_gain)]
         
 
     # calculate the info gain for a query Q given the sampled parameters / reward W

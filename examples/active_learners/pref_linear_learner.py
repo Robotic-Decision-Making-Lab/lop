@@ -25,6 +25,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 from matplotlib.animation import FFMpegWriter
 
@@ -64,8 +65,22 @@ def plot_data(model, new_selections=None, w=None):
     model.plot_preference(ax)
 
 def main():
-    al = lop.GV_UCBLearner()
-    al = lop.RandomLearner()
+    parser = argparse.ArgumentParser(description='Active learning example for linear functions')
+    parser.add_argument('-a', type=str, default='mutual', help='Enter the type of active learning function [random mutual ucb gv_ucb]')
+    args = parser.parse_args()
+
+    if args.a == 'mutual':
+        al = lop.MutualInfoLearner()
+    elif args.a == 'random':
+        al = lop.RandomLearner()
+    elif args.a == 'ucb':
+        al = lop.UCBLearner()
+    elif args.a == 'gv_ucb':
+        al = lop.GV_UCBLearner()
+    else:
+        print('Unknown active learning method: ' + str(args.a))
+        return
+
     model = lop.PreferenceLinear(active_learner=al)
     model.probits[0].set_sigma(0.5)
 
