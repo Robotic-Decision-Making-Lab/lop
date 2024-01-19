@@ -25,6 +25,7 @@ import numpy as np
 
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
+from lop.utilities import metropolis_hastings
 
 class UCBLearner(ActiveLearner):
     ## Constructor
@@ -53,7 +54,14 @@ class UCBLearner(ActiveLearner):
         if isinstance(self.model, (PreferenceGP, GP)):
             variance = data
         elif isinstance(self.model, PreferenceLinear):
-            raise NotImplementedError("Have not implemented UCB with linear preferences")
+            w_samples = metropolis_hastings(self.model.loss_func, 200, dim=candidate_pts.shape[1])
+
+            w_norm = np.linalg.norm(w_samples, axis=1)
+            w_samples = w_samples / np.tile(w_norm, (2,1)).T
+            # generate possible outputs from weighted samples
+            all_w = (candidate_pts @ w_samples.T).T
+
+            variance = np.var(all_w, axis=0)
         indicies = list(indicies)
 
         selected_UCB = mu[indicies] + self.alpha*np.sqrt(variance[indicies])

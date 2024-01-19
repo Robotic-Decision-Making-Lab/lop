@@ -61,19 +61,22 @@ class MutualInfoLearner(ActiveLearner):
     #
     # @return the index of the greedy selection.
     def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
+        indicies = list(indicies)
+        prev_selection = list(prev_selection)
         if isinstance(self.model, (PreferenceGP, GP)):
             variance = data
             cov = self.model.cov
-
-            indicies = list(indicies)
-            prev_selection = list(prev_selection)
 
             # sample M possible parameters w (reward values of the GP)
             all_w = np.random.multivariate_normal(mu, cov, size=self.M)
         elif isinstance(self.model, PreferenceLinear):
             w_samples = metropolis_hastings(self.model.loss_func, self.M, dim=candidate_pts.shape[1])
+
+            w_norm = np.linalg.norm(w_samples, axis=1)
+            w_samples = w_samples / np.tile(w_norm, (2,1)).T
             # generate possible outputs from weighted samples
-            #### TODO HERE
+            all_w = (candidate_pts @ w_samples.T).T
+            
         if self.fake_func is not None:
             fake_f_mean = np.mean(self.fake_func(candidate_pts))
             samp_mean = np.mean(all_w)
