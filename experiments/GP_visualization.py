@@ -58,9 +58,11 @@ def visualize_data(X,Y, num_side, fake_ut, pred_ut, pred_sigma, \
 
     Z_pred = np.reshape(pred_ut, (num_side, num_side))
     Z_fake = np.reshape(fake_ut, (num_side, num_side))
-    Z_sigma = np.reshape(pred_sigma, (num_side, num_side))
-    Z_std = np.sqrt(Z_sigma)
-    Z_ucb = Z_pred + Z_std
+
+    if pred_sigma is not None:
+        Z_sigma = np.reshape(pred_sigma, (num_side, num_side))
+        Z_std = np.sqrt(Z_sigma)
+        Z_ucb = Z_pred + Z_std
 
     plt.figure()
 
