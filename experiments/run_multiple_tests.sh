@@ -13,7 +13,7 @@ trap killgroup INT TERM
 number_runs=50
 
 
-for selc in SGV_UCB
+for selc in SGV_UCB MUTUAL_INFO UCB RANDOM
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
     for fake_func in linear squared

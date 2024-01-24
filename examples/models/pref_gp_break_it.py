@@ -16,11 +16,11 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# pref_gp.py
+# pref_gp_break_it.py
 # Written Ian Rankin - December 2023
 #
-# An example usage of a simple user gaussian process on a 1D example
-# generates pairwise training data
+# An example intenionaly designed to break the GP. I am using it to test issues
+# with divergence.
 
 
 import numpy as np
@@ -38,7 +38,7 @@ def main():
 
     pairs = lop.gen_pairs_from_idx(np.argmax(y_train[0:3]), list(range(len(y_train[0:3]))))
     
-    pairs2 = lop.gen_pairs_from_idx(np.argmax(y_train[3:5]), list(range(len(y_train[4:5]))))
+    pairs2 = lop.gen_pairs_from_idx(np.argmax(y_train[3:5]), list(range(len(y_train[3:5]))))
     pairs2 = [(p[0], p[1]+3, p[2]+3) for p in pairs2]
     pairs += pairs2
     pairs2= lop.gen_pairs_from_idx(np.argmax(y_train[5:]), list(range(len(y_train[5:]))))
