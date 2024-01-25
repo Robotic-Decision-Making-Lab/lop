@@ -67,8 +67,8 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 def main():
-    al = lop.GV_UCBLearner()
-    #al = lop.RandomLearner()
+    #al = lop.GV_UCBLearner()
+    al = lop.RandomLearner()
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False)
     model.probits[0].set_sigma(0.5)
 

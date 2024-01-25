@@ -28,6 +28,7 @@
 # Bjorn Sand Jenson, Jens Brehm, Nielsen
 
 import numpy as np
+from scipy.linalg import cho_solve, cho_factor
 import sys
 if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence
@@ -63,7 +64,7 @@ class PreferenceGP(PreferenceModel):
     #                   do hyperparameter optimization
     # @param active_learner - defines if there is an active learner for this model
     def __init__(self, cov_func, normalize_gp=True, pareto_pairs=False, \
-                normalize_positive=False, other_probits={}, mat_inv=np.linalg.pinv, \
+                normalize_positive=False, other_probits={}, mat_inv=np.linalg.inv, \
                 use_hyper_optimization=False, active_learner=None):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
 
@@ -117,8 +118,20 @@ class PreferenceGP(PreferenceModel):
 
         covX_testX = np.transpose(covXX_test)
 
+        try:
+            L = np.linalg.cholesky(K)
+        except:
+            pdb.set_trace()
+        lower = True
+        #L, lower = cho_factor(K)
+        alpha = cho_solve((L, lower), F)
+
+        K_invert = np.linalg.inv(K)
+
         ####### calculate the mu of the value
-        mu = np.matmul(covXX_test, np.matmul(self.invert_function(K), F))
+        #mu = np.matmul(covXX_test, np.matmul(self.invert_function(K), F))
+        mu = np.matmul(covXX_test, np.matmul(K_invert, F))
+        #mu = np.matmul(covXX_test, alpha)
 
 
         ######### calculate the covariance and the sigma on the covariance
@@ -202,7 +215,7 @@ class PreferenceGP(PreferenceModel):
     def findMode(self, x_train, y_train, debug=False):
         X_train = x_train
 
-        self.K = self.cov_func.cov(X_train, X_train)
+        self.K = self.cov_func.cov(X_train, X_train)+ np.eye(X_train.shape[0]) * 0.01
 
         F = np.random.random(len(self.X_train))
         
@@ -216,7 +229,9 @@ class PreferenceGP(PreferenceModel):
                                             self.derivatives(y_train, F)
 
             K_inv = self.invert_function(self.K)
-            gradient = self.grad_ll - (K_inv @ F)
+            L = np.linalg.cholesky(self.K)
+            #gradient = self.grad_ll - (K_inv @ F)
+            gradient = self.grad_ll - cho_solve((L,True), F)
 
             # Hessian:
             hess = -self.W - K_inv
