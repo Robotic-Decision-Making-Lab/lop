@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dualkern_269',['DualKern',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html',1,'lop::kernels::KernelFunc']]]
+  ['bestlearner_403',['BestLearner',['../classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html',1,'lop::active_learning::BestLearner']]]
 ];

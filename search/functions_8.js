@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['k_5ffold_5fhalf_392',['k_fold_half',['../namespacelop_1_1utilities_1_1training__utility.html#a76b58fbba391bfeedab90a49f7fedf6f',1,'lop::utilities::training_utility']]]
+  ['iterative_5fline_5fsearch_588',['iterative_line_search',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a271e8f8510244e3285f5e84c888053da',1,'lop::models::PreferenceModel::PreferenceModel']]]
 ];

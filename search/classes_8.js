@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rbf_5fkern_281',['RBF_kern',['../classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html',1,'lop::kernels::RBF_kern']]]
+  ['ordinalprobit_416',['OrdinalProbit',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html',1,'lop::probits::OrdinalProbit']]]
 ];

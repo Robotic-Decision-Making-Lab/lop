@@ -1,14 +1,12 @@
 var searchData=
 [
-  ['test_5factive_5flearner_312',['test_active_learner',['../namespacetest__active__learner.html',1,'']]],
-  ['test_5fgp_313',['test_GP',['../namespacetest__GP.html',1,'']]],
-  ['test_5fgp_5fkernel_314',['test_gp_kernel',['../namespacetest__gp__kernel.html',1,'']]],
-  ['test_5fhuman_5fchoice_315',['test_human_choice',['../namespacetest__human__choice.html',1,'']]],
-  ['test_5fmodel_316',['test_model',['../namespacetest__model.html',1,'']]],
-  ['test_5fpareto_317',['test_pareto',['../namespacetest__pareto.html',1,'']]],
-  ['test_5fpreference_5fgp_318',['test_preference_GP',['../namespacetest__preference__GP.html',1,'']]],
-  ['test_5fpreference_5flinear_319',['test_preference_linear',['../namespacetest__preference__linear.html',1,'']]],
-  ['test_5fpreference_5fmodel_320',['test_preference_model',['../namespacetest__preference__model.html',1,'']]],
-  ['test_5fprobits_321',['test_probits',['../namespacetest__probits.html',1,'']]],
-  ['test_5futility_322',['test_utility',['../namespacetest__utility.html',1,'']]]
+  ['plot_5ffake_5ffunction_462',['plot_fake_function',['../namespaceplot__fake__function.html',1,'']]],
+  ['plot_5fmcmc_5fsampling_463',['plot_mcmc_sampling',['../namespaceplot__mcmc__sampling.html',1,'']]],
+  ['pref_5fgp_464',['pref_gp',['../namespacepref__gp.html',1,'']]],
+  ['pref_5fgp_5fabs_5fbound_465',['pref_gp_abs_bound',['../namespacepref__gp__abs__bound.html',1,'']]],
+  ['pref_5fgp_5fbreak_5fit_466',['pref_gp_break_it',['../namespacepref__gp__break__it.html',1,'']]],
+  ['pref_5fgp_5fordinal_467',['pref_gp_ordinal',['../namespacepref__gp__ordinal.html',1,'']]],
+  ['pref_5fgp_5fpairwise_5fordinal_468',['pref_gp_pairwise_ordinal',['../namespacepref__gp__pairwise__ordinal.html',1,'']]],
+  ['pref_5fgp_5fucb_5flearner_469',['pref_gp_ucb_learner',['../namespacepref__gp__ucb__learner.html',1,'']]],
+  ['pref_5flinear_5flearner_470',['pref_linear_learner',['../namespacepref__linear__learner.html',1,'']]]
 ];

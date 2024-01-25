@@ -1,0 +1,9 @@
+<map id="lop.active_learning.ActiveLearner.ActiveLearner" name="lop.active_learning.ActiveLearner.ActiveLearner">
+<area shape="rect" id="node1" title="Base Active Learning class." alt="" coords="5,136,196,177"/>
+<area shape="rect" id="node2" href="$classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html" title=" " alt="" coords="270,5,449,47"/>
+<area shape="rect" id="node3" href="$classlop_1_1active__learning_1_1BestLearner_1_1WorstLearner.html" title=" " alt="" coords="270,71,449,112"/>
+<area shape="rect" id="node4" href="$classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html" title=" " alt="" coords="250,136,469,177"/>
+<area shape="rect" id="node5" href="$classlop_1_1active__learning_1_1RandomLearner_1_1RandomLearner.html" title=" " alt="" coords="257,201,461,243"/>
+<area shape="rect" id="node6" href="$classlop_1_1active__learning_1_1UCBLearner_1_1UCBLearner.html" title=" " alt="" coords="244,267,475,308"/>
+<area shape="rect" id="node7" href="$classlop_1_1active__learning_1_1GV__UCBLearner_1_1GV__UCBLearner.html" title=" " alt="" coords="523,267,735,308"/>
+</map>

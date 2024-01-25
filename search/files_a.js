@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setup_2epy_346',['setup.py',['../setup_8py.html',1,'']]]
+  ['ordinalprobit_2epy_506',['OrdinalProbit.py',['../OrdinalProbit_8py.html',1,'']]]
 ];

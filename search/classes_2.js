@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gp_270',['GP',['../classlop_1_1models_1_1GP_1_1GP.html',1,'lop::models::GP']]]
+  ['dualkern_404',['DualKern',['../classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html',1,'lop::kernels::KernelFunc']]]
 ];

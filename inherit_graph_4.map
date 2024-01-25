@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeFunction.html" title="Fake function Abstract class for a Fake Function for experiments with different learning methods for ..." alt="" coords="5,104,192,145"/>
+<area shape="rect" id="node2" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLinear.html" title="Fake linear A reasonably simple linear function to test with." alt="" coords="240,5,427,47"/>
+<area shape="rect" id="node3" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html" title="Fake logistic A randomized logistic function." alt="" coords="240,71,427,112"/>
+<area shape="rect" id="node4" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSinExp.html" title="Fake sin with dimenshing exponenent." alt="" coords="240,136,427,177"/>
+<area shape="rect" id="node5" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSquared.html" title="Fake squared A randomized squared function." alt="" coords="240,201,427,243"/>
+</map>

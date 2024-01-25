@@ -78,22 +78,41 @@ $(function() {
 
 <p>Base Active Learning class.  
  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#details">More...</a></p>
+<div class="dynheader">
+Inheritance diagram for lop.active_learning.ActiveLearner.ActiveLearner:</div>
+<div class="dyncontent">
+<div class="center"><img src="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner__inherit__graph.png" border="0" usemap="#alop_8active__learning_8ActiveLearner_8ActiveLearner_inherit__map" alt="Inheritance graph"/></div>
+<map name="alop_8active__learning_8ActiveLearner_8ActiveLearner_inherit__map" id="alop_8active__learning_8ActiveLearner_8ActiveLearner_inherit__map">
+<area shape="rect" title="Base Active Learning class." alt="" coords="5,136,196,177"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html" title=" " alt="" coords="270,5,449,47"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1BestLearner_1_1WorstLearner.html" title=" " alt="" coords="270,71,449,112"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html" title=" " alt="" coords="250,136,469,177"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1RandomLearner_1_1RandomLearner.html" title=" " alt="" coords="257,201,461,243"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1UCBLearner_1_1UCBLearner.html" title=" " alt="" coords="244,267,475,308"/>
+<area shape="rect" href="classlop_1_1active__learning_1_1GV__UCBLearner_1_1GV__UCBLearner.html" title=" " alt="" coords="523,267,735,308"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7dd8387c24dc26bdb58748e63e835f61"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a7dd8387c24dc26bdb58748e63e835f61">__init__</a> (self, <a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#aed8b24a23801d69d8bc1f0419f6996d4">default_to_pareto</a>=False, <a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a1d2281db96ca1873b99bbf9e968da66d">always_select_best</a>=True)</td></tr>
-<tr class="separator:a7dd8387c24dc26bdb58748e63e835f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53f3cf10e24738404e9adafb1fcb9959"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a53f3cf10e24738404e9adafb1fcb9959">__init__</a> (self, <a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#aed8b24a23801d69d8bc1f0419f6996d4">default_to_pareto</a>=False, <a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a1d2281db96ca1873b99bbf9e968da66d">always_select_best</a>=False)</td></tr>
+<tr class="memdesc:a53f3cf10e24738404e9adafb1fcb9959"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a53f3cf10e24738404e9adafb1fcb9959">More...</a><br /></td></tr>
+<tr class="separator:a53f3cf10e24738404e9adafb1fcb9959"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9d03ee75d92be054830d5bf0c4eb356"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#ab9d03ee75d92be054830d5bf0c4eb356">set_model</a> (self, <a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a03f443949471a2fd641cc80b333821d5">model</a>)</td></tr>
+<tr class="memdesc:ab9d03ee75d92be054830d5bf0c4eb356"><td class="mdescLeft">&#160;</td><td class="mdescRight">set_model sets the model being used by the active learning framework.  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#ab9d03ee75d92be054830d5bf0c4eb356">More...</a><br /></td></tr>
 <tr class="separator:ab9d03ee75d92be054830d5bf0c4eb356"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a536d68b7fda92eb858bfa0db5e1c273f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a536d68b7fda92eb858bfa0db5e1c273f">select</a> (self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, not_selected=False)</td></tr>
-<tr class="memdesc:a536d68b7fda92eb858bfa0db5e1c273f"><td class="mdescLeft">&#160;</td><td class="mdescRight">select Selects the given points  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a536d68b7fda92eb858bfa0db5e1c273f">More...</a><br /></td></tr>
-<tr class="separator:a536d68b7fda92eb858bfa0db5e1c273f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9d0920ae3bcbe12eb13694c1d064451"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#af9d0920ae3bcbe12eb13694c1d064451">select</a> (self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False)</td></tr>
+<tr class="memdesc:af9d0920ae3bcbe12eb13694c1d064451"><td class="mdescLeft">&#160;</td><td class="mdescRight">select Selects the given points  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#af9d0920ae3bcbe12eb13694c1d064451">More...</a><br /></td></tr>
+<tr class="separator:af9d0920ae3bcbe12eb13694c1d064451"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af35000ada122b83ed13ef964f636b2c1"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#af35000ada122b83ed13ef964f636b2c1">get_prefered_set_of_pts</a> (self, candidate_pts, prefer_pts=None)</td></tr>
 <tr class="memdesc:af35000ada122b83ed13ef964f636b2c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">get_prefered_set_of_pts  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#af35000ada122b83ed13ef964f636b2c1">More...</a><br /></td></tr>
 <tr class="separator:af35000ada122b83ed13ef964f636b2c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4236a8e7bf7f80f54c614ce898c640b5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a4236a8e7bf7f80f54c614ce898c640b5">select_greedy</a> (self, cur_selection, data)</td></tr>
-<tr class="memdesc:a4236a8e7bf7f80f54c614ce898c640b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">select_greedy This function greedily selects the best single data point Depending on the selection method, you are not forced to implement this function  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a4236a8e7bf7f80f54c614ce898c640b5">More...</a><br /></td></tr>
-<tr class="separator:a4236a8e7bf7f80f54c614ce898c640b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace468ff7755b6bfa880d7ddc54d3377d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#ace468ff7755b6bfa880d7ddc54d3377d">select_best</a> (self, mu, prefer_pts, prev_selection=set())</td></tr>
+<tr class="memdesc:ace468ff7755b6bfa880d7ddc54d3377d"><td class="mdescLeft">&#160;</td><td class="mdescRight">select_best Selects the best path given the data outputed by predict  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#ace468ff7755b6bfa880d7ddc54d3377d">More...</a><br /></td></tr>
+<tr class="separator:ace468ff7755b6bfa880d7ddc54d3377d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2727bd4e78971bd1beb25aeccd64b044"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a2727bd4e78971bd1beb25aeccd64b044">select_greedy</a> (self, candidate_pts, mu, data, indicies, prev_selection)</td></tr>
+<tr class="memdesc:a2727bd4e78971bd1beb25aeccd64b044"><td class="mdescLeft">&#160;</td><td class="mdescRight">select_greedy This function greedily selects the best single data point Depending on the selection method, you are not forced to implement this function  <a href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a2727bd4e78971bd1beb25aeccd64b044">More...</a><br /></td></tr>
+<tr class="separator:a2727bd4e78971bd1beb25aeccd64b044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c45cf6c81cca752802e275caf959ff0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a1c45cf6c81cca752802e275caf959ff0">select_greedy_k</a> (self, cur_selection, num_alts, data)</td></tr>
 <tr class="separator:a1c45cf6c81cca752802e275caf959ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -110,8 +129,8 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Base Active Learning class. </p>
 <p>This class has the needed function to perform active learning from a gaussian proccess. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7dd8387c24dc26bdb58748e63e835f61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7dd8387c24dc26bdb58748e63e835f61">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="a53f3cf10e24738404e9adafb1fcb9959"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53f3cf10e24738404e9adafb1fcb9959">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -132,7 +151,7 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>always_select_best</em> = <code>True</code>&#160;</td>
+          <td class="paramname"><em>always_select_best</em> = <code>False</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -141,6 +160,15 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">default_to_pareto</td><td>- [opt default=False] sets whether to always assume prefering pareto optimal choices when selecting points, if not particulary told not to </td></tr>
+    <tr><td class="paramname">alaways_select_best</td><td>- [opt default=False] sets whether the select function should append the the top solution to the front of the solution set every time. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -188,8 +216,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a536d68b7fda92eb858bfa0db5e1c273f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a536d68b7fda92eb858bfa0db5e1c273f">&#9670;&nbsp;</a></span>select()</h2>
+<a id="af9d0920ae3bcbe12eb13694c1d064451"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9d0920ae3bcbe12eb13694c1d064451">&#9670;&nbsp;</a></span>select()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +256,7 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>not_selected</em> = <code>False</code>&#160;</td>
+          <td class="paramname"><em>return_not_selected</em> = <code>False</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -245,7 +273,7 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">num_alts</td><td>- the number of alterantives to selec (including the highest mean) </td></tr>
     <tr><td class="paramname">prev_selection</td><td>- [opt, default = []]a list of indicies that </td></tr>
     <tr><td class="paramname">prefer_num</td><td>- [default = None] the points at the start of the candidates to prefer selecting from. Returned as: a. A number of points at the start of canididate_pts to prefer b. A set of points to prefer to select. c. 'pareto' to indicate d. Enter 0 explicitly ignore selections e. None (default) assumes 0 unless default to pareto is true. </td></tr>
-    <tr><td class="paramname">return_not</td><td>- [opt default-false] returns the not selected points when there a preference to selecting to certian points. [] if not but set to true.</td></tr>
+    <tr><td class="paramname">return_not_selected</td><td>- [opt default-false] returns the not selected points when there a preference to selecting to certian points. [] if not but set to true.</td></tr>
   </table>
   </dd>
 </dl>
@@ -253,8 +281,58 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4236a8e7bf7f80f54c614ce898c640b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4236a8e7bf7f80f54c614ce898c640b5">&#9670;&nbsp;</a></span>select_greedy()</h2>
+<a id="ace468ff7755b6bfa880d7ddc54d3377d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace468ff7755b6bfa880d7ddc54d3377d">&#9670;&nbsp;</a></span>select_best()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.active_learning.ActiveLearner.ActiveLearner.select_best </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>mu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>prefer_pts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>prev_selection</em> = <code>set()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>select_best Selects the best path given the data outputed by predict </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mu</td><td>- the mean of the canidate paths </td></tr>
+    <tr><td class="paramname">prefer_pts</td><td>- the set of prefered points </td></tr>
+    <tr><td class="paramname">prev_selected</td><td>- [opt] a set of indicies of previously selected points </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2727bd4e78971bd1beb25aeccd64b044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2727bd4e78971bd1beb25aeccd64b044">&#9670;&nbsp;</a></span>select_greedy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,13 +347,31 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>cur_selection</em>, </td>
+          <td class="paramname"><em>candidate_pts</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>data</em>&#160;</td>
+          <td class="paramname"><em>mu</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>indicies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>prev_selection</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -288,12 +384,17 @@ Public Attributes</h2></td></tr>
 <p>select_greedy This function greedily selects the best single data point Depending on the selection method, you are not forced to implement this function </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">prev_selection</td><td>- a list of previously selected points </td></tr>
-    <tr><td class="paramname">data</td><td>- a user defined tuple of data (determined by the select function)</td></tr>
+    <tr><td class="paramname">candidate_pts</td><td>- a numpy array of points (nxk), n = number points, k = number of dimmensions </td></tr>
+    <tr><td class="paramname">mu</td><td>- a numpy array of mu values outputed from predict. numpy (n) </td></tr>
+    <tr><td class="paramname">data</td><td>- a user defined tuple of data (determined by the predict function of the model) </td></tr>
+    <tr><td class="paramname">indicies</td><td>- a list or set of indicies in candidate points to consider. </td></tr>
+    <tr><td class="paramname">prev_selection</td><td>- a set ofindicies of previously selected points</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the index of the greedy selection. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1active__learning_1_1UCBLearner_1_1UCBLearner.html#a3249d1ff776d886438f598a891b50698">lop.active_learning.UCBLearner.UCBLearner</a>, <a class="el" href="classlop_1_1active__learning_1_1RandomLearner_1_1RandomLearner.html#adfb092f54b52b9eb15f737da991182e5">lop.active_learning.RandomLearner.RandomLearner</a>, <a class="el" href="classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html#ab28930eb8c0c766155086f8da9419198">lop.active_learning.MutualInfoLearner.MutualInfoLearner</a>, <a class="el" href="classlop_1_1active__learning_1_1GV__UCBLearner_1_1GV__UCBLearner.html#accb7dcf5d606a952e4c9897df87cac16">lop.active_learning.GV_UCBLearner.GV_UCBLearner</a>, <a class="el" href="classlop_1_1active__learning_1_1BestLearner_1_1WorstLearner.html#afcbbbadeac85a42eaef4300c97d9625a">lop.active_learning.BestLearner.WorstLearner</a>, and <a class="el" href="classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html#aa37715606000751ec053e8707488213c">lop.active_learning.BestLearner.BestLearner</a>.</p>
 
 </div>
 </div>
@@ -362,6 +463,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>set_model sets the model being used by the active learning framework. </p>
+<p>should only be called inside a model class, </p>
 
 </div>
 </div>
