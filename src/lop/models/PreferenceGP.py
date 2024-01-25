@@ -60,12 +60,14 @@ class PreferenceGP(PreferenceModel):
     # @param other_probits - [opt] allows specification of additional probits
     # @param mat_int - [opt] allows specification of different matrix inversion functions
     #                   defaults to the numpy.linalg.pinv invert function
-    # @param user_hyper_optimization - [opt] sets whether optimizatiion should attempt to
+    # @param use_hyper_optimization - [opt] sets whether optimizatiion should attempt to
     #                   do hyperparameter optimization
+    # @param K_sigma - [opt default=0.01] sets the sigma value on the covariance matrix.
+    #                   K = cov(X) + I * K_sigma
     # @param active_learner - defines if there is an active learner for this model
     def __init__(self, cov_func, normalize_gp=True, pareto_pairs=False, \
-                normalize_positive=False, other_probits={}, mat_inv=np.linalg.inv, \
-                use_hyper_optimization=False, active_learner=None):
+                normalize_positive=False, other_probits={}, mat_inv=np.linalg.pinv, \
+                use_hyper_optimization=False, K_sigma = 0.01, active_learner=None):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
 
         self.cov_func = cov_func
@@ -78,6 +80,7 @@ class PreferenceGP(PreferenceModel):
         self.normalize_positive = normalize_positive
         self.use_hyper_optimization = use_hyper_optimization
 
+        self.K_sigma = K_sigma
         self.delta_f = 0.0002 # set the convergence to stop
         self.maxloops = 100
         
@@ -215,7 +218,7 @@ class PreferenceGP(PreferenceModel):
     def findMode(self, x_train, y_train, debug=False):
         X_train = x_train
 
-        self.K = self.cov_func.cov(X_train, X_train)+ np.eye(X_train.shape[0]) * 0.01
+        self.K = self.cov_func.cov(X_train, X_train) + np.eye(X_train.shape[0]) * self.K_sigma
 
         F = np.random.random(len(self.X_train))
         
@@ -284,20 +287,27 @@ class PreferenceGP(PreferenceModel):
     # this is equation (139)
     # @param F - the estimated training values
     def loss_func(self, F):
-        K = self.cov_func.cov(self.X_train, self.X_train)
+        K = self.cov_func.cov(self.X_train, self.X_train) + np.eye(self.X_train.shape[0]) * self.K_sigma
 
         # calculate the log-likelyhood of the data given F
         log_py_f = self.log_likelyhood_training(F)
-        K_inv = self.invert_function(K)
-        term1 = 0.5*(np.transpose(F) @ K_inv @ F)
-        det_K = np.linalg.det(K)
-        while det_K <= 0:
-            #K = K + np.eye(K.shape[0])*0.01
-            rand_arr = np.random.normal(0, 0.1, size=K.shape[0])
-            K = K + np.diag(np.where(rand_arr<0, 0, rand_arr))
-            print('Adding noise to covariance matrix to avoid being singular')
-            det_K = np.linalg.det(K)
-        term2 = np.log(det_K)
+        L = np.linalg.cholesky(K)
+
+
+        #K_inv = self.invert_function(K)
+        #term1 = 0.5*(np.transpose(F) @ K_inv @ F)
+        term1 = 0.5*(np.transpose(F) @ cho_solve((L, True), F))
+
+        # Determinant of lower tringular matrix is product of diagonals
+        log_det_K = np.sum(np.log(np.diagonal(L)))
+        # det_K = np.linalg.det(K)
+        # while det_K <= 0:
+        #     #K = K + np.eye(K.shape[0])*0.01
+        #     rand_arr = np.random.normal(0, 0.1, size=K.shape[0])
+        #     K = K + np.diag(np.where(rand_arr<0, 0, rand_arr))
+        #     print('Adding noise to covariance matrix to avoid being singular')
+        #     det_K = np.linalg.det(K)
+        term2 = log_det_K #np.log(det_K)
 
         term3 = 0.5*len(F) * np.log(2 * np.pi)
 
