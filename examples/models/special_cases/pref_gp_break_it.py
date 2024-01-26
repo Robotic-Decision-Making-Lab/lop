@@ -33,6 +33,7 @@ def f_sin(x, data=None):
 
 
 def main():
+    # Setup training data
     X_train = np.array([0,1.9999,2,2.0001,4.2,6,7, 4.7])
     y_train = f_sin(X_train)
 
