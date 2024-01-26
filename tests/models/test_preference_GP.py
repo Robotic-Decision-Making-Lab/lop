@@ -1,7 +1,8 @@
-# test_GP.py
+# test_preference_GP.py
 # Written Ian Rankin - December 2023
 #
-#
+# A set of relatively generic tests on the GP. To ensure some 
+# amount of convergence and working predictions
 
 import pytest
 import lop

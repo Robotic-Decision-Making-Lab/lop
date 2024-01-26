@@ -65,7 +65,7 @@ class PreferenceGP(PreferenceModel):
     # @param K_sigma - [opt default=0.01] sets the sigma value on the covariance matrix.
     #                   K = cov(X) + I * K_sigma
     # @param active_learner - defines if there is an active learner for this model
-    def __init__(self, cov_func, normalize_gp=True, pareto_pairs=False, \
+    def __init__(self, cov_func, normalize_gp=False, pareto_pairs=False, \
                 normalize_positive=False, other_probits={}, mat_inv=np.linalg.pinv, \
                 use_hyper_optimization=False, K_sigma = 0.01, active_learner=None):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
@@ -126,15 +126,10 @@ class PreferenceGP(PreferenceModel):
         except:
             pdb.set_trace()
         lower = True
-        #L, lower = cho_factor(K)
         alpha = cho_solve((L, lower), F)
 
-        K_invert = np.linalg.inv(K)
-
         ####### calculate the mu of the value
-        #mu = np.matmul(covXX_test, np.matmul(self.invert_function(K), F))
-        mu = np.matmul(covXX_test, np.matmul(K_invert, F))
-        #mu = np.matmul(covXX_test, alpha)
+        mu = np.matmul(covXX_test, alpha)
 
 
         ######### calculate the covariance and the sigma on the covariance
@@ -231,14 +226,17 @@ class PreferenceGP(PreferenceModel):
             self.W, self.grad_ll, self.log_likelihood = \
                                             self.derivatives(y_train, F)
 
-            K_inv = self.invert_function(self.K)
+            #K_inv = self.invert_function(self.K)
             L = np.linalg.cholesky(self.K)
+            L_inv = self.invert_function(L)
+            K_inv = L_inv.T @ L_inv
             #gradient = self.grad_ll - (K_inv @ F)
             gradient = self.grad_ll - cho_solve((L,True), F)
 
             # Hessian:
             hess = -self.W - K_inv
 
+            #pdb.set_trace()
             F_new = self.newton_update( F, # estimated training values
                                         gradient, # Gradient input to newton's method
                                         hess, # The hessian matrix input

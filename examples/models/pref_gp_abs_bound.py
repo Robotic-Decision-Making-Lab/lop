@@ -39,7 +39,7 @@ def main():
 
     # Create preference gp and optimize given training data
     # IMPORTANT, setting normalize_positive helpful for abs bound probit
-    gp = lop.PreferenceGP(lop.RBF_kern(0.15, 2.0), normalize_positive=True)
+    gp = lop.PreferenceGP(lop.RBF_kern(0.15, 2.0), normalize_positive=False)
     gp.add(X_train, y_train, type='abs')
     gp.optimize()
 

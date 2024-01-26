@@ -16,37 +16,49 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# sample_prior.py
+# prior_only.py
 # Written Ian Rankin - January 2024
 #
-# An example to show sampling a function with an RBF kernel with no posterior
+# An example of the gaussian process using only the prior to optimize itself.
+# This is helpful for model understanding.
+
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 import lop
 
+
+
 def main():
-    # setup the variables to function, and the mean of the function
-    x = np.arange(0,10,0.01)
-    mu = np.zeros(len(x))
+    X_train = np.array([0,1,2,3,4.2,6,7])
 
-    # define the GP and calculate the covariance of the noise function
-    k = lop.RBF_kern(sigma=0.2, l=0.5)
-    cov = k.cov(x, x)
 
-    # sample the function
-    f = np.random.multivariate_normal(mu, cov)
+    # Create preference gp and optimize given training data
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False, normalize_positive=False)
+    gp.add(X_train, [])
+    gp.optimize(optimize_hyperparameter=False)
 
+    # predict output of GP
+    X = np.arange(-0.5, 8, 0.1)
+    mu, sigma = gp.predict(X)
+    std = np.sqrt(sigma)
+
+
+    # Plotting output for easy viewing
+    plt.plot(X, mu)
     sigma_to_plot = 1
-    std = np.sqrt(np.diagonal(cov))
-    plt.gca().fill_between(x, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
-    plt.plot(x, f)
+
+    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
+    gp.plot_preference(head_width=0.1)
+    plt.scatter(X_train, gp.F)
+
+    plt.title('Gaussian Process estimate (1 sigma)')
     plt.xlabel('x')
-    plt.ylabel('function')
-    plt.title('GP sample with only the prior')
-    plt.legend(['sampled function', 'standard deviation of random variable'])
+    plt.ylabel('y')
+    plt.legend(['Predicted function with predicted F'])
     plt.show()
+
 
 if __name__ == '__main__':
     main()
