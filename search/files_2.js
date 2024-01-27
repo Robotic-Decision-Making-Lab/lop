@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bestlearner_2epy_496',['BestLearner.py',['../BestLearner_8py.html',1,'']]]
+  ['bestlearner_2epy_504',['BestLearner.py',['../BestLearner_8py.html',1,'']]]
 ];
