@@ -23,6 +23,7 @@
 # Useful for testing out various active learning algorithms and ensuring code is working.
 
 import numpy as np
+from scipy.linalg import cho_solve
 import sys
 if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence
@@ -61,7 +62,7 @@ class GP(Model):
     # @param training_sigma - [opt] sets the uncertianty in the training data
     #                          accepts scalars or a vector if each sample has
     #                          a different uncertianty.
-    def add(self, X, y, training_sigma=0):
+    def add(self, X, y, training_sigma=0.0005):
         if not isinstance(training_sigma, Sequence):
             training_sigma = np.ones(len(y)) * training_sigma
 
@@ -107,11 +108,14 @@ class GP(Model):
 
         covYY = self.cov_func.cov(Y, Y) + error #covMatrix(Y, Y, self.cov_func) + error
 
-        covYYinv = self.invert_function(covYY)
 
-        muX_Y = np.matmul(covXY, np.matmul(covYYinv, self.y_train))
+        L = np.linalg.cholesky(covYY)
+        v = cho_solve((L, True), covYX)
+
+        muX_Y = np.matmul(covXY, cho_solve((L, True), self.y_train))
         # stored as an instance variable in case it is needed for some reason
-        self.cov = covXX -  np.matmul(np.matmul(covXY, covYYinv), covYX)
+        #self.cov = covXX -  np.matmul(np.matmul(covXY, covYYinv), covYX)
+        self.cov = covXX - (covXY @ v)
 
         sigmaX_Y = np.diagonal(self.cov)
         # just in case do to numerical instability a negative variance shows up

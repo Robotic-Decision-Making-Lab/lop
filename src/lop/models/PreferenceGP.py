@@ -28,7 +28,7 @@
 # Bjorn Sand Jenson, Jens Brehm, Nielsen
 
 import numpy as np
-from scipy.linalg import cho_solve, cho_factor
+from scipy.linalg import cho_solve
 import sys
 if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
     from collections.abc import Sequence

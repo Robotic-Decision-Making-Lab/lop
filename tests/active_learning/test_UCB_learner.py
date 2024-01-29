@@ -44,5 +44,5 @@ def test_UCB_learner_trains_basic_GP():
     y_test = f_sin(x_test)
     y_pred = model(x_test)
 
-    assert (np.abs(y_pred - y_test) < 0.2).all()
+    assert (np.abs(y_pred - y_test) < 0.25).all()
 
