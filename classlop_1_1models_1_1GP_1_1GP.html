@@ -99,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbcacf380a4d66a04a996da175786245"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#adbcacf380a4d66a04a996da175786245">__init__</a> (self, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a33cff6fe7462d15a9ab1108693216cfe">cov_func</a>, mat_inv=np.linalg.pinv, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a64a18efb16a9f061bb88114d34995480">mean_func</a>=None, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a>=None)</td></tr>
 <tr class="memdesc:adbcacf380a4d66a04a996da175786245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlop_1_1models_1_1GP_1_1GP.html#adbcacf380a4d66a04a996da175786245">More...</a><br /></td></tr>
 <tr class="separator:adbcacf380a4d66a04a996da175786245"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21577678f5adc08e107de7380502acfe"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a21577678f5adc08e107de7380502acfe">add</a> (self, X, y, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a92bad70657d787b0fc1b29d396f6b8de">training_sigma</a>=0)</td></tr>
-<tr class="memdesc:a21577678f5adc08e107de7380502acfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">add adds training data to the gaussian process appends the data if there already is some training data  <a href="classlop_1_1models_1_1GP_1_1GP.html#a21577678f5adc08e107de7380502acfe">More...</a><br /></td></tr>
-<tr class="separator:a21577678f5adc08e107de7380502acfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45b856f7b51d080b42abad2c40586cc5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a45b856f7b51d080b42abad2c40586cc5">add</a> (self, X, y, <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a92bad70657d787b0fc1b29d396f6b8de">training_sigma</a>=0.0005)</td></tr>
+<tr class="memdesc:a45b856f7b51d080b42abad2c40586cc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">add adds training data to the gaussian process appends the data if there already is some training data  <a href="classlop_1_1models_1_1GP_1_1GP.html#a45b856f7b51d080b42abad2c40586cc5">More...</a><br /></td></tr>
+<tr class="separator:a45b856f7b51d080b42abad2c40586cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8b374c0d226fc4f09a9057230d7df5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3a8b374c0d226fc4f09a9057230d7df5">reset</a> (self)</td></tr>
 <tr class="memdesc:a3a8b374c0d226fc4f09a9057230d7df5"><td class="mdescLeft">&#160;</td><td class="mdescRight">clear_training clears all training data from the <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html">GP</a>  <a href="classlop_1_1models_1_1GP_1_1GP.html#a3a8b374c0d226fc4f09a9057230d7df5">More...</a><br /></td></tr>
 <tr class="separator:a3a8b374c0d226fc4f09a9057230d7df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,8 +204,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a21577678f5adc08e107de7380502acfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21577678f5adc08e107de7380502acfe">&#9670;&nbsp;</a></span>add()</h2>
+<a id="a45b856f7b51d080b42abad2c40586cc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45b856f7b51d080b42abad2c40586cc5">&#9670;&nbsp;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +232,7 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>training_sigma</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>training_sigma</em> = <code>0.0005</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
