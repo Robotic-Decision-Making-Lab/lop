@@ -1,7 +1,7 @@
-# test_utility.py
+# test_fake_function.py
 # Written Ian Rankin - December 2023
 #
-# A set of tests of various utilities used by the lop algorithms.
+# A set of tests of various fake functions used for experiments with lop.
 
 import pytest
 import pdb

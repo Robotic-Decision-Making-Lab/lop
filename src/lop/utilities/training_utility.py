@@ -26,27 +26,33 @@ import numpy as np
 ## k_fold_split
 # A function to split the datasets for training the PreferenceGP
 # @param y - the y data as [[(input data for probit)]]
-def k_fold_half(y):
+# @param k - [opt, default=2] the number of data splits
+def k_fold_split(y, k=2):
     data = []
 
     for y_data in y:
-        shuffle = np.arange(len(y_data))
-        np.random.shuffle(shuffle)
+        if y_data is not None:
+            shuffle = np.arange(len(y_data))
+            np.random.shuffle(shuffle)
 
-        splits = np.array_split(shuffle, 2)
+            splits = np.array_split(shuffle, k)
 
-        # [probits[[split1, split2]], ...]
-        split_data = [[y_data[idx] for idx in split] for split in splits]
+            # [probits[[split1, split2]], ...]
+            split_data = [[y_data[idx] for idx in split] for split in splits]
 
-        data.append(split_data)
+            data.append(split_data)
+        else:
+            data.append(None)
 
     actual_splits = []
-    for j in range(2):
+    for j in range(k):
         split = []
 
         for i in range(len(y)):
-            split += [np.array(data[i][j])]
-
+            if data[i] is not None:
+                split += [np.array(data[i][j])]
+            else:
+                split += [None]
 
         actual_splits.append(split)
 
