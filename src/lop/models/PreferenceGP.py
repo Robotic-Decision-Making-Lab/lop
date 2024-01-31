@@ -36,6 +36,7 @@ else:
     from collections import Sequence
 
 from lop.models import PreferenceModel
+from lop.utilities import k_fold_split, union_splits
 
 import math
 
@@ -87,9 +88,21 @@ class PreferenceGP(PreferenceModel):
 
     def optimize(self, optimize_hyperparameter=False):
         if optimize_hyperparameter:
-            raise NotImplementedError("Have not implemented hyperparameter optimization")
+            k_fold = 2
+            splits = k_fold_split(self.y_train, k_fold)
 
-        self.findMode(self.X_train, self.y_train)
+            for i in range(k_fold):
+                y_valid = splits[i]
+                idx_but_valid = list(range(k_fold))
+                idx_but_valid.remove(i)
+                y_training = union_splits(splits, idx_but_valid)
+
+                pdb.set_trace()
+                self.find_mode(self.X_train, y_training)
+                self.hyperparameter_search(self.X_train, y_valid)
+
+
+        self.find_mode(self.X_train, self.y_train)
         self.optimized = True
 
 
@@ -207,15 +220,15 @@ class PreferenceGP(PreferenceModel):
     
 
 
-    ## findMode
+    ## find_mode
     # This function calculates the mode of the F vector by using the damped newton update
     #
-    def findMode(self, x_train, y_train, debug=False):
+    def find_mode(self, x_train, y_train, debug=False):
         X_train = x_train
 
         self.K = self.cov_func.cov(X_train, X_train) + np.eye(X_train.shape[0]) * self.K_sigma
 
-        F = np.random.random(len(self.X_train))
+        F = np.random.random(len(X_train))
         
         # damped newton method
         n_loops = 0
@@ -264,7 +277,7 @@ class PreferenceGP(PreferenceModel):
 
             n_loops += 1
             if n_loops > self.maxloops:
-                print('WARNING: maximum loops in findMode exceeded. Returning current solution')
+                print('WARNING: maximum loops in find_mode exceeded. Returning current solution')
                 break
 
         if debug:
@@ -276,6 +289,15 @@ class PreferenceGP(PreferenceModel):
         # calculate W with final F
         self.W, self.grad_ll, self.log_likelihood = \
                                         self.derivatives(y_train, self.F)
+
+
+
+
+    ## hyperparameter_search
+    # This function performs an iteration of searching hyperparemters
+    def hyperparameter_search(self, X_train, y_valid):
+        pass
+
 
 
 

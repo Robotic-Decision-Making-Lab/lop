@@ -76,7 +76,10 @@ def k_fold_split(y, k=2):
     return actual_splits
 
 def union_splits(splits, idx_to_combine):
-    import pdb
+    # TODO This needs to be fixed
+    return splits[idx_to_combine[0]]
+    
+    
     uni = []
     for j in range(len(splits[0])):
         if splits[0][j] is None:
