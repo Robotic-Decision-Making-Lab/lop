@@ -182,3 +182,44 @@ def test_preference_model_adding_2D_pref():
     assert not np.isnan(log_like)
 
 
+
+def test_preference_model_get_set_hyperparameters_pairs():
+    m = lop.PreferenceModel()
+
+    p = m.get_hyper()
+
+    assert len(p) == 0
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+            lop.generate_fake_pairs(X_train, f_sin, 1) + \
+            lop.generate_fake_pairs(X_train, f_sin, 2) + \
+            lop.generate_fake_pairs(X_train, f_sin, 3) + \
+            lop.generate_fake_pairs(X_train, f_sin, 4)
+
+    m.add(X_train, pairs)
+
+    p = m.get_hyper()
+
+    assert len(p) == 1
+
+def test_preference_model_get_set_hyperparameters_multiple_y_trains():
+    m = lop.PreferenceModel()
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+            lop.generate_fake_pairs(X_train, f_sin, 1) + \
+            lop.generate_fake_pairs(X_train, f_sin, 2) + \
+            lop.generate_fake_pairs(X_train, f_sin, 3) + \
+            lop.generate_fake_pairs(X_train, f_sin, 4)
+
+    m.add(X_train, pairs)
+    X_abs = np.array([1.5, 2.5])
+    y_abs = f_sq(X_abs)
+
+    m.add(X_abs, y_abs, type='abs')
+
+    p = m.get_hyper()
+
+    assert len(p) == 3
+

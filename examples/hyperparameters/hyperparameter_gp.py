@@ -16,11 +16,10 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# hyperparameter_visualizer.py
-# Written Ian Rankin - December 2023
+# hyperparameter_gp.py
+# Written Ian Rankin - Febuary 2024
 #
-# Generates a plot of the objective surface the hyperparameter optimization
-# needs to follow.
+# An example usage of hyperparameter optimization for the preference GP.
 
 
 import numpy as np
@@ -65,44 +64,12 @@ def main():
     gp.cov_func.set_param(np.array([0.5, 1.0]))
     gp.probits[0].set_sigma(0.5)
     gp.add(X_train, pairs)
-    gp.optimize(optimize_hyperparameter=False)
+    gp.optimize(optimize_hyperparameter=True)
 
     # predict output of GP
     X = np.arange(-0.5, 8, 0.1)
     mu, sigma = gp.predict(X)
     std = np.sqrt(sigma)
-
-
-    print('Sigma = '+str(gp.probits[0].sigma))
-
-    rbf_sigmas = np.arange(0.001, 2.0, 0.05)
-    rbf_lengths = np.arange(0.01,3.0, 0.05)
-
-    liklihoods = np.zeros((rbf_sigmas.shape[0], rbf_lengths.shape[0]))
-
-    # perform exhastive search of kernel parameters
-    for i, rbf_sigma in enumerate(rbf_sigmas):
-        for j, rbf_length in enumerate(rbf_lengths):
-            gp.cov_func.set_param(np.array([rbf_sigma, rbf_length]))
-
-            likli = gp.loss_func(gp.F)
-
-            liklihoods[i,j] = likli
-
-
-    probit_sigmas = np.arange(0.001, 2.0, 0.05)
-
-    liklihoods_pro = np.zeros((rbf_sigmas.shape[0], rbf_lengths.shape[0]))
-
-    # perform exhastive search of kernel lengthscale + probit parameter
-    for i, pro_sigma in enumerate(probit_sigmas):
-        for j, rbf_length in enumerate(rbf_lengths):
-            gp.cov_func.set_param(np.array([0.5, rbf_length]))
-            gp.probits[0].set_sigma(pro_sigma)
-
-            likli = gp.loss_func(gp.F)
-
-            liklihoods_pro[i,j] = likli
 
 
 
@@ -123,21 +90,6 @@ def main():
     plt.title('Gaussian Process estimate (1 sigma)')
     plt.xlabel('x')
     plt.ylabel('y')
-    
-    
-    plt.figure()
-    plt.contour(rbf_sigmas, rbf_lengths, liklihoods.T, levels=20)
-    plt.xlabel('RBF sigma values')
-    plt.ylabel('RBF length scale')
-    plt.title('Postierer liklihood function (log liklihood)')
-    plt.colorbar()
-
-    plt.figure()
-    plt.contour(probit_sigmas, rbf_lengths, liklihoods_pro.T, levels=20)
-    plt.xlabel('Probit sigma values')
-    plt.ylabel('RBF length scale')
-    plt.title('Postierer liklihood function (log liklihood)')
-    plt.colorbar()
 
     plt.show()
 

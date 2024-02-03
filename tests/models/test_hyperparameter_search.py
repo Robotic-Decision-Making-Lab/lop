@@ -30,6 +30,59 @@ def test_hyperparameter_search_does_not_crash():
 
     assert gp is not None
 
+
+def test_get_hyperparameters_multiple_y_trains():
+    m = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+
+    p = m.get_hyper()
+    assert p[0] == 0.5 and p[1] == 0.7
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+            lop.generate_fake_pairs(X_train, f_sin, 1) + \
+            lop.generate_fake_pairs(X_train, f_sin, 2) + \
+            lop.generate_fake_pairs(X_train, f_sin, 3) + \
+            lop.generate_fake_pairs(X_train, f_sin, 4)
+
+    m.add(X_train, pairs)
+
+    p = m.get_hyper()
+    assert p[0] == 0.5 and p[1] == 0.5 and p[2] == 0.7
+
+    X_abs = np.array([1.5, 2.5])
+    y_abs = f_sin(X_abs)
+
+    m.add(X_abs, y_abs, type='abs')
+
+    p = m.get_hyper()
+    assert p[0] == 0.5 and p[3] == 0.5 and p[4] == 0.7
+
+def test_set_hyperparameters_multiple_y_trains():
+    m = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+            lop.generate_fake_pairs(X_train, f_sin, 1) + \
+            lop.generate_fake_pairs(X_train, f_sin, 2) + \
+            lop.generate_fake_pairs(X_train, f_sin, 3) + \
+            lop.generate_fake_pairs(X_train, f_sin, 4)
+
+    m.add(X_train, pairs)
+
+
+    X_abs = np.array([1.5, 2.5])
+    y_abs = f_sin(X_abs)
+
+    m.add(X_abs, y_abs, type='abs')
+
+    p_set = np.array([0.4,0.3,0.2,0.6,1.2])
+    m.set_hyper(p_set)
+    p = m.get_hyper()
+    assert (p == p_set).all()
+
+
+
 def test_hyperparameter_search_somewhat_converges():
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
@@ -62,6 +115,9 @@ def test_hyperparameter_search_somewhat_converges():
             assert y[0] > y[i]
         if i!= 1:
             assert y[1] < y[i]
+
+
+
 
 
 

@@ -75,6 +75,29 @@ class Model:
         y = self.__call__(candidate_pts)
         return np.argmax(y)
 
+    ## get_hyper
+    # get the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @return a numpy array of all hyperparameters (N,)
+    def get_hyper(self):
+        raise(NotImplementedError("Model get_hyper is not implemented"))
+
+    ## set_hyper
+    # set the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @param x - the input hyper parameters as a (n, ) numpy array
+    def set_hyper(self, x):
+        raise(NotImplementedError("Model set_hyper is not implemented"))
+
+    ## grad_hyper
+    # get the gradient of the hyperparameters
+    #
+    # @return (n,) numpy array of gradient of each hyperparameter for the model
+    def grad_hyper(self):
+        raise(NotImplementedError("Model grad_hyper is not implemented"))
+
 
     ## select
     # This function calls the active learner and specifies the number of alternatives to select

@@ -28,6 +28,7 @@
 # Bjorn Sand Jenson, Jens Brehm, Nielsen
 
 import numpy as np
+import scipy.optimize as opt
 from scipy.linalg import cho_solve
 import sys
 if sys.version_info[0] >= 3 and sys.version_info[1] >= 3:
@@ -97,11 +98,14 @@ class PreferenceGP(PreferenceModel):
                 idx_but_valid.remove(i)
                 y_training = union_splits(splits, idx_but_valid)
 
-                pdb.set_trace()
+                #pdb.set_trace()
+                print('Hyperparameters: ')
+                print(self.get_hyper())
                 self.find_mode(self.X_train, y_training)
                 self.hyperparameter_search(self.X_train, y_valid)
 
 
+        print(self.get_hyper())
         self.find_mode(self.X_train, self.y_train)
         self.optimized = True
 
@@ -291,13 +295,58 @@ class PreferenceGP(PreferenceModel):
                                         self.derivatives(y_train, self.F)
 
 
+    ## hyperparameter_obj
+    # the objective function to be called by scipy optimize
+    # @param x - the input hyperparameters (numpy array)
+    # @param args - the input arguments either than the actual hyperparameters
+    #
+    # @return the objective to be minimized
+    def hyperparameter_obj(self, x, args):
+        self.set_hyper(x)
+        return -self.loss_func(self.F)
 
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
     def hyperparameter_search(self, X_train, y_valid):
-        pass
+        # uses the scipy optimizer to perform the optimization
+        
+        
+        result = opt.minimize(
+                    fun=self.hyperparameter_obj,
+                    x0=self.get_hyper(),
+                    args=None)
+                    #jac=)
 
+        self.set_hyper(result.x)
+
+
+
+
+    ## get_hyper
+    # get the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @return a numpy array of all hyperparameters (N,)
+    def get_hyper(self):
+        # get probit hyperparameters
+        probit_p = super().get_hyper()
+
+        kernel_p = self.cov_func.get_param()
+
+        return np.append(probit_p, kernel_p, axis=0)
+
+    ## set_hyper
+    # set the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @param x - the input hyper parameters as a (n, ) numpy array
+    def set_hyper(self, x):
+        num_probit_p = len(super().get_hyper())
+
+
+        super().set_hyper(x[:num_probit_p])
+        self.cov_func.set_param(x[num_probit_p:])
 
 
 

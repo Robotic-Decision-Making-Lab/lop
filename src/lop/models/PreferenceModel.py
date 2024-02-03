@@ -299,6 +299,42 @@ class PreferenceModel(Model):
         self.optimized = True
 
 
+    ## get_hyper
+    # get the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @return a numpy array of all hyperparameters (N,)
+    def get_hyper(self):
+        probit_p = np.empty((0,))
+        for i, probit in enumerate(self.probits):
+            if self.y_train[i] is not None:
+                probit_p = np.append(probit_p, probit.get_hyper(),axis=0)
+            
+        return probit_p
+
+    ## set_hyper
+    # set the hyperparameters for the given model.
+    # Particularly intended for hyperparameter optimization.
+    #
+    # @param x - the input hyper parameters as a (n, ) numpy array
+    def set_hyper(self, x):
+        cur_idx = 0
+
+        for i, probit in enumerate(self.probits):
+            if self.y_train[i] is not None:
+                p = probit.get_hyper()
+                end_idx = cur_idx + len(p)
+                probit.set_hyper(x[cur_idx:end_idx])
+
+                cur_idx = end_idx
+
+    ## grad_hyper
+    # get the gradient of the hyperparameters
+    #
+    # @return (n,) numpy array of gradient of each hyperparameter for the model
+    def grad_hyper(self):
+        raise(NotImplementedError("Model grad_hyper is not implemented"))
+
 
     ###################### optimization functions for preference models
 
