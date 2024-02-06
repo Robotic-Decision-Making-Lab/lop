@@ -22,6 +22,8 @@
 # A set of utility functions for training.
 
 import numpy as np
+import math
+import random
 import pdb
 
 ## k_fold_split
@@ -74,6 +76,68 @@ def k_fold_split(y, k=2):
         actual_splits.append(split)
 
     return actual_splits
+
+## k_fold_x_y
+# k fold split for both x and y training data
+# @param X - the X input data
+# @param y - the y training data
+# @param k - the max k to split
+#
+# @return list of indicies
+def k_fold_x_y(X, y, k):
+    N = X.shape[0]
+
+    # check to make sure 
+    if k > int(N / 2.0):
+        k = int(N / 2.0)
+        if k < 2:
+            return None
+    set_max_size = math.ceil(N / k)
+
+    splits = [[] for i in range(k)]
+    conn = [set() for i in range(N)]
+
+    selected = set()
+    remaining = list(range(N))
+
+    for pair in y[0]:
+        conn[pair[1]].add(pair[2])
+        conn[pair[2]].add(pair[1])
+
+    
+
+    conn = [list(conn[i]) for i in range(N)]
+
+    # Select an element
+    while len(remaining) > 0:
+        idx = remaining[np.random.randint(0, len(remaining))]
+        remaining.remove(idx)
+        selected.add(idx)
+
+
+        # choose split
+        sizes = [len(splits[i]) for i in range(k)]
+        split_idx = np.argmin(np.array(sizes))
+
+        splits[split_idx].append(idx)
+
+        random.shuffle(conn[idx])
+        shuffled_idxs = conn[idx]
+
+        # try to add as many as possible while still allowing all k fold to even
+        for shuf_idx in shuffled_idxs:
+            if len(splits[split_idx]) >= set_max_size:
+                break
+
+            if shuf_idx not in selected:
+                splits[split_idx].append(shuf_idx)
+                selected.add(shuf_idx)
+                remaining.remove(shuf_idx)
+
+    return splits
+
+
+
 
 def union_splits(splits, idx_to_combine):
     # TODO This needs to be fixed

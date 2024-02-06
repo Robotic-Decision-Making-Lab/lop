@@ -43,6 +43,27 @@ import numpy as np
 def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
+
+def test_k_split_x_y():
+    pm = lop.PreferenceModel()
+
+    X_train = np.array([0,1,2,3,4.2,6,7])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+            lop.generate_fake_pairs(X_train, f_sin, 1) + \
+            lop.generate_fake_pairs(X_train, f_sin, 2) + \
+            lop.generate_fake_pairs(X_train, f_sin, 3) + \
+            lop.generate_fake_pairs(X_train, f_sin, 4)
+
+
+   
+    pm.add(X_train, pairs)
+
+
+    splits = lop.k_fold_x_y(pm.X_train, pm.y_train, 2)
+    
+    assert np.abs(len(splits[0]) - len(splits[1])) <= 1
+
+
 @pytest.mark.skip(reason="Using work around at the moment to test rest of hyperparameter search")
 def test_k_split_preference_model_just_pairs():
     pm = lop.PreferenceModel()
