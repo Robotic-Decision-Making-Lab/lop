@@ -273,23 +273,29 @@ class PreferenceModel(Model):
         self.optimized = False
 
 
-    # calculate the log_likelyhood of the training data.
+    # calculate the log_likelyhood of the provided training data.
     # log p(Y|F)
-    def log_likelyhood_training(self, F):
+    # @param F - the input possible outputs
+    # @param y - [opt - uses full training if not specified] the labels specified as the training data.
+    def log_likelyhood_training(self, F, y=None):
+        if y is None:
+            y = self.y_train
+
         log_p_w = 0.0
         for j, probit in enumerate(self.probits):
-            if self.y_train[j] is not None:
-                p_w_local = probit.log_likelihood(self.y_train[j], F)
+            if y[j] is not None:
+                p_w_local = probit.log_likelihood(y[j], F)
 
                 log_p_w += p_w_local
 
         return log_p_w
 
+
     ## calculates the loss function of the log liklihood with prior
     # this is equation (139)
     # @param F - the estimated training values
     def loss_func(self, F):
-        raise NotImplementedError("PreferenceModel loss_func is not implemented")
+        return self.likli_f(F, self.X_train, self.y_train)
 
     ## optimize
     # Runs the optimization step required by the user preference GP.

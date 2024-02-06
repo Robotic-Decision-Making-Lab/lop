@@ -98,6 +98,15 @@ class Model:
     def grad_hyper(self):
         raise(NotImplementedError("Model grad_hyper is not implemented"))
 
+    ## likli_f
+    # calculates the posterior log liklihood function for the model
+    # @param F - the given locations of the model given the x and labels y
+    # @param x - the given inputs of the function
+    # @param y - the labels of given function (pairwise parameters etc)
+    #
+    # @return a scalar value as the log liklihood of the model
+    def likli_f(self, F, x, y):
+         raise(NotImplementedError("Model likli_f is not implemented"))
 
     ## select
     # This function calls the active learner and specifies the number of alternatives to select

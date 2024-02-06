@@ -148,4 +148,4 @@ class PreferenceLinear(PreferenceModel):
             return 0
         w = w / np.linalg.norm(w, ord=2)
         F = (self.X_train @ w[:,np.newaxis])[:,0]
-        return self.log_likelyhood_training(F)
+        return self.log_likelyhood_training(F, self.y_train)

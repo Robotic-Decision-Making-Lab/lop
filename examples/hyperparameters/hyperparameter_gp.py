@@ -74,18 +74,20 @@ def main():
 
 
     # Plotting output for easy viewing
-    plt.plot(X, mu)
+    plt.figure()
+    ax = plt.gca()
+    ax.plot(X, mu)
     sigma_to_plot = 1
 
-    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
+    ax.fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
     Y_actual = f_sin(X)
     Y_max = np.linalg.norm(Y_actual, ord=np.inf)
     Y_actual = Y_actual / Y_max
-    plt.plot(X, Y_actual)
-    plt.legend(['Predicted function with predicted F', 'Real function'])
-    gp.plot_preference(head_width=0.1)
+    ax.plot(X, Y_actual)
+    ax.legend(['Predicted function with predicted F', 'Real function'])
+    gp.plot_preference(head_width=0.1, ax=ax)
     
-    plt.scatter(X_train, gp.F)
+    ax.scatter(X_train, gp.F)
 
     plt.title('Gaussian Process estimate (1 sigma)')
     plt.xlabel('x')
