@@ -162,7 +162,7 @@ def test_rbf_kern_cov():
     c = rbf_test.cov(X,X)
 
     for i in range(len(X)):
-        assert c[i,i] == 1
+        assert np.abs(c[i,i] - 1) < 0.1
     
     assert c[-1,0] < 0.0001
     assert c[0,-1] < 0.0001

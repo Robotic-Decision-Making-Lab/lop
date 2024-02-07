@@ -211,7 +211,7 @@ class PreferenceModel(Model):
             if len(y.shape) == 1:
                 new_y = np.empty((y.shape[0], 2), dtype=int)
                 new_y[:,0] = y
-                new_y[:,1] = np.arange(0, y.shape[0])
+                new_y[:,1] = np.arange(0, y.shape[0]) + len_X
             else:
                 new_y = y
 
@@ -222,7 +222,6 @@ class PreferenceModel(Model):
                 self.y_train[self.probit_idxs[type]] = (new_y[:,0], new_y[:,1])
             else:
                 # restet index for matching to X_train
-                new_y[:,1] += len_X
                 old_v = self.y_train[self.probit_idxs[type]][0]
                 old_idx = self.y_train[self.probit_idxs[type]][1]
 
@@ -284,7 +283,11 @@ class PreferenceModel(Model):
         log_p_w = 0.0
         for j, probit in enumerate(self.probits):
             if y[j] is not None:
-                p_w_local = probit.log_likelihood(y[j], F)
+                try:
+                    p_w_local = probit.log_likelihood(y[j], F)
+                except:
+                    import pdb
+                    pdb.set_trace()
 
                 log_p_w += p_w_local
 
@@ -358,6 +361,8 @@ class PreferenceModel(Model):
     #
     # @return F_new after the update function
     def newton_update(self, F, gradient, hess,
+                                loss_func,
+                                loss_args=None,
                                 invert_function=np.linalg.inv,
                                 lambda_type="static",
                                 line_search_max_itr = 5):
@@ -373,9 +378,9 @@ class PreferenceModel(Model):
 
         if lambda_type == "binary":
             # search along the descent direction for the min point.
-            lamb = self.binary_line_search(F, descent, max_itr=line_search_max_itr)
+            lamb = self.binary_line_search(F, descent, loss_func, loss_args, max_itr=line_search_max_itr)
         elif lambda_type == "iter":
-            lamb = self.iterative_line_search(F, descent, max_itr=line_search_max_itr)
+            lamb = self.iterative_line_search(F, descent, loss_func, loss_args, max_itr=line_search_max_itr)
         elif lambda_type == "static":
             lamb = self.lambda_gp
         else:
@@ -395,7 +400,7 @@ class PreferenceModel(Model):
     # @param max_itr - [opt] the maximum number of iterations allowed to search
     #
     # @return lambda for the binary search.
-    def binary_line_search(self, F, descent, min_lambda=0.0, max_lambda=1.5, max_itr=5):
+    def binary_line_search(self, F, descent, loss_func, loss_args, min_lambda=0.0, max_lambda=1.5, max_itr=5):
         # search along the descent direction for the min point.
 
         #max_lamda = 1.5 # set the max value away from the decent direction to search
@@ -408,8 +413,8 @@ class PreferenceModel(Model):
             lam_1 = lam_dis * 0.25 + min_lambda
             lam_2 = lam_dis * 0.75 + min_lambda
 
-            loss_1 = self.loss_func(F - lam_1 * descent)
-            loss_2 = self.loss_func(F - lam_2 * descent)
+            loss_1 = loss_func(F - lam_1 * descent, *loss_args)
+            loss_2 = loss_func(F - lam_2 * descent, *loss_args)
 
             if loss_1 > loss_2:
                 max_lambda = mid_lambda
@@ -426,13 +431,13 @@ class PreferenceModel(Model):
     # @param max_itr - [opt] the maximum number of iterations allowed to search
     #
     # @return lambda for the binary search.
-    def iterative_line_search(self, F, descent, min_lambda=0.01, max_lambda=1.5, max_itr=10):
+    def iterative_line_search(self, F, descent, loss_func, loss_args, min_lambda=0.01, max_lambda=1.5, max_itr=10):
         lambda_search_pts = np.arange(min_lambda, max_lambda, (max_lambda - min_lambda)/max_itr)
         best_lamb = -1
         best_loss = -np.inf
 
         for lamb in lambda_search_pts:
-            loss = self.loss_func(F - lamb * descent)
+            loss = loss_func(F - lamb * descent, *loss_args)
             if loss > best_loss:
                 best_lamb = lamb
                 best_loss = loss
@@ -451,13 +456,20 @@ class PreferenceModel(Model):
     # raise an exception.
     # @param ax - [opt] the axes to plot on
     # @param color - [opt default='blue] the color of the arrows drawn. 
-    def plot_preference(self, ax=plt.gca(), color='#E69F00', alpha=0.3, width=0.005, head_width=0.015):
+    def plot_preference(self, ax=plt.gca(), color='#E69F00', alpha=0.3, width=0.005, head_width=0.015, y_train=None, X_train=None, F=None):
+        if y_train is None:
+            y_train = self.y_train
+        if X_train is None:
+            X_train = self.X_train
+        if F is None:
+            F = self.F
+        
         # Ensure there is points to plot
         if self.X_train is not None:
             if len(self.X_train.shape) > 1 and self.X_train.shape[1] > 2:
                 raise ValueError("plot_preference was given larger than 2 dimmension: X_train.shape="+str(self.X_train.shape))
             
-            pref_pairs = self.y_train[self.probit_idxs['relative_discrete']]
+            pref_pairs = y_train[self.probit_idxs['relative_discrete']]
             if pref_pairs is not None:
 
                 # Go through each pair and determine which is the larger index
@@ -468,14 +480,14 @@ class PreferenceModel(Model):
                     else:
                         lg_idx = pair[2]
                         sm_idx = pair[1]
-                    sm_pt = self.X_train[sm_idx]
-                    lg_pt = self.X_train[lg_idx]
+                    sm_pt = X_train[sm_idx]
+                    lg_pt = X_train[lg_idx]
 
 
                     # handle 1d case
-                    if len(self.X_train.shape) == 1:
-                        sm_pt = np.array([sm_pt, self.F[sm_idx]])
-                        lg_pt = np.array([lg_pt, self.F[lg_idx]])
+                    if len(X_train.shape) == 1:
+                        sm_pt = np.array([sm_pt, F[sm_idx]])
+                        lg_pt = np.array([lg_pt, F[lg_idx]])
 
                     diff = lg_pt - sm_pt
                     loc=0.5

@@ -40,17 +40,19 @@ class RBF_kern(KernelFunc):
     ## Constructor
     # @param sigma - the sigma for the rbf kernel
     # @param l - the lengthscale for the rbf_kernel
-    def __init__(self, sigma, l):
+    def __init__(self, sigma, l, sigma_noise=0.01):
         super(RBF_kern, self).__init__()
 
         self.sigma = sigma
         self.l = l
+        self.sigma_noise = sigma_noise
 
     # update the parameters
     # @param theta - vector of parameters to update
     def set_param(self, theta):
         self.sigma = theta[0]
         self.l = theta[1]
+        #self.sigma_noise = theta[2]
 
     # get_param
     # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
@@ -86,8 +88,9 @@ class RBF_kern(KernelFunc):
         top = np.sum(diff*diff, axis=2)
 
         cov = self.sigma * self.sigma * np.exp(-top / (2 * self.l*self.l))
+        if cov.shape[0] == cov.shape[1] and (X[0] == Y[0]).all():
+            cov += np.eye(cov.shape[0])*self.sigma_noise
         return cov
-
 
     def gradient(self, u, v):
         top = (u-v)
@@ -104,7 +107,10 @@ class RBF_kern(KernelFunc):
         top = (u - v)
         top = np.sum(top * top)
 
-        return self.sigma*self.sigma * np.exp(-top / (2 * self.l*self.l))
+        cov = self.sigma*self.sigma * np.exp(-top / (2 * self.l*self.l))# + np.eye(top.shape[0])*self.sigma_noise
+        #if (isinstance(u, np.ndarray) and (u == v).all()) or u == v:
+        #    cov += self.sigma_noise
+        return cov
 
     def __len__(self):
         return 2

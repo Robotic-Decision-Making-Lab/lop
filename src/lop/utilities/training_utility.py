@@ -100,9 +100,10 @@ def k_fold_x_y(X, y, k):
     selected = set()
     remaining = list(range(N))
 
-    for pair in y[0]:
-        conn[pair[1]].add(pair[2])
-        conn[pair[2]].add(pair[1])
+    if y[0] is not None:
+        for pair in y[0]:
+            conn[pair[1]].add(pair[2])
+            conn[pair[2]].add(pair[1])
 
     
 
@@ -134,10 +135,55 @@ def k_fold_x_y(X, y, k):
                 selected.add(shuf_idx)
                 remaining.remove(shuf_idx)
 
+    for split in splits:
+        split.sort()
+
     return splits
 
+def get_y_with_idx(y, indicies):
+    idx_set = set(indicies)
+
+    idx_mapping = {}
+    for i in range(len(indicies)):
+        idx_mapping[indicies[i]] = i
+
+    y_new = [None, None, None]
+
+    if y[0] is not None:
+        for pair in y[0]:
+            if pair[1] in idx_set and pair[2] in idx_set:
+                if y_new[0] is None:
+                    y_new[0] = []
+                y_new[0].append(np.array([pair[0], idx_mapping[pair[1]], idx_mapping[pair[2]]]))
+
+        if y_new[0] is not None:
+            y_new[0] = np.array(y_new[0])
+
+    
+    if y[1] is not None:
+        y_new_0 = []
+        y_new_1 = []
+        for i in range(len(y[1][0])):
+            if y[1][1][i] in idx_set:
+                y_new_0.append(y[1][0][i])
+                y_new_1.append(idx_mapping[y[1][1][i]])
+
+        if len(y_new_1) > 0:
+            y_new[1] = (np.array(y_new_0), np.array(y_new_1))
+
+    if y[2] is not None:
+        y_new_0 = []
+        y_new_1 = []
+        for i in range(len(y[2][0])):
+            if y[2][1][i] in idx_set:
+                y_new_0.append(y[2][0][i])
+                y_new_1.append(idx_mapping[y[2][1][i]])
+
+        if len(y_new_1) > 0:
+            y_new[2] = (np.array(y_new_0), np.array(y_new_1))
 
 
+    return y_new
 
 def union_splits(splits, idx_to_combine):
     # TODO This needs to be fixed

@@ -60,7 +60,7 @@ def main():
 
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False, normalize_positive=False)
     gp.cov_func.set_param(np.array([0.5, 1.0]))
     gp.probits[0].set_sigma(0.5)
     gp.add(X_train, pairs)
