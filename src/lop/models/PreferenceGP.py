@@ -212,7 +212,6 @@ class PreferenceGP(PreferenceModel):
     # This function calculates the mode of the F vector by using the damped newton update
     #
     def find_mode(self, x_train, y_train, debug=False):
-        print('Find mode called')
         X_train = x_train
 
         self.K = self.cov_func.cov(X_train, X_train) + np.eye(X_train.shape[0]) * self.K_sigma
@@ -324,6 +323,7 @@ class PreferenceGP(PreferenceModel):
     def hyperparameter_obj(self, x, X_train, y_train, X_valid, y_valid):
 
         self.set_hyper(x)
+        self.find_mode(X_train, y_train)
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
         
@@ -348,22 +348,28 @@ class PreferenceGP(PreferenceModel):
         self.debug_print = True
 
         args = (X_train, y_train, X_valid, y_valid)
-        bounds = [(0.001, 10.0) for i in range(len(x0))]
-        result = opt.minimize(
-                    fun=self.hyperparameter_obj,
-                    x0=x0,
+        bounds = [(0.01, 10.0) for i in range(len(x0))]
+        # result = opt.minimize(
+        #             fun=self.hyperparameter_obj,
+        #             x0=x0,
+        #             bounds=bounds,
+        #             args=args,
+        #             tol=0.1, 
+        #             options={'maxiter': 80, 'disp': False})
+        #             #jac=)
+        result = opt.differential_evolution(
+                    func=self.hyperparameter_obj,
                     bounds=bounds,
                     args=args,
-                    tol=0.1, 
-                    options={'maxiter': 80, 'disp': False})
-                    #jac=)
+                    tol=0.1,
+        )
         self.debug_print = False
 
         print(result)
 
-        #self.set_hyper(result.x)
-        #self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
-        #self.set_hyper(result.x)
+        self.set_hyper(result.x)
+        self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
+        self.set_hyper(result.x)
 
 
 
@@ -426,10 +432,10 @@ class PreferenceGP(PreferenceModel):
         term2 = 0.5 * np.log(np.linalg.det(tmp))
         #pdb.set_trace()
         if self.debug_print:
-            print(len(y[0]))
+            print(np.linalg.det(tmp))
 
-        return log_py_f - term1 - term2
-        #return log_py_f
+        #return log_py_f - term1 - term2
+        return -term2
 
 
     ## likli_f
