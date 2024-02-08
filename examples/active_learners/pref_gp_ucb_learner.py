@@ -70,7 +70,7 @@ def main():
     #al = lop.GV_UCBLearner()
     al = lop.RandomLearner()
     #al = lop.UCBLearner()
-    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False)
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=True)
     model.probits[0].set_sigma(0.5)
 
     fig = plt.figure()

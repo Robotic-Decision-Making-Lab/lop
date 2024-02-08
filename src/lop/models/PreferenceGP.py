@@ -40,6 +40,7 @@ from lop.models import PreferenceModel
 from lop.utilities import k_fold_x_y, get_y_with_idx
 
 import math
+import matplotlib.pyplot as plt
 
 import pdb
 
@@ -211,6 +212,7 @@ class PreferenceGP(PreferenceModel):
     # This function calculates the mode of the F vector by using the damped newton update
     #
     def find_mode(self, x_train, y_train, debug=False):
+        print('Find mode called')
         X_train = x_train
 
         self.K = self.cov_func.cov(X_train, X_train) + np.eye(X_train.shape[0]) * self.K_sigma
@@ -282,29 +284,30 @@ class PreferenceGP(PreferenceModel):
 
     def optimize(self, optimize_hyperparameter=False):
         if optimize_hyperparameter:
-            k_fold = 2
-            splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
+            for j in range(1):
+                k_fold = 2
+                splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
+                if splits is not None:
+                    for i in range(k_fold):
+                        k_fold_but_valid = list(range(k_fold))
+                        k_fold_but_valid.remove(i)
 
-            for i in range(k_fold):
-                k_fold_but_valid = list(range(k_fold))
-                k_fold_but_valid.remove(i)
+                        train_idxs = []
+                        for k in k_fold_but_valid:
+                            train_idxs += splits[k]
 
-                train_idxs = []
-                for k in k_fold_but_valid:
-                    train_idxs += splits[k]
+                        X_training = self.X_train[train_idxs]
+                        y_training = get_y_with_idx(self.y_train, train_idxs)
+                        
 
-                X_training = self.X_train[train_idxs]
-                y_training = get_y_with_idx(self.y_train, train_idxs)
-                
-
-                print('Hyperparameters: ')
-                print(self.get_hyper())
-                self.find_mode(X_training, y_training)
-                self.hyperparameter_search(X_training,
-                                            y_training,
-                                            self.X_train, 
-                                            self.y_train, 
-                                            i)
+                        print('Hyperparameters: ')
+                        print(self.get_hyper())
+                        self.find_mode(X_training, y_training)
+                        self.hyperparameter_search(X_training,
+                                                    y_training,
+                                                    self.X_train, 
+                                                    self.y_train, 
+                                                    i)
 
 
         print('Output hyperparameters')
@@ -319,15 +322,14 @@ class PreferenceGP(PreferenceModel):
     #
     # @return the objective to be minimized
     def hyperparameter_obj(self, x, X_train, y_train, X_valid, y_valid):
-        #X_train = args[0]
-        #y_valid = args[1]
+
         self.set_hyper(x)
-        #F = self.F
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
         
-        return -self.likli_f(F, X_valid, y_valid)
-        #return self.likli_f_hyper(F, X_valid, y_valid)
+        #return x[0]**2 + x[1]**2 + x[2]**2
+        #return -self.likli_f(F, X_valid, y_valid)
+        return -self.likli_f_hyper(F, X_valid, y_valid)
 
 
     ## hyperparameter_search
@@ -336,9 +338,14 @@ class PreferenceGP(PreferenceModel):
         # uses the scipy optimizer to perform the optimization
         self.optimized = True
 
-        self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
-
         x0 = self.get_hyper()
+
+        
+
+        self.set_hyper(x0)
+        x0 = np.random.random((2,))*3.0
+
+        self.debug_print = True
 
         args = (X_train, y_train, X_valid, y_valid)
         bounds = [(0.001, 10.0) for i in range(len(x0))]
@@ -347,13 +354,16 @@ class PreferenceGP(PreferenceModel):
                     x0=x0,
                     bounds=bounds,
                     args=args,
-                    tol=0.01, 
-                    options={'maxiter': 20, 'disp': False})
+                    tol=0.1, 
+                    options={'maxiter': 80, 'disp': False})
                     #jac=)
+        self.debug_print = False
 
         print(result)
 
-        self.set_hyper(result.x)
+        #self.set_hyper(result.x)
+        #self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
+        #self.set_hyper(result.x)
 
 
 
@@ -368,6 +378,7 @@ class PreferenceGP(PreferenceModel):
         probit_p = super().get_hyper()
 
         kernel_p = self.cov_func.get_param()
+        return np.array([probit_p[0], kernel_p[1]])
 
         return np.append(probit_p, kernel_p, axis=0)
 
@@ -381,9 +392,10 @@ class PreferenceGP(PreferenceModel):
 
 
         #super().set_hyper(x[:num_probit_p])
-        super().set_hyper(np.array([0.5]))
-        self.cov_func.set_param(x[num_probit_p:])
+        super().set_hyper(np.array([x[0]]))
+        #self.cov_func.set_param(x[num_probit_p:])
 
+        self.cov_func.set_param(np.array([0.5, x[1]]))
 
 
     ######################## helper functions for calculating liklihood
@@ -401,18 +413,24 @@ class PreferenceGP(PreferenceModel):
 
          # calculate the log-likelyhood of the data given F
         #log_py_f = self.log_likelyhood_training(F, y)
-        x_prev = super().get_hyper()
-        super().set_hyper(np.array([0.1]))
+        #x_prev = super().get_hyper()
+        #super().set_hyper(np.array([0.1]))
         W, grad_ll, log_py_f = self.derivatives(y, F)
-        super().set_hyper(x_prev)
+        #super().set_hyper(x_prev)
         L = np.linalg.cholesky(K)
 
         
         term1 = 0.5*(np.transpose(F) @ cho_solve((L, True), F))
 
-        term2 = 0.5 * np.log(np.linalg.det(np.eye(K.shape[0]) + (K @ W)))
+        tmp = np.eye(K.shape[0]) + (K @ W)
+        term2 = 0.5 * np.log(np.linalg.det(tmp))
+        #pdb.set_trace()
+        if self.debug_print:
+            print(len(y[0]))
 
         return log_py_f - term1 - term2
+        #return log_py_f
+
 
     ## likli_f
     # calculates the posterior log liklihood function for the model
@@ -457,8 +475,8 @@ class PreferenceGP(PreferenceModel):
     def visualize_hyperparameter(self, F, x, x_train, y, y_train, itr=0):
         import matplotlib.pyplot as plt
 
-        rbf_sigmas = np.arange(0.001, 15.0, 0.2)
-        rbf_lengths = np.arange(0.01,15.0, 0.2)
+        rbf_sigmas = np.logspace(0.01, 1.0, 50)
+        rbf_lengths = np.logspace(0.01,1.0, 50)
 
         liklihoods = np.zeros((rbf_sigmas.shape[0], rbf_lengths.shape[0]))
 
@@ -468,18 +486,19 @@ class PreferenceGP(PreferenceModel):
         std = np.sqrt(sigma)
 
         # perform exhastive search of kernel parameters
-        for i, rbf_sigma in enumerate(rbf_sigmas):
-            for j, rbf_length in enumerate(rbf_lengths):
-                self.cov_func.set_param(np.array([rbf_sigma, rbf_length]))
+        # for i, rbf_sigma in enumerate(rbf_sigmas):
+        #     for j, rbf_length in enumerate(rbf_lengths):
+        #         self.cov_func.set_param(np.array([rbf_sigma, rbf_length]))
 
-                W, _, _ = self.derivatives(y_train, F)
-                F_post, _ = self.predict(x, x_train, F, W)
-                likli = self.likli_f_hyper(F_post, x, y)
+        #         param = self.get_hyper()
+        #         param[1] = rbf_sigma
+        #         param[2] = rbf_length
+        #         likli = self.hyperparameter_obj(param, x_train, y_train, x, y)
 
-                liklihoods[i,j] = likli
+        #         liklihoods[i,j] = likli
 
 
-        probit_sigmas = np.arange(0.001, 15.0, 0.2)
+        probit_sigmas = np.logspace(0.01, 1.0, 50)
 
         liklihoods_pro = np.zeros((rbf_sigmas.shape[0], rbf_lengths.shape[0]))
 
@@ -489,28 +508,31 @@ class PreferenceGP(PreferenceModel):
                 self.cov_func.set_param(np.array([0.5, rbf_length]))
                 self.probits[0].set_sigma(pro_sigma)
 
-                W, _, _ = self.derivatives(y_train, F)
-                F_post, _ = self.predict(x, x_train, F, W)
-                likli = self.likli_f_hyper(F_post, x, y)
+                #param = np.array([pro_sigma, 0.5, rbf_length])
+                param = np.array([pro_sigma, rbf_length])
+                likli = self.hyperparameter_obj(param, x_train, y_train, x, y)
 
                 liklihoods_pro[i,j] = likli
 
 
         # plot the data
-        plt.figure()
-        plt.contour(rbf_sigmas, rbf_lengths, liklihoods.T, levels=20)
-        plt.xlabel('RBF sigma values')
-        plt.ylabel('RBF length scale')
-        plt.title('Postierer liklihood function (log liklihood) itr: ' + str(itr))
-        plt.colorbar()
+        # plt.figure()
+        # plt.contour(rbf_sigmas, rbf_lengths, liklihoods.T, levels=20)
+        # plt.xlabel('RBF sigma values')
+        # plt.ylabel('RBF length scale')
+        # plt.title('Postierer liklihood function (log liklihood) itr: ' + str(itr))
+        # plt.colorbar()
 
         plt.figure()
+        ax = plt.gca()
         plt.contour(probit_sigmas, rbf_lengths, liklihoods_pro.T, levels=20)
         plt.xlabel('Probit sigma values')
         plt.ylabel('RBF length scale')
         plt.title('Postierer liklihood function (log liklihood) itr: ' + str(itr))
         plt.colorbar()
 
+        ax.set_yscale('log')
+        ax.set_xscale('log')
         
 
         plt.figure()
@@ -521,6 +543,8 @@ class PreferenceGP(PreferenceModel):
         ax.fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
         self.plot_preference(head_width=0.1, ax=ax, X_train=x_train, y_train=y_train, F=F)
         ax.scatter(x_train, F)
+
+        
 
         plt.title('Gaussian Process estimate (1 sigma) itr: ' + str(itr))
         plt.xlabel('x')

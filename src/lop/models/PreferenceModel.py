@@ -461,7 +461,7 @@ class PreferenceModel(Model):
             y_train = self.y_train
         if X_train is None:
             X_train = self.X_train
-        if F is None:
+        if F is None and X_train is not None:
             F = self.F
         
         # Ensure there is points to plot
