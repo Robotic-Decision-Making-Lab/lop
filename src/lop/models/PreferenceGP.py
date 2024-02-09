@@ -65,12 +65,10 @@ class PreferenceGP(PreferenceModel):
     #                   defaults to the numpy.linalg.pinv invert function
     # @param use_hyper_optimization - [opt] sets whether optimizatiion should attempt to
     #                   do hyperparameter optimization
-    # @param K_sigma - [opt default=0.01] sets the sigma value on the covariance matrix.
-    #                   K = cov(X) + I * K_sigma
     # @param active_learner - defines if there is an active learner for this model
     def __init__(self, cov_func, normalize_gp=False, pareto_pairs=False, \
                 normalize_positive=False, other_probits={}, mat_inv=np.linalg.pinv, \
-                use_hyper_optimization=False, K_sigma = 0.00, active_learner=None):
+                use_hyper_optimization=False, active_learner=None):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
 
         self.cov_func = cov_func
@@ -83,7 +81,6 @@ class PreferenceGP(PreferenceModel):
         self.normalize_positive = normalize_positive
         self.use_hyper_optimization = use_hyper_optimization
 
-        self.K_sigma = K_sigma
         self.delta_f = 0.0002 # set the convergence to stop
         self.maxloops = 100
         
@@ -214,7 +211,7 @@ class PreferenceGP(PreferenceModel):
     def find_mode(self, x_train, y_train, debug=False):
         X_train = x_train
 
-        self.K = self.cov_func.cov(X_train, X_train) + np.eye(X_train.shape[0]) * self.K_sigma
+        self.K = self.cov_func.cov(X_train, X_train)
 
         F = np.random.random(len(X_train))
         
@@ -227,18 +224,15 @@ class PreferenceGP(PreferenceModel):
             self.W, self.grad_ll, self.log_likelihood = \
                                             self.derivatives(y_train, F)
 
-            #K_inv = self.invert_function(self.K)
             L = np.linalg.cholesky(self.K)
             L_inv = self.invert_function(L)
             K_inv = L_inv.T @ L_inv
-            #gradient = self.grad_ll - (K_inv @ F)
+            
             gradient = self.grad_ll - cho_solve((L,True), F)
 
             # Hessian:
             hess = -self.W - K_inv
 
-            #pdb.set_trace()
-            #l_f = lambda F, x, y: -self.likli_f
             F_new = self.newton_update( F, # estimated training values
                                         gradient, # Gradient input to newton's method
                                         hess, # The hessian matrix input
@@ -282,9 +276,11 @@ class PreferenceGP(PreferenceModel):
                                         self.derivatives(y_train, self.F)
 
     def optimize(self, optimize_hyperparameter=False):
-        if optimize_hyperparameter:
-            for j in range(1):
-                k_fold = 2
+        if optimize_hyperparameter and self.X_train is not None:
+            k_fold = min(math.floor(len(self.X_train) / 2), 3)
+            num_iterations = 8
+
+            for j in range(math.ceil(num_iterations / k_fold)):
                 splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
                 if splits is not None:
                     for i in range(k_fold):
@@ -320,7 +316,7 @@ class PreferenceGP(PreferenceModel):
     # @param args - the input arguments either than the actual hyperparameters
     #
     # @return the objective to be minimized
-    def hyperparameter_obj(self, x, X_train, y_train, X_valid, y_valid):
+    def hyperparameter_obj(self, x, X_train, y_train, X_valid, y_valid, bounds):
 
         self.set_hyper(x)
         self.find_mode(X_train, y_train)
@@ -329,7 +325,8 @@ class PreferenceGP(PreferenceModel):
         
         #return x[0]**2 + x[1]**2 + x[2]**2
         #return -self.likli_f(F, X_valid, y_valid)
-        return -self.likli_f_hyper(F, X_valid, y_valid)
+        #bounds_cost = 5*sum([np.exp(-20*(np.abs(x[i] - bounds[i][0]))) + np.exp(-20*(np.abs(x[i] - bounds[i][1]))) for i in range(len(bounds))])
+        return -self.likli_f_hyper(F, X_valid, y_valid)# + bounds_cost
 
 
     ## hyperparameter_search
@@ -342,34 +339,34 @@ class PreferenceGP(PreferenceModel):
 
         
 
-        self.set_hyper(x0)
-        x0 = np.random.random((2,))*3.0
+        #self.set_hyper(x0)
+        #x0 = np.random.random((2,))*3.0
 
         self.debug_print = True
 
-        args = (X_train, y_train, X_valid, y_valid)
         bounds = [(0.01, 10.0) for i in range(len(x0))]
-        # result = opt.minimize(
-        #             fun=self.hyperparameter_obj,
-        #             x0=x0,
-        #             bounds=bounds,
-        #             args=args,
-        #             tol=0.1, 
-        #             options={'maxiter': 80, 'disp': False})
-        #             #jac=)
-        result = opt.differential_evolution(
-                    func=self.hyperparameter_obj,
+        args = (X_train, y_train, X_valid, y_valid, bounds)
+        result = opt.minimize(
+                    fun=self.hyperparameter_obj,
+                    x0=x0,
                     bounds=bounds,
                     args=args,
-                    tol=0.1,
-        )
+                    tol=0.01, 
+                    options={'maxiter': 1, 'disp': False})
+                    #jac=)
+        # result = opt.differential_evolution(
+        #             func=self.hyperparameter_obj,
+        #             bounds=bounds,
+        #             args=args,
+        #             tol=0.1,
+        # )
         self.debug_print = False
 
         print(result)
 
         self.set_hyper(result.x)
-        self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
-        self.set_hyper(result.x)
+        # self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
+        # self.set_hyper(result.x)
 
 
 
@@ -384,7 +381,7 @@ class PreferenceGP(PreferenceModel):
         probit_p = super().get_hyper()
 
         kernel_p = self.cov_func.get_param()
-        return np.array([probit_p[0], kernel_p[1]])
+        #return np.array([probit_p[0], kernel_p[1]])
 
         return np.append(probit_p, kernel_p, axis=0)
 
@@ -397,14 +394,54 @@ class PreferenceGP(PreferenceModel):
         num_probit_p = len(super().get_hyper())
 
 
-        #super().set_hyper(x[:num_probit_p])
-        super().set_hyper(np.array([x[0]]))
-        #self.cov_func.set_param(x[num_probit_p:])
+        super().set_hyper(x[:num_probit_p])
+        #super().set_hyper(np.array([x[0]]))
+        self.cov_func.set_param(x[num_probit_p:])
 
-        self.cov_func.set_param(np.array([0.5, x[1]]))
+        #self.cov_func.set_param(np.array([0.5, x[1]]))
 
 
     ######################## helper functions for calculating liklihood
+
+
+    ## grad_likli_f_hyper
+    # This calculates the gradient of the liklihood function and the cost
+    # of the function at the same time.
+    #
+    def grad_likli_f_hyper(self, F, x, y):
+        K = self.cov_func.cov(x, x)
+        dK_param = self.cov_func(x,x)
+
+        W, grad_ll, log_py_f = self.derivatives(y, F)
+
+        L_K = np.linalg.cholesky(K)
+        alpha_K = cho_solve((L_K, True), F)
+
+        B = np.eye(K.shape[0]) + (K @ W)
+        B_inv = self.invert_function(B)
+
+
+        # Covariance function deriviatives
+        dL_cov_f = np.zeros(len(dK_param))
+        for i in range(len(dK_param)):
+            # equation (204, first half)
+            termA_1 = 0.5 * np.transpose(alpha_K) @ dK_param[i] @ alpha_K
+            # Equation (204, second half)
+            termA_2 = 0.5 * np.trace(B_inv @ dK_param[i] @ W)
+
+            # Equation (205)
+            termB_2 = B_inv @ dK_param[i] @ grad_ll
+            # Equation 209
+            termB_1 = 0.5 * np.trace(B_inv @ K @ dW_f, axis1=1, axis2=2)
+
+            dL_cov_f[i] = termA_1 - termA_2 + np.sum(termB_2 - termB_1)
+
+
+        # Liklihood function parameters
+
+        
+        return 0
+
 
     ## likli_f_hyper
     # calculates the posterior log liklihood function for the model given parameters
@@ -415,7 +452,7 @@ class PreferenceGP(PreferenceModel):
     #
     # @return a scalar value as the log liklihood of the model
     def likli_f_hyper(self, F, x, y):
-        K = self.cov_func.cov(x, x) + np.eye(x.shape[0]) * self.K_sigma
+        K = self.cov_func.cov(x, x)
 
          # calculate the log-likelyhood of the data given F
         #log_py_f = self.log_likelyhood_training(F, y)
@@ -434,8 +471,8 @@ class PreferenceGP(PreferenceModel):
         if self.debug_print:
             print(np.linalg.det(tmp))
 
-        #return log_py_f - term1 - term2
-        return -term2
+        return log_py_f - term1 - term2
+        #return -term2
 
 
     ## likli_f
@@ -446,8 +483,7 @@ class PreferenceGP(PreferenceModel):
     #
     # @return a scalar value as the log liklihood of the model
     def likli_f(self, F, x, y):
-        K = self.cov_func.cov(x, x) + np.eye(x.shape[0]) * self.K_sigma
-
+        K = self.cov_func.cov(x, x)
          # calculate the log-likelyhood of the data given F
         log_py_f = self.log_likelyhood_training(F, y)
         L = np.linalg.cholesky(K)

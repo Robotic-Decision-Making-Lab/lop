@@ -92,6 +92,36 @@ class RBF_kern(KernelFunc):
             cov += np.eye(cov.shape[0])*self.sigma_noise
         return cov
 
+    # get gradient of the covariance matrix
+    # calculate the covariance matrix between the samples given in X
+    # @param X - samples (n1,k) array where n is the number of samples,
+    #        and k is the dimension of the samples
+    # @param Y - samples (n2, k)
+    #
+    # @return the covariance gradient tensor of the samples. [n1, n2, k]
+    def cov_gradient(self, X, Y):
+        N = X.shape[0]
+        M = Y.shape[0]
+
+        if len(X.shape) == 1:
+            X = X[:,np.newaxis]
+        if len(Y.shape) == 1:
+            Y = Y[:,np.newaxis]
+
+
+        X_expanded = np.repeat(X[:,np.newaxis,:], M, axis=1)
+        Y_expanded = np.repeat(Y[np.newaxis,:,:], N, axis=0)
+        diff = X_expanded - Y_expanded
+        top = np.sum(diff*diff, axis=2)
+
+        exp_x = np.exp(-top / (2 * self.l*self.l))
+
+        dSigma = 2 * self.sigma * exp_x
+        dl = 2 * self.sigma * self.sigma * top * exp_x / (self.l*self.l*self.l)
+
+        return dSigma, dl
+
+
     def gradient(self, u, v):
         top = (u-v)
         top = np.sum(top*top)

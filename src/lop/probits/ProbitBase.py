@@ -96,6 +96,14 @@ class ProbitBase:
     def derivatives(self, y, F):
         raise NotImplementedError('derivatives not implemented')
 
+    ## grad_hyper
+    # Calculates the gradient of p(y|F) given the parameters of the probit
+    # @param y - the given set of labels for the probit
+    # @param F - the input data samples
+    #
+    # @return numpy array (gradient of probit with respect to hyper parameters)
+    def grad_hyper(self, y, F):
+        raise NotImplementedError('grad hyper parameters not implemented')
 
     ## likelihood
     # Returns the liklihood function for the given probit

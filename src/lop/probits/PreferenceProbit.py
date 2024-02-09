@@ -111,6 +111,20 @@ class PreferenceProbit(ProbitBase):
 
         return derv_ll
 
+    ## grad_hyper
+    # Calculates the gradient of p(y|F) given the parameters of the probit
+    # @param y - the given set of labels for the probit
+    # @param F - the input data samples
+    #
+    # @return numpy array (gradient of probit with respect to hyper parameters)
+    def grad_hyper(self, y, F):
+        zk = self.z_k(y, F)
+        pdf_cdf_ratio, pdf_cdf_ratio2 = calc_pdf_cdf_ratio(zk)
+
+        dP_dSigma = -np.sum(zk * pdf_cdf_ratio) / self.sigma
+
+        return np.array([dP_dSigma])
+
     ## calc_W
     # caclulate the W matrix
     # Calculates the second derivative of discrete log likelihood.
@@ -145,6 +159,24 @@ class PreferenceProbit(ProbitBase):
 
         return W
 
+    ## calc_W_dF
+    # Calculate the third derivative of the W matrix.
+    # d ln(p(dk|F(u), F(v))) / d f_i, f_j, f_k
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (65)
+    #
+    # @param y - the label for the given probit (dk, u, v) (must be a numpy array)
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 3d matrix
+    def calc_W_dF(self, y, F):
+        z = self.z_k(y, F)
+        pdf_cdf_ratio, pdf_cdf_ratio2 = calc_pdf_cdf_ratio(z)
+
+        paren_pairs = np.where(np.logical_and(z < 0, np.isinf(pdf_cdf_ratio)), 0, \
+                        pdf_cdf_ratio - z*z*pdf_cdf_ratio - 3*z*pdf_cdf_ratio2 - 2 * pdf_cdf_ratio2 * std_norm_pdf(z))
+
+        ## TODO HERE
 
     ## derivatives
     # Calculates the derivatives of the probit with the given input data

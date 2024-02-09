@@ -122,6 +122,19 @@ def test_rbf():
     assert rbf(1,2) > 0.5 # probably right
     assert rbf(1,2) < 0.7 # probably right
 
+def test_rbf_grad_cov():
+    rbf = lop.RBF_kern(1, 1)
+
+    X = np.array([1,3,4,5,6,7])
+
+    dK_sigma, dK_l = rbf.cov_gradient(X,X)
+
+    assert dK_sigma.shape[0] == len(X) and dK_sigma.shape[1] == len(X)
+    assert dK_l.shape[0] == len(X) and dK_l.shape[1] == len(X)
+    assert (np.diag(dK_l) == 0).all()
+
+
+
 def test_PeriodicKern():
     perd = lop.PeriodicKern(1,1,3)
     assert perd(1,2) > 0.15 # probably right
