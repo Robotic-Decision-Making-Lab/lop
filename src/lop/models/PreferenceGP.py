@@ -40,6 +40,7 @@ from lop.models import PreferenceModel
 from lop.utilities import k_fold_x_y, get_y_with_idx
 
 import math
+from types import SimpleNamespace
 import matplotlib.pyplot as plt
 
 import pdb
@@ -277,8 +278,8 @@ class PreferenceGP(PreferenceModel):
 
     def optimize(self, optimize_hyperparameter=False):
         if optimize_hyperparameter and self.X_train is not None:
-            k_fold = min(math.floor(len(self.X_train) / 2), 3)
-            num_iterations = 8
+            k_fold = min(math.floor(len(self.X_train) / 2), 2)
+            num_iterations = 100
 
             for j in range(math.ceil(num_iterations / k_fold)):
                 splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
@@ -328,6 +329,13 @@ class PreferenceGP(PreferenceModel):
         #bounds_cost = 5*sum([np.exp(-20*(np.abs(x[i] - bounds[i][0]))) + np.exp(-20*(np.abs(x[i] - bounds[i][1]))) for i in range(len(bounds))])
         return -self.likli_f_hyper(F, X_valid, y_valid)# + bounds_cost
 
+    def hyperparamter_obj_grad(self, x, X_train, y_train, X_valid, y_valid, bounds):
+        self.set_hyper(x)
+        self.find_mode(X_train, y_train)
+        W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
+        F,_ = self.predict(X_valid, X_train, self.F, W)
+
+        return -self.grad_likli_f_hyper(F, X_valid, y_valid)
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
@@ -345,15 +353,26 @@ class PreferenceGP(PreferenceModel):
         self.debug_print = True
 
         bounds = [(0.01, 10.0) for i in range(len(x0))]
-        args = (X_train, y_train, X_valid, y_valid, bounds)
-        result = opt.minimize(
-                    fun=self.hyperparameter_obj,
-                    x0=x0,
-                    bounds=bounds,
-                    args=args,
-                    tol=0.01, 
-                    options={'maxiter': 1, 'disp': False})
-                    #jac=)
+        print('cost_prior to update: ' + str(self.hyperparameter_obj(x0, X_train, y_train, X_valid, y_valid, bounds)))
+
+        
+        grad_hyper = self.hyperparamter_obj_grad(x0, X_train, y_train, X_valid, y_valid, bounds)
+        grad_hyper[1] = 0
+        print('grad_hyper = ' + str(grad_hyper))
+
+        x_new = x0 - grad_hyper * 0.01
+        print('cost post update: ' + str(self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)))
+        result = SimpleNamespace(x=x_new)
+
+        # args = (X_train, y_train, X_valid, y_valid, bounds)
+        # result = opt.minimize(
+        #             fun=self.hyperparameter_obj,
+        #             jac=self.hyperparamter_obj_grad,
+        #             x0=x0,
+        #             bounds=bounds,
+        #             args=args,
+        #             tol=0.01, 
+        #             options={'maxiter': 1, 'disp': False})
         # result = opt.differential_evolution(
         #             func=self.hyperparameter_obj,
         #             bounds=bounds,
@@ -410,7 +429,7 @@ class PreferenceGP(PreferenceModel):
     #
     def grad_likli_f_hyper(self, F, x, y):
         K = self.cov_func.cov(x, x)
-        dK_param = self.cov_func(x,x)
+        dK_param = self.cov_func.cov_gradient(x,x)
 
         W, grad_ll, log_py_f = self.derivatives(y, F)
 
@@ -420,6 +439,17 @@ class PreferenceGP(PreferenceModel):
         B = np.eye(K.shape[0]) + (K @ W)
         B_inv = self.invert_function(B)
 
+        # Calculate derivative of W matrix with respect to the F vecotr (3d np array)
+        dW_f = None
+        for i, probit in enumerate(self.probits):
+            if y[i] is not None:
+                dW_f_local = probit.calc_W_dF(y[i], F)
+                if dW_f is None:
+                    dW_f = dW_f_local
+                else:
+                    dW_f += dW_f_local
+
+        
 
         # Covariance function deriviatives
         dL_cov_f = np.zeros(len(dK_param))
@@ -438,9 +468,29 @@ class PreferenceGP(PreferenceModel):
 
 
         # Liklihood function parameters
+        probit_grads = []
+        for i, probit in enumerate(self.probits):
+            if y[i] is not None:
+                grad_theta = probit.grad_hyper(y[i], F)
+                dW_hyper = probit.calc_W_dHyper(y[i], F)
 
-        
-        return 0
+                # equation (22)
+                term2 = 0.5 * np.trace(B_inv @ K @ dW_hyper, axis1=1, axis2=2)
+
+                probit_grads.append(grad_theta-term2)
+
+        grad_hyper = None
+        for probit_grad in probit_grads:
+            if grad_hyper is None:
+                grad_hyper = probit_grad
+            else:
+                grad_hyper = np.append(grad_hyper, probit_grad, axis=0)
+        if grad_hyper is None:
+            grad_hyper = dL_cov_f
+        else:
+            grad_hyper = np.append(grad_hyper, dL_cov_f, axis=0)
+
+        return grad_hyper
 
 
     ## likli_f_hyper
@@ -488,19 +538,10 @@ class PreferenceGP(PreferenceModel):
         log_py_f = self.log_likelyhood_training(F, y)
         L = np.linalg.cholesky(K)
 
-        #K_inv = self.invert_function(K)
-        #term1 = 0.5*(np.transpose(F) @ K_inv @ F)
         term1 = 0.5*(np.transpose(F) @ cho_solve((L, True), F))
 
         # Determinant of lower tringular matrix is product of diagonals
         log_det_K = np.sum(np.log(np.diagonal(L)))
-        # det_K = np.linalg.det(K)
-        # while det_K <= 0:
-        #     #K = K + np.eye(K.shape[0])*0.01
-        #     rand_arr = np.random.normal(0, 0.1, size=K.shape[0])
-        #     K = K + np.diag(np.where(rand_arr<0, 0, rand_arr))
-        #     print('Adding noise to covariance matrix to avoid being singular')
-        #     det_K = np.linalg.det(K)
         term2 = log_det_K #np.log(det_K)
 
         term3 = 0.5*len(F) * np.log(2 * np.pi)

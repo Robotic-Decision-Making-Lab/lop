@@ -175,8 +175,55 @@ class PreferenceProbit(ProbitBase):
 
         paren_pairs = np.where(np.logical_and(z < 0, np.isinf(pdf_cdf_ratio)), 0, \
                         pdf_cdf_ratio - z*z*pdf_cdf_ratio - 3*z*pdf_cdf_ratio2 - 2 * pdf_cdf_ratio2 * std_norm_pdf(z))
+        paren_pairs *= y[:,0]*y[:,0]*y[:,0]
+        paren_pairs *= -1 / (2 * np.sqrt(2) * self.sigma * self.sigma * self.sigma)
 
-        ## TODO HERE
+
+        N = len(F)
+        dW = np.zeros((N, N, N))
+        dW = add_up_W_partial(y, paren_pairs, dW)
+
+        return dW
+
+    ## calc_W_dHyper
+    # Calculate the derivative of the W matrix with respect to hyper parameters.
+    # dW / dSigma
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (70)
+    #
+    # @param y - the label for the given probit (dk, u, v) (must be a numpy array)
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 2d matrix
+    def calc_W_dHyper(self, y, F):
+        z = self.z_k(y, F)
+        pdf_cdf_ratio, pdf_cdf_ratio2 = calc_pdf_cdf_ratio(z)
+        pdf = std_norm_pdf(z)
+        cdf = std_norm_cdf(z)
+
+        paren_pairs = np.where(np.logical_and(z < 0, np.isinf(pdf_cdf_ratio)), 0, \
+                        (z * pdf_cdf_ratio) + pdf_cdf_ratio2)
+        term1 = (y[:,0] * y[:,0] / (self.sigma * self.sigma * self.sigma)) * paren_pairs
+        term2a = (1 / (2 * self.sigma * self.sigma * self.sigma)) * y[:,0] * y[:,0] * z * pdf / (cdf * cdf * cdf)
+        term2b = -(cdf*cdf) + z*z*cdf*cdf + 3*z*pdf*cdf + 2 * pdf*pdf
+
+        dw_pairs = term1 - term2a*term2b
+
+        dW = np.zeros((len(F), len(F)))
+
+        # vectorized versions of summation
+        idx1 = np.array([y[:,1], y[:,1]]).T
+        idx2 = np.array([y[:,1], y[:,2]]).T
+        idx3 = np.array([y[:,2], y[:,1]]).T
+        idx4 = np.array([y[:,2], y[:,2]]).T
+
+        dW = add_up_mat(idx1, -dw_pairs, dW)
+        dW = add_up_mat(idx2,  dw_pairs, dW)
+        dW = add_up_mat(idx3,  dw_pairs, dW)
+        dW = add_up_mat(idx4, -dw_pairs, dW)
+
+        return dW[np.newaxis, :, :]
+
 
     ## derivatives
     # Calculates the derivatives of the probit with the given input data
@@ -239,6 +286,28 @@ try:
             M[indicies[i]] += v_i
 
         return M
+
+    ## add_up_W_partial
+    # add and place the y inidicies into the appropriate locations.
+    # @param y - numpy array of labels
+    # @param v - the values going with the labels (paren pairs)
+    # @param dW - the derivative of W np array to add the value pairs to.
+    @numba.jit
+    def add_up_W_partial(y, v, dW):
+        for i, y_i in enumerate(y):
+            dW[y_i[1], y_i[1], y_i[1]] += v[i]
+            dW[y_i[2], y_i[1], y_i[1]] += -v[i]
+
+            dW[y_i[1], y_i[1], y_i[2]] += -v[i]
+            dW[y_i[2], y_i[1], y_i[2]] += v[i]
+
+            dW[y_i[1], y_i[2], y_i[1]] += -v[i]
+            dW[y_i[2], y_i[2], y_i[1]] += v[i]
+
+            dW[y_i[1], y_i[2], y_i[2]] += v[i]
+            dW[y_i[2], y_i[2], y_i[2]] += -v[i]
+
+        return dW
 except ImportError:
     print('Failed to import numba, add_up_mat and add_up_vec will be slower')
 
@@ -264,6 +333,26 @@ except ImportError:
 
         return M
 
+    ## add_up_W_partial
+    # add and place the y inidicies into the appropriate locations.
+    # @param y - numpy array of labels
+    # @param v - the values going with the labels (paren pairs)
+    # @param dW - the derivative of W np array to add the value pairs to.
+    def add_up_W_partial(y, v, dW):
+        for i, y_i in enumerate(y):
+            dW[y_i[1], y_i[1], y_i[1]] += v[i]
+            dW[y_i[2], y_i[1], y_i[1]] += -v[i]
+
+            dW[y_i[1], y_i[1], y_i[2]] += -v[i]
+            dW[y_i[2], y_i[1], y_i[2]] += v[i]
+
+            dW[y_i[1], y_i[2], y_i[1]] += -v[i]
+            dW[y_i[2], y_i[2], y_i[1]] += v[i]
+
+            dW[y_i[1], y_i[2], y_i[2]] += v[i]
+            dW[y_i[2], y_i[2], y_i[2]] += -v[i]
+
+        return dW
 
 
 
