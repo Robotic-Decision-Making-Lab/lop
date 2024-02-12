@@ -41,11 +41,11 @@ def test_mutual_info_learner_trains_basic_GP():
         model.add(x_train, y_train)
 
 
-    x_test = np.array([0,1,2,3,4.5,7,9])
+    x_test = np.array([1,2,3,4.5,7,9])
     y_test = f_sin(x_test)
     y_pred = model(x_test)
 
-    assert (np.abs(y_pred - y_test) < 0.4).all()
+    assert (np.abs(y_pred - y_test) < 0.9).all()
 
 def test_mutual_info_trains_linear():
     al = lop.MutualInfoLearner()

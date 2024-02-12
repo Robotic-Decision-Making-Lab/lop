@@ -89,6 +89,7 @@ class PreferenceLinear(PreferenceModel):
             w_new = self.newton_update(w, # input value to change
                                        gradient=gradient, 
                                        hess=hess,
+                                       loss_func = self.loss_func,
                                        lambda_type="binary", # sets the type of line search ("static", "binary", "iter")
                                        line_search_max_itr=5)
 

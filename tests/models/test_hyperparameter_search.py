@@ -27,10 +27,11 @@ def test_grad_hyper():
             lop.generate_fake_pairs(X_train, f_sin, 4)
 
     m.add(X_train, pairs)
+    p = m.get_hyper()
     m.find_mode(m.X_train, m.y_train)
 
     grad = m.grad_likli_f_hyper(m.F, X_train, m.y_train)
-    
+
     assert len(grad) == len(p)
     assert grad[0] < 0
     assert grad[1] > 0

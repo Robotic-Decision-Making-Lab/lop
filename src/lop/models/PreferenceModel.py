@@ -362,7 +362,7 @@ class PreferenceModel(Model):
     # @return F_new after the update function
     def newton_update(self, F, gradient, hess,
                                 loss_func,
-                                loss_args=None,
+                                loss_args=(),
                                 invert_function=np.linalg.inv,
                                 lambda_type="static",
                                 line_search_max_itr = 5):
