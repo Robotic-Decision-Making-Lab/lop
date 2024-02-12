@@ -335,7 +335,7 @@ class PreferenceGP(PreferenceModel):
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
 
-        return -self.grad_likli_f_hyper(F, X_valid, y_valid) + self.grad_hyper_liklihood()
+        return -self.grad_likli_f_hyper(F, X_valid, y_valid) - self.grad_hyper_liklihood()
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
@@ -421,13 +421,15 @@ class PreferenceGP(PreferenceModel):
 
     def hyper_liklihood(self):
         cov_likli = self.cov_func.param_likli()
+        probit_likli = super().hyper_liklihood()
 
-        return cov_likli
+        return cov_likli + probit_likli
 
     def grad_hyper_liklihood(self):
         d_cov_likli = self.cov_func.grad_param_likli()
+        d_probit_likli = super().grad_hyper_liklihood()
 
-        return np.array([0, d_cov_likli[0], d_cov_likli[1]])
+        return np.append(d_probit_likli, d_cov_likli, axis=0)
 
     ######################## helper functions for calculating liklihood
 

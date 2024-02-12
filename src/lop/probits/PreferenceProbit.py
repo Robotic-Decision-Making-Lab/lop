@@ -32,7 +32,7 @@ import numpy as np
 import scipy.stats as st
 from lop.probits import ProbitBase
 from lop.probits import std_norm_pdf, std_norm_cdf, calc_pdf_cdf_ratio
-
+from lop.utilities import d_log_pdf_gamma, log_pdf_gamma
 
 
 
@@ -50,6 +50,10 @@ class PreferenceProbit(ProbitBase):
     def __init__(self, sigma=1.0):
         self.set_sigma(sigma)
         self.log2pi = np.log(2.0*np.pi)
+
+        # parameters for prior on the hyperparameters
+        self.sigma_k = 2.5
+        self.sigma_theta = 0.8
 
     ## set_hyper
     # Sets the hyperparameters for the probit
@@ -124,6 +128,18 @@ class PreferenceProbit(ProbitBase):
         dP_dSigma = -np.sum(zk * pdf_cdf_ratio) / self.sigma
 
         return np.array([dP_dSigma])
+
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    def param_likli(self):
+        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)])
+
 
     ## calc_W
     # caclulate the W matrix

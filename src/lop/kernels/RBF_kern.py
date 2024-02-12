@@ -78,8 +78,9 @@ class RBF_kern(KernelFunc):
     # gradient of the log liklihood of the parameter (prior)
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
-        return np.array([log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
-                log_pdf_gamma(self.l, self.l_k, self.l_theta)])
+        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                d_log_pdf_gamma(self.l, self.l_k, self.l_theta)])
+
 
 
 

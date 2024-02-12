@@ -79,6 +79,17 @@ class ProbitBase:
     def get_hyper(self):
         raise NotImplementedError("get_hyper not implemented")
 
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    def param_likli(self):
+        raise NotImplementedError("param_likli not implemented")
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        raise NotImplementedError("grad_param_likli not implemented")
+
     ## print_hyperparameters
     # prints the hyperparameter of the probit
     def print_hyperparameters(self):

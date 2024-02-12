@@ -344,6 +344,22 @@ class PreferenceModel(Model):
     def grad_hyper(self):
         raise(NotImplementedError("Model grad_hyper is not implemented"))
 
+    def hyper_liklihood(self):
+        liklihood = 0
+        for i, probit in enumerate(self.probits):
+            if self.y_train[i] is not None:
+                liklihood += probit.param_likli()
+            
+        return liklihood
+
+    def grad_hyper_liklihood(self):
+        probit_grad = np.empty((0,))
+        for i, probit in enumerate(self.probits):
+            if self.y_train[i] is not None:
+                probit_grad = np.append(probit_grad, probit.grad_param_likli(),axis=0)
+            
+        return probit_grad
+
 
     ###################### optimization functions for preference models
 
