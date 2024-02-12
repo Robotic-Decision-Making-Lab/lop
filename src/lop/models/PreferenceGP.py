@@ -327,7 +327,7 @@ class PreferenceGP(PreferenceModel):
         #return x[0]**2 + x[1]**2 + x[2]**2
         #return -self.likli_f(F, X_valid, y_valid)
         #bounds_cost = 5*sum([np.exp(-20*(np.abs(x[i] - bounds[i][0]))) + np.exp(-20*(np.abs(x[i] - bounds[i][1]))) for i in range(len(bounds))])
-        return -self.likli_f_hyper(F, X_valid, y_valid)# + bounds_cost
+        return -self.likli_f_hyper(F, X_valid, y_valid) - self.hyper_liklihood()
 
     def hyperparamter_obj_grad(self, x, X_train, y_train, X_valid, y_valid, bounds):
         self.set_hyper(x)
@@ -335,7 +335,7 @@ class PreferenceGP(PreferenceModel):
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
 
-        return -self.grad_likli_f_hyper(F, X_valid, y_valid)
+        return -self.grad_likli_f_hyper(F, X_valid, y_valid) + self.grad_hyper_liklihood()
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
@@ -357,7 +357,7 @@ class PreferenceGP(PreferenceModel):
 
         
         grad_hyper = self.hyperparamter_obj_grad(x0, X_train, y_train, X_valid, y_valid, bounds)
-        grad_hyper[1] = 0
+        #grad_hyper[1] = 0
         print('grad_hyper = ' + str(grad_hyper))
 
         x_new = x0 - grad_hyper * 0.01
@@ -419,6 +419,15 @@ class PreferenceGP(PreferenceModel):
 
         #self.cov_func.set_param(np.array([0.5, x[1]]))
 
+    def hyper_liklihood(self):
+        cov_likli = self.cov_func.param_likli()
+
+        return cov_likli
+
+    def grad_hyper_liklihood(self):
+        d_cov_likli = self.cov_func.grad_param_likli()
+
+        return np.array([0, d_cov_likli[0], d_cov_likli[1]])
 
     ######################## helper functions for calculating liklihood
 

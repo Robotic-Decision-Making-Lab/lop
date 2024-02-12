@@ -29,6 +29,7 @@ else:
     from collections import Sequence
 
 from lop.kernels import KernelFunc
+from lop.utilities import log_pdf_gamma, d_log_pdf_gamma
 
 ## RBF_kern
 # Radial basis function for two points.
@@ -47,6 +48,11 @@ class RBF_kern(KernelFunc):
         self.l = l
         self.sigma_noise = sigma_noise
 
+        self.sigma_k = 4.0
+        self.sigma_theta = 0.25
+        self.l_k = 3.0
+        self.l_theta = 0.4
+
     # update the parameters
     # @param theta - vector of parameters to update
     def set_param(self, theta):
@@ -60,6 +66,20 @@ class RBF_kern(KernelFunc):
         theta = np.array([self.sigma, self.l])
         return theta
 
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    # for RBF kernels this is a parameterized gamma_distribution. Scaled for functions of 
+    # approximently size 1 and distance between points in [0,10] ish range
+    def param_likli(self):
+        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
+                log_pdf_gamma(self.l, self.l_k, self.l_theta)
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        return np.array([log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                log_pdf_gamma(self.l, self.l_k, self.l_theta)])
 
 
 

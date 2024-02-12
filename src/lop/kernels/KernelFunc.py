@@ -69,16 +69,30 @@ class KernelFunc:
                 cov[i,j, :] = cov_ij
         return cov
 
+    ## set_param
     # update the parameters
     # @param theta - vector of parameters to update
     def set_param(self, theta):
         raise NotImplementedError('KernelFunc update function not implemented')
 
-    # get_param
+    ## get_param
     # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
     def get_param(self):
         return np.empty(0)
 
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    def param_likli(self):
+        raise NotImplementedError('KernelFunc param_likli function not implemented')
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        raise NotImplementedError('KernelFunc param_likli function not implemented')
+
+    ## gradient
+    # Calculates the gradient of the kernel function between the u, v terms.
     def gradient(self, u, v):
         raise NotImplementedError('KernelFunc gradient function not implemented')
 
