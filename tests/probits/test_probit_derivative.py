@@ -64,7 +64,7 @@ def test_preference_probit_calc_W_dHyper():
 
     dW = pp.calc_W_dHyper(pairs, F)
 
-    assert dW.shape[1] == 1
+    assert dW.shape[0] == 1
     assert dW.shape[1] == len(F)
     assert dW.shape[2] == len(F)
 
