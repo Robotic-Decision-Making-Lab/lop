@@ -48,6 +48,7 @@ class RBF_kern(KernelFunc):
         self.l = l
         self.sigma_noise = sigma_noise
 
+        # prior on hyper-parameters
         self.sigma_k = 4.0
         self.sigma_theta = 0.25
         self.l_k = 3.0
@@ -139,6 +140,10 @@ class RBF_kern(KernelFunc):
 
         dSigma = 2 * self.sigma * exp_x
         dl = 2 * self.sigma * self.sigma * top * exp_x / (self.l*self.l*self.l)
+        # if N == N:
+        #     dSigma_noise = np.eye(N)
+        # else:
+        #     dSigma_noise = np.zeros((N, M))
 
         return dSigma, dl
 

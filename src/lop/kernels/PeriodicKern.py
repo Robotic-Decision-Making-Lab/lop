@@ -29,6 +29,7 @@ else:
     from collections import Sequence
 
 from lop.kernels import KernelFunc
+from lop.utilities import log_pdf_gamma, d_log_pdf_gamma
 
 
 ## periodic_kern
@@ -48,6 +49,14 @@ class PeriodicKern(KernelFunc):
         self.sigma = sigma
         self.l = l
         self.p = p
+
+        self.sigma_k = 4.0
+        self.sigma_theta = 0.25
+        self.l_k = 3.0
+        self.l_theta = 0.2
+        self.p_k = 2.0
+        self.p_theta = 0.5
+
 
 
     ## get covariance matrix
@@ -92,6 +101,59 @@ class PeriodicKern(KernelFunc):
     def get_param(self):
         theta = np.array([self.sigma, self.l, self.p])
         return theta
+
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    # for RBF kernels this is a parameterized gamma_distribution. Scaled for functions of 
+    # approximently size 1 and distance between points in [0,10] ish range
+    def param_likli(self):
+        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
+                log_pdf_gamma(self.l, self.l_k, self.l_theta)
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                d_log_pdf_gamma(self.l, self.l_k, self.l_theta),
+                d_log_pdf_gamma(self.l, self.p_k, self.p_theta)])
+
+    # get gradient of the covariance matrix
+    # calculate the covariance matrix between the samples given in X
+    # @param X - samples (n1,k) array where n is the number of samples,
+    #        and k is the dimension of the samples
+    # @param Y - samples (n2, k)
+    #
+    # @return the covariance gradient tensor of the samples. [n1, n2, k]
+    def cov_gradient(self, X, Y):
+        N = X.shape[0]
+        M = Y.shape[0]
+
+        if len(X.shape) == 1:
+            X = X[:,np.newaxis]
+        if len(Y.shape) == 1:
+            Y = Y[:,np.newaxis]
+
+
+        X_expanded = np.repeat(X[:,np.newaxis,:], M, axis=1)
+        Y_expanded = np.repeat(Y[np.newaxis,:,:], N, axis=0)
+        diff = X_expanded - Y_expanded
+        top = np.sum(diff*diff, axis=2)
+
+        exp_x = np.exp(-top / (2 * self.l*self.l))
+
+        diff = X_expanded - Y_expanded
+        uv_norm = np.sum(np.abs(diff), axis=2)
+        
+        cos_tmp = np.cos(np.pi*uv_norm / self.p)
+        
+        dSigma = 2 * self.sigma * exp_x
+        dl = -2 * self.sigma*self.sigma * exp_x * uv_norm / (self.l*self.l*self.l)
+        dp = 2 * np.pi * self.sigma * self.sigma * uv_norm * exp_x * \
+            cos_tmp / (self.l*self.l * self.p*self.p)
+
+        return dSigma, dl, dp
+
 
     def gradient(self, u, v):
         uv_norm = np.sum(np.abs(u-v)) #np.linalg.norm(u-v, ord=1)

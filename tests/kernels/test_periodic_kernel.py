@@ -63,8 +63,7 @@ def test_PeriodicKern_grad_cov():
 
     X = np.array([1,3,4,5,6,7])
 
-    pdb.set_trace()
-    dK = kern.cov_gradient(X,X)
+    dK_sigma, dK_l, dK_p  = kern.cov_gradient(X,X)
 
     
 

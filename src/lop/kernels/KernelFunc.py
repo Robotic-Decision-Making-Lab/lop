@@ -143,6 +143,31 @@ class DualKern(KernelFunc):
         self.a.set_param(theta[:len(self.a)])
         self.b.set_param(theta[len(self.a):])
 
+    
+
+    ## set_param
+    # update the parameters
+    # @param theta - vector of parameters to update
+    def set_param(self, theta):
+        raise NotImplementedError('KernelFunc update function not implemented')
+
+    ## get_param
+    # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
+    def get_param(self):
+        return np.empty(0)
+
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    def param_likli(self):
+        raise NotImplementedError('KernelFunc param_likli function not implemented')
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        raise NotImplementedError('KernelFunc param_likli function not implemented')
+
+
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X
@@ -183,6 +208,27 @@ class DualKern(KernelFunc):
             raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
 
         return np.append(a_grad, b_grad, axis=0)
+
+    ## get gradient of the covariance matrix
+    # calculate the covariance matrix between the samples given in X
+    # @param X - samples (n1,k) array where n is the number of samples,
+    #        and k is the dimension of the samples
+    # @param Y - samples (n2, k)
+    #
+    # @return the covariance gradient tensor of the samples. [n1, n2, k]
+    def cov_gradient(self, X, Y):
+        if self.operator == '+':
+            a_grad = self.a.cov_gradient(X,Y)
+            b_grad = self.b.cov_gradient(X,Y)
+        elif self.operator == '*':
+            a_grad = self.a.cov_gradient(X,Y) * self.b.cov(X,Y)
+            b_grad = self.b.cov_gradient(X,Y) * self.a.cov(X,Y)
+        else:
+            raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
+
+        return a_grad, b_grad
+
+
 
     def __call__(self, u, v):
         a_f = self.a(u,v)

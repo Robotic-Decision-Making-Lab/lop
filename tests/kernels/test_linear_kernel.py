@@ -62,6 +62,7 @@ def test_linear_kern_grad_cov():
 
     dK_sigma, dK_sigma_b, dK_c = kern.cov_gradient(X,X)
 
+
     assert dK_sigma.shape[0] == len(X) and dK_sigma.shape[1] == len(X)
     assert dK_sigma_b.shape[0] == len(X) and dK_sigma_b.shape[1] == len(X)
     assert dK_c.shape[0] == len(X) and dK_c.shape[1] == len(X)
