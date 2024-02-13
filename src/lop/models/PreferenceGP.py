@@ -296,8 +296,8 @@ class PreferenceGP(PreferenceModel):
                         y_training = get_y_with_idx(self.y_train, train_idxs)
                         
 
-                        print('Hyperparameters: ')
-                        print(self.get_hyper())
+                        # print('Hyperparameters: ')
+                        # print(self.get_hyper())
                         self.find_mode(X_training, y_training)
                         self.hyperparameter_search(X_training,
                                                     y_training,
@@ -353,15 +353,15 @@ class PreferenceGP(PreferenceModel):
         self.debug_print = True
 
         bounds = [(0.01, 10.0) for i in range(len(x0))]
-        print('cost_prior to update: ' + str(self.hyperparameter_obj(x0, X_train, y_train, X_valid, y_valid, bounds)))
+        #print('cost_prior to update: ' + str(self.hyperparameter_obj(x0, X_train, y_train, X_valid, y_valid, bounds)))
 
         
         grad_hyper = self.hyperparamter_obj_grad(x0, X_train, y_train, X_valid, y_valid, bounds)
         #grad_hyper[1] = 0
-        print('grad_hyper = ' + str(grad_hyper))
+        #print('grad_hyper = ' + str(grad_hyper))
 
         x_new = x0 - grad_hyper * 0.01
-        print('cost post update: ' + str(self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)))
+        #print('cost post update: ' + str(self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)))
         result = SimpleNamespace(x=x_new)
 
         # args = (X_train, y_train, X_valid, y_valid, bounds)
@@ -381,7 +381,7 @@ class PreferenceGP(PreferenceModel):
         # )
         self.debug_print = False
 
-        print(result)
+        #print(result)
 
         self.set_hyper(result.x)
         # self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)

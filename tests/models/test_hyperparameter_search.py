@@ -38,7 +38,6 @@ def test_grad_hyper():
     assert grad[2] < 0
 
 
-@pytest.mark.skip()
 def test_hyperparameter_search_does_not_crash():
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
@@ -109,7 +108,6 @@ def test_set_hyperparameters_multiple_y_trains():
     assert (p == p_set).all()
 
 
-@pytest.mark.skip()
 def test_hyperparameter_search_somewhat_converges():
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \

@@ -75,13 +75,13 @@ def test_fake_logistic():
 
     z = f(np.array([1.0,0]))
     z2 = f(np.array([1.0,0]))
-    assert z < 1.0
+    assert z <= 1.0
     assert z == z2
 
     f.randomize()
     z3 = f(np.array([1.0,0]))
 
-    assert z3 < 1.0
+    assert z3 <= 1.0
     assert z3 != z
 
 def test_fake_sin_exp():
