@@ -76,6 +76,17 @@ def test_combined_kern():
         assert combined.get_param()[i] == param_l[i]
 
 
+def test_dual_grad_cov():
+    kern = lop.LinearKern(1, 1,1) + lop.RBF_kern(1,1)
+
+    X = np.array([1,3,4,5,6,7])
+
+    dK_all = kern.cov_gradient(X,X)
+
+
+    for dK_i in dK_all:
+        assert dK_i.shape[0] == len(X) and dK_i.shape[1] == len(X)
+
 def test_combined_grad_cov():
     kern = lop.LinearKern(1, 1,1) + lop.RBF_kern(1,1) + lop.PeriodicKern(1,1,3)
 

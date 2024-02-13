@@ -149,23 +149,26 @@ class DualKern(KernelFunc):
     # update the parameters
     # @param theta - vector of parameters to update
     def set_param(self, theta):
-        raise NotImplementedError('KernelFunc update function not implemented')
+        a_len = len(self.a.get_param())
+        
+        self.a.set_param(theta[:a_len])
+        self.b.set_param(theta[a_len:])
 
     ## get_param
     # get a vector of the parameters for the kernel function (used for hyper-parameter optimization)
     def get_param(self):
-        return np.empty(0)
+        return np.append(self.a.get_param(), self.b.get_param(), axis=0)
 
     ## param_likli
     # log liklihood of the parameter (prior)
     def param_likli(self):
-        raise NotImplementedError('KernelFunc param_likli function not implemented')
+        return self.a.param_likli() + self.b.param_likli()
 
     ## grad_param_likli
     # gradient of the log liklihood of the parameter (prior)
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
-        raise NotImplementedError('KernelFunc param_likli function not implemented')
+        return np.append(self.a.grad_param_likli(), self.b.grad_param_likli(), axis=0)
 
 
 
@@ -226,7 +229,7 @@ class DualKern(KernelFunc):
         else:
             raise NotImplementedError('DualKern does not have operator `'+self.operator+'` implemented')
 
-        return a_grad, b_grad
+        return a_grad + b_grad
 
 
 
