@@ -55,6 +55,31 @@ def test_hyperparameter_search_does_not_crash():
 
     assert gp is not None
 
+def test_hyperparameter_with_no_training_data():
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), use_hyper_optimization=True)
+
+
+    X = np.array([0,3.2, 4.5])
+    y, var = gp.predict(X)
+
+    #gp.add(X_train, pairs)
+    #gp.optimize(optimize_hyperparameter=True)
+
+    assert len(y) == 3
+    assert gp is not None
+
+    X_train = np.array([0,1])
+    pairs = lop.generate_fake_pairs(X_train, f_sin, 0)
+    gp.add(X_train, pairs)
+
+    y, var = gp.predict(X)
+
+    assert len(y) == 3
+    assert gp is not None
+
+
+
+
 @pytest.mark.skip()
 def test_get_hyperparameters_multiple_y_trains():
     m = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))

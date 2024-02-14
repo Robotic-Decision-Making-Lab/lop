@@ -82,6 +82,9 @@ class PreferenceGP(PreferenceModel):
         self.normalize_positive = normalize_positive
         self.use_hyper_optimization = use_hyper_optimization
 
+        self.hyper_grad_avg = 4
+        self.hyper_grad_tol = 0.1
+
         self.delta_f = 0.0002 # set the convergence to stop
         self.maxloops = 100
         
@@ -278,32 +281,45 @@ class PreferenceGP(PreferenceModel):
 
     def optimize(self, optimize_hyperparameter=False):
         if optimize_hyperparameter and self.X_train is not None:
-            k_fold = min(math.floor(len(self.X_train) / 2), 2)
-            num_iterations = 100
+            k_fold = min(math.floor(len(self.X_train) / 2), 4)
+            if k_fold > 1:
+                num_iterations = 100
+                prev_grad = []
+                is_converged = False
 
-            for j in range(math.ceil(num_iterations / k_fold)):
-                splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
-                if splits is not None:
-                    for i in range(k_fold):
-                        k_fold_but_valid = list(range(k_fold))
-                        k_fold_but_valid.remove(i)
+                for j in range(math.ceil(num_iterations / k_fold)):
+                    splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
+                    if splits is not None:
+                        for i in range(k_fold):
+                            k_fold_but_valid = list(range(k_fold))
+                            k_fold_but_valid.remove(i)
 
-                        train_idxs = []
-                        for k in k_fold_but_valid:
-                            train_idxs += splits[k]
+                            train_idxs = []
+                            for k in k_fold_but_valid:
+                                train_idxs += splits[k]
 
-                        X_training = self.X_train[train_idxs]
-                        y_training = get_y_with_idx(self.y_train, train_idxs)
-                        
+                            X_training = self.X_train[train_idxs]
+                            y_training = get_y_with_idx(self.y_train, train_idxs)
+                            
 
-                        # print('Hyperparameters: ')
-                        # print(self.get_hyper())
-                        self.find_mode(X_training, y_training)
-                        self.hyperparameter_search(X_training,
-                                                    y_training,
-                                                    self.X_train, 
-                                                    self.y_train, 
-                                                    i)
+                            # print('Hyperparameters: ')
+                            # print(self.get_hyper())
+                            self.find_mode(X_training, y_training)
+                            is_converged = self.hyperparameter_search(X_training,
+                                                        y_training,
+                                                        self.X_train, 
+                                                        self.y_train,
+                                                        prev_grad,
+                                                        i)
+
+                            if is_converged:
+                                print('Found solution within tolerance!')
+                                break
+                        # end for k-fold
+                    if is_converged:
+                        break
+                # end for iterations
+            # end if for k_fold < 2
 
 
         print('Output hyperparameters')
@@ -339,13 +355,11 @@ class PreferenceGP(PreferenceModel):
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
-    def hyperparameter_search(self, X_train, y_train, X_valid, y_valid, itr=0):
+    def hyperparameter_search(self, X_train, y_train, X_valid, y_valid, prev_grad, itr=0):
         # uses the scipy optimizer to perform the optimization
         self.optimized = True
 
         x0 = self.get_hyper()
-
-        
 
         #self.set_hyper(x0)
         #x0 = np.random.random((2,))*3.0
@@ -360,7 +374,7 @@ class PreferenceGP(PreferenceModel):
         #grad_hyper[1] = 0
         #print('grad_hyper = ' + str(grad_hyper))
 
-        x_new = x0 - grad_hyper * 0.01
+        x_new = x0 - grad_hyper * 0.03
         #print('cost post update: ' + str(self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)))
         result = SimpleNamespace(x=x_new)
 
@@ -387,6 +401,19 @@ class PreferenceGP(PreferenceModel):
         # self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
         # self.set_hyper(result.x)
 
+        # perform checks to see if the function has converged
+        prev_grad.insert(0,grad_hyper)
+        if len(prev_grad) > self.hyper_grad_avg:
+            prev_grad.pop()
+
+        # check if converged
+        if len(prev_grad) == self.hyper_grad_avg:
+            prev_np = np.array(prev_grad)
+            grad_norm = np.linalg.norm(np.mean(prev_np, axis=0), ord=2)
+
+            if grad_norm < self.hyper_grad_tol:
+                return True
+        return False
 
 
 

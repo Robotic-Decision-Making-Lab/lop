@@ -49,8 +49,8 @@ class RBF_kern(KernelFunc):
         self.sigma_noise = sigma_noise
 
         # prior on hyper-parameters
-        self.sigma_k = 4.0
-        self.sigma_theta = 0.25
+        self.sigma_k = 10
+        self.sigma_theta = 0.1
         self.l_k = 3.0
         self.l_theta = 0.4
 
