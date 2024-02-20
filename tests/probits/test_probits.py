@@ -30,6 +30,7 @@ import pdb
 def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
+## Preference probit checks
 
 def test_preference_probit_likelihood():
     pp = lop.PreferenceProbit(2.0)
@@ -61,6 +62,20 @@ def test_preference_probit_likelihood():
     assert W.shape[1] == F.shape[0]
 
 
+def test_preference_hyper_modification():
+    probit = lop.PreferenceProbit()
+
+    param = probit.get_hyper()
+
+    assert param.shape[0] == 1
+
+    probit.set_hyper(np.array([0.1]))
+    assert probit.sigma == 0.1
+    param = probit.get_hyper()
+
+    assert param[0] == 0.1
+
+#### Abs bound checks
 
 def test_abs_bound_probit_likelihood():
     probit = lop.AbsBoundProbit(0.5, 4.0)
@@ -118,6 +133,40 @@ def test_abs_bound_probit_likelihood_not_all_indicies():
     assert W.shape[0] == X_train.shape[0]
     assert W.shape[1] == X_train.shape[0]
 
+
+def test_abs_bound_hyper_modification():
+    probit = lop.AbsBoundProbit()
+
+    param = probit.get_hyper()
+
+    assert param.shape[0] == 2
+
+    probit.set_hyper(np.array([0.1, 4.23]))
+    assert probit.sigma == 0.1
+    assert probit.v == 4.23
+    param = probit.get_hyper()
+
+    assert param[0] == 0.1
+    assert param[1] == 4.23
+
+
+# test the cdf function output reasonable outputs
+def test_abs_bound_beta_cdf():
+    probit = lop.AbsBoundProbit()
+
+    X_train = np.array([0,1,2])
+    v = np.array([0.1,0.2,0.5])
+    idxs = np.arange(0,3,1)
+
+    cdf = probit.cdf(v, X_train)
+
+    assert not np.isnan(cdf).any()
+    assert (cdf > 0.0).all()
+    assert (cdf < 1.0).all()
+
+
+
+### Ordinal probit checks
 
 def test_ordinal_probit_likelihood():
     probit = lop.OrdinalProbit()
@@ -178,34 +227,6 @@ def test_ordinal_not_all_indicies_in_training():
     assert W.shape[1] == X_train.shape[0]
 
 
-
-def test_preference_hyper_modification():
-    probit = lop.PreferenceProbit()
-
-    param = probit.get_hyper()
-
-    assert param.shape[0] == 1
-
-    probit.set_hyper(np.array([0.1]))
-    assert probit.sigma == 0.1
-    param = probit.get_hyper()
-
-    assert param[0] == 0.1
-
-def test_abs_bound_hyper_modification():
-    probit = lop.AbsBoundProbit()
-
-    param = probit.get_hyper()
-
-    assert param.shape[0] == 2
-
-    probit.set_hyper(np.array([0.1, 4.23]))
-    assert probit.sigma == 0.1
-    assert probit.v == 4.23
-    param = probit.get_hyper()
-
-    assert param[0] == 0.1
-    assert param[1] == 4.23
 
 def test_ordinal_hyper_modification():
     probit = lop.OrdinalProbit()

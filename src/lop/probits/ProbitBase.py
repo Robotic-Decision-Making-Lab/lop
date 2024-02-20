@@ -107,6 +107,32 @@ class ProbitBase:
     def derivatives(self, y, F):
         raise NotImplementedError('derivatives not implemented')
 
+    ## calc_W_dF
+    # Calculate the third derivative of the W matrix.
+    # d ln(p(y|F)) / d f_i, f_j, f_k
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (65)
+    #
+    # @param y - the label for the given probit
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 3d matrix
+    def calc_W_dF(self, y, F):
+        raise NotImplementedError("calc_W_dF is not implmented")
+
+    ## calc_W_dHyper
+    # Calculate the derivative of the W matrix with respect to hyper parameters.
+    # dW / dHyper
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (70)
+    #
+    # @param y - the label for the given probit
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 2d matrix
+    def calc_W_dHyper(self, y, F):
+        raise NotImplementedError("calc_W_dHyper is not implemented")
+
     ## grad_hyper
     # Calculates the gradient of p(y|F) given the parameters of the probit
     # @param y - the given set of labels for the probit

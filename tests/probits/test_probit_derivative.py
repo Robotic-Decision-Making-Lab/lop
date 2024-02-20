@@ -89,18 +89,55 @@ def test_preference_probit_derivative_hyper():
     assert len(grad) == 1
     assert not np.isnan(grad[0])
 
+########### abs_bound tests
 
-@pytest.mark.skip()
 def test_abs_bound_probit_calc_W_df():
-    assert False
+    pro = lop.AbsBoundProbit()
 
-@pytest.mark.skip()
+    #X_train = np.array([0,1,2])
+    F = np.array([0.4, 0.3, 0.6])
+    v = np.array([0.1,0.2,0.5])
+    idxs = np.arange(0,3,1)
+
+    dW = pro.calc_W_dF((v, idxs), F)
+
+    assert dW.shape[0] == dW.shape[1]
+    assert dW.shape[1] == dW.shape[2]
+    assert dW.shape[0] == len(F)
+
+    assert not np.isnan(dW).any()
+
+
+
 def test_abs_bound_probit_calc_W_dHyper():
-    assert False
+    pro = lop.AbsBoundProbit()
 
-@pytest.mark.skip()
+    #X_train = np.array([0,1,2])
+    F = np.array([0.4, 0.3, 0.6])
+    v = np.array([0.1,0.2,0.5])
+    idxs = np.arange(0,3,1)
+
+    dW = pro.calc_W_dHyper((v, idxs), F)
+
+    assert dW.shape[0] == 2
+    assert dW.shape[1] == len(F)
+    assert dW.shape[2] == len(F)
+
+    assert not np.isnan(dW).any()
+
 def test_abs_bound_probit_derivative_hyper():
-    assert False
+    pro = lop.AbsBoundProbit()
+
+    #X_train = np.array([0,1,2])
+    F = np.array([0.4, 0.3, 0.6])
+    v = np.array([0.1,0.2,0.5])
+    idxs = np.arange(0,3,1)
+
+    grad = pro.grad_hyper((v, idxs), F)
+
+    assert len(grad) == 2
+    assert not np.isnan(grad).all()
+
 
 @pytest.mark.skip()
 def test_ordinal_probit_calc_W_df():

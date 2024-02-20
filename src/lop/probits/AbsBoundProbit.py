@@ -54,9 +54,11 @@ class AbsBoundProbit(ProbitBase):
     #               0 the latent has to be to to move away from 0.5 output. Sigma should
     #               basically relate to the range of the latent function
     # @param v - the precision, kind of related to inverse of noise, high v is sharp distributions
-    def __init__(self, sigma=1.0, v=10.0):
+    # @param eps - epsilon to avoid division by 0 errors.
+    def __init__(self, sigma=1.0, v=10.0, eps=1e-12):
         self.set_hyper([sigma, v])
         self.log2pi = np.log(2.0*np.pi)
+        self.eps = eps
 
 
     ## set_hyper
@@ -101,7 +103,7 @@ class AbsBoundProbit(ProbitBase):
     # Defined as equation 11 in Section 3.2.1
     # @param F - the predicted locations
     def mean_link(self, F):
-        ml = np.clip(std_norm_cdf(F*self._isqrt2sig), 1e-12, 1.0-1e-12)
+        ml = np.clip(std_norm_cdf(F*self._isqrt2sig), self.eps, 1.0-self.eps)
         return ml
 
     ## get_alpha_beta
@@ -137,14 +139,15 @@ class AbsBoundProbit(ProbitBase):
             f * self._i2var * (np.log(y_sel) - np.log(1.0-y_sel) - digamma(aa) + digamma(bb)) +
             self.v * self._isqrt2sig * std_norm_pdf(f*self._isqrt2sig) * (polygamma(1, aa) + polygamma(1, bb)) )
 
-        W = np.diagflat(Wdiag)
+        #W = np.diagflat(Wdiag)
 
         py = np.log(beta.pdf(y_sel, aa, bb))
 
         # setup the indexing
         full_W = np.zeros((F.shape[0], F.shape[0]))
-        idx_grid = np.meshgrid(y[1],y[1])
-        full_W[tuple(idx_grid)] = W
+        #idx_grid = np.meshgrid(y[1],y[1])
+        #full_W[tuple(idx_grid)] = W
+        full_W[y[1],y[1]] = Wdiag
 
         full_dpy_df = np.zeros(F.shape[0])
         full_py = np.zeros(F.shape[0])
@@ -171,8 +174,47 @@ class AbsBoundProbit(ProbitBase):
         
         return np.exp(np.sum(full_py))
 
+
+    ## calc_W_dF
+    # Calculate the third derivative of the W matrix.
+    # d ln(p(y|F)) / d f_i, f_j, f_k
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (65)
+    #
+    # @param y - the label for the given probit
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 3d matrix
+    def calc_W_dF(self, y, F):
+        y_sel = y[0]
+        f = F[y[1]]
+
+        aa, bb = self.get_alpha_beta(f)
+
+        v = self.v
+        sigma = self.sigma
+
+        gauss_pdf = std_norm_pdf(y_sel / (np.sqrt(2)*sigma))
+
+        mult_term = v*v*v * gauss_pdf
+        term1_a = (1 / (2*v*v*sigma*sigma))*(((f*f) / (2*sigma*sigma)) - 1)
+        term1_b = np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb)
+
+        term2_a = 3 * f * gauss_pdf / (2 * v * sigma*sigma)
+        term2_b = polygamma(1, aa) + polygamma(1, bb)
+
+        term3 = gauss_pdf*gauss_pdf * (polygamma(2, bb) - polygamma(2, aa))
+
+        Wdiag = term1_a*term1_b + term2_a*term2_b + term3
+
+        full_W = np.zeros((F.shape[0], F.shape[0]))
+        full_W[y[1],y[1]] = Wdiag
+
+        return full_W
+
+
     ## cdf for the beta function.
     def cdf(self, y, F):
-        aa, bb = self.get_alpha_beta(f)
+        aa, bb = self.get_alpha_beta(F)
         return beta.cdf(y, aa, bb)
 
