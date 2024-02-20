@@ -79,8 +79,6 @@ def test_hyperparameter_with_no_training_data():
 
 
 
-
-@pytest.mark.skip()
 def test_get_hyperparameters_multiple_y_trains():
     m = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
 

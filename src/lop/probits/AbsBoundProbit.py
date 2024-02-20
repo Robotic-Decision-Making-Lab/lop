@@ -205,12 +205,106 @@ class AbsBoundProbit(ProbitBase):
 
         term3 = gauss_pdf*gauss_pdf * (polygamma(2, bb) - polygamma(2, aa))
 
-        Wdiag = term1_a*term1_b + term2_a*term2_b + term3
+        Wdiag = mult_term * term1_a*term1_b + term2_a*term2_b + term3
 
-        full_W = np.zeros((F.shape[0], F.shape[0]))
-        full_W[y[1],y[1]] = Wdiag
+        dW = np.zeros((F.shape[0], F.shape[0], F.shape[0]))
+        dW[y[1],y[1],y[1]] = Wdiag
 
-        return full_W
+        return dW
+
+    ## calc_W_dHyper
+    # Calculate the derivative of the W matrix with respect to hyper parameters.
+    # dW / dHyper
+    # This returns a 3d matrix of (N x N x N) where N is the length of the F vector.
+    # Equation (70)
+    #
+    # @param y - the label for the given probit
+    # @param F - the vector of F (estimated training sample outputs)
+    #
+    # @reutrn 2d matrix
+    def calc_W_dHyper(self, y, F):
+        y_sel = y[0]
+        f = F[y[1]]
+
+        sigma = self.sigma
+        v = self.v
+        aa, bb = self.get_alpha_beta(f)
+
+        aa0, bb0 = digamma(aa), digamma(bb)
+        aa1, aa2 = polygamma(1, aa), polygamma(2, bb)
+        bb1, bb2 = polygamma(1, bb), polygamma(2, bb)
+
+        du_df = std_norm_pdf(f / (np.sqrt(2)*sigma))
+        du2_df2 = - f * du_df / (2 * sigma * sigma)
+
+        du_dSigma = -(f / sigma) * du_df
+
+        # calculate dW/dv
+        term1_b = np.log(y_sel) - np.log(1- y_sel) - aa0 + bb0 - aa * aa1 + bb * bb1
+        term2_b = aa1 + 0.5*aa*aa2 + bb1 + 0.5*bb2
+
+        dW_dv = du2_df2 * term1_b - 2 * v * du_df * du_df * term2_b
+
+
+        # dW/dSigma
+        term1_b = np.log(y_sel) - np.log(1 - y_sel) - aa0 + bb0
+        term1_a = (f / (2 * sigma * sigma * sigma)) * (3 - (f*f / (2 * sigma * sigma))) * du_df
+        term1 = term1_a * v * term1_b
+
+        term2_b = aa1 + bb1
+        term2 = du2_df2 * du_dSigma * v * v * term2_b
+
+        term3_a = (1 / sigma) * (((f*f) / (2 * sigma * sigma)) - 1) * du_df
+        term3 = 2 * term3_a * du_df * v * v * term2_b
+
+        term4 = du_df*du_df * du_dSigma * v*v*v * (aa2 - bb2)
+
+        dW_dSigma = term1 - term2 - term3 - term4
+
+        dW_dHyper = np.zeros((2, len(F), len(F)))
+        dW_dHyper[1, y[1], y[1]] = dW_dv
+        dW_dHyper[0, y[1], y[1]] = dW_dSigma
+
+        return dW_dHyper
+
+
+    ## grad_hyper
+    # Calculates the gradient of p(y|F) given the parameters of the probit
+    # @param y - the given set of labels for the probit
+    # @param F - the input data samples
+    #
+    # @return numpy array (gradient of probit with respect to hyper parameters)
+    def grad_hyper(self, y, F):
+        y_sel = y[0]
+        f = F[y[1]]
+
+        sigma = self.sigma
+        v = self.v
+
+        mu = self.mean_link(F)
+        aa, bb = self.get_alpha_beta(f)
+        aa0, bb0 = digamma(aa), digamma(bb)
+
+        da_dv = mu
+        db_dv = 1 - mu
+
+        # dpy_dv
+        dig_aa_bb = digamma(aa + bb)
+        tmp1 = np.log(y_sel) - aa0 + dig_aa_bb
+        tmp2 = np.log(y_sel) - bb0 + dig_aa_bb
+        term1 = da_dv * tmp1
+        term2 = db_dv * tmp2
+
+        dpy_dv = term1 + term2
+
+        # dpy_dSigma
+        du_dSigma = -(f / sigma) * std_norm_pdf(f / (np.sqrt(2)*sigma))
+        da_dSigma = v * du_dSigma
+        db_dSigma = -da_dSigma
+
+        dpy_dSigma = da_dSigma * tmp1 + db_dSigma * tmp2
+
+        return np.array([dpy_dSigma, dpy_dv])
 
 
     ## cdf for the beta function.
