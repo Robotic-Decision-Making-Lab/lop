@@ -238,6 +238,10 @@ class PreferenceModel(Model):
                 print('abs type received unknown type for y')
                 return
 
+            if (v < 0).any() or (v > 1.0).any():
+                raise ValueError("Absloute bounded input must be between 0 and 1. v = " + str(v))
+            v = np.where(v < 0.0001, 0.0001, v)            
+
             if self.y_train[self.probit_idxs[type]] is not None:
                 v = np.append(self.y_train[self.probit_idxs[type]][0], v, axis=0)
                 idxs = np.append(self.y_train[self.probit_idxs[type]][1], idxs, axis=0)

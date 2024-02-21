@@ -83,7 +83,7 @@ class PreferenceGP(PreferenceModel):
         self.use_hyper_optimization = use_hyper_optimization
 
         self.hyper_grad_avg = 4
-        self.hyper_grad_tol = 0.1
+        self.hyper_grad_tol = 0.3
 
         self.delta_f = 0.0002 # set the convergence to stop
         self.maxloops = 100
@@ -360,6 +360,7 @@ class PreferenceGP(PreferenceModel):
         self.optimized = True
 
         x0 = self.get_hyper()
+        
 
         #self.set_hyper(x0)
         #x0 = np.random.random((2,))*3.0
@@ -367,16 +368,18 @@ class PreferenceGP(PreferenceModel):
         self.debug_print = True
 
         bounds = [(0.01, 10.0) for i in range(len(x0))]
-        #print('cost_prior to update: ' + str(self.hyperparameter_obj(x0, X_train, y_train, X_valid, y_valid, bounds)))
+        #pre_cost = self.hyperparameter_obj(x0, X_train, y_train, X_valid, y_valid, bounds)
+        #print('\n\ncost_prior to update: ' + str(pre_cost))
 
         
         grad_hyper = self.hyperparamter_obj_grad(x0, X_train, y_train, X_valid, y_valid, bounds)
         #grad_hyper[1] = 0
         #print('grad_hyper = ' + str(grad_hyper))
 
-        x_new = x0 - grad_hyper * 0.03
-        #print('cost post update: ' + str(self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)))
-        result = SimpleNamespace(x=x_new)
+        x_new = x0 - grad_hyper * 0.01
+        #post_cost = self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)
+        #print('cost post update: ' + str(post_cost))
+        result = SimpleNamespace(x=x_new, grad=grad_hyper)
 
         # args = (X_train, y_train, X_valid, y_valid, bounds)
         # result = opt.minimize(
@@ -395,9 +398,22 @@ class PreferenceGP(PreferenceModel):
         # )
         self.debug_print = False
 
-        #print(result)
+        
+
+        print(result)
+
+        
 
         self.set_hyper(result.x)
+
+        # if parameters are terrible, aka bad update. Roll back to the previous update
+        hyper_likli = self.hyper_liklihood()
+        #print('hyper_likli = ' + str(hyper_likli))
+        if hyper_likli < -100:
+            print('ROLL BACK UPDATE with noise')
+            self.set_hyper(x0 + np.random.random(len(x0))*1.0)
+            #self.set_hyper(x0)
+
         # self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
         # self.set_hyper(result.x)
 

@@ -57,7 +57,7 @@ def test_preference_model_add_abs_bound():
     pm = lop.PreferenceModel()
 
     X_train = np.array([0,1,2,3,4.2,6,7])
-    y_train = np.array([1,2,2,1,-3,-4,0]) 
+    y_train = np.array([1,2,2,1,3,4,0.1]) / 5.0  
 
     pm.add(X_train, y_train, type='abs')
 
@@ -171,7 +171,7 @@ def test_preference_model_adding_2D_pref():
    
     pm.add(X_train, pairs)
 
-    y_train = f(X_train)
+    y_train = f(X_train) / 20.0
 
     pm.add(X_train, y_train, type='abs')
 

@@ -89,6 +89,20 @@ def test_preference_probit_derivative_hyper():
     assert len(grad) == 1
     assert not np.isnan(grad[0])
 
+
+def test_preference_probit_param_likli():
+    pp = lop.PreferenceProbit()
+
+    likli = pp.param_likli()
+
+    assert not np.isnan(likli)
+
+    grad_likli = pp.grad_param_likli()
+
+    assert not np.isnan(grad_likli).any()
+    assert len(grad_likli) == 1
+
+
 ########### abs_bound tests
 
 def test_abs_bound_probit_calc_W_df():
@@ -138,6 +152,19 @@ def test_abs_bound_probit_derivative_hyper():
     assert len(grad) == 2
     assert not np.isnan(grad).all()
 
+def test_abs_bound_param_likli():
+    pp = lop.AbsBoundProbit()
+
+    likli = pp.param_likli()
+
+    assert not np.isnan(likli)
+
+
+    grad_likli = pp.grad_param_likli()
+
+    assert not np.isnan(grad_likli).any()
+    assert len(grad_likli) == 2
+
 
 @pytest.mark.skip()
 def test_ordinal_probit_calc_W_df():
@@ -150,3 +177,17 @@ def test_ordinal_probit_calc_W_dHyper():
 @pytest.mark.skip()
 def test_ordinal_probit_derivative_hyper():
     assert False
+
+@pytest.mark.skip()
+def test_ordinal_probit_param_likli():
+    pp = lop.OrdinalProbit()
+
+    likli = pp.param_likli()
+
+    assert not np.isnan(likli).any()
+    assert len(likli) == 2
+
+    grad_likli = pp.grad_param_likli()
+
+    assert not np.isnan(grad_likli).any()
+    assert len(grad_likli) == 2

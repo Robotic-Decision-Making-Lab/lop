@@ -38,8 +38,8 @@ def test_k_split_x_y_no_pairs():
     pm = lop.PreferenceModel()
 
 
-    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
-    y_train = f_sin(X_train)
+    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3]) 
+    y_train = lop.normalize_0_1(f_sin(X_train))
 
     pm.add(X_train, y_train, type='abs')
 
@@ -87,7 +87,7 @@ def test_get_y_from_indicies_multiple_types():
     pm.add(X_train, pairs)
 
     X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
-    y_train = f_sin(X_train)
+    y_train = lop.normalize_0_1(f_sin(X_train))
 
     pm.add(X_train, y_train, type='abs')
 

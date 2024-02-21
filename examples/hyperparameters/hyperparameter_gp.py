@@ -37,6 +37,9 @@ def main():
     parser.add_argument('-i', type=str, default='full', help='Enter the type of pairs [full weird]')
     args = parser.parse_args()
 
+    # Create preference gp and optimize given training data
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False, normalize_positive=False)
+    gp.probits[0].set_sigma(0.2)
 
     if args.i == 'full':
         X_train = np.array([0,1,2,3,4.2,6,7])
@@ -45,6 +48,8 @@ def main():
                 lop.generate_fake_pairs(X_train, f_sin, 2) + \
                 lop.generate_fake_pairs(X_train, f_sin, 3) + \
                 lop.generate_fake_pairs(X_train, f_sin, 4)
+        
+        gp.add(X_train, pairs)
     elif args.i == 'weird':
         X_train = np.array([0,1.9999,2,2.0001,4.2,6,7, 4.7])
         y_train = f_sin(X_train)
@@ -58,11 +63,17 @@ def main():
         pairs2 = [(p[0], p[1]+5, p[2]+5) for p in pairs2]
         pairs += pairs2
 
+        gp.add(X_train, pairs)
 
-    # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False, normalize_positive=False)
-    gp.probits[0].set_sigma(0.2)
-    gp.add(X_train, pairs)
+    elif args.i == 'abs':
+        X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
+        y_train = lop.normalize_0_1(f_sin(X_train))
+
+        gp.add(X_train, y_train, type='abs')
+
+
+    
+    
     gp.optimize(optimize_hyperparameter=True)
 
     # predict output of GP
@@ -87,6 +98,8 @@ def main():
     gp.plot_preference(head_width=0.1, ax=ax)
     
     ax.scatter(X_train, gp.F)
+    if args.i == 'abs':
+        ax.scatter(X_train, y_train)
 
     plt.title('Gaussian Process estimate (1 sigma)')
     plt.xlabel('x')

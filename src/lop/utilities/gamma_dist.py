@@ -49,9 +49,12 @@ def pdf_gamma(x, k, theta):
 # @param theta - the scale parameter of the gamma distribution
 def log_pdf_gamma(x, k, theta):
     term1 = 1 / (gamma(k) * (theta**k))
+
+    x_cliped = np.where(x < 0.000001, 0.000001, x)
+    gam = np.log(term1) + (k-1)*np.log(x_cliped) - (x_cliped / theta)
     
-    x = np.where(x < 0.000001, 0.000001, x)
-    return np.log(term1) + (k-1)*np.log(x) - (x / theta)
+    gam = np.where(x < 0, -np.inf, gam)
+    return gam
 
 ## d_log_pdf_gamma
 # returns the derivative of the log of the pdf of the gamma distribution (k, theta derivation)

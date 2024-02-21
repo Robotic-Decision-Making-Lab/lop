@@ -33,9 +33,12 @@ import scipy.stats as st
 
 from lop.probits import ProbitBase
 from lop.probits import std_norm_pdf, std_norm_cdf
+from lop.utilities import d_log_pdf_gamma, log_pdf_gamma
 
 from scipy.special import digamma, polygamma
 from scipy.stats import norm, beta
+
+import pdb
 
 ## AbsBoundProbit
 # This is almost directly Nick's code, for absolute bounded inputs.
@@ -60,6 +63,11 @@ class AbsBoundProbit(ProbitBase):
         self.log2pi = np.log(2.0*np.pi)
         self.eps = eps
 
+        self.sigma_k = 3
+        self.sigma_theta = 0.5
+
+        self.v_k = 5
+        self.v_theta = 2
 
     ## set_hyper
     # Sets the hyperparameters for the probit
@@ -74,6 +82,21 @@ class AbsBoundProbit(ProbitBase):
     # Gets a numpy array of hyperparameters for the probit
     def get_hyper(self):
         return np.array([self.sigma, self.v])
+
+    ## param_likli
+    # log liklihood of the parameter (prior)
+    # for this is a parameterized gamma_distribution. Scaled for functions of 
+    # approximently size 1 and distance between points in [0,10] ish range
+    def param_likli(self):
+        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
+                log_pdf_gamma(self.v, self.v_k, self.v_theta)
+
+    ## grad_param_likli
+    # gradient of the log liklihood of the parameter (prior)
+    # @return numpy array of gradient of each parameter
+    def grad_param_likli(self):
+        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
 
     ## set_sigma
     # Sets the sigma on the absolute bounded probit.
@@ -135,11 +158,18 @@ class AbsBoundProbit(ProbitBase):
         # Trouble with derivatives...
         dpy_df = self.v*self._isqrt2sig*std_norm_pdf(f*self._isqrt2sig) * (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb))
 
+        # aa1 = polygamma(1, aa)
+
+        # dpy_df = self.v*std_norm_pdf(f*self._isqrt2sig) * (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb))
+
+        # norm_pdf = std_norm_pdf(f*self._isqrt2sig)
+        # Wdiag = -self.v*self.v * norm_pdf * \
+        #         (norm_pdf * (aa1 + aa1) + (f / (2 * self.v * self.sigma*self.sigma)) * \
+        #         (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb)))
         Wdiag = - self.v*self._isqrt2sig*std_norm_pdf(f*self._isqrt2sig) * (
             f * self._i2var * (np.log(y_sel) - np.log(1.0-y_sel) - digamma(aa) + digamma(bb)) +
             self.v * self._isqrt2sig * std_norm_pdf(f*self._isqrt2sig) * (polygamma(1, aa) + polygamma(1, bb)) )
 
-        #W = np.diagflat(Wdiag)
 
         py = np.log(beta.pdf(y_sel, aa, bb))
 
@@ -205,7 +235,7 @@ class AbsBoundProbit(ProbitBase):
 
         term3 = gauss_pdf*gauss_pdf * (polygamma(2, bb) - polygamma(2, aa))
 
-        Wdiag = mult_term * term1_a*term1_b + term2_a*term2_b + term3
+        Wdiag = mult_term * (term1_a*term1_b + term2_a*term2_b + term3)
 
         dW = np.zeros((F.shape[0], F.shape[0], F.shape[0]))
         dW[y[1],y[1],y[1]] = Wdiag
@@ -231,7 +261,7 @@ class AbsBoundProbit(ProbitBase):
         aa, bb = self.get_alpha_beta(f)
 
         aa0, bb0 = digamma(aa), digamma(bb)
-        aa1, aa2 = polygamma(1, aa), polygamma(2, bb)
+        aa1, aa2 = polygamma(1, aa), polygamma(2, aa)
         bb1, bb2 = polygamma(1, bb), polygamma(2, bb)
 
         du_df = std_norm_pdf(f / (np.sqrt(2)*sigma))
@@ -240,8 +270,8 @@ class AbsBoundProbit(ProbitBase):
         du_dSigma = -(f / sigma) * du_df
 
         # calculate dW/dv
-        term1_b = np.log(y_sel) - np.log(1- y_sel) - aa0 + bb0 - aa * aa1 + bb * bb1
-        term2_b = aa1 + 0.5*aa*aa2 + bb1 + 0.5*bb2
+        term1_b = np.log(y_sel) - np.log(1- y_sel) - aa0 + aa0 - aa * aa1 + bb * bb1
+        term2_b = aa1 + 0.5*aa*aa2 + bb1 + 0.5*bb*bb2
 
         dW_dv = du2_df2 * term1_b - 2 * v * du_df * du_df * term2_b
 
@@ -281,7 +311,7 @@ class AbsBoundProbit(ProbitBase):
         sigma = self.sigma
         v = self.v
 
-        mu = self.mean_link(F)
+        mu = self.mean_link(f)
         aa, bb = self.get_alpha_beta(f)
         aa0, bb0 = digamma(aa), digamma(bb)
 
@@ -291,18 +321,20 @@ class AbsBoundProbit(ProbitBase):
         # dpy_dv
         dig_aa_bb = digamma(aa + bb)
         tmp1 = np.log(y_sel) - aa0 + dig_aa_bb
-        tmp2 = np.log(y_sel) - bb0 + dig_aa_bb
+        tmp2 = np.log(1 - y_sel) - bb0 + dig_aa_bb
         term1 = da_dv * tmp1
         term2 = db_dv * tmp2
 
-        dpy_dv = term1 + term2
+        dpy_dv = np.sum(term1 + term2)
 
         # dpy_dSigma
         du_dSigma = -(f / sigma) * std_norm_pdf(f / (np.sqrt(2)*sigma))
         da_dSigma = v * du_dSigma
         db_dSigma = -da_dSigma
 
-        dpy_dSigma = da_dSigma * tmp1 + db_dSigma * tmp2
+        dpy_dSigma = np.sum(da_dSigma * tmp1 + db_dSigma * tmp2)
+
+        #pdb.set_trace()
 
         return np.array([dpy_dSigma, dpy_dv])
 
