@@ -283,9 +283,11 @@ class PreferenceGP(PreferenceModel):
         if optimize_hyperparameter and self.X_train is not None:
             k_fold = min(math.floor(len(self.X_train) / 2), 4)
             if k_fold > 1:
-                num_iterations = 100
+                num_iterations = 600
                 prev_grad = []
                 is_converged = False
+
+                self.randomize_hyper()
 
                 for j in range(math.ceil(num_iterations / k_fold)):
                     splits = k_fold_x_y(self.X_train, self.y_train, k_fold)
@@ -376,7 +378,7 @@ class PreferenceGP(PreferenceModel):
         #grad_hyper[1] = 0
         #print('grad_hyper = ' + str(grad_hyper))
 
-        x_new = x0 - grad_hyper * 0.01
+        x_new = x0 - grad_hyper * 0.03
         #post_cost = self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)
         #print('cost post update: ' + str(post_cost))
         result = SimpleNamespace(x=x_new, grad=grad_hyper)
@@ -409,9 +411,10 @@ class PreferenceGP(PreferenceModel):
         # if parameters are terrible, aka bad update. Roll back to the previous update
         hyper_likli = self.hyper_liklihood()
         #print('hyper_likli = ' + str(hyper_likli))
-        if hyper_likli < -100:
+        if hyper_likli < -130:
             print('ROLL BACK UPDATE with noise')
-            self.set_hyper(x0 + np.random.random(len(x0))*1.0)
+            #self.set_hyper(x0 + np.random.random(len(x0))*1.0)
+            self.randomize_hyper()
             #self.set_hyper(x0)
 
         # self.visualize_hyperparameter(self.F, X_valid, X_train, y_valid, y_train, itr)
@@ -461,6 +464,18 @@ class PreferenceGP(PreferenceModel):
         self.cov_func.set_param(x[num_probit_p:])
 
         #self.cov_func.set_param(np.array([0.5, x[1]]))
+
+    # sample a random hyper parameter from the liklihood functions
+    def randomize_hyper(self):
+        probit_samples = np.array([])
+        for i in range(len(self.probits)):
+            sample = self.probits[i].randomize_hyper()
+            probit_samples = np.append(probit_samples, sample, axis=0)
+
+        cov_samples = self.cov_func.randomize_hyper()
+
+        self.set_hyper(np.append(probit_samples, cov_samples, axis=0))
+        
 
     def hyper_liklihood(self):
         cov_likli = self.cov_func.param_likli()

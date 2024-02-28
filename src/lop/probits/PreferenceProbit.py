@@ -66,6 +66,13 @@ class PreferenceProbit(ProbitBase):
     def get_hyper(self):
         return np.array([self.sigma])
 
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([
+            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta)])
+
     ## set_sigma
     # Sets the sigma value, and also sets up a couple of useful constants to go with it.
     # @param sigma - the sigma to use

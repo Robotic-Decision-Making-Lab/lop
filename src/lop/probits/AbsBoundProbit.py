@@ -58,16 +58,20 @@ class AbsBoundProbit(ProbitBase):
     #               basically relate to the range of the latent function
     # @param v - the precision, kind of related to inverse of noise, high v is sharp distributions
     # @param eps - epsilon to avoid division by 0 errors.
-    def __init__(self, sigma=1.0, v=10.0, eps=1e-12):
-        self.set_hyper([sigma, v])
+    def __init__(self, sigma=1.0, v=10.0, optimize_parameters=True, eps=1e-10):
+        self.set_sigma(sigma)
+        self.set_v(v)
+        
         self.log2pi = np.log(2.0*np.pi)
         self.eps = eps
 
-        self.sigma_k = 3
-        self.sigma_theta = 0.5
+        self.sigma_k = 5
+        self.sigma_theta = 0.25
 
         self.v_k = 5
         self.v_theta = 2
+
+        self.optimize_parameters = optimize_parameters
 
     ## set_hyper
     # Sets the hyperparameters for the probit
@@ -75,28 +79,46 @@ class AbsBoundProbit(ProbitBase):
     #               sigma, the slope of the probit
     #               v, precision, related to inverse of noise
     def set_hyper(self, hyper):
-        self.set_sigma(hyper[0])
-        self.set_v(hyper[1])
+        if self.optimize_parameters:
+            self.set_sigma(hyper[0])
+            self.set_v(hyper[1])
 
     ## get_hyper
     # Gets a numpy array of hyperparameters for the probit
     def get_hyper(self):
-        return np.array([self.sigma, self.v])
+        if self.optimize_parameters:
+            return np.array([self.sigma, self.v])
+        else:
+            return super().get_hyper()
+
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([
+            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
+            np.random.default_rng().gamma(self.v_k, self.v_theta)])
 
     ## param_likli
     # log liklihood of the parameter (prior)
     # for this is a parameterized gamma_distribution. Scaled for functions of 
     # approximently size 1 and distance between points in [0,10] ish range
     def param_likli(self):
-        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
-                log_pdf_gamma(self.v, self.v_k, self.v_theta)
+        if self.optimize_parameters:
+            return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
+                    log_pdf_gamma(self.v, self.v_k, self.v_theta)
+        else:
+            return super().param_likli()
 
     ## grad_param_likli
     # gradient of the log liklihood of the parameter (prior)
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
-        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
-                d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
+        if self.optimize_parameters:
+            return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                    d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
+        else:
+            return super().grad_param_likli()
 
     ## set_sigma
     # Sets the sigma on the absolute bounded probit.
@@ -158,14 +180,6 @@ class AbsBoundProbit(ProbitBase):
         # Trouble with derivatives...
         dpy_df = self.v*self._isqrt2sig*std_norm_pdf(f*self._isqrt2sig) * (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb))
 
-        # aa1 = polygamma(1, aa)
-
-        # dpy_df = self.v*std_norm_pdf(f*self._isqrt2sig) * (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb))
-
-        # norm_pdf = std_norm_pdf(f*self._isqrt2sig)
-        # Wdiag = -self.v*self.v * norm_pdf * \
-        #         (norm_pdf * (aa1 + aa1) + (f / (2 * self.v * self.sigma*self.sigma)) * \
-        #         (np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb)))
         Wdiag = - self.v*self._isqrt2sig*std_norm_pdf(f*self._isqrt2sig) * (
             f * self._i2var * (np.log(y_sel) - np.log(1.0-y_sel) - digamma(aa) + digamma(bb)) +
             self.v * self._isqrt2sig * std_norm_pdf(f*self._isqrt2sig) * (polygamma(1, aa) + polygamma(1, bb)) )
@@ -221,21 +235,28 @@ class AbsBoundProbit(ProbitBase):
 
         aa, bb = self.get_alpha_beta(f)
 
+        aa0, bb0 = digamma(aa), digamma(bb)
+        aa1, bb1 = polygamma(1, aa), polygamma(1, bb)
+        aa2, bb2 = polygamma(2, aa), polygamma(2, bb)
+
         v = self.v
         sigma = self.sigma
+        sqrt2 = np.sqrt(2)
 
-        gauss_pdf = std_norm_pdf(y_sel / (np.sqrt(2)*sigma))
+        gauss_pdf = std_norm_pdf(f / (sqrt2*sigma))
 
-        mult_term = v*v*v * gauss_pdf
-        term1_a = (1 / (2*v*v*sigma*sigma))*(((f*f) / (2*sigma*sigma)) - 1)
-        term1_b = np.log(y_sel) - np.log(1-y_sel) - digamma(aa) + digamma(bb)
 
-        term2_a = 3 * f * gauss_pdf / (2 * v * sigma*sigma)
-        term2_b = polygamma(1, aa) + polygamma(1, bb)
+        term1_a = -(v / (2*sqrt2*sigma*sigma*sigma)) * gauss_pdf * (1 - ((f*f)/(2*sigma*sigma)))
+        term1_b = np.log(y_sel) - np.log(1-y_sel) - aa0 + bb0
 
-        term3 = gauss_pdf*gauss_pdf * (polygamma(2, bb) - polygamma(2, aa))
+        term2_a = ((3*v*v*f) / (4*sigma*sigma*sigma*sigma)) * gauss_pdf * gauss_pdf
+        term2_b = aa1 + bb1
 
-        Wdiag = mult_term * (term1_a*term1_b + term2_a*term2_b + term3)
+        term3_a = (v*v*v) / (2*sqrt2 * sigma*sigma*sigma)
+        term3_b = gauss_pdf * gauss_pdf * (bb2 - aa2)
+
+
+        Wdiag = term1_a*term1_b + term2_a*term2_b + term3_a*term3_b
 
         dW = np.zeros((F.shape[0], F.shape[0], F.shape[0]))
         dW[y[1],y[1],y[1]] = Wdiag
@@ -253,43 +274,60 @@ class AbsBoundProbit(ProbitBase):
     #
     # @reutrn 2d matrix
     def calc_W_dHyper(self, y, F):
+        if not self.optimize_parameters:
+            return super().calc_W_dHyper(y, F)
+
         y_sel = y[0]
         f = F[y[1]]
 
         sigma = self.sigma
         v = self.v
+        sqrt2 = np.sqrt(2)
+        mu = self.mean_link(f)
         aa, bb = self.get_alpha_beta(f)
 
         aa0, bb0 = digamma(aa), digamma(bb)
         aa1, aa2 = polygamma(1, aa), polygamma(2, aa)
         bb1, bb2 = polygamma(1, bb), polygamma(2, bb)
 
-        du_df = std_norm_pdf(f / (np.sqrt(2)*sigma))
-        du2_df2 = - f * du_df / (2 * sigma * sigma)
+        gauss_pdf = std_norm_pdf(f / (np.sqrt(2)*sigma))
+        gauss_pdf2 = gauss_pdf * gauss_pdf
+        gauss_pdf3 = gauss_pdf * gauss_pdf2
 
-        du_dSigma = -(f / sigma) * du_df
+        sigma2 = sigma * sigma
+        sigma3 = sigma2 * sigma
+        sigma4 = sigma3 * sigma
+
+        tmp = np.log(y_sel) - np.log(1 - y_sel) - aa0 + bb0
 
         # calculate dW/dv
-        term1_b = np.log(y_sel) - np.log(1- y_sel) - aa0 + aa0 - aa * aa1 + bb * bb1
-        term2_b = aa1 + 0.5*aa*aa2 + bb1 + 0.5*bb*bb2
+        # see page 10 of my hand derivations
+        term1 = -(f / (2*sqrt2*sigma3)) * gauss_pdf * tmp
 
-        dW_dv = du2_df2 * term1_b - 2 * v * du_df * du_df * term2_b
+        term2_a = -(v*f / (2*sqrt2 * sigma3)) * gauss_pdf
+        term2_b = -mu*aa1 + bb1 - mu*bb1
 
+        term3 = (v / sigma2) * gauss_pdf2 * (aa1 + bb1)
+        
+        term4_a = ((v*v) / (2*sigma2)) * gauss_pdf2
+        term4_b = mu*aa1 + (1-mu)*bb2
+
+        dW_dv = term1 + term2_a*term2_b + term3 + term4_a*term4_b
 
         # dW/dSigma
-        term1_b = np.log(y_sel) - np.log(1 - y_sel) - aa0 + bb0
-        term1_a = (f / (2 * sigma * sigma * sigma)) * (3 - (f*f / (2 * sigma * sigma))) * du_df
-        term1 = term1_a * v * term1_b
+        # See page 9 of my hand calculations
+        term1_a = (v*f / (4 *sigma4)) * gauss_pdf 
+        term1_b = (6 - ((f*f) / (sqrt2 * sigma2)))
+        term1_c = tmp
 
-        term2_b = aa1 + bb1
-        term2 = du2_df2 * du_dSigma * v * v * term2_b
+        term2_a = ((v*v) / (sigma3)) * gauss_pdf2
+        term2_b = 1 + ((f*f) / (4*sigma2))
+        term2_c = aa1 + bb1
 
-        term3_a = (1 / sigma) * (((f*f) / (2 * sigma * sigma)) - 1) * du_df
-        term3 = 2 * term3_a * du_df * v * v * term2_b
+        term3_a = ((v*v*v*f) / (2*sqrt2*sigma4)) * gauss_pdf3
+        term3_b = aa2 - bb2
 
-        term4 = du_df*du_df * du_dSigma * v*v*v * (aa2 - bb2)
-
-        dW_dSigma = term1 - term2 - term3 - term4
+        dW_dSigma = term1_a*term1_b*term1_c + term2_a*term2_b*term2_c + term3_a*term3_b
 
         dW_dHyper = np.zeros((2, len(F), len(F)))
         dW_dHyper[1, y[1], y[1]] = dW_dv
@@ -305,6 +343,9 @@ class AbsBoundProbit(ProbitBase):
     #
     # @return numpy array (gradient of probit with respect to hyper parameters)
     def grad_hyper(self, y, F):
+        if not self.optimize_parameters:
+            return super().grad_hyper(y, F)
+
         y_sel = y[0]
         f = F[y[1]]
 
@@ -315,24 +356,20 @@ class AbsBoundProbit(ProbitBase):
         aa, bb = self.get_alpha_beta(f)
         aa0, bb0 = digamma(aa), digamma(bb)
 
-        da_dv = mu
-        db_dv = 1 - mu
+        gauss_pdf = std_norm_pdf(f / (np.sqrt(2)*sigma))
 
         # dpy_dv
         dig_aa_bb = digamma(aa + bb)
-        tmp1 = np.log(y_sel) - aa0 + dig_aa_bb
-        tmp2 = np.log(1 - y_sel) - bb0 + dig_aa_bb
-        term1 = da_dv * tmp1
-        term2 = db_dv * tmp2
+        term1 = mu*np.log(y_sel) + (1 - mu)*np.log(1-y_sel)
+        term2 = -mu*aa0 - (1 - mu)*bb0 + dig_aa_bb
 
         dpy_dv = np.sum(term1 + term2)
 
         # dpy_dSigma
-        du_dSigma = -(f / sigma) * std_norm_pdf(f / (np.sqrt(2)*sigma))
-        da_dSigma = v * du_dSigma
-        db_dSigma = -da_dSigma
+        mult_term = v*f*gauss_pdf / (np.sqrt(2)*2*sigma*sigma)
+        term = np.log(1 - y_sel) - np.log(y_sel) + aa0 - bb0
 
-        dpy_dSigma = np.sum(da_dSigma * tmp1 + db_dSigma * tmp2)
+        dpy_dSigma = np.sum(mult_term*term)
 
         #pdb.set_trace()
 

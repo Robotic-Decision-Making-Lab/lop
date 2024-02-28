@@ -102,13 +102,23 @@ class PeriodicKern(KernelFunc):
         theta = np.array([self.sigma, self.l, self.p])
         return theta
 
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([
+            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
+            np.random.default_rng().gamma(self.l_k, self.l_theta),
+            np.random.default_rng().gamma(self.p_k, self.p_theta)])
+
     ## param_likli
     # log liklihood of the parameter (prior)
     # for RBF kernels this is a parameterized gamma_distribution. Scaled for functions of 
     # approximently size 1 and distance between points in [0,10] ish range
     def param_likli(self):
         return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
-                log_pdf_gamma(self.l, self.l_k, self.l_theta)
+                log_pdf_gamma(self.l, self.l_k, self.l_theta) + \
+                log_pdf_gamma(self.p, self.p_k, self.p_theta) 
 
     ## grad_param_likli
     # gradient of the log liklihood of the parameter (prior)
@@ -116,7 +126,7 @@ class PeriodicKern(KernelFunc):
     def grad_param_likli(self):
         return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
                 d_log_pdf_gamma(self.l, self.l_k, self.l_theta),
-                d_log_pdf_gamma(self.l, self.p_k, self.p_theta)])
+                d_log_pdf_gamma(self.p, self.p_k, self.p_theta)])
 
     # get gradient of the covariance matrix
     # calculate the covariance matrix between the samples given in X
