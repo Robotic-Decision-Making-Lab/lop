@@ -316,18 +316,21 @@ class AbsBoundProbit(ProbitBase):
 
         # dW/dSigma
         # See page 9 of my hand calculations
-        term1_a = (v*f / (4 *sigma4)) * gauss_pdf 
-        term1_b = (6 - ((f*f) / (sqrt2 * sigma2)))
+        term1_a = (v*f / (4 *sqrt2 *sigma4)) * gauss_pdf 
+        term1_b = (6 - ((f*f) / (sigma2)))
         term1_c = tmp
 
         term2_a = ((v*v) / (sigma3)) * gauss_pdf2
-        term2_b = 1 + ((f*f) / (4*sigma2))
+        term2_b = 1 + ((-3*f*f) / (4*sigma2))
         term2_c = aa1 + bb1
 
         term3_a = ((v*v*v*f) / (2*sqrt2*sigma4)) * gauss_pdf3
         term3_b = aa2 - bb2
 
         dW_dSigma = term1_a*term1_b*term1_c + term2_a*term2_b*term2_c + term3_a*term3_b
+
+        if (dW_dSigma > 1000).any():
+            pdb.set_trace()
 
         dW_dHyper = np.zeros((2, len(F), len(F)))
         dW_dHyper[1, y[1], y[1]] = dW_dv

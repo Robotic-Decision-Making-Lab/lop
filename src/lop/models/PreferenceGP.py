@@ -378,7 +378,7 @@ class PreferenceGP(PreferenceModel):
         #grad_hyper[1] = 0
         #print('grad_hyper = ' + str(grad_hyper))
 
-        x_new = x0 - grad_hyper * 0.03
+        x_new = x0 - grad_hyper * 0.01
         #post_cost = self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)
         #print('cost post update: ' + str(post_cost))
         result = SimpleNamespace(x=x_new, grad=grad_hyper)
@@ -542,6 +542,10 @@ class PreferenceGP(PreferenceModel):
             if y[i] is not None:
                 grad_theta = probit.grad_hyper(y[i], F)
                 dW_hyper = probit.calc_W_dHyper(y[i], F)
+
+                if i == 2:
+                    print('grad_theta = ' + str(grad_theta) + ' dW_hyper = ' + str(dW_hyper))
+                    pdb.set_trace()
 
                 # equation (22)
                 term2 = 0.5 * np.trace(B_inv @ K @ dW_hyper, axis1=1, axis2=2)
