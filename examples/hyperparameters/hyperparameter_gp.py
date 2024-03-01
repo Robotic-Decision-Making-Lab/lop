@@ -67,7 +67,7 @@ def main():
 
     elif args.i == 'abs':
         X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
-        y_train = lop.normalize_0_1(f_sin(X_train))
+        y_train = lop.normalize_0_1(f_sin(X_train), 0.05)
 
         gp.add(X_train, y_train, type='abs')
 
@@ -77,8 +77,40 @@ def main():
         y_train = np.ceil(y_train)
 
         gp.add(X_train, y_train, type='ordinal')
+    elif args.i == 'weird_abs':
+        X_train = np.array([0,1.9999,2,2.0001,4.2,6,7, 4.7])
+        y_train = f_sin(X_train)
 
-    
+        pairs = lop.gen_pairs_from_idx(np.argmax(y_train[0:3]), list(range(len(y_train[0:3]))))
+        
+        pairs2 = lop.gen_pairs_from_idx(np.argmax(y_train[3:5]), list(range(len(y_train[3:5]))))
+        pairs2 = [(p[0], p[1]+3, p[2]+3) for p in pairs2]
+        pairs += pairs2
+        pairs2= lop.gen_pairs_from_idx(np.argmax(y_train[5:]), list(range(len(y_train[5:]))))
+        pairs2 = [(p[0], p[1]+5, p[2]+5) for p in pairs2]
+        pairs += pairs2
+
+        gp.add(X_train, pairs)
+
+        X_train = np.array([5.0])
+        y_train = np.array([0.5])
+
+        gp.add(X_train, y_train, type='abs')
+    elif args.i == 'full_abs':
+        X_train = np.array([0,1,2,3,4.2,6,7])
+        pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+                lop.generate_fake_pairs(X_train, f_sin, 1) + \
+                lop.generate_fake_pairs(X_train, f_sin, 2) + \
+                lop.generate_fake_pairs(X_train, f_sin, 3) + \
+                lop.generate_fake_pairs(X_train, f_sin, 4)
+        
+        gp.add(X_train, pairs)
+
+        X_train = np.array([5])
+        y_train = np.array([0.5])
+        gp.add(X_train, y_train, type='abs')    
+
+
     
     gp.optimize(optimize_hyperparameter=False)
 

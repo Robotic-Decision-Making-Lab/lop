@@ -80,6 +80,12 @@ class KernelFunc:
     def get_param(self):
         return np.empty(0)
 
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([])
+
     ## param_likli
     # log liklihood of the parameter (prior)
     def param_likli(self):

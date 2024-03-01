@@ -72,23 +72,30 @@ class ProbitBase:
     ## set_hyper
     # Sets the hyperparameters for the probit
     def set_hyper(self, hyper):
-        raise NotImplementedError('set_hyper not implemented')
+        pass
+        #raise NotImplementedError('set_hyper not implemented')
 
     ## get_hyper
     # Gets a numpy array of hyperparameters for the probit
     def get_hyper(self):
-        raise NotImplementedError("get_hyper not implemented")
+        return np.array([])
 
     ## param_likli
     # log liklihood of the parameter (prior)
     def param_likli(self):
-        raise NotImplementedError("param_likli not implemented")
+        return 0
 
     ## grad_param_likli
     # gradient of the log liklihood of the parameter (prior)
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
-        raise NotImplementedError("grad_param_likli not implemented")
+        return np.array([])
+
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([])
 
     ## print_hyperparameters
     # prints the hyperparameter of the probit
@@ -131,6 +138,7 @@ class ProbitBase:
     #
     # @reutrn 2d matrix
     def calc_W_dHyper(self, y, F):
+        return np.zeros((0, len(F), len(F)))
         raise NotImplementedError("calc_W_dHyper is not implemented")
 
     ## grad_hyper
@@ -140,6 +148,7 @@ class ProbitBase:
     #
     # @return numpy array (gradient of probit with respect to hyper parameters)
     def grad_hyper(self, y, F):
+        return np.array([])
         raise NotImplementedError('grad hyper parameters not implemented')
 
     ## likelihood

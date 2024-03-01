@@ -87,6 +87,15 @@ class LinearKern(KernelFunc):
                 d_log_pdf_gamma(self.sigma_b, self.sigma_b_k, self.sigma_b_theta),
                 d_log_pdf_gamma(self.c, self.c_k, self.c_theta)])
 
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([
+            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
+            np.random.default_rng().gamma(self.sigma_b_k, self.sigma_b_theta),
+            np.random.default_rng().gamma(self.c_k, self.c_theta)])
+
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X
     # overiding the kernel_func get covariance matrix in order to vectorize

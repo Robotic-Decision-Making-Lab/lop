@@ -76,6 +76,8 @@ def main():
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)
 
+    model.add(np.array([7]), np.array([0.5]), type='abs')
+
     with writer.saving(fig, "pref_gp.gif", 100):
 
         plot_data(model)

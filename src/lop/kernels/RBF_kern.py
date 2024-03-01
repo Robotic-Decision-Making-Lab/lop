@@ -82,8 +82,14 @@ class RBF_kern(KernelFunc):
         return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
                 d_log_pdf_gamma(self.l, self.l_k, self.l_theta)])
 
-
-
+    
+    ## Performs random sampling using the same liklihood function used by the param
+    # liklihood function
+    # @return numpy array of independent samples.
+    def randomize_hyper(self):
+        return np.array([
+            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
+            np.random.default_rng().gamma(self.l_k, self.l_theta)])
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X

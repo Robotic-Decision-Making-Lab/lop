@@ -142,8 +142,7 @@ def get_y_with_idx(y, indicies):
 # @param x - the input numpy array to normalize.
 #
 # @return the output numpy array to
-def normalize_0_1(x):
-    eps = 0.0001
+def normalize_0_1(x, eps=0.0001):
     slope = 1 / (np.max(x) - np.min(x) + (2*eps))
     intercept = np.min(x)
 
