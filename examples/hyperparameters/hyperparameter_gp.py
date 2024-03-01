@@ -71,10 +71,16 @@ def main():
 
         gp.add(X_train, y_train, type='abs')
 
+    elif args.i == 'ordinal':
+        X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
+        y_train = lop.normalize_0_1(f_sin(X_train)) * 4
+        y_train = np.ceil(y_train)
+
+        gp.add(X_train, y_train, type='ordinal')
 
     
     
-    gp.optimize(optimize_hyperparameter=True)
+    gp.optimize(optimize_hyperparameter=False)
 
     # predict output of GP
     X = np.arange(-0.5, 8, 0.1)
@@ -98,7 +104,7 @@ def main():
     gp.plot_preference(head_width=0.1, ax=ax)
     
     ax.scatter(X_train, gp.F)
-    if args.i == 'abs':
+    if args.i == 'abs' or args.i == 'ordinal':
         ax.scatter(X_train, y_train)
 
     plt.title('Gaussian Process estimate (1 sigma)')
