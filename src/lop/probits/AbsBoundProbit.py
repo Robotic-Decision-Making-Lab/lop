@@ -65,11 +65,11 @@ class AbsBoundProbit(ProbitBase):
         self.log2pi = np.log(2.0*np.pi)
         self.eps = eps
 
-        self.sigma_k = 5
-        self.sigma_theta = 0.25
+        self.sigma_k = 4
+        self.sigma_theta = 0.4
 
-        self.v_k = 5
-        self.v_theta = 2
+        self.v_k = 3
+        self.v_theta = 5
 
         self.optimize_parameters = optimize_parameters
 
@@ -189,16 +189,12 @@ class AbsBoundProbit(ProbitBase):
 
         # setup the indexing
         full_W = np.zeros((F.shape[0], F.shape[0]))
-        #idx_grid = np.meshgrid(y[1],y[1])
-        #full_W[tuple(idx_grid)] = W
         full_W[y[1],y[1]] = Wdiag
 
         full_dpy_df = np.zeros(F.shape[0])
-        full_py = np.zeros(F.shape[0])
         full_dpy_df[y[1]] = dpy_df
-        full_py[y[1]] = py
 
-        return -full_W, full_dpy_df, np.sum(full_py)
+        return -full_W, full_dpy_df, np.sum(py)
 
 
     ## likelihood
@@ -253,7 +249,7 @@ class AbsBoundProbit(ProbitBase):
         term2_b = aa1 + bb1
 
         term3_a = (v*v*v) / (2*sqrt2 * sigma*sigma*sigma)
-        term3_b = gauss_pdf * gauss_pdf * (bb2 - aa2)
+        term3_b = gauss_pdf * gauss_pdf * gauss_pdf * (bb2 - aa2)
 
 
         Wdiag = term1_a*term1_b + term2_a*term2_b + term3_a*term3_b
@@ -329,14 +325,14 @@ class AbsBoundProbit(ProbitBase):
 
         dW_dSigma = term1_a*term1_b*term1_c + term2_a*term2_b*term2_c + term3_a*term3_b
 
-        if (dW_dSigma > 1000).any():
-            pdb.set_trace()
+        # if (dW_dSigma > 1000).any():
+        #     pdb.set_trace()
 
         dW_dHyper = np.zeros((2, len(F), len(F)))
         dW_dHyper[1, y[1], y[1]] = dW_dv
         dW_dHyper[0, y[1], y[1]] = dW_dSigma
 
-        return dW_dHyper
+        return -dW_dHyper
 
 
     ## grad_hyper
@@ -369,7 +365,7 @@ class AbsBoundProbit(ProbitBase):
         dpy_dv = np.sum(term1 + term2)
 
         # dpy_dSigma
-        mult_term = v*f*gauss_pdf / (np.sqrt(2)*2*sigma*sigma)
+        mult_term = v*f*gauss_pdf / (np.sqrt(2)*sigma*sigma)
         term = np.log(1 - y_sel) - np.log(y_sel) + aa0 - bb0
 
         dpy_dSigma = np.sum(mult_term*term)

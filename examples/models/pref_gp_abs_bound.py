@@ -29,18 +29,18 @@ import matplotlib.pyplot as plt
 import lop
 
 
-def f_sq(x, data=None):
-    return (x/10.0)**2
+def f_sin(x, data=None):
+    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 def main():
-    X_train = np.array([0.2,1.5,2.3,3.2,4.2,6.2,7.3])
-    y_train = f_sq(X_train)
-
-
     # Create preference gp and optimize given training data
-    # IMPORTANT, setting normalize_positive helpful for abs bound probit
-    gp = lop.PreferenceGP(lop.RBF_kern(0.15, 2.0), normalize_positive=False)
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+    
+    X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
+    y_train = lop.normalize_0_1(f_sin(X_train), 0.05)
+
     gp.add(X_train, y_train, type='abs')
+
     gp.optimize()
 
     # predict output of GP
@@ -57,7 +57,7 @@ def main():
     sigma_to_plot = 1
 
     plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
-    Y_actual = f_sq(X)
+    Y_actual = f_sin(X)
     Y_max = np.linalg.norm(Y_actual, ord=np.inf)
     Y_actual = Y_actual / Y_max
     plt.plot(X, Y_actual)

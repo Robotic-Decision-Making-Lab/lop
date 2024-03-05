@@ -402,7 +402,7 @@ class PreferenceGP(PreferenceModel):
 
         
 
-        print(result)
+        #print(result)
 
         
 
@@ -543,9 +543,9 @@ class PreferenceGP(PreferenceModel):
                 grad_theta = probit.grad_hyper(y[i], F)
                 dW_hyper = probit.calc_W_dHyper(y[i], F)
 
-                if i == 2:
-                    print('grad_theta = ' + str(grad_theta) + ' dW_hyper = ' + str(dW_hyper))
-                    pdb.set_trace()
+                # if i == 2:
+                #     print('grad_theta = ' + str(grad_theta) + ' dW_hyper = ' + str(dW_hyper))
+                #     pdb.set_trace()
 
                 # equation (22)
                 term2 = 0.5 * np.trace(B_inv @ K @ dW_hyper, axis1=1, axis2=2)

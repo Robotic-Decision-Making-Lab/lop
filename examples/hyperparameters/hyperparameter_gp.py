@@ -34,7 +34,7 @@ def f_sin(x, data=None):
 
 def main():
     parser = argparse.ArgumentParser(description='Pa')
-    parser.add_argument('-i', type=str, default='full', help='Enter the type of pairs [full weird]')
+    parser.add_argument('-i', type=str, default='full', help='Enter the type of pairs [full weird abs ordinal weird_abs full_abs]')
     args = parser.parse_args()
 
     # Create preference gp and optimize given training data
@@ -112,7 +112,7 @@ def main():
 
 
     
-    gp.optimize(optimize_hyperparameter=False)
+    gp.optimize(optimize_hyperparameter=True)
 
     # predict output of GP
     X = np.arange(-0.5, 8, 0.1)
@@ -135,7 +135,7 @@ def main():
     ax.legend(['Predicted function with predicted F', 'Real function'])
     gp.plot_preference(head_width=0.1, ax=ax)
     
-    ax.scatter(X_train, gp.F)
+    ax.scatter(gp.X_train, gp.F)
     if args.i == 'abs' or args.i == 'ordinal':
         ax.scatter(X_train, y_train)
 
