@@ -170,7 +170,7 @@ def test_hyperparameter_search_converges_only_abs_bound():
 
 
     X_abs = np.array([1.5, 2.5])
-    y_abs = lop.normalize_0_1(f_sin(X_abs))
+    y_abs = lop.normalize_0_1(f_sin(X_abs), 0.05)
 
     gp.add(X_abs, y_abs, type='abs')
 
@@ -208,7 +208,7 @@ def test_hyperparameter_search_somewhat_converges_abs_bound_pairs():
     gp.add(X_train, pairs)
 
     X_abs = np.array([1.5, 2.5, 4.6])
-    y_abs = lop.normalize_0_1(f_sin(X_abs))
+    y_abs = lop.normalize_0_1(f_sin(X_abs), 0.05)
 
     gp.add(X_abs, y_abs, type='abs')
 
