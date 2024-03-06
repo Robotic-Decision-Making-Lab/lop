@@ -244,7 +244,7 @@ class PreferenceGP(PreferenceModel):
                                         (x_train, y_train),
                                         self.invert_function,
                                         lambda_type="binary", # sets the type of line search or static to perform
-                                        line_search_max_itr=5)
+                                        line_search_max_itr=3)
 
             # normalize F
             if self.normalize_gp:
@@ -338,7 +338,7 @@ class PreferenceGP(PreferenceModel):
     def hyperparameter_obj(self, x, X_train, y_train, X_valid, y_valid, bounds):
 
         self.set_hyper(x)
-        self.find_mode(X_train, y_train)
+        #self.find_mode(X_train, y_train)
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
         
@@ -349,7 +349,7 @@ class PreferenceGP(PreferenceModel):
 
     def hyperparamter_obj_grad(self, x, X_train, y_train, X_valid, y_valid, bounds):
         self.set_hyper(x)
-        self.find_mode(X_train, y_train)
+        #self.find_mode(X_train, y_train)
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
 

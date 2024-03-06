@@ -27,19 +27,21 @@
 
 import numpy as np
 import scipy.stats as st
+import scipy.special as spec
 
 
-
-
+_sqrt_2pi = np.sqrt(2*np.pi)
 def std_norm_pdf(x):
-    x = np.clip(x,-1e150,1e150)
-    return st.norm.pdf(x)
-    # return np.exp(-(x**2)/2)/_sqrt_2pi
+    #x = np.clip(x,-1e150,1e150)
+    #return st.norm.pdf(x)
+    return np.exp(-(x**2)/2)/_sqrt_2pi
 
 
 def std_norm_cdf(x):
-    x = np.clip(x, -30, 100 )
-    return st.norm.cdf(x)
+    x_clip = np.empty(x.size)
+    np.clip(x, -30, 100, out=x_clip)
+    return spec.ndtr(x_clip)
+    #return st.norm.cdf(x)
 
 
 

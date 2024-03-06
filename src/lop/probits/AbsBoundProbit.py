@@ -148,7 +148,8 @@ class AbsBoundProbit(ProbitBase):
     # Defined as equation 11 in Section 3.2.1
     # @param F - the predicted locations
     def mean_link(self, F):
-        ml = np.clip(std_norm_cdf(F*self._isqrt2sig), self.eps, 1.0-self.eps)
+        ml = np.empty(len(F))
+        np.clip(std_norm_cdf(F*self._isqrt2sig), self.eps, 1.0-self.eps, out=ml)
         return ml
 
     ## get_alpha_beta

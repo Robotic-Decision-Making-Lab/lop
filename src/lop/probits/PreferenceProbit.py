@@ -29,7 +29,7 @@
 
 
 import numpy as np
-import scipy.stats as st
+import scipy.special as spec
 from lop.probits import ProbitBase
 from lop.probits import std_norm_pdf, std_norm_cdf, calc_pdf_cdf_ratio
 from lop.utilities import d_log_pdf_gamma, log_pdf_gamma
@@ -275,6 +275,17 @@ class PreferenceProbit(ProbitBase):
     def likelihood(self, y, F):
         z = self.z_k(y, F)
         return std_norm_cdf(z)
+
+    ## log_likelihood
+    # Returns the log liklihood function for the given probit
+    # @param y - the given set of labels for the probit
+    # @param F - the input data samples
+    #
+    # @return log P(y|F)
+    def log_likelihood(self, y, F):
+        z = self.z_k(y, F)
+        x = np.clip(z, -30, 100 )
+        return np.sum(spec.log_ndtr(x))
 
 
 
