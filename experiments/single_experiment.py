@@ -111,6 +111,7 @@ def main():
     parser.add_argument('--num_runs', type=int, default=100, help='The number of runs')
     parser.add_argument('--num_alts', type=int, default=4, help='The number of alternatives to show to the user')
     parser.add_argument('--user', type=str, default='human_choice', help='Set the synthetic user type to use options [ perfect human_choice ]')
+    parser.add_argument('--hyper', type=str, default='hyper', help='Sets whether to perform hyperparameter optimization [ hyper no ]')
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
@@ -139,7 +140,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_user_'+args.user+'_fake_'+args.fake_func+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_user_'+args.user+'_fake_'+args.fake_func+'_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
@@ -149,7 +150,7 @@ def main():
     num_runs = args.num_runs
     num_eval = len(eval_files[0])
     num_train = len(train_files[0])
-    num_train = 10
+    #num_train = 10
 
     # setup record data.
     ranks = np.empty((num_runs, num_train+1, num_eval))
@@ -169,18 +170,22 @@ def main():
             accuracy, avg_selection, all_ranks, est_score, real_score, s_diff = \
                             train_and_eval( args.config, \
                                             env_num=args.env, \
-                                            fake_func_desc=args.fake_func, \
+                                            fake_function_desc=args.fake_func, \
                                             folder=run_folder, \
                                             selector=args.selector, \
                                             selection_type=args.sel_type,
                                             model_desc=args.model, \
                                             num_alts = args.num_alts, \
                                             synth_user=args.user, \
+                                            hyper=args.hyper, \
+                                            num_train=num_train, \
+                                            num_eval=num_eval,\
                                             verbose = args.v)
 
 
             avg_correct[j] = accuracy
             avg_ranks[j] = avg_selection
+            pdb.set_trace()
             ranks[j] = all_ranks
 
             estimated_scores[j] = est_score

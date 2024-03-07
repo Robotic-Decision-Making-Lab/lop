@@ -23,7 +23,9 @@
 
 import numpy as np
 import oyaml as yaml
+import sys
 import pickle
+import pdb
 
 import lop
 
@@ -53,17 +55,26 @@ def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=N
 
     return al
 
-def get_model(model_desc, active_learner, config):
+def get_model(model_desc, active_learner, hyper, config):
     pareto_pairs = config['pareto_pairs']
+
 
     model = None
     if model_desc == 'gp':
+        if hyper == 'no':
+            use_hyper = False
+        elif hyper == 'hyper':
+            use_hyper = True
+        else:
+            print('Bad hyperparameter setting in get_model ' + str(hyper))
+            sys.exit(0)
+
         model = lop.PreferenceGP(
                     cov_func=lop.RBF_kern(config['rbf_sigma'], config['rbf_lengthscale']),
                     normalize_gp=config['normalize_gp'],
                     pareto_pairs=pareto_pairs,
                     normalize_positive=config['normalize_postive'],
-                    use_hyper_optimization=config['hyperparameter_optimization'],
+                    use_hyper_optimization=use_hyper,
                     active_learner= active_learner
         )
     elif model_desc == 'linear':
@@ -110,7 +121,6 @@ def rating_score_from_fake_f(rewards, fake_func, rating_bounds):
 
 def train_and_eval(config_filename, 
                     env_num, 
-                    fake_func_desc, 
                     folder,
                     selector='UCB',
                     selection_type='choose1',
@@ -120,6 +130,9 @@ def train_and_eval(config_filename,
                     UCB_scaler=None,
                     rbf_sigma=None,
                     synth_user='perfect',
+                    hyper='no',
+                    num_train=10,
+                    num_eval=10,
                     verbose = False):
     #
     with open(config_filename, 'rb') as f:
@@ -128,20 +141,19 @@ def train_and_eval(config_filename,
     with open('simple_rewards.rew', 'rb') as f:
         path_data = pickle.load(f)
 
-    train_data = path_data['train']
-    eval_data = path_data['eval']
-
+    train_data = [path_d[:num_train] for path_d in path_data['train']]
+    eval_data = [path_d[:num_eval] for path_d in path_data['eval']]
 
     if rbf_sigma is not None:
         config['rbf_sigma'] = rbf_sigma
     if UCB_scaler is None:
         UCB_scaler = config['UCB_scalar']
 
-    num_training = 10
+    num_training = num_train#10
 
     #### Get required models and fake functions
     active_learner = get_active_learner(selector, selection_type, UCB_scaler, config)
-    model = get_model(model_desc, active_learner, config)
+    model = get_model(model_desc, active_learner, hyper, config)
     utility_f = get_fake_func(fake_function_desc, config)
 
 
