@@ -88,8 +88,8 @@ class RBF_kern(KernelFunc):
     # @return numpy array of independent samples.
     def randomize_hyper(self):
         return np.array([
-            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
-            np.random.default_rng().gamma(self.l_k, self.l_theta)])
+            np.random.gamma(self.sigma_k, self.sigma_theta),
+            np.random.gamma(self.l_k, self.l_theta)])
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X

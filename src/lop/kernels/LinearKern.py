@@ -92,9 +92,9 @@ class LinearKern(KernelFunc):
     # @return numpy array of independent samples.
     def randomize_hyper(self):
         return np.array([
-            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
-            np.random.default_rng().gamma(self.sigma_b_k, self.sigma_b_theta),
-            np.random.default_rng().gamma(self.c_k, self.c_theta)])
+            np.random.gamma(self.sigma_k, self.sigma_theta),
+            np.random.gamma(self.sigma_b_k, self.sigma_b_theta),
+            np.random.gamma(self.c_k, self.c_theta)])
 
     ## get covariance matrix
     # calculate the covariance matrix between the samples given in X

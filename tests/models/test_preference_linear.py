@@ -35,6 +35,7 @@ def test_pref_linear_not_optimized():
 
 
 def test_pref_linear_function():
+    np.random.seed(0)
     pm = lop.PreferenceLinear()
 
     X_train = np.array([[0,0],[1,2],[2,4],[3,2],[4.2, 5.6],[6,2],[7,8]])

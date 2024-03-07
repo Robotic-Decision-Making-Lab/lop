@@ -96,8 +96,8 @@ class AbsBoundProbit(ProbitBase):
     # @return numpy array of independent samples.
     def randomize_hyper(self):
         return np.array([
-            np.random.default_rng().gamma(self.sigma_k, self.sigma_theta),
-            np.random.default_rng().gamma(self.v_k, self.v_theta)])
+            np.random.gamma(self.sigma_k, self.sigma_theta),
+            np.random.gamma(self.v_k, self.v_theta)])
 
     ## param_likli
     # log liklihood of the parameter (prior)
