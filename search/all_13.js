@@ -184,7 +184,7 @@ var searchData=
   ['test_5fvectorization_5flinear_487',['test_vectorization_linear',['../namespacetest__linear__kernel.html#a4773bc5344301724f7ef84be4a211e1c',1,'test_linear_kernel']]],
   ['test_5fvectorization_5fperiodic_488',['test_vectorization_periodic',['../namespacetest__periodic__kernel.html#a369cdc48e00c09faa18d9d5486553b31',1,'test_periodic_kernel']]],
   ['test_5fvectorization_5frbf_489',['test_vectorization_rbf',['../namespacetest__rbf__kernel.html#a0c253c140d204cd26b1f542bd0153955',1,'test_rbf_kernel']]],
-  ['train_5fand_5feval_490',['train_and_eval',['../namespaceexperiment__helper.html#a8246a705baa9ef498b697b98523e3c03',1,'experiment_helper']]],
+  ['train_5fand_5feval_490',['train_and_eval',['../namespaceexperiment__helper.html#a530e9cc5419daa7e116bc511c7c3156e',1,'experiment_helper']]],
   ['train_5ffiles_491',['train_files',['../namespacesingle__experiment.html#ad963151733b15a52660b08dd8b9e6ab4',1,'single_experiment']]],
   ['train_5ffiles_5fshort_492',['train_files_short',['../namespacesingle__experiment.html#a957191c7351d967defa161f906a7528c',1,'single_experiment']]],
   ['training_5fsigma_493',['training_sigma',['../classlop_1_1models_1_1GP_1_1GP.html#a92bad70657d787b0fc1b29d396f6b8de',1,'lop::models::GP::GP']]],
