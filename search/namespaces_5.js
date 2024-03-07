@@ -1,21 +1,6 @@
 var searchData=
 [
-  ['test_5factive_5flearner_483',['test_active_learner',['../namespacetest__active__learner.html',1,'']]],
-  ['test_5ffake_5ffunction_484',['test_fake_function',['../namespacetest__fake__function.html',1,'']]],
-  ['test_5fgp_485',['test_GP',['../namespacetest__GP.html',1,'']]],
-  ['test_5fgp_5fkernel_486',['test_gp_kernel',['../namespacetest__gp__kernel.html',1,'']]],
-  ['test_5fgv_5fucb_5flearner_487',['test_GV_UCB_learner',['../namespacetest__GV__UCB__learner.html',1,'']]],
-  ['test_5fhuman_5fchoice_488',['test_human_choice',['../namespacetest__human__choice.html',1,'']]],
-  ['test_5fmcmc_5fsampling_489',['test_mcmc_sampling',['../namespacetest__mcmc__sampling.html',1,'']]],
-  ['test_5fmodel_490',['test_model',['../namespacetest__model.html',1,'']]],
-  ['test_5fmutual_5finfo_5flearner_491',['test_mutual_info_learner',['../namespacetest__mutual__info__learner.html',1,'']]],
-  ['test_5fpareto_492',['test_pareto',['../namespacetest__pareto.html',1,'']]],
-  ['test_5fpreference_5fgp_493',['test_preference_GP',['../namespacetest__preference__GP.html',1,'']]],
-  ['test_5fpreference_5fgp_5fspecial_5fcases_494',['test_preference_GP_special_cases',['../namespacetest__preference__GP__special__cases.html',1,'']]],
-  ['test_5fpreference_5flinear_495',['test_preference_linear',['../namespacetest__preference__linear.html',1,'']]],
-  ['test_5fpreference_5fmodel_496',['test_preference_model',['../namespacetest__preference__model.html',1,'']]],
-  ['test_5fpreference_5fpair_497',['test_preference_pair',['../namespacetest__preference__pair.html',1,'']]],
-  ['test_5fprobits_498',['test_probits',['../namespacetest__probits.html',1,'']]],
-  ['test_5frandom_5flearner_499',['test_random_learner',['../namespacetest__random__learner.html',1,'']]],
-  ['test_5fucb_5flearner_500',['test_UCB_learner',['../namespacetest__UCB__learner.html',1,'']]]
+  ['sample_5fprior_590',['sample_prior',['../namespacesample__prior.html',1,'']]],
+  ['setup_591',['setup',['../namespacesetup.html',1,'']]],
+  ['single_5fexperiment_592',['single_experiment',['../namespacesingle__experiment.html',1,'']]]
 ];

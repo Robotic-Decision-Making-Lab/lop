@@ -108,6 +108,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a763f8c3adc321234256515199ed17a0d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a763f8c3adc321234256515199ed17a0d">select_best</a> (self, candidate_pts)</td></tr>
 <tr class="memdesc:a763f8c3adc321234256515199ed17a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">select_best Returns the best index from the list of candidate_pts  <a href="classlop_1_1models_1_1Model_1_1Model.html#a763f8c3adc321234256515199ed17a0d">More...</a><br /></td></tr>
 <tr class="separator:a763f8c3adc321234256515199ed17a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26f7c67752dcde5fb72994b7e26f11a8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a26f7c67752dcde5fb72994b7e26f11a8">get_hyper</a> (self)</td></tr>
+<tr class="memdesc:a26f7c67752dcde5fb72994b7e26f11a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">get_hyper get the hyperparameters for the given model.  <a href="classlop_1_1models_1_1Model_1_1Model.html#a26f7c67752dcde5fb72994b7e26f11a8">More...</a><br /></td></tr>
+<tr class="separator:a26f7c67752dcde5fb72994b7e26f11a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ae87a1a12d396e57b6a3fa460002887"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a4ae87a1a12d396e57b6a3fa460002887">set_hyper</a> (self, x)</td></tr>
+<tr class="memdesc:a4ae87a1a12d396e57b6a3fa460002887"><td class="mdescLeft">&#160;</td><td class="mdescRight">set_hyper set the hyperparameters for the given model.  <a href="classlop_1_1models_1_1Model_1_1Model.html#a4ae87a1a12d396e57b6a3fa460002887">More...</a><br /></td></tr>
+<tr class="separator:a4ae87a1a12d396e57b6a3fa460002887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee50c7d81ee01361e95d2afbbb887e96"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#aee50c7d81ee01361e95d2afbbb887e96">grad_hyper</a> (self)</td></tr>
+<tr class="memdesc:aee50c7d81ee01361e95d2afbbb887e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">grad_hyper get the gradient of the hyperparameters  <a href="classlop_1_1models_1_1Model_1_1Model.html#aee50c7d81ee01361e95d2afbbb887e96">More...</a><br /></td></tr>
+<tr class="separator:aee50c7d81ee01361e95d2afbbb887e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab405d205e6f22094152eccee656dc03e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#ab405d205e6f22094152eccee656dc03e">likli_f</a> (self, F, x, y)</td></tr>
+<tr class="memdesc:ab405d205e6f22094152eccee656dc03e"><td class="mdescLeft">&#160;</td><td class="mdescRight">likli_f calculates the posterior log liklihood function for the model  <a href="classlop_1_1models_1_1Model_1_1Model.html#ab405d205e6f22094152eccee656dc03e">More...</a><br /></td></tr>
+<tr class="separator:ab405d205e6f22094152eccee656dc03e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b0546e213ffb9efe3b1f29f025e38ee"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a2b0546e213ffb9efe3b1f29f025e38ee">select</a> (self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False)</td></tr>
 <tr class="memdesc:a2b0546e213ffb9efe3b1f29f025e38ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">select This function calls the active learner and specifies the number of alternatives to select A wrapper around calling model.active_learner.select  <a href="classlop_1_1models_1_1Model_1_1Model.html#a2b0546e213ffb9efe3b1f29f025e38ee">More...</a><br /></td></tr>
 <tr class="separator:a2b0546e213ffb9efe3b1f29f025e38ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +198,106 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a26f7c67752dcde5fb72994b7e26f11a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26f7c67752dcde5fb72994b7e26f11a8">&#9670;&nbsp;</a></span>get_hyper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.Model.Model.get_hyper </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get_hyper get the hyperparameters for the given model. </p>
+<p>Particularly intended for hyperparameter optimization.</p>
+<dl class="section return"><dt>Returns</dt><dd>a numpy array of all hyperparameters (N,) </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ad136dff90b0cfcc80d4c744930fc8b87">lop.models.PreferenceModel.PreferenceModel</a>, and <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a522549559e1f7070989ca877c5f19aee">lop.models.PreferenceGP.PreferenceGP</a>.</p>
+
+</div>
+</div>
+<a id="aee50c7d81ee01361e95d2afbbb887e96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee50c7d81ee01361e95d2afbbb887e96">&#9670;&nbsp;</a></span>grad_hyper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.Model.Model.grad_hyper </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>grad_hyper get the gradient of the hyperparameters </p>
+<dl class="section return"><dt>Returns</dt><dd>(n,) numpy array of gradient of each hyperparameter for the model </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a51c855bc3dc7d77d9f78e714a7ee1e2d">lop.models.PreferenceModel.PreferenceModel</a>.</p>
+
+</div>
+</div>
+<a id="ab405d205e6f22094152eccee656dc03e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab405d205e6f22094152eccee656dc03e">&#9670;&nbsp;</a></span>likli_f()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.Model.Model.likli_f </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>likli_f calculates the posterior log liklihood function for the model </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">F</td><td>- the given locations of the model given the x and labels y </td></tr>
+    <tr><td class="paramname">x</td><td>- the given inputs of the function </td></tr>
+    <tr><td class="paramname">y</td><td>- the labels of given function (pairwise parameters etc)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a scalar value as the log liklihood of the model </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a22e40786fa35068513c496c40431d514">lop.models.PreferenceGP.PreferenceGP</a>.</p>
+
+</div>
+</div>
 <a id="a9f66d88d137b6c6b36d5dd03d9451ffd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f66d88d137b6c6b36d5dd03d9451ffd">&#9670;&nbsp;</a></span>predict()</h2>
 
@@ -221,7 +333,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an array of output values (n), other output data (variance, covariance,etc) </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#a527ed3b00a4be78f7f045aea2f20d192">lop.models.PreferenceLinear.PreferenceLinear</a>, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a224581040d0c70be6399f9eff2100bfb">lop.models.PreferenceGP.PreferenceGP</a>, <a class="el" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html#ab5665aa8d5bc29694012b2aba80a2b7f">lop.models.Model.SimplelestModel</a>, and <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3cc662004c48dcb15dd72ff71f951ba7">lop.models.GP.GP</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#a527ed3b00a4be78f7f045aea2f20d192">lop.models.PreferenceLinear.PreferenceLinear</a>, <a class="el" href="classlop_1_1models_1_1Model_1_1SimplelestModel.html#ab5665aa8d5bc29694012b2aba80a2b7f">lop.models.Model.SimplelestModel</a>, and <a class="el" href="classlop_1_1models_1_1GP_1_1GP.html#a3cc662004c48dcb15dd72ff71f951ba7">lop.models.GP.GP</a>.</p>
 
 </div>
 </div>
@@ -383,6 +495,45 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>index of the best candidate pt </dd></dl>
+
+</div>
+</div>
+<a id="a4ae87a1a12d396e57b6a3fa460002887"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ae87a1a12d396e57b6a3fa460002887">&#9670;&nbsp;</a></span>set_hyper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.models.Model.Model.set_hyper </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>set_hyper set the hyperparameters for the given model. </p>
+<p>Particularly intended for hyperparameter optimization.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>- the input hyper parameters as a (n, ) numpy array </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a47b69e229de5d9e4c0a0b67b05ea8842">lop.models.PreferenceModel.PreferenceModel</a>, and <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a494378afd98c282076f5b29c88f2cc8a">lop.models.PreferenceGP.PreferenceGP</a>.</p>
 
 </div>
 </div>

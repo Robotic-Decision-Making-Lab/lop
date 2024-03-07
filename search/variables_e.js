@@ -1,4 +1,21 @@
 var searchData=
 [
-  ['q_804',['Q',['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html#a5e40d87e143de3ac594c7592c0864cbf',1,'lop::utilities::FakeFunction::FakeLogistic']]]
+  ['p_989',['p',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a38d769653cc0e6dcfbbf58fa54678bac',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
+  ['p_5fk_990',['p_k',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a20c8755e723a6d92a6f75edfbdf2167d',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
+  ['p_5ftheta_991',['p_theta',['../classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a93a8d4cfe40b496b801fe7d821066eaf',1,'lop::kernels::PeriodicKern::PeriodicKern']]],
+  ['package_5fdir_992',['package_dir',['../namespacesetup.html#afd7273d426fd6e1796ec17175f6521c3',1,'setup']]],
+  ['packages_993',['packages',['../namespacesetup.html#aff2375a361fd5865c77bd9aa093be747',1,'setup']]],
+  ['pareto_5fpairs_994',['pareto_pairs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3293f47051ab5b8f128d3dcd0514b86f',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['peakiness_995',['peakiness',['../classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html#a911ba530df048c127271cc90f4d41b01',1,'lop::active_learning::MutualInfoLearner::MutualInfoLearner']]],
+  ['phase_996',['phase',['../classlop_1_1utilities_1_1FakeFunction_1_1FakeSinExp.html#a240fb7eb8dd90e9be510d849e75d7438',1,'lop::utilities::FakeFunction::FakeSinExp']]],
+  ['plan_5ffile_5fheader_997',['plan_file_header',['../namespacesingle__experiment.html#a6cc9c3f5bed39acc4a5faaaa914c02fa',1,'single_experiment']]],
+  ['plan_5fheader_998',['plan_header',['../namespacesingle__experiment.html#a12a673f6c6781f6dfde3d2b5648ef605',1,'single_experiment']]],
+  ['possible_5ffake_5ffuncs_999',['possible_fake_funcs',['../namespacesingle__experiment.html#a99167f43cc308242b0d06cbd09b94e66',1,'single_experiment']]],
+  ['possible_5fmodels_1000',['possible_models',['../namespacesingle__experiment.html#afbb316ba67e71f439a3f4b19f46b2b37',1,'single_experiment']]],
+  ['possible_5fselection_5ftypes_1001',['possible_selection_types',['../namespacesingle__experiment.html#a6e705b54c42fd73bdafd25750ec9c9e9',1,'single_experiment']]],
+  ['possible_5fselectors_1002',['possible_selectors',['../namespacesingle__experiment.html#a53c2ae622f0d8dc4b98ee2feb9c3d0ae',1,'single_experiment']]],
+  ['prior_5fidx_1003',['prior_idx',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3000fbae4591c21b97a5c05037a9f6d3',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['probit_5fidxs_1004',['probit_idxs',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#acf0df71371980b7ab3bc13ab11f61797',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['probits_1005',['probits',['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a3befb70a2abbede7f4fa150afc5237d7',1,'lop::models::PreferenceModel::PreferenceModel']]],
+  ['python_5frequires_1006',['python_requires',['../namespacesetup.html#aa7ca7bc9391b217e81efeb03689d8dbf',1,'setup']]]
 ];

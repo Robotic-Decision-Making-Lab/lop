@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['w_816',['w',['../classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#a0375a5c219af631efd6951b62ac7050e',1,'lop.models.PreferenceLinear.PreferenceLinear.w()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLinear.html#ab1bb1664743f65b2675464921166cadf',1,'lop.utilities.FakeFunction.FakeLinear.w()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeSquared.html#ac12e117273b4dcd626b4f7b4d58dec18',1,'lop.utilities.FakeFunction.FakeSquared.w()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html#ab16d92a58441eff0629c9562c3a77649',1,'lop.utilities.FakeFunction.FakeLogistic.w()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeSinExp.html#af9321a974417b18cc26593d56d96c72e',1,'lop.utilities.FakeFunction.FakeSinExp.w()']]]
+  ['v_1022',['v',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#ad11b75425620ba4d3ca8d925a8b02b5e',1,'lop.probits.AbsBoundProbit.AbsBoundProbit.v()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html#aae625d3665383423e46b03d875df8631',1,'lop.utilities.FakeFunction.FakeLogistic.v()']]],
+  ['v_5fk_1023',['v_k',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#aa97b9b40f97dade922afc41d487634ba',1,'lop::probits::AbsBoundProbit::AbsBoundProbit']]],
+  ['v_5ftheta_1024',['v_theta',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#a5bd7fb0d493cdf53d7bda3e48d790620',1,'lop::probits::AbsBoundProbit::AbsBoundProbit']]],
+  ['version_1025',['version',['../namespacesetup.html#a2aa722b36a933088812b50ea79b97a5c',1,'setup']]]
 ];

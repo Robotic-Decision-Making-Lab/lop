@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rating_5fbounds_5fglobal_805',['rating_bounds_global',['../namespaceexperiment__helper.html#a825062bd49e7e970f9ad4d5488e7f0b4',1,'experiment_helper']]]
+  ['q_1007',['Q',['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html#a5e40d87e143de3ac594c7592c0864cbf',1,'lop::utilities::FakeFunction::FakeLogistic']]]
 ];

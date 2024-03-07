@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['v_814',['v',['../classlop_1_1probits_1_1AbsBoundProbit_1_1AbsBoundProbit.html#ad11b75425620ba4d3ca8d925a8b02b5e',1,'lop.probits.AbsBoundProbit.AbsBoundProbit.v()'],['../classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html#aae625d3665383423e46b03d875df8631',1,'lop.utilities.FakeFunction.FakeLogistic.v()']]],
-  ['version_815',['version',['../namespacesetup.html#a2aa722b36a933088812b50ea79b97a5c',1,'setup']]]
+  ['url_1020',['url',['../namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb',1,'setup']]],
+  ['use_5fhyper_5foptimization_1021',['use_hyper_optimization',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#afd677d1d608d09111b94c47bc77dc898',1,'lop::models::PreferenceGP::PreferenceGP']]]
 ];

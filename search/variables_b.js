@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['n_5floops_781',['n_loops',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a74bcedbec9d32cd1b3c974ecfe9854ee',1,'lop.models.PreferenceGP.PreferenceGP.n_loops()'],['../classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#af9432e92b57deb9a4bc74f23d7b15556',1,'lop.models.PreferenceLinear.PreferenceLinear.n_loops()'],['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a55734ab061a5fd4cfbb0944ed1265008',1,'lop.models.PreferenceModel.PreferenceModel.n_loops()']]],
-  ['n_5fordinals_782',['n_ordinals',['../classlop_1_1probits_1_1OrdinalProbit_1_1OrdinalProbit.html#a11399dc4eab5a07a98bfbb6bb41fc151',1,'lop::probits::OrdinalProbit::OrdinalProbit']]],
-  ['name_783',['name',['../namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f',1,'setup']]],
-  ['normalize_5fgp_784',['normalize_gp',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a889775082bf26547d6b286d694dc6ed8',1,'lop::models::PreferenceGP::PreferenceGP']]],
-  ['normalize_5fpositive_785',['normalize_positive',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a01cd672cf1fbf467d063c17ab2e3a87f',1,'lop::models::PreferenceGP::PreferenceGP']]]
+  ['m_976',['M',['../classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html#a536b4698ee90f26ad74a8dc64cf0291b',1,'lop::active_learning::MutualInfoLearner::MutualInfoLearner']]],
+  ['mat_5finv_977',['mat_inv',['../classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#ad9304f29626a718c42d3558eca18c8f3',1,'lop::models::PreferenceLinear::PreferenceLinear']]],
+  ['maxloops_978',['maxloops',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a9e09507d99d00e5282fc7ba377afb6e9',1,'lop.models.PreferenceGP.PreferenceGP.maxloops()'],['../classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html#a33a6d3105e79b19968d68e51b519932a',1,'lop.models.PreferenceLinear.PreferenceLinear.maxloops()']]],
+  ['mean_5ffunc_979',['mean_func',['../classlop_1_1models_1_1GP_1_1GP.html#a64a18efb16a9f061bb88114d34995480',1,'lop::models::GP::GP']]],
+  ['model_980',['model',['../classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html#a03f443949471a2fd641cc80b333821d5',1,'lop::active_learning::ActiveLearner::ActiveLearner']]]
 ];

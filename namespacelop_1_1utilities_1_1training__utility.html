@@ -76,34 +76,123 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a76b58fbba391bfeedab90a49f7fedf6f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1training__utility.html#a76b58fbba391bfeedab90a49f7fedf6f">k_fold_half</a> (y)</td></tr>
-<tr class="memdesc:a76b58fbba391bfeedab90a49f7fedf6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">k_fold_split A function to split the datasets for training the PreferenceGP  <a href="namespacelop_1_1utilities_1_1training__utility.html#a76b58fbba391bfeedab90a49f7fedf6f">More...</a><br /></td></tr>
-<tr class="separator:a76b58fbba391bfeedab90a49f7fedf6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade550d22b07b2903bfa045aae66a3a2d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1training__utility.html#ade550d22b07b2903bfa045aae66a3a2d">k_fold_x_y</a> (X, y, k)</td></tr>
+<tr class="memdesc:ade550d22b07b2903bfa045aae66a3a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">k_fold_x_y k fold split for both x and y training data  <a href="namespacelop_1_1utilities_1_1training__utility.html#ade550d22b07b2903bfa045aae66a3a2d">More...</a><br /></td></tr>
+<tr class="separator:ade550d22b07b2903bfa045aae66a3a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22fe9503fcc86059b47824b3234ba09c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1training__utility.html#a22fe9503fcc86059b47824b3234ba09c">get_y_with_idx</a> (y, indicies)</td></tr>
+<tr class="separator:a22fe9503fcc86059b47824b3234ba09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc139dfeae7377c9c273572975603e0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1training__utility.html#a7bc139dfeae7377c9c273572975603e0">normalize_0_1</a> (x, eps=0.0001)</td></tr>
+<tr class="memdesc:a7bc139dfeae7377c9c273572975603e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">normalize_0_1 Normalize the given input to be between 0 and 1.  <a href="namespacelop_1_1utilities_1_1training__utility.html#a7bc139dfeae7377c9c273572975603e0">More...</a><br /></td></tr>
+<tr class="separator:a7bc139dfeae7377c9c273572975603e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a76b58fbba391bfeedab90a49f7fedf6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b58fbba391bfeedab90a49f7fedf6f">&#9670;&nbsp;</a></span>k_fold_half()</h2>
+<a id="a22fe9503fcc86059b47824b3234ba09c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22fe9503fcc86059b47824b3234ba09c">&#9670;&nbsp;</a></span>get_y_with_idx()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def lop.utilities.training_utility.k_fold_half </td>
+          <td class="memname">def lop.utilities.training_utility.get_y_with_idx </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>y</em></td><td>)</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>indicies</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>k_fold_split A function to split the datasets for training the PreferenceGP </p>
+</div>
+</div>
+<a id="ade550d22b07b2903bfa045aae66a3a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade550d22b07b2903bfa045aae66a3a2d">&#9670;&nbsp;</a></span>k_fold_x_y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.utilities.training_utility.k_fold_x_y </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>k_fold_x_y k fold split for both x and y training data </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">y</td><td>- the y data as [[(input data for probit)]] </td></tr>
+    <tr><td class="paramname">X</td><td>- the X input data </td></tr>
+    <tr><td class="paramname">y</td><td>- the y training data </td></tr>
+    <tr><td class="paramname">k</td><td>- the max k to split</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>list of indicies </dd></dl>
+
+</div>
+</div>
+<a id="a7bc139dfeae7377c9c273572975603e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc139dfeae7377c9c273572975603e0">&#9670;&nbsp;</a></span>normalize_0_1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.utilities.training_utility.normalize_0_1 </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>eps</em> = <code>0.0001</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>normalize_0_1 Normalize the given input to be between 0 and 1. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>- the input numpy array to normalize.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the output numpy array to </dd></dl>
 
 </div>
 </div>

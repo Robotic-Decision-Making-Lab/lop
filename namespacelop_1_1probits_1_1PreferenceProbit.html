@@ -89,6 +89,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aafb3b69038f5278e864aebb002bfb82a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1probits_1_1PreferenceProbit.html#aafb3b69038f5278e864aebb002bfb82a">add_up_vec</a> (indicies, v, M)</td></tr>
 <tr class="memdesc:aafb3b69038f5278e864aebb002bfb82a"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_up_vec add the values in v to the M vector indexed by the indicies matrix  <a href="namespacelop_1_1probits_1_1PreferenceProbit.html#aafb3b69038f5278e864aebb002bfb82a">More...</a><br /></td></tr>
 <tr class="separator:aafb3b69038f5278e864aebb002bfb82a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee86a4e70ba10b03841c9668c04a32ce"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1probits_1_1PreferenceProbit.html#aee86a4e70ba10b03841c9668c04a32ce">add_up_W_partial</a> (y, v, dW)</td></tr>
+<tr class="memdesc:aee86a4e70ba10b03841c9668c04a32ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_up_W_partial add and place the y inidicies into the appropriate locations.  <a href="namespacelop_1_1probits_1_1PreferenceProbit.html#aee86a4e70ba10b03841c9668c04a32ce">More...</a><br /></td></tr>
+<tr class="separator:aee86a4e70ba10b03841c9668c04a32ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a86b95d913905245a0392ef193bc111ff"></a>
@@ -173,6 +176,50 @@ Functions</h2></td></tr>
     <tr><td class="paramname">indicies</td><td>- (n,) the list of indicies for the v to add to the matrix </td></tr>
     <tr><td class="paramname">v</td><td>- the values ligned up wiht indicies </td></tr>
     <tr><td class="paramname">M</td><td>- [in/out] the vector to add up </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aee86a4e70ba10b03841c9668c04a32ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee86a4e70ba10b03841c9668c04a32ce">&#9670;&nbsp;</a></span>add_up_W_partial()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.probits.PreferenceProbit.add_up_W_partial </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>dW</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>add_up_W_partial add and place the y inidicies into the appropriate locations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">y</td><td>- numpy array of labels </td></tr>
+    <tr><td class="paramname">v</td><td>- the values going with the labels (paren pairs) </td></tr>
+    <tr><td class="paramname">dW</td><td>- the derivative of W np array to add the value pairs to. </td></tr>
   </table>
   </dd>
 </dl>

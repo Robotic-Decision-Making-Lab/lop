@@ -99,17 +99,32 @@ Collaboration diagram for lop.kernels.RBF_kern.RBF_kern:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6ac054eacf3114c48174495cb321d6b2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a6ac054eacf3114c48174495cb321d6b2">__init__</a> (self, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a91e9745db998afde89e10e9b3eac1c2d">sigma</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a895b6a105c0884ce561dd50520300777">l</a>)</td></tr>
-<tr class="memdesc:a6ac054eacf3114c48174495cb321d6b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a6ac054eacf3114c48174495cb321d6b2">More...</a><br /></td></tr>
-<tr class="separator:a6ac054eacf3114c48174495cb321d6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe24f521de078afe004319a46d2d52e0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#abe24f521de078afe004319a46d2d52e0">__init__</a> (self, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a91e9745db998afde89e10e9b3eac1c2d">sigma</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a895b6a105c0884ce561dd50520300777">l</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a743ae6924470ae40a95bec3c26172494">sigma_noise</a>=0.01)</td></tr>
+<tr class="memdesc:abe24f521de078afe004319a46d2d52e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#abe24f521de078afe004319a46d2d52e0">More...</a><br /></td></tr>
+<tr class="separator:abe24f521de078afe004319a46d2d52e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab55b1c59494f7801a80f626cf4687c4e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ab55b1c59494f7801a80f626cf4687c4e">set_param</a> (self, theta)</td></tr>
+<tr class="memdesc:ab55b1c59494f7801a80f626cf4687c4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">set_param update the parameters  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ab55b1c59494f7801a80f626cf4687c4e">More...</a><br /></td></tr>
 <tr class="separator:ab55b1c59494f7801a80f626cf4687c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab40308002089060a390a0e80a84f19b8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ab40308002089060a390a0e80a84f19b8">get_param</a> (self)</td></tr>
+<tr class="memdesc:ab40308002089060a390a0e80a84f19b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">get_param get a vector of the parameters for the kernel function (used for hyper-parameter optimization)  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ab40308002089060a390a0e80a84f19b8">More...</a><br /></td></tr>
 <tr class="separator:ab40308002089060a390a0e80a84f19b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acea76d506d8ad546f3b5594c36dc518d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#acea76d506d8ad546f3b5594c36dc518d">param_likli</a> (self)</td></tr>
+<tr class="memdesc:acea76d506d8ad546f3b5594c36dc518d"><td class="mdescLeft">&#160;</td><td class="mdescRight">param_likli log liklihood of the parameter (prior) for RBF kernels this is a parameterized gamma_distribution.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#acea76d506d8ad546f3b5594c36dc518d">More...</a><br /></td></tr>
+<tr class="separator:acea76d506d8ad546f3b5594c36dc518d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada6bb2891efb1c91a359555d71cd2ca5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ada6bb2891efb1c91a359555d71cd2ca5">grad_param_likli</a> (self)</td></tr>
+<tr class="memdesc:ada6bb2891efb1c91a359555d71cd2ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">grad_param_likli gradient of the log liklihood of the parameter (prior)  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ada6bb2891efb1c91a359555d71cd2ca5">More...</a><br /></td></tr>
+<tr class="separator:ada6bb2891efb1c91a359555d71cd2ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4541f6550947cd6f452bf0e24944e0a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ad4541f6550947cd6f452bf0e24944e0a">randomize_hyper</a> (self)</td></tr>
+<tr class="memdesc:ad4541f6550947cd6f452bf0e24944e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs random sampling using the same liklihood function used by the param liklihood function.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ad4541f6550947cd6f452bf0e24944e0a">More...</a><br /></td></tr>
+<tr class="separator:ad4541f6550947cd6f452bf0e24944e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57ae11d3d4fe235014feeed539cf6d6f"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f">cov</a> (self, X, Y)</td></tr>
 <tr class="memdesc:a57ae11d3d4fe235014feeed539cf6d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">get covariance matrix calculate the covariance matrix between the samples given in X overiding the kernel_func get covariance matrix in order to vectorize and increase the speed of computation.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f">More...</a><br /></td></tr>
 <tr class="separator:a57ae11d3d4fe235014feeed539cf6d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2a504fdab6accb0044b4e809604406"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#adf2a504fdab6accb0044b4e809604406">cov_gradient</a> (self, X, Y)</td></tr>
+<tr class="memdesc:adf2a504fdab6accb0044b4e809604406"><td class="mdescLeft">&#160;</td><td class="mdescRight">get gradient of the covariance matrix calculate the covariance matrix between the samples given in X  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#adf2a504fdab6accb0044b4e809604406">More...</a><br /></td></tr>
+<tr class="separator:adf2a504fdab6accb0044b4e809604406"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47bd95d87bc2abaf8d60578fc05c79fd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a47bd95d87bc2abaf8d60578fc05c79fd">gradient</a> (self, u, v)</td></tr>
+<tr class="memdesc:a47bd95d87bc2abaf8d60578fc05c79fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">gradient Calculates the gradient of the kernel function between the u, v terms.  <a href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a47bd95d87bc2abaf8d60578fc05c79fd">More...</a><br /></td></tr>
 <tr class="separator:a47bd95d87bc2abaf8d60578fc05c79fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40c4e58f2e5f332c6333fc618af0a56a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a40c4e58f2e5f332c6333fc618af0a56a">__call__</a> (self, u, v)</td></tr>
 <tr class="separator:a40c4e58f2e5f332c6333fc618af0a56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,9 +133,6 @@ Public Member Functions</h2></td></tr>
 <tr class="inherit_header pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html">lop.kernels.KernelFunc.KernelFunc</a></td></tr>
 <tr class="memitem:ad2ae41beb1723e772a98356ee78b2917 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ad2ae41beb1723e772a98356ee78b2917">__init__</a> (self)</td></tr>
 <tr class="separator:ad2ae41beb1723e772a98356ee78b2917 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d2f34b72674325819e82928b4968c5 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ac5d2f34b72674325819e82928b4968c5">cov_gradient</a> (self, X, Y)</td></tr>
-<tr class="memdesc:ac5d2f34b72674325819e82928b4968c5 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="mdescLeft">&#160;</td><td class="mdescRight">get gradient of the covariance matrix calculate the covariance matrix between the samples given in X  <a href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ac5d2f34b72674325819e82928b4968c5">More...</a><br /></td></tr>
-<tr class="separator:ac5d2f34b72674325819e82928b4968c5 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d237f92034a496100eaa136dd3ea443 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a1d237f92034a496100eaa136dd3ea443">__add__</a> (self, other)</td></tr>
 <tr class="separator:a1d237f92034a496100eaa136dd3ea443 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7edd25e6fcd8463b9a365d7d5e6fca33 inherit pub_methods_classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a7edd25e6fcd8463b9a365d7d5e6fca33">__mul__</a> (self, other)</td></tr>
@@ -132,6 +144,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a91e9745db998afde89e10e9b3eac1c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895b6a105c0884ce561dd50520300777"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a895b6a105c0884ce561dd50520300777">l</a></td></tr>
 <tr class="separator:a895b6a105c0884ce561dd50520300777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a743ae6924470ae40a95bec3c26172494"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a743ae6924470ae40a95bec3c26172494">sigma_noise</a></td></tr>
+<tr class="separator:a743ae6924470ae40a95bec3c26172494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e4038ca3c9655f176fc188a52c0d1f5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a6e4038ca3c9655f176fc188a52c0d1f5">sigma_k</a></td></tr>
+<tr class="separator:a6e4038ca3c9655f176fc188a52c0d1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5ddd35cf71309837f61afaf4da45ffc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ac5ddd35cf71309837f61afaf4da45ffc">sigma_theta</a></td></tr>
+<tr class="separator:ac5ddd35cf71309837f61afaf4da45ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0477d3c38dc0e49c5b3788b71cbbc008"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a0477d3c38dc0e49c5b3788b71cbbc008">l_k</a></td></tr>
+<tr class="separator:a0477d3c38dc0e49c5b3788b71cbbc008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0dd38239766283f30d29ef5996bc483"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#ad0dd38239766283f30d29ef5996bc483">l_theta</a></td></tr>
+<tr class="separator:ad0dd38239766283f30d29ef5996bc483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html" title="RBF_kern Radial basis function for two points.">RBF_kern</a> Radial basis function for two points. </p>
@@ -143,8 +165,8 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ac054eacf3114c48174495cb321d6b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ac054eacf3114c48174495cb321d6b2">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="abe24f521de078afe004319a46d2d52e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe24f521de078afe004319a46d2d52e0">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,7 +187,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>l</em>&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>sigma_noise</em> = <code>0.01</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -289,6 +317,52 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="adf2a504fdab6accb0044b4e809604406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf2a504fdab6accb0044b4e809604406">&#9670;&nbsp;</a></span>cov_gradient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.kernels.RBF_kern.RBF_kern.cov_gradient </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>Y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get gradient of the covariance matrix calculate the covariance matrix between the samples given in X </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">X</td><td>- samples (n1,k) array where n is the number of samples, and k is the dimension of the samples </td></tr>
+    <tr><td class="paramname">Y</td><td>- samples (n2, k)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the covariance gradient tensor of the samples. [n1, n2, k] </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ac5d2f34b72674325819e82928b4968c5">lop.kernels.KernelFunc.KernelFunc</a>.</p>
+
+</div>
+</div>
 <a id="ab40308002089060a390a0e80a84f19b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab40308002089060a390a0e80a84f19b8">&#9670;&nbsp;</a></span>get_param()</h2>
 
@@ -305,7 +379,32 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>get_param get a vector of the parameters for the kernel function (used for hyper-parameter optimization) </p>
+
 <p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#abecb0b490e4d034afe48d831a31fd00d">lop.kernels.KernelFunc.KernelFunc</a>.</p>
+
+</div>
+</div>
+<a id="ada6bb2891efb1c91a359555d71cd2ca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada6bb2891efb1c91a359555d71cd2ca5">&#9670;&nbsp;</a></span>grad_param_likli()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.kernels.RBF_kern.RBF_kern.grad_param_likli </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>grad_param_likli gradient of the log liklihood of the parameter (prior) </p>
+<dl class="section return"><dt>Returns</dt><dd>numpy array of gradient of each parameter </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a3b5824d59fb74232f81c22096c53eab4">lop.kernels.KernelFunc.KernelFunc</a>.</p>
 
 </div>
 </div>
@@ -341,7 +440,55 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>gradient Calculates the gradient of the kernel function between the u, v terms. </p>
+
 <p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ad830b552e9508f0655f1011062e3c333">lop.kernels.KernelFunc.KernelFunc</a>.</p>
+
+</div>
+</div>
+<a id="acea76d506d8ad546f3b5594c36dc518d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acea76d506d8ad546f3b5594c36dc518d">&#9670;&nbsp;</a></span>param_likli()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.kernels.RBF_kern.RBF_kern.param_likli </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>param_likli log liklihood of the parameter (prior) for RBF kernels this is a parameterized gamma_distribution. </p>
+<p>Scaled for functions of approximently size 1 and distance between points in [0,10] ish range </p>
+
+<p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a7adac02a70778032f65e509a8569ed68">lop.kernels.KernelFunc.KernelFunc</a>.</p>
+
+</div>
+</div>
+<a id="ad4541f6550947cd6f452bf0e24944e0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4541f6550947cd6f452bf0e24944e0a">&#9670;&nbsp;</a></span>randomize_hyper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.kernels.RBF_kern.RBF_kern.randomize_hyper </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Performs random sampling using the same liklihood function used by the param liklihood function. </p>
+<dl class="section return"><dt>Returns</dt><dd>numpy array of independent samples. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#ab28d488e249e0bdbe946eda2a192cea0">lop.kernels.KernelFunc.KernelFunc</a>.</p>
 
 </div>
 </div>
@@ -371,6 +518,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>set_param update the parameters </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">theta</td><td>- vector of parameters to update </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented from <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1KernelFunc.html#a190bc6d3b6489d9d061f1c77144a354c">lop.kernels.KernelFunc.KernelFunc</a>.</p>
 
 </div>
@@ -390,6 +545,34 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a0477d3c38dc0e49c5b3788b71cbbc008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0477d3c38dc0e49c5b3788b71cbbc008">&#9670;&nbsp;</a></span>l_k</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.kernels.RBF_kern.RBF_kern.l_k</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0dd38239766283f30d29ef5996bc483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0dd38239766283f30d29ef5996bc483">&#9670;&nbsp;</a></span>l_theta</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.kernels.RBF_kern.RBF_kern.l_theta</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a91e9745db998afde89e10e9b3eac1c2d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91e9745db998afde89e10e9b3eac1c2d">&#9670;&nbsp;</a></span>sigma</h2>
 
@@ -398,6 +581,48 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">lop.kernels.RBF_kern.RBF_kern.sigma</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e4038ca3c9655f176fc188a52c0d1f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e4038ca3c9655f176fc188a52c0d1f5">&#9670;&nbsp;</a></span>sigma_k</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.kernels.RBF_kern.RBF_kern.sigma_k</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a743ae6924470ae40a95bec3c26172494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a743ae6924470ae40a95bec3c26172494">&#9670;&nbsp;</a></span>sigma_noise</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.kernels.RBF_kern.RBF_kern.sigma_noise</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac5ddd35cf71309837f61afaf4da45ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5ddd35cf71309837f61afaf4da45ffc">&#9670;&nbsp;</a></span>sigma_theta</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">lop.kernels.RBF_kern.RBF_kern.sigma_theta</td>
         </tr>
       </table>
 </div><div class="memdoc">
