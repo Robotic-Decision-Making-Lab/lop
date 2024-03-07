@@ -9,14 +9,21 @@ UCB_scalar: 1.0
 
 ######## For model
 pareto_pairs: false
+add_abs_point: true
+abs_point_loc:
+  - 0.0
+  - 0.0
 
-rbf_sigma: 0.3
+abs_point_value: 0.5
+
+
+rbf_sigma: 0.8
 rbf_lengthscale: 0.25
 
-hyperparameter_optimization: false
+#hyperparameter_optimization: false
 
 # does this need to be updated for depending on the fake function being used?
-normalize_gp: true
+normalize_gp: false
 normalize_postive: false
 
 

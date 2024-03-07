@@ -185,7 +185,7 @@ def main():
 
             avg_correct[j] = accuracy
             avg_ranks[j] = avg_selection
-            pdb.set_trace()
+            
             ranks[j] = all_ranks
 
             estimated_scores[j] = est_score
