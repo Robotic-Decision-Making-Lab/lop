@@ -209,6 +209,8 @@ def test_hyperparameter_search_converges_only_abs_bound():
 def test_hyperparameter_search_somewhat_converges_abs_bound_pairs():
     np.random.seed(0)
     random.seed(0)
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+
 
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
@@ -216,16 +218,15 @@ def test_hyperparameter_search_somewhat_converges_abs_bound_pairs():
             lop.generate_fake_pairs(X_train, f_sin, 3) + \
             lop.generate_fake_pairs(X_train, f_sin, 4)
 
-
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
-
-
     gp.add(X_train, pairs)
 
-    X_abs = np.array([1.5, 2.5, 4.7])
-    y_abs = lop.normalize_0_1(f_sin(X_abs), 0.1)
+    X_abs = np.array([0.2, 1.5, 2.5, 4.7])
+    y_abs = lop.normalize_0_1(f_sin(X_abs), 0.05)
 
     gp.add(X_abs, y_abs, type='abs')
+
+    np.random.seed(0)
+    random.seed(0)
 
     gp.optimize(optimize_hyperparameter=True)
 
@@ -244,16 +245,14 @@ def test_hyperparameter_search_somewhat_converges_abs_bound_pairs():
     num_satisfied = 0
 
     for i, pair in enumerate(pairs):
-        if pair[1] > pair[2]:
+        if y[pair[1]] > y[pair[2]]:
             if pair[0] == lop.get_dk(1,0):
                 num_satisfied += 1
         else:
             if pair[0] == lop.get_dk(0,1):
                 num_satisfied += 1
 
-    pdb.set_trace()
-
-    assert (num_satisfied / len(pairs)) > 0.7
+    assert (num_satisfied / len(pairs)) > 0.9
 
     # for i in range(len(X_train)):
     #     if i != 0:

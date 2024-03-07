@@ -110,6 +110,24 @@ def main():
         y_train = np.array([0.5])
         gp.add(X_train, y_train, type='abs')    
 
+    elif args.i == 'full_abs_test':
+        X_train = np.array([0,1,2,3,4.2,6,7])
+        pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
+                lop.generate_fake_pairs(X_train, f_sin, 1) + \
+                lop.generate_fake_pairs(X_train, f_sin, 3) + \
+                lop.generate_fake_pairs(X_train, f_sin, 4)
+
+        gp.add(X_train, pairs)
+
+        X_abs = np.array([0.2, 1.5, 2.5, 4.7])
+        y_abs = lop.normalize_0_1(f_sin(X_abs), 0.05)
+
+        gp.add(X_abs, y_abs, type='abs')
+
+        import random
+        np.random.seed(0)
+        random.seed(0)
+
 
     
     gp.optimize(optimize_hyperparameter=True)
