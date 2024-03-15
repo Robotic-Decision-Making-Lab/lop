@@ -24,13 +24,16 @@
 
 import numpy as np
 
-from lop.active_learning import UCBLearner
+from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 from lop.utilities import metropolis_hastings
 
+from scipy.stats import multivariate_normal
+
+import matplotlib.pyplot as plt
 import pdb
 
-class GV_UCBLearner(UCBLearner):
+class ProbabilityLearner(ActiveLearner):
     ## select_greedy
     # This function greedily selects the best single data point
     # Depending on the selection method, you are not forced to implement this function
@@ -42,31 +45,56 @@ class GV_UCBLearner(UCBLearner):
     #
     # @return the index of the greedy selection.
     def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
-        if isinstance(self.model, (PreferenceGP, GP)):
-            variance = data
-            cov = self.model.cov
-        elif isinstance(self.model, PreferenceLinear):
-            w_samples = metropolis_hastings(self.model.loss_func, 200, dim=candidate_pts.shape[1])
+        if isinstance(self.model, PreferenceGP):
+            K = self.model.cov
 
-            w_norm = np.linalg.norm(w_samples, axis=1)
-            w_samples = w_samples / np.tile(w_norm, (2,1)).T
-            # generate possible outputs from weighted samples
-            all_w = (candidate_pts @ w_samples.T).T
+            p = np.empty(len(candidate_pts))
 
-            cov = np.cov(all_w.T)
-            variance = np.diagonal(cov)
-        indicies = list(indicies)
-        prev_selection = list(prev_selection)
+            # calculate the combined covariance matrix for if point i is the largest point.
+            for i in range(len(candidate_pts)):
+                K_star_i = np.zeros((len(p)-1, len(p)-1))
 
-        exp_v = 1.0 / (len(prev_selection)+1)
+                idx_i = list(range(len(p)))
+                idx_i.remove(i)
 
-        # calculate the Standardized general variance
-        # The matrix covariance equivelant to the standard deviation
-        SGV = [np.linalg.det(cov[np.ix_(prev_selection+[idx], prev_selection+[idx])]) ** exp_v for idx in indicies]
+                
 
-        selected_GV_UCB = mu[indicies] + self.alpha*np.array(SGV)
+                for j in range(len(K_star_i)):
+                    for k in range(len(K_star_i)):
+                        K_star_i[j,k] = K[i, i] + K[idx_i[j], idx_i[k]] - K[i, idx_i[j]] - K[i, idx_i[k]]
 
-        return indicies[np.argmax(selected_GV_UCB)]
+                
+                sig = self.model.probits[0].sigma
+                #K_star_i += np.diag(np.ones(len(idx_i)) * 2 * sig * sig)
+                #K_star_i += np.ones((len(K_star_i), len(K_star_i))) * 2 * sig * sig
+
+                mu_star = mu[idx_i] - mu[i]
+
+                rv = multivariate_normal(mean=mu_star, cov=K_star_i)
+
+                x, y = np.mgrid[-1:1:.01, -1:1:.01]
+                pos = np.dstack((x, y))
+                plt.figure()
+                plt.contourf(x,y,rv.pdf(pos))
+                
+
+                p[i] = rv.cdf([0,0])
+
+        p = p / np.sum(p)
+
+        print(candidate_pts)
+        print(mu)
+        print(p)
+
+        plt.show()
+        pdb.set_trace()
+
+
+                
+
+
+
+
         
 
 
