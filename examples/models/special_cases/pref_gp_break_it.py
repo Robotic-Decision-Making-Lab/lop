@@ -34,7 +34,7 @@ def f_sin(x, data=None):
 
 def main():
     # Setup training data
-    X_train = np.array([0,1.9999,2,2.0001,4.2,6,7, 4.7])
+    X_train = np.array([0,1.999999,2,2.000001,4.2,6,7, 4.7, 4.7])
     y_train = f_sin(X_train)
 
     pairs = lop.gen_pairs_from_idx(np.argmax(y_train[0:3]), list(range(len(y_train[0:3]))))
@@ -47,7 +47,8 @@ def main():
     pairs += pairs2
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False)
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.0000000000000001), normalize_gp=False)
+    gp.probits[0].set_sigma(0.1)
     gp.add(X_train, pairs)
     gp.optimize(optimize_hyperparameter=False)
 

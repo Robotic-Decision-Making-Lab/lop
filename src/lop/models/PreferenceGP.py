@@ -223,15 +223,20 @@ class PreferenceGP(PreferenceModel):
         n_loops = 0
         f_err = self.delta_f + 1
 
+        try:
+            L = np.linalg.cholesky(self.K)
+            L_inv = self.invert_function(L)
+            K_inv = L_inv.T @ L_inv
+        except:
+            print('inverting covariance matrix failed... Just returning F as random values and trying again')
+            np.save('failed_covaraince.npy', {'X_train': X_train, 'y_train': y_train, 'k_params': self.cov_func.get_param()})
+            f_err = 0 # stops trying to find the mode and skipping the optimization loop
+
         # checking for convergence by optimization amount
         while f_err > self.delta_f:
             self.W, self.grad_ll, self.log_likelihood = \
                                             self.derivatives(y_train, F)
-
-            L = np.linalg.cholesky(self.K)
-            L_inv = self.invert_function(L)
-            K_inv = L_inv.T @ L_inv
-            
+          
             gradient = self.grad_ll - cho_solve((L,True), F)
 
             # Hessian:
