@@ -106,6 +106,61 @@ def test_adding_multiple_types():
 
     assert pm is not None
 
+def test_preference_model_pairs_second_part_1():
+    pm = lop.PreferenceModel()
+
+    pm.add(np.array([0.0]), np.array([0.5]), type='abs')
+
+    X_train = np.array([1.0, 2.0, 3.0])
+    #y_train = np.array([0,1,0]) possible values of y_train given preferences
+    pairs = [(lop.get_dk(0,1), 0, 1), (lop.get_dk(1,0), 1, 2)]
+
+    pm.add(X_train, pairs)
+
+    # assert the pair indicies are increased with the preference model
+    assert pm.y_train[0][0][1] == 1 and pm.y_train[0][0][2] == 2
+    assert pm.y_train[0][1][1] == 2 and pm.y_train[0][1][2] == 3
+
+def test_preference_model_pairs_second_part_2():
+    pm = lop.PreferenceModel()
+
+    pm.add(np.array([0.0, 5.0, 7.0]), np.array([0.5, 0.7, 0.2]), type='abs')
+
+    X_train = np.array([1.0, 2.0, 3.0])
+    #y_train = np.array([0,1,0]) possible values of y_train given preferences
+    pairs = [(lop.get_dk(0,1), 0, 1), (lop.get_dk(1,0), 1, 2)]
+
+    pm.add(X_train, pairs)
+
+    # assert the pair indicies are increased with the preference model
+    assert pm.y_train[0][0][1] == 3 and pm.y_train[0][0][2] == 4
+    assert pm.y_train[0][1][1] == 4 and pm.y_train[0][1][2] == 5
+
+    # test to ensure abs pair indicies are correct
+    assert pm.y_train[pm.probit_idxs['abs']][1][0] == 0
+    assert pm.y_train[pm.probit_idxs['abs']][1][1] == 1
+    assert pm.y_train[pm.probit_idxs['abs']][1][2] == 2
+
+def test_preference_model_pairs_first():
+    pm = lop.PreferenceModel()
+
+    
+
+    X_train = np.array([1.0, 2.0, 3.0])
+    #y_train = np.array([0,1,0]) possible values of y_train given preferences
+    pairs = [(lop.get_dk(0,1), 0, 1), (lop.get_dk(1,0), 1, 2)]
+
+    pm.add(X_train, pairs)
+    pm.add(np.array([0.0,4.0]), np.array([0.5, 0.7]), type='abs')
+
+    # assert the pair indicies are increased with the preference model
+    assert pm.y_train[pm.probit_idxs['relative_discrete']][0][1] == 0 and pm.y_train[0][0][2] == 1
+    assert pm.y_train[0][1][1] == 1 and pm.y_train[0][1][2] == 2
+
+    assert pm.y_train[pm.probit_idxs['abs']][1][0] == 3
+    assert pm.y_train[pm.probit_idxs['abs']][1][1] == 4
+
+
 
 def test_preference_model_likelyhood_multiple():
     pm = lop.PreferenceModel()

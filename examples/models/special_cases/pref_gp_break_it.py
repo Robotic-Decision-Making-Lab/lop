@@ -47,7 +47,7 @@ def main():
     pairs += pairs2
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False, K_sigma=0.0)
+    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7), normalize_gp=False)
     gp.add(X_train, pairs)
     gp.optimize(optimize_hyperparameter=False)
 

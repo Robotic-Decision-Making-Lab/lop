@@ -195,14 +195,15 @@ class PreferenceModel(Model):
             self.X_train = np.append(self.X_train, X, axis=0)
 
         if type == 'relative_discrete':
+            if len_X > 0:
+                # reset index of pairwise comparisons
+                y = [(d, u+len_X, v+len_X) for d, u, v in y]
+
             if y == []:
                 pass
             elif self.y_train[self.probit_idxs[type]] is None:
                 self.y_train[self.probit_idxs[type]] = np.array(y)
             else:
-                # reset index of pairwise comparisons
-                y = [(d, u+len_X, v+len_X) for d, u, v in y]
-
                 self.y_train[self.probit_idxs[type]] = \
                     np.append(self.y_train[self.probit_idxs[type]], np.array(y), axis=0)
         elif type == 'ordinal':
