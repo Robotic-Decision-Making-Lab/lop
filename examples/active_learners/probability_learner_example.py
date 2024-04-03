@@ -71,12 +71,12 @@ def main():
     #al = lop.RandomLearner()
     al = lop.ProbabilityLearner()
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=True)
-    model.probits[0].set_sigma(2.0)
+    #model.probits[0].set_sigma(2.0)
 
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)
 
-    model.add(np.array([7]), np.array([0.5]), type='abs')
+    model.add(np.array([9]), np.array([0.5]), type='abs')
 
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
@@ -95,7 +95,7 @@ def main():
         # Generate active learning point and add it to the model
         for i in range(10):
             # generate random test set to select test point from
-            x_canidiates = np.random.random(3)*10
+            x_canidiates = np.random.random(8)*10
 
             test_pt_idxs = model.select(x_canidiates, 2)
 

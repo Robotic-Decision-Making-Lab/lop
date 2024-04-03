@@ -69,22 +69,24 @@ class ProbabilityLearner(ActiveLearner):
                 #K_star_i += np.ones((len(K_star_i), len(K_star_i))) * 2 * sig * sig
 
                 mu_star = mu[idx_i] - mu[i]
+                #mu_star = mu[i] - mu[idx_i]
 
                 rv = multivariate_normal(mean=mu_star, cov=K_star_i)
 
                 x, y = np.mgrid[-1:1:.01, -1:1:.01]
                 pos = np.dstack((x, y))
-                plt.figure()
-                plt.contourf(x,y,rv.pdf(pos))
+                #plt.figure()
+                #plt.contourf(x,y,rv.pdf(pos))
                 
+                zero_vector = np.zeros(len(candidate_pts)-1)
+                p[i] = rv.cdf(zero_vector)
 
-                p[i] = rv.cdf([0,0])
-
-        p = p / np.sum(p)
+        #p = p / np.sum(p)
 
         print(candidate_pts)
         print(mu)
         print(p)
+        print(np.sum(p))
 
         plt.show()
         pdb.set_trace()
