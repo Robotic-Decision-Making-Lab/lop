@@ -246,7 +246,7 @@ class PreferenceGP(PreferenceModel):
                                         gradient, # Gradient input to newton's method
                                         hess, # The hessian matrix input
                                         self.likli_f,
-                                        (x_train, y_train),
+                                        (x_train, y_train, self.K, L),
                                         self.invert_function,
                                         lambda_type="binary", # sets the type of line search or static to perform
                                         line_search_max_itr=3)
@@ -610,11 +610,11 @@ class PreferenceGP(PreferenceModel):
     # @param y - the labels of given function (pairwise parameters etc)
     #
     # @return a scalar value as the log liklihood of the model
-    def likli_f(self, F, x, y):
-        K = self.cov_func.cov(x, x)
+    def likli_f(self, F, x, y, K, L):
+        #K = self.cov_func.cov(x, x)
          # calculate the log-likelyhood of the data given F
         log_py_f = self.log_likelyhood_training(F, y)
-        L = np.linalg.cholesky(K)
+        #L = np.linalg.cholesky(K)
 
         term1 = 0.5*(np.transpose(F) @ cho_solve((L, True), F))
 
