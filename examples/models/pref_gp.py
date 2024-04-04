@@ -42,7 +42,7 @@ def main():
 
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+    gp = lop.PreferenceGP(lop.RBF_kern_zeroed(0.5, 0.7, sigma_noise=0.0))
     gp.add(X_train, pairs)
     gp.optimize(optimize_hyperparameter=False)
 
