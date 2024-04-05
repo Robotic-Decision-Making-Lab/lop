@@ -225,7 +225,7 @@ class PreferenceGP(PreferenceModel):
 
         try:
             L = np.linalg.cholesky(self.K)
-            L_inv = self.invert_function(L)
+            L_inv = np.linalg.pinv(L)
             K_inv = L_inv.T @ L_inv
         except:
             print('inverting covariance matrix failed... Just returning F as random values and trying again')

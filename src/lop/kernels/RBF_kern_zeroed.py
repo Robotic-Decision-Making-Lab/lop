@@ -67,11 +67,15 @@ class RBF_kern_zeroed(RBF_kern):
 
        
         cov = super().cov(X, Y)
+
+        #print(cov)
+
         cov_zero = self.zero_cov(X, Y)
 
-        print(cov - cov_zero)
+        #print(cov - cov_zero)
         
-        
+        #pdb.set_trace()
+
         return cov - cov_zero
 
     def zero_cov(self, X, Y):
@@ -84,7 +88,7 @@ class RBF_kern_zeroed(RBF_kern):
         X_expanded = np.repeat(cov_x, M, axis=1)
         Y_expanded = np.repeat(cov_y, N, axis=0)
 
-        pdb.set_trace()
+        
 
         return X_expanded * Y_expanded
 
