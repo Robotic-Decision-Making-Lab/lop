@@ -125,10 +125,14 @@ class PreferenceGP(PreferenceModel):
 
         try:
             L = np.linalg.cholesky(K)
+            lower = True
+            alpha = cho_solve((L, lower), F)
         except:
-            pdb.set_trace()
-        lower = True
-        alpha = cho_solve((L, lower), F)
+            try:
+                K_inv = np.linalg.pinv(K)
+                alpha = F.transpose() @ K_inv @ F
+            except:
+                pdb.set_trace()
 
         ####### calculate the mu of the value
         mu = np.matmul(covXX_test, alpha)
@@ -225,7 +229,7 @@ class PreferenceGP(PreferenceModel):
 
         try:
             L = np.linalg.cholesky(self.K)
-            L_inv = np.linalg.pinv(L)
+            L_inv = np.linalg.inv(L)
             K_inv = L_inv.T @ L_inv
         except:
             print('inverting covariance matrix failed... Just returning F as random values and trying again')

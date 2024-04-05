@@ -90,7 +90,7 @@ class RBF_kern_zeroed(RBF_kern):
 
         
 
-        return X_expanded * Y_expanded
+        return X_expanded * Y_expanded / (self.sigma * self.sigma)
 
 
     # get gradient of the covariance matrix
