@@ -25,6 +25,7 @@ import numpy as np
 
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
+from lop.models import Model
 from lop.utilities import metropolis_hastings
 
 class UCBLearner(ActiveLearner):

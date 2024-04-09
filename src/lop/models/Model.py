@@ -25,7 +25,7 @@
 
 import numpy as np
 
-class Model:
+class Model():
 
     ## constructor
     # constructor for the base model

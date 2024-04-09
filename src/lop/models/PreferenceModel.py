@@ -477,14 +477,16 @@ class PreferenceModel(Model):
     # raise an exception.
     # @param ax - [opt] the axes to plot on
     # @param color - [opt default='blue] the color of the arrows drawn. 
-    def plot_preference(self, ax=plt.gca(), color='#E69F00', alpha=0.3, width=0.005, head_width=0.015, y_train=None, X_train=None, F=None):
+    def plot_preference(self, ax=None, color='#E69F00', alpha=0.3, width=0.005, head_width=0.015, y_train=None, X_train=None, F=None):
         if y_train is None:
             y_train = self.y_train
         if X_train is None:
             X_train = self.X_train
         if F is None and X_train is not None:
             F = self.F
-        
+        if ax is None:
+            ax = plt.gca()
+
         # Ensure there is points to plot
         if self.X_train is not None:
             if len(self.X_train.shape) > 1 and self.X_train.shape[1] > 2:

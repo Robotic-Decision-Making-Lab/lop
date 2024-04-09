@@ -638,8 +638,6 @@ class PreferenceGP(PreferenceModel):
     ## visualize_hyperparameter
     # Visualize the hyperparameter space for debug purposes
     def visualize_hyperparameter(self, F, x, x_train, y, y_train, itr=0):
-        import matplotlib.pyplot as plt
-
         rbf_sigmas = np.logspace(0.01, 1.0, 50)
         rbf_lengths = np.logspace(0.01,1.0, 50)
 
