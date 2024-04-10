@@ -38,7 +38,7 @@ def std_norm_pdf(x):
 
 
 def std_norm_cdf(x):
-    x_clip = np.empty(x.size)
+    x_clip = np.empty(x.shape)
     np.clip(x, -30, 100, out=x_clip)
     return spec.ndtr(x_clip)
     #return st.norm.cdf(x)

@@ -265,6 +265,14 @@ class PreferenceProbit(ProbitBase):
 
         return W, dpy_df, py
 
+    def likelihood_all_pairs(self, F):
+        #F_pairs = np.array(np.meshgrid(F,F)).T.reshape(-1,2)
+        z_k = np.repeat(F[:,np.newaxis], len(F), axis=1) - np.repeat(F[np.newaxis, :], len(F), axis=0)
+        print(z_k)
+        z_k *= self._isqrt2sig
+        
+        return std_norm_cdf(z_k)
+
 
     ## likelihood
     # Returns the liklihood function for the given probit

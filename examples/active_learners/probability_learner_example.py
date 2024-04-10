@@ -67,10 +67,11 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 def main():
-    al = lop.GV_UCBLearner()
+    #al = lop.GV_UCBLearner()
     #al = lop.RandomLearner()
-    al = lop.ProbabilityLearner()
-    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=True)
+    #al = lop.ProbabilityLearner()
+    al = lop.BayesInfoGain()
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
     #model.probits[0].set_sigma(2.0)
 
     fig = plt.figure()
@@ -97,7 +98,7 @@ def main():
             # generate random test set to select test point from
             x_canidiates = np.random.random(8)*10
 
-            test_pt_idxs = model.select(x_canidiates, 2)
+            test_pt_idxs = model.select(x_canidiates, 4)
 
 
             x_train = x_canidiates[test_pt_idxs]
