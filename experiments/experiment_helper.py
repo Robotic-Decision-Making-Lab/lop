@@ -93,6 +93,12 @@ def get_fake_func(fake_func_desc, config):
         func = lop.FakeLogistic()
     elif fake_func_desc == 'sin_exp':
         func = lop.FakeSinExp()
+    elif fake_func_desc == 'min':
+        func = lop.FakeWeightedMin()
+    elif fake_func_desc == 'max':
+        func = lop.FakeWeightedMax() 
+    elif fake_func_desc == 'squared_min_max':
+        func = lop.FakeSquaredMinMax()
 
     return func
 

@@ -18,13 +18,13 @@ fake_func=linear
 for selc in RANDOM SGV_UCB MUTUAL_INFO UCB
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
-    for fake_func in linear logistic squared sin_exp 
+    for fake_func in squared_min_max min max #linear logistic squared sin_exp 
     do
         for hyper_sel in no
         do
             for model in gp linear
             do
-                for user in human_choice
+                for user in perfect
                 do
                     for i_env in 0 1 2 3 4 5 6 7 8 9
                     do

@@ -96,7 +96,7 @@ def str_timestamp():
 
 possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF']
 possible_selection_types = ['choose1', 'ranking', 'rating']
-possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp']
+possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max']
 possible_models = ['gp', 'linear']
 
 def main():

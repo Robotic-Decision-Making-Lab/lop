@@ -23,6 +23,7 @@
 # Includes randomization for full tests. Some of this code I wrote in 2022.
 
 import numpy as np
+import pdb
 
 ## Fake function
 # Abstract class for a Fake Function for experiments with different learning
@@ -111,8 +112,83 @@ class FakeLogistic(FakeFunction):
         logi = self.A + ((self.K - self.A) / (self.C + self.Q*np.exp(-wx)**(1/self.v)))
         return logi
 
+
+
+## FakeWeightedMax
+# Takes the max of a set of weighted function as the method to combine the reward values.
+class FakeWeightedMax(FakeFunction):
+    def __init__(self, dimension=2):
+        self.w = np.zeros(dimension)
+        self.randomize()
+
+
+    def randomize(self):
+        w = np.random.random(self.w.shape)
+        self.w = w / np.linalg.norm(w, ord=np.inf)
+
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            else:
+                return rewards
+        if len(rewards.shape) == 1:
+            return np.max(rewards * self.w)
+        return np.max(rewards * self.w, axis=1)
+
+## FakeWeightedMin
+# Takes the max of a set of weighted function as the method to combine the reward values.
+class FakeWeightedMin(FakeFunction):
+    def __init__(self, dimension=2):
+        self.w = np.zeros(dimension)
+        self.randomize()
+
+
+    def randomize(self):
+        w = np.random.random(self.w.shape)
+        self.w = w / np.linalg.norm(w, ord=np.inf)
+
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            else:
+                return rewards
+        if len(rewards.shape) == 1:
+            return np.min(rewards * self.w)
+        return np.min(rewards * self.w, axis=1)
+
+
+class FakeSquaredMinMax(FakeFunction):
+    def __init__(self, dimension=2):
+        self.w = np.zeros(dimension)
+        self.randomize()
+
+
+    def randomize(self):
+        w = np.random.random(self.w.shape)
+        self.w = w / np.linalg.norm(w, ord=1)
+
+        #min_idx = np.argmin(self.w)
+        #self.w[min_idx] *= np.random.random() * 3
+
+    def calc(self, rewards):
+        if self.w.shape[0] == 1:
+            if isinstance(rewards, list):
+                rewards = np.array(rewards)
+            else:
+                return rewards
+        if len(rewards.shape) == 1:
+            return np.max(rewards * self.w)
+        vals = rewards * self.w
+        mins = np.min(vals, axis=1)
+        return np.sqrt(np.max(vals, axis=1)) + mins*mins
+
+
+################################# Non-monotonic function (does not satisfy pareto-optimality)
+
 ## Fake sin with dimenshing exponenent.
-#
+# This function is not monotonically increasing
 class FakeSinExp(FakeFunction):
     def __init__(self, dimension=2):
         self.w = np.zeros(dimension)
@@ -139,6 +215,7 @@ class FakeSinExp(FakeFunction):
             wr = np.dot(rewards, self.w)
 
         return np.sin(kr+self.phase) * np.exp(-wr)
+
 
 
 

@@ -68,7 +68,7 @@ def plot_data(model, new_selections=None):
 
 def main():
     al = lop.GV_UCBLearner()
-    al = lop.RandomLearner()
+    #al = lop.RandomLearner()
     #al = lop.ProbabilityLearner()
     model = lop.PreferenceGP(lop.RBF_kern_zeroed(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
     model.probits[0].set_sigma(0.5)
@@ -76,7 +76,7 @@ def main():
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)
 
-    model.add(np.array([7]), np.array([0.5]), type='abs')
+    #model.add(np.array([7]), np.array([0.5]), type='abs')
 
     with writer.saving(fig, "pref_gp.gif", 100):
 

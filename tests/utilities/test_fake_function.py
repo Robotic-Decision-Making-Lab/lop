@@ -105,7 +105,36 @@ def test_fake_sin_exp():
     assert z3 < 1.0
     assert z3 != z
 
+def test_fake_min():
+    f = lop.FakeWeightedMin(dimension=2)
 
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert z <= 1.0
+    assert z == z2
+
+
+def test_fake_max():
+    f = lop.FakeWeightedMax(dimension=2)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert z <= 1.0
+    assert z == z2
 
 def test_fake_linear_1d():
     f = lop.FakeLinear(dimension=1)
@@ -170,6 +199,46 @@ def test_fake_logistic_1d():
 
 def test_fake_sin_exp_1d():
     f = lop.FakeSinExp(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0
+
+def test_fake_max_1d():
+    f = lop.FakeWeightedMax(dimension=1)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([1.0,0]))
+    z2 = f(np.array([1.0,0]))
+    assert len(z) == 2
+    assert (z == z2).all
+
+    f.randomize()
+    z3 = f(1.0)
+
+    assert z3 <= 1.0
+
+def test_fake_min_1d():
+    f = lop.FakeWeightedMax(dimension=1)
 
     assert f is not None
     assert isinstance(f, lop.FakeFunction)

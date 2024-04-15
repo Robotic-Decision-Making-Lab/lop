@@ -30,7 +30,7 @@ import lop
 
 def main():
     parser = argparse.ArgumentParser(description='Fake function plotter')
-    parser.add_argument('-f', type=str, default='logistic', help='Enter the type of function [linear squared logistic sin_exp]')
+    parser.add_argument('-f', type=str, default='logistic', help='Enter the type of function [linear squared logistic sin_exp max min squared_min_max]')
     parser.add_argument('-d', type=int, default=1, help='Enter the dimmensionality of the fake function (1 or 2) for plotting')
     args = parser.parse_args()
 
@@ -45,6 +45,12 @@ def main():
         fc = lop.FakeLogistic(dim)
     elif args.f == 'sin_exp':
         fc = lop.FakeSinExp(dim)
+    elif args.f == 'max':
+        fc = lop.FakeWeightedMax(dim)
+    elif args.f == 'min':
+        fc = lop.FakeWeightedMin(dim)
+    elif args.f == 'squared_min_max':
+        fc = lop.FakeSquaredMinMax(dim)
     else:
         print('Unknown function: ' + str(args.f))
         return
