@@ -1,6 +1,6 @@
 # init the utilities subfolder
 
-from .preference_pairs import get_dk, gen_pairs_from_idx, ranked_pairs_from_fake, generate_fake_pairs, generate_ranking_pairs
+from .preference_pairs import get_dk, gen_pairs_from_idx, ranked_pairs_from_fake, generate_fake_pairs, generate_ranking_pairs, preference
 from .training_utility import k_fold_x_y, get_y_with_idx, normalize_0_1
 from .human_choice_model import p_human_choice, sample_human_choice
 from .pareto import get_pareto

@@ -46,6 +46,15 @@ def get_dk(u, v):
     else:
         return -1 # probably handle it this way... I could also probably just return 0
 
+## preference
+# a function that generates a preference between two indicies
+# @param u_idx - the index of the larger point
+# @param v_idx - the index of the smaller point
+#
+# @return the preference pair (-1, u_idx, v_idx)
+def preference(u_idx,v_idx):
+    return (get_dk(1,0), u_idx, v_idx)
+
 ## gen_pairs_from_idx
 # This function is given the best index selected from a user selection
 # and generates the pairs needed to be passed to a preference GP
@@ -58,7 +67,7 @@ def gen_pairs_from_idx(best_idx, indicies):
     pairs = []
     for idx in indicies:
         if idx != best_idx:
-            pairs.append((get_dk(1,0), best_idx, idx))
+            pairs.append(preference(best_idx, idx))
 
     return pairs
 

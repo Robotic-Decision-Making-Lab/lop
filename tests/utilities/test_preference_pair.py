@@ -19,6 +19,12 @@ def f_lin(x, data=None):
 def f_sq(x, data=None):
     return x[:,0]*x[:,0] + 1.2*x[:,1]
 
+def test_preference():
+    pref = lop.preference(3,1)
+
+    assert pref[0] == -1
+    assert pref[1] == 3
+    assert pref[2] == 1
 
 def test_get_dk_int():
     assert lop.get_dk(1,0) == -1

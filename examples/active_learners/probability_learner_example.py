@@ -33,7 +33,7 @@ import lop
 
 # the function to approximate
 def f_sin(x, data=None):
-    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
+    return 2 * np.cos(np.pi * (x-3)) * np.exp(-(0.9*x))
 
 
 def plot_data(model, new_selections=None):
@@ -75,9 +75,9 @@ def main():
     #model.probits[0].set_sigma(2.0)
 
     fig = plt.figure()
-    writer = FFMpegWriter(fps=1)
+    writer = FFMpegWriter(fps=0.333)
 
-    model.add(np.array([9]), np.array([0.5]), type='abs')
+    #model.add(np.array([9]), np.array([0.5]), type='abs')
 
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
@@ -86,7 +86,7 @@ def main():
             lop.generate_fake_pairs(X_train, f_sin, 3) + \
             lop.generate_fake_pairs(X_train, f_sin, 4)
 
-    model.add(X_train, pairs)
+    #model.add(X_train, pairs)
 
     with writer.saving(fig, "pref_gp.gif", 100):
 
@@ -98,7 +98,7 @@ def main():
             # generate random test set to select test point from
             x_canidiates = np.random.random(8)*10
 
-            test_pt_idxs = model.select(x_canidiates, 4)
+            test_pt_idxs = model.select(x_canidiates, 3)
 
 
             x_train = x_canidiates[test_pt_idxs]
