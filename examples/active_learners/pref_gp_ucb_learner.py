@@ -125,7 +125,7 @@ def main():
         # Generate active learning point and add it to the model
         for i in range(10):
             # generate random test set to select test point from
-            x_canidiates = np.arange(0,10.1,0.3)#np.random.random(12)*10
+            x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 
             test_pt_idxs = model.select(x_canidiates, 2)
 

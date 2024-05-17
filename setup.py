@@ -17,6 +17,7 @@ setup(name='lop',
       package_dir={"": "src"},
       packages=find_packages(where="src"),
       install_requires=['numpy','matplotlib', 'scipy', 'tqdm>=3.0.0', 'oyaml>=1.0.0', 'pytest'],
+      dependency_links=['git+https://www.github.com/david-cortes/approxcdf.git'],
       #extras_require={'Saving graphs': ["pickle"]},
       python_requires='>=2.7',
       zip_safe=False)

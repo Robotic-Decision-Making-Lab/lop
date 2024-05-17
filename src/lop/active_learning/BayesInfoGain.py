@@ -25,8 +25,8 @@
 import numpy as np
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
-from scipy.stats import multivariate_normal
-import scipy.special as spec
+from lop.utilities import calc_cdf
+
 
 from copy import deepcopy
 
@@ -37,60 +37,6 @@ import pdb
 
 
 
-
-
-# @param mu - the mean of the normal random distribution
-# @param cov - the covariance of the normal random distribtuion
-# @param method - [opt - default 'auto'] the method to calculate the cdf [auto, full, independent] 
-# 
-def calc_cdf(mu, cov, method='auto'):
-    if method == 'auto':
-        if len(mu) > 5:
-            method = 'independent'
-        else:
-            method = 'full'
-    
-    if method == 'full':
-        rv = multivariate_normal(mean=mu, cov=cov)
-        
-        
-        zero_vector = np.zeros(len(mu))
-        return rv.cdf(zero_vector)
-
-    elif method == 'independent':
-        return np.prod(spec.ndtr((0 - mu) / np.diagonal(cov)))
-
-
-    elif method == 'switch':
-        p = 1.0
-        mod_cov = np.abs(np.copy(cov))
-        np.fill_diagonal(mod_cov, 0)
-
-        while cov.shape[0] > 1:
-            idx = np.unravel_index(np.argmax(mod_cov), cov.shape)
-
-            #pdb.set_trace()
-
-            small_cov = np.array([  [cov[idx[0], idx[0]], cov[idx[0], idx[1]]], \
-                                    [cov[idx[1], idx[0]], cov[idx[1], idx[1]]]])
-
-            small_mu = np.array([mu[idx[0]], mu[idx[1]]])
-
-
-            rv = multivariate_normal(mean=small_mu, cov=small_cov)
-            p *= rv.cdf(np.array([0,0]))
-
-            cov = np.delete(cov, idx, 0)
-            cov = np.delete(cov, idx, 1)
-
-            mod_cov = np.delete(mod_cov, idx, 0)
-            mod_cov = np.delete(mod_cov, idx, 1)
-            mu = np.delete(mu, idx, 0)
-
-        if cov.shape[0] == 1:
-            p *= spec.ndtr((0 - mu[0]) / cov[0,0])
-
-        return p / np.sum(p)
 
 
 
@@ -107,7 +53,7 @@ class BayesInfoGain(ActiveLearner):
     # but only does it for preference GPs
     # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
-    def p_B_pref_gp(self, candidate_pts, mu):
+    def p_B_pref_gp(self, candidate_pts, mu, cdf_method='auto'):
         K = self.model.cov
 
         p = np.empty(len(candidate_pts))
@@ -137,17 +83,10 @@ class BayesInfoGain(ActiveLearner):
             #mu_star = mu[i] - mu[idx_i]
 
 
-            p[i] = calc_cdf(mu_star, K_star_i, method='independent')
-            p_ind[i] = calc_cdf(mu_star, K_star_i, method='switch')
-            # p_full[i] = calc_cdf(mu_star, K_star_i, method='full')
-            # p_switch[i] = calc_cdf(mu_star, K_star_i, method='switch')
+            p[i] = calc_cdf(mu_star, K_star_i, method=cdf_method)
 
         #print('p_sum = ' + str(np.sum(p)))
         p = p / np.sum(p)
-        print('p = ' + str(p))
-        print('p_ind = ' + str(p_ind / np.sum(p_ind)))
-        #print('p_full = ' + str(p_full / np.sum(p_full)))
-        #print('p_switch = ' + str(p_switch / np.sum(p_switch)))
         return p
 
     ## select_greedy
@@ -219,7 +158,7 @@ class BayesInfoGain(ActiveLearner):
 
                 tmp = (-np.repeat(np.log2(p_q[:,np.newaxis]),2,axis=1) + np.log2(p_q_B))
 
-                info_gain2[idx] = np.sum(p_q * p_B[Q] * tmp)
+                info_gain2[idx] = -np.sum(p_q * p_B[Q] * tmp)
 
                 for i, q in enumerate(Q):
                     mask = np.ones(len(Q), bool)
