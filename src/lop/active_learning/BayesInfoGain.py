@@ -26,6 +26,9 @@ import numpy as np
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 from scipy.stats import multivariate_normal
+import scipy.special as spec
+
+from copy import deepcopy
 
 import pdb
 
@@ -36,14 +39,71 @@ import pdb
 
 
 
+# @param mu - the mean of the normal random distribution
+# @param cov - the covariance of the normal random distribtuion
+# @param method - [opt - default 'auto'] the method to calculate the cdf [auto, full, independent] 
+# 
+def calc_cdf(mu, cov, method='auto'):
+    if method == 'auto':
+        if len(mu) > 5:
+            method = 'independent'
+        else:
+            method = 'full'
+    
+    if method == 'full':
+        rv = multivariate_normal(mean=mu, cov=cov)
+        
+        
+        zero_vector = np.zeros(len(mu))
+        return rv.cdf(zero_vector)
+
+    elif method == 'independent':
+        return np.prod(spec.ndtr((0 - mu) / np.diagonal(cov)))
+
+
+    elif method == 'switch':
+        p = 1.0
+        mod_cov = np.abs(np.copy(cov))
+        np.fill_diagonal(mod_cov, 0)
+
+        while cov.shape[0] > 1:
+            idx = np.unravel_index(np.argmax(mod_cov), cov.shape)
+
+            #pdb.set_trace()
+
+            small_cov = np.array([  [cov[idx[0], idx[0]], cov[idx[0], idx[1]]], \
+                                    [cov[idx[1], idx[0]], cov[idx[1], idx[1]]]])
+
+            small_mu = np.array([mu[idx[0]], mu[idx[1]]])
+
+
+            rv = multivariate_normal(mean=small_mu, cov=small_cov)
+            p *= rv.cdf(np.array([0,0]))
+
+            cov = np.delete(cov, idx, 0)
+            cov = np.delete(cov, idx, 1)
+
+            mod_cov = np.delete(mod_cov, idx, 0)
+            mod_cov = np.delete(mod_cov, idx, 1)
+            mu = np.delete(mu, idx, 0)
+
+        if cov.shape[0] == 1:
+            p *= spec.ndtr((0 - mu[0]) / cov[0,0])
+
+        return p / np.sum(p)
+
+
+
 class BayesInfoGain(ActiveLearner):
 
     # def __init__(self):
     #     self.sample_pts = None
 
 
+    
+
     ## p_B_pref_gp
-    # Calculates the probabilaity of each pt in the given matrix as being the being the best path
+    # Calculates the probability of each pt in the given matrix as being the being the best path
     # but only does it for preference GPs
     # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
@@ -51,6 +111,9 @@ class BayesInfoGain(ActiveLearner):
         K = self.model.cov
 
         p = np.empty(len(candidate_pts))
+        p_ind = np.empty(len(candidate_pts))
+        p_full = np.empty(len(candidate_pts))
+        p_switch = np.empty(len(candidate_pts))
 
         # calculate the combined covariance matrix for if point i is the largest point.
         for i in range(len(candidate_pts)):
@@ -73,20 +136,18 @@ class BayesInfoGain(ActiveLearner):
             mu_star = mu[idx_i] - mu[i]
             #mu_star = mu[i] - mu[idx_i]
 
-            
-            rv = multivariate_normal(mean=mu_star, cov=K_star_i)
-            
 
-            #x, y = np.mgrid[-1:1:.01, -1:1:.01]
-            #pos = np.dstack((x, y))
-            #plt.figure()
-            #plt.contourf(x,y,rv.pdf(pos))
-            
-            zero_vector = np.zeros(len(candidate_pts)-1)
-            p[i] = rv.cdf(zero_vector)
+            p[i] = calc_cdf(mu_star, K_star_i, method='independent')
+            p_ind[i] = calc_cdf(mu_star, K_star_i, method='switch')
+            # p_full[i] = calc_cdf(mu_star, K_star_i, method='full')
+            # p_switch[i] = calc_cdf(mu_star, K_star_i, method='switch')
 
-        print('p_sum = ' + str(np.sum(p)))
+        #print('p_sum = ' + str(np.sum(p)))
         p = p / np.sum(p)
+        print('p = ' + str(p))
+        print('p_ind = ' + str(p_ind / np.sum(p_ind)))
+        #print('p_full = ' + str(p_full / np.sum(p_full)))
+        #print('p_switch = ' + str(p_switch / np.sum(p_switch)))
         return p
 
     ## select_greedy
@@ -116,6 +177,7 @@ class BayesInfoGain(ActiveLearner):
             log_probit = np.log2(probit_mat)
 
             info_gain = np.zeros(len(indicies))
+            info_gain2 = np.zeros(len(indicies))
 
             # go through each possible query to calculate information gain on each
             for idx, Q_i in enumerate(indicies):
@@ -125,7 +187,7 @@ class BayesInfoGain(ActiveLearner):
                 if len(Q) < 2:
                     # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
                     #return np.random.choice(indicies)
-                    return np.argmax(mu)
+                    return np.argmax(p_B)
 
                 p_q = np.zeros(len(Q))
                 for i, q in enumerate(Q):
@@ -134,8 +196,30 @@ class BayesInfoGain(ActiveLearner):
 
                     probit_Q = probit_mat[q,Q[mask]]
                     p_q[i] = np.prod(probit_Q)
-
+                
                 p_q = p_q / np.sum(p_q)
+
+                p_q_B = np.zeros((len(Q), len(Q)))
+                for i, q in enumerate(Q):
+                    #Q_new = deepcopy(Q)
+                    Q_new = np.delete(Q, i)
+
+                    for j, b in enumerate(Q):
+                        p_q_b = 1
+                        for k, q_i in enumerate(Q_new):
+                            if q_i == b:
+                                p_q_b *= 0.01#max(probit_mat[q_i, q], probit_mat[q, q_i])
+                            else:
+                                p_q_b *= 0.99#min(probit_mat[q,q_i], probit_mat[q_i, q])
+                        p_q_B[i,j] = p_q_b                        
+
+                #pdb.set_trace()
+                p_q_B = p_q_B / np.sum(p_q_B, axis=0)
+                print('p_q_B: ' + str(p_q_B))
+
+                tmp = (-np.repeat(np.log2(p_q[:,np.newaxis]),2,axis=1) + np.log2(p_q_B))
+
+                info_gain2[idx] = np.sum(p_q * p_B[Q] * tmp)
 
                 for i, q in enumerate(Q):
                     mask = np.ones(len(Q), bool)
@@ -168,6 +252,7 @@ class BayesInfoGain(ActiveLearner):
                     info_gain[idx] += info_gain_B * p_q[i]
 
             print(info_gain)
+            print(info_gain2)
             #pdb.set_trace()     
-            return indicies[np.argmax(info_gain)]
+            return indicies[np.argmax(info_gain2)]
 

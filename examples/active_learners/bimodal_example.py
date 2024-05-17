@@ -50,7 +50,7 @@ def plot_data(gp):
 
     plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
 
-    gp.plot_preference(head_width=0.1)
+    gp.plot_preference()
     plt.scatter(gp.X_train, gp.F)
 
     plt.title('Gaussian Process estimate (1 sigma)')
@@ -96,7 +96,7 @@ def main():
 
     #### create model
     if args.model == 'gp':
-        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=True)
+        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
 

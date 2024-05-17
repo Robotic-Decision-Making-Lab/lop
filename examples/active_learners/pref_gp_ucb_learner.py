@@ -27,13 +27,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.animation import FFMpegWriter
+import argparse
+import sys
 
 import lop
 
 
 # the function to approximate
 def f_sin(x, data=None):
-    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
+    x = 10-x
+    return 2 * np.cos(np.pi * (x-2) / 3.0) * np.exp(-(0.99*x))
 
 
 def plot_data(model, new_selections=None):
@@ -66,12 +69,48 @@ def plot_data(model, new_selections=None):
     plt.legend(['Real function', 'Predicted function', 'Active learning points', '95% condidence region'])
     model.plot_preference(ax)
 
+possible_models = ['gp', 'linear']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER"]
+
+
 def main():
-    al = lop.GV_UCBLearner()
-    #al = lop.RandomLearner()
-    #al = lop.ProbabilityLearner()
-    model = lop.PreferenceGP(lop.RBF_kern_zeroed(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
-    model.probits[0].set_sigma(0.5)
+    parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
+    parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
+    parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
+    args = parser.parse_args()
+
+    if args.selector not in possible_selectors:
+        print('Selector should be one of these '+str(possible_selectors)+' not ' + str(args.selector))
+        sys.exit(0)
+    if args.model not in possible_models:
+        print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
+        sys.exit(0)
+
+    # Create active learner
+    al = None
+    if args.selector == 'UCB':
+        al = lop.UCBLearner()
+    elif args.selector == 'SGV_UCB':
+        al = lop.GV_UCBLearner()
+    elif args.selector == 'MUTUAL_INFO':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'MUTUAL_INFO':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'MUTUAL_INFO_PERF':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'RANDOM':
+        al = lop.RandomLearner()
+    elif args.selector == 'BAYES_INFO_GAIN':
+        al = lop.BayesInfoGain()
+    elif args.selector == 'PROB_LEARNER':
+        al = lop.ProbabilityLearner()
+
+
+    #### create model
+    if args.model == 'gp':
+        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
+    if args.model == 'linear':
+        model = lop.PreferenceLinear(active_learner=al)
 
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)
@@ -86,7 +125,7 @@ def main():
         # Generate active learning point and add it to the model
         for i in range(10):
             # generate random test set to select test point from
-            x_canidiates = np.random.random(3)*10
+            x_canidiates = np.arange(0,10.1,0.3)#np.random.random(12)*10
 
             test_pt_idxs = model.select(x_canidiates, 2)
 

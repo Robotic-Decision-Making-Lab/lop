@@ -43,6 +43,8 @@ def main():
 
     # Create preference gp and optimize given training data
     gp = lop.PreferenceGP(lop.RBF_kern_zeroed(0.5, 0.7))
+    
+    gp.add(np.array([7.5]), np.array([0.5]), type='abs')
     gp.add(X_train, pairs)
     gp.optimize(optimize_hyperparameter=False)
 
@@ -59,18 +61,20 @@ def main():
     plt.plot(X, mu)
     sigma_to_plot = 1
 
-    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
     Y_actual = f_sin(X)
     Y_max = np.linalg.norm(Y_actual, ord=np.inf)
     Y_actual = Y_actual / Y_max
-    gp.plot_preference(head_width=0.1)
+    
     plt.plot(X, Y_actual)
-    plt.scatter(X_train, gp.F)
+    gp.plot_preference(head_size=25)
+    
+    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
+    plt.scatter(gp.X_train, gp.F)
 
-    plt.title('Gaussian Process estimate (1 sigma)')
+    plt.title('Gaussian Process')
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.legend(['Predicted function with predicted F', 'Real function'])
+    plt.legend(['Predicted function with predicted F', 'Real function', 'Pairwise preference labels'])
     plt.show()
 
 

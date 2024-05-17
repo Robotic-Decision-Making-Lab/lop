@@ -477,7 +477,7 @@ class PreferenceModel(Model):
     # raise an exception.
     # @param ax - [opt] the axes to plot on
     # @param color - [opt default='blue] the color of the arrows drawn. 
-    def plot_preference(self, ax=None, color='#E69F00', alpha=0.3, width=0.005, head_width=0.015, y_train=None, X_train=None, F=None):
+    def plot_preference(self, ax=None, color='#E69F00', alpha=0.3, width=1.0, head_size=15, y_train=None, X_train=None, F=None):
         if y_train is None:
             y_train = self.y_train
         if X_train is None:
@@ -515,12 +515,12 @@ class PreferenceModel(Model):
                     diff = lg_pt - sm_pt
                     loc=0.5
                     line = ax.plot([sm_pt[0], lg_pt[0]], [sm_pt[1], lg_pt[1]], \
-                            color=color, alpha=alpha)[0]
+                            color=color, alpha=alpha, linewidth=width)[0]
                     line.axes.annotate('',
                             xytext=(sm_pt[0]+diff[0]*loc, sm_pt[1]+diff[1]*loc),
                             xy=(sm_pt[0]+diff[0]*(loc+0.001), sm_pt[1]+diff[1]*(loc+0.001)),
-                            arrowprops=dict(arrowstyle='->', color=color, alpha=alpha),
-                            size=15
+                            arrowprops=dict(arrowstyle='->', color=color, alpha=alpha, lw=width),
+                            size=head_size
                     )
 
                     # ax.arrow(sm_pt[0], sm_pt[1], diff[0]/2, diff[1]/2, \

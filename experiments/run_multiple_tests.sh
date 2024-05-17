@@ -15,14 +15,14 @@ number_runs=50
 fake_func=linear
 #model=gp
 
-for selc in RANDOM SGV_UCB MUTUAL_INFO UCB
+for selc in SGV_UCB MUTUAL_INFO UCB
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
-    for fake_func in min linear squared_min_max max logistic squared sin_exp 
+    for fake_func in min #linear squared_min_max max min logistic squared sin_exp 
     do
-        for hyper_sel in hyper
+        for hyper_sel in no
         do
-            for model in gp
+            for model in gp linear
             do
                 for user in perfect
                 do
