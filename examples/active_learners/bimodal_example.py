@@ -89,7 +89,7 @@ def main():
     elif args.selector == 'RANDOM':
         al = lop.RandomLearner()
     elif args.selector == 'BAYES_INFO_GAIN':
-        al = lop.BayesInfoGain()
+        al = lop.BayesInfoGain2()
     elif args.selector == 'PROB_LEARNER':
         al = lop.ProbabilityLearner()
 
