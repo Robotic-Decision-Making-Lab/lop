@@ -52,6 +52,8 @@ def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=N
         al = lop.MutualInfoLearner(fake_func, default_to_pareto, always_select_best)
     elif selector == 'RANDOM':
         al = lop.RandomLearner(default_to_pareto, always_select_best)
+    elif selector == 'BAYES_INFO_GAIN':
+        al = lop.BayesInfoGain2(default_to_pareto, always_select_best)
 
     return al
 

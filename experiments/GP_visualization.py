@@ -41,7 +41,9 @@ def record_gp_state(model, fake_f, bounds=[(0,0),(1.5,1.5)], folder='./', \
             pred_ut=pred_ut, \
             pred_sigma=pred_sigma, \
             GP_pts=model.X_train, \
-            GP_pref=model.y_train, \
+            GP_pref_0=model.y_train[0], \
+            GP_pref_1=model.y_train[1], \
+            GP_pref_2=model.y_train[2], \
             GP_prior_idx=model.prior_idx)
 
 
