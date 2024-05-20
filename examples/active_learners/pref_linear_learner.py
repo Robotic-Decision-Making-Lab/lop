@@ -51,6 +51,7 @@ def plot_data(model, new_selections=None, w=None):
 
     plt.clf()
     ax = plt.gca()
+    ax.set_aspect(1.0)
 
     ax.contour(xv,yv, y_pred.reshape(xv.shape))
 
@@ -64,19 +65,30 @@ def plot_data(model, new_selections=None, w=None):
         ax.arrow(0,0,w[0]*2,w[1]*2, width=0.008)
     model.plot_preference(ax)
 
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER"]
+
+
 def main():
     parser = argparse.ArgumentParser(description='Active learning example for linear functions')
-    parser.add_argument('-a', type=str, default='mutual', help='Enter the type of active learning function [random mutual ucb gv_ucb]')
+    parser.add_argument('--selector', type=str, default='MUTUAL_INFO', help='Set the selectors to use options '+str(possible_selectors))
     args = parser.parse_args()
 
-    if args.a == 'mutual':
-        al = lop.MutualInfoLearner()
-    elif args.a == 'random':
-        al = lop.RandomLearner()
-    elif args.a == 'ucb':
+    # Create active learner
+    al = None
+    if args.selector == 'UCB':
         al = lop.UCBLearner()
-    elif args.a == 'gv_ucb':
+    elif args.selector == 'SGV_UCB':
         al = lop.GV_UCBLearner()
+    elif args.selector == 'MUTUAL_INFO':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'MUTUAL_INFO_PERF':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'RANDOM':
+        al = lop.RandomLearner()
+    elif args.selector == 'BAYES_INFO_GAIN':
+        al = lop.BayesInfoGain2()
+    elif args.selector == 'PROB_LEARNER':
+        al = lop.ProbabilityLearner()
     else:
         print('Unknown active learning method: ' + str(args.a))
         return

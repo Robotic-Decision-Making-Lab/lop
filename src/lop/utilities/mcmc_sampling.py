@@ -34,7 +34,7 @@ import numpy as np
 
 ## normal_prop_dist
 # A basic normal distribtion to use with the mcmc sampler
-def normal_prop_dist(x, dimensions=1, std=1.0):
+def normal_prop_dist(x, dimensions=1, std=2.0):
     return np.random.normal(x, std)
 
 

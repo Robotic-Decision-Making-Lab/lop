@@ -483,7 +483,10 @@ class PreferenceModel(Model):
         if X_train is None:
             X_train = self.X_train
         if F is None and X_train is not None:
-            F = self.F
+            if hasattr(self, 'F'):
+                F = self.F
+            else:
+                F = self(X_train)
         if ax is None:
             ax = plt.gca()
 

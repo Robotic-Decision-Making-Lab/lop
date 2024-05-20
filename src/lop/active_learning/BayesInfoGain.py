@@ -25,7 +25,7 @@
 import numpy as np
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
-from lop.utilities import calc_cdf
+from lop.utilities import calc_cdf, metropolis_hastings
 
 
 from copy import deepcopy
@@ -57,9 +57,6 @@ class BayesInfoGain(ActiveLearner):
         K = self.model.cov
 
         p = np.empty(len(candidate_pts))
-        p_ind = np.empty(len(candidate_pts))
-        p_full = np.empty(len(candidate_pts))
-        p_switch = np.empty(len(candidate_pts))
 
         # calculate the combined covariance matrix for if point i is the largest point.
         for i in range(len(candidate_pts)):
@@ -84,6 +81,34 @@ class BayesInfoGain(ActiveLearner):
 
 
             p[i] = calc_cdf(mu_star, K_star_i, method=cdf_method)
+
+        #print('p_sum = ' + str(np.sum(p)))
+        p = p / np.sum(p)
+        return p
+
+    ## p_B_pref_gp
+    # Calculates the probability of each pt in the given matrix as being the being the best path
+    # but only does it for preference GPs
+    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    def p_B_pref_linear(self, candidate_pts, mu, probit_mat):
+        p = np.zeros(len(candidate_pts))
+
+        #p = np.sum(np.log(probit_mat), axis=1) - np.log(probit_mat[0,0]) # * 2 multiplies the diagonal element (always 0.5)
+        #p = np.exp(p)
+
+        # sampling weights from linear model
+        w_samples = metropolis_hastings(self.model.loss_func, 2000, dim=candidate_pts.shape[1])
+
+        w_norm = np.linalg.norm(w_samples, axis=1)
+        w_samples = w_samples / np.tile(w_norm, (2,1)).T
+        # generate possible outputs from weighted samples
+        all_w = (candidate_pts @ w_samples.T).T
+
+        # frequentist approach from bayesian samples (not sure that's the correct term)
+        largest_sample = np.argmax(all_w, axis=1)
+        for s in largest_sample:
+            p[s] += 1
 
         #print('p_sum = ' + str(np.sum(p)))
         p = p / np.sum(p)
