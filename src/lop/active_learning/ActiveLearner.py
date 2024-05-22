@@ -42,6 +42,7 @@ class ActiveLearner:
         self.model = None
         self.default_to_pareto=default_to_pareto
         self.always_select_best = always_select_best
+        self.first_call_greedy = True
 
     ## set_model
     # sets the model being used by the active learning framework.
@@ -68,7 +69,8 @@ class ActiveLearner:
     # @return [highest_mean, highest_selection, next highest selection, ...],
     #          selection values for candidate_pts,
     #          only returns highest mean if "always select best is set"
-    def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False):
+    def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False, select_pair_first=True):
+        self.first_call_greedy = True
         prefer_pts = self.get_prefered_set_of_pts(candidate_pts, prefer_pts)
         prev_selection = set(prev_selection)
 
@@ -97,6 +99,8 @@ class ActiveLearner:
                     selected_idx = not_selected[0]
                     not_selected.pop(0) 
                 else:
+                    if len(prev_selection) == 0 and select_pair_first:
+                        raise Exception("Oops, I didn't implement pairs for return not selected. TODO")
                     selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
 
 
@@ -117,8 +121,13 @@ class ActiveLearner:
             while len(sel_pts) < num_alts:
                 # only select from the prefered points if they still exist
                 if len(pref_not_sel) > 0:
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
-                    pref_not_sel.remove(selected_idx)
+                    if select_pair_first and len(sel_pts) == 0 and hasattr(self, "select_pair"):
+                        selected_idx = self.select_pair(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
+                        pref_not_sel.remove(selected_idx[0])
+                        pref_not_sel.remove(selected_idx[1])
+                    else:
+                        selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
+                        pref_not_sel.remove(selected_idx)
                 else:
                     # get if the set of points not selected and not prefered if not already defined
                     if all_not_selected is None:
@@ -126,11 +135,19 @@ class ActiveLearner:
                     # ensure that there is at least some pts left to select from
                     if len(all_not_selected) == 0:
                         raise Exception("Not enough points for select to create a full set")
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
-                    all_not_selected.remove(selected_idx)
+                    if select_pair_first and len(sel_pts) == 0 and hasattr(self, "select_pair"):
+                        selected_idx = self.select_pair(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
+                        all_not_selected.remove(selected_idx[0])
+                        all_not_selected.remove(selected_idx[1])
+                    else:
+                        selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
+                        all_not_selected.remove(selected_idx)
                 
-                # add the selected index
-                sel_pts.append(selected_idx)
+                if len(selected_idx) > 1:
+                    sel_pts += list(selected_idx)
+                else:
+                    # add the selected index
+                    sel_pts.append(selected_idx)
             # end while loop
             return sel_pts   
 
