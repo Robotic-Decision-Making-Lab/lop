@@ -169,8 +169,11 @@ class BayesInfoGain2(BayesInfoGain):
         # This probably needs to be significantly updated
         p_q_B = np.repeat(p_q[:,:,np.newaxis], N, axis=2)
         for i in range(N):
-            p_q_B[i,:,i] = np.fmax(p_q[i,:], p_q[:,i])#0.999
-            p_q_B[:,i,i] = np.fmin(p_q[i,:], p_q[:,i])#0.001
+            #p_q_B[i,:,i] = np.fmax(p_q[i,:], p_q[:,i])#0.999
+            #p_q_B[:,i,i] = np.fmin(p_q[i,:], p_q[:,i])#0.001
+            p_q_B[i,:,i] = 0.999
+            p_q_B[:,i,i] = 0.001
+            
             #p_q_B[i,i,i] = 0.99
 
             # Same query is always going to be probability of 0.5
