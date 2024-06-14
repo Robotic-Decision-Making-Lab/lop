@@ -18,6 +18,16 @@ MIN_LOG_VALUE = 1e-17
 
 class BayesInfoGain2(BayesInfoGain):
 
+    ## Constructor
+    # @param default_to_pareto - [opt default=False] sets whether to always assume
+    #               prefering pareto optimal choices when selecting points, if not particulary told not to
+    # @param alaways_select_best - [opt default=False] sets whether the select function should append the
+    #               the top solution to the front of the solution set every time.
+    def __init__(self, default_to_pareto=False, always_select_best=False):
+        super(BayesInfoGain2, self).__init__(default_to_pareto, always_select_best)
+        # this just forces the object to fail if approxcdf is not installed
+        import approxcdf
+
     ## calc_H_B_Q
     # Calculate the expected entropy of B given Q.
     # H(B|Y,Q)

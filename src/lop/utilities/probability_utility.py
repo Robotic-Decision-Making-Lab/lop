@@ -15,7 +15,11 @@ import scipy.special as spec
 # https://approxcdf.readthedocs.io/en/latest/
 # I cloned it myself to work with python 3.8 rather than 3.9
 # minor change of reducing the min numpy version allowed.
-import approxcdf
+
+try:
+    import approxcdf
+except:
+    print('Cannot import approxcdf, any function which uses this, will not work')
 
 # @param mu - the mean of the normal random distribution
 # @param cov - the covariance of the normal random distribtuion
