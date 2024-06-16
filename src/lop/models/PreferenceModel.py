@@ -269,8 +269,9 @@ class PreferenceModel(Model):
                         np.append(self.y_train[self.probit_idxs['relative_discrete']], \
                                     np.array(pairs), axis=0)
                 else:
-                    import pdb
-                    pdb.set_trace()
+                    pass
+                    #import pdb
+                    #pdb.set_trace()
         # end if for pareto_pairs
 
 

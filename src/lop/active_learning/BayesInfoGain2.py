@@ -248,6 +248,15 @@ class BayesInfoGain2(BayesInfoGain):
 
         idx_best = np.unravel_index(sorted[to_pick], info_gain.shape)
 
+        if idx_best[0] in prev_selection and idx_best[1] in prev_selection:
+            # handle case where index already selected (allow one selection but not both)
+            for i in range(len(sorted)):
+                idx_best = np.unravel_index(sorted[i], info_gain.shape)
+
+                if not (idx_best[0] in prev_selection and idx_best[1] in prev_selection):
+                    break
+        
+
         print('idx_best: ' + str(idx_best))
 
         #pdb.set_trace()

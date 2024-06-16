@@ -123,8 +123,11 @@ class ActiveLearner:
                 if len(pref_not_sel) > 0:
                     if select_pair_first and len(sel_pts) == 0 and hasattr(self, "select_pair"):
                         selected_idx = self.select_pair(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
-                        pref_not_sel.remove(selected_idx[0])
-                        pref_not_sel.remove(selected_idx[1])
+                        
+                        if selected_idx[0] in pref_not_sel:
+                            pref_not_sel.remove(selected_idx[0])
+                        if selected_idx[1] in pref_not_sel:
+                            pref_not_sel.remove(selected_idx[1])
                     else:
                         selected_idx = self.select_greedy(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
                         pref_not_sel.remove(selected_idx)
