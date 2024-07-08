@@ -115,7 +115,7 @@ class BayesInfoGain2(BayesInfoGain):
     # @param prev_selection - a set ofindicies of previously selected points
     #
     # @return the index of the greedy selection.
-    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection, debug=False):
         N = len(mu)
         indicies = list(indicies)
 
@@ -158,7 +158,7 @@ class BayesInfoGain2(BayesInfoGain):
                 
 
 
-    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
+    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=False):
         p_B, probit_mat = self.get_p_B_probit(candidate_pts, mu)
 
         if debug:

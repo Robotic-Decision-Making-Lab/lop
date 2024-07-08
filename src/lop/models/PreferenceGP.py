@@ -160,7 +160,7 @@ class PreferenceGP(PreferenceModel):
         if not self.optimized and self.X_train is not None:
             self.optimize(optimize_hyperparameter=self.use_hyper_optimization)
 
-        num_at_a_time = 15
+        num_at_a_time = 30
 
         num_runs = int(math.ceil(X.shape[0] / num_at_a_time))
 
