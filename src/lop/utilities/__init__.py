@@ -8,3 +8,4 @@ from .FakeFunction import FakeFunction, FakeLinear, FakeSquared, FakeLogistic, F
 from .mcmc_sampling import metropolis_hastings, normal_prop_dist
 from .gamma_dist import pdf_gamma, log_pdf_gamma, d_log_pdf_gamma
 from .probability_utility import calc_cdf
+from .sample_utility import sample_unique_sets
