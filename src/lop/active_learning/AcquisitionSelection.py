@@ -30,6 +30,7 @@
 
 import numpy as np
 import math
+import copy
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 
@@ -49,12 +50,14 @@ class AcquisitionSelection(ActiveLearner):
     #               the top solution to the front of the solution set every time.
     def __init__(self, M=100, 
                  rep_Q_method = 'sampled', rep_Q_data = {'num_pts': 10, 'num_Q': 20},
+                 alignment_f = 'rho',
                 default_to_pareto=False, always_select_best=False):
         super(AcquisitionSelection, self).__init__(default_to_pareto,always_select_best)
 
         self.M = M
         self.rep_Q_method = rep_Q_method
         self.rep_Q_data = rep_Q_data
+        self.alignment_f = alignment_f
 
 
 
@@ -87,6 +90,31 @@ class AcquisitionSelection(ActiveLearner):
             raise ValueError("AcquisitionSelection get_representative_Q given an incorrect method type of: " + str(self.rep_Q_method))
 
 
+
+    ## alignment
+    # this allignment function is the f(R_w, R_w') defined in the paper
+    # This is a score of how similar the two reward functions are to each other.
+    # @param all_rep - scores of each sampled weight function with represenative points
+    #                   (M_samples num_rep) with sampled score
+    # @param Q_rep - the set of represantive queries
+    def alignment(self, all_rep, Q_rep):
+        if self.alignment_f == 'rho':
+            rho_R = np.exp(all_rep)
+            rho_R_sum = np.sum(rho_R, axis=1)
+            rho_R = rho_R / np.repeat(rho_R_sum[:,np.newaxis], all_rep.shape[1], axis=1)
+
+            diff = np.repeat(rho_R[np.newaxis,:,:], rho_R.shape[0], axis=0) - np.repeat(rho_R[:,np.newaxis,:], rho_R.shape[0], axis=1)
+            
+            f_rho = -np.linalg.norm(diff, axis=2, ord=2)
+
+            return f_rho
+
+        elif self.alignment_f == 'one':
+            # will not work for anything meaningful, but can be used to check pipeline of working code
+            return np.ones((all_rep.shape[0], all_rep.shape[0]))
+
+
+
     ## select_greedy
     # This function greedily selects the best single data point
     # Depending on the selection method, you are not forced to implement this function
@@ -98,34 +126,96 @@ class AcquisitionSelection(ActiveLearner):
     #
     # @return the index of the greedy selection.
     def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
-        #raise NotImplementedError("AcquisitionSelection select_greedy is not implemented and has been called")
+        size_query = len(prev_selection) + 1 # prev_selection + every new addition to Q
         N = len(mu)
         indicies = list(indicies)
 
-        # get sampled possible output of latent functions
+        if size_query == 1:
+            # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
+            # But needs at least a pair in order to calculate properly.
+            return np.random.choice(indicies)
+            #return np.argmax(mu)
+
+        x_rep, Q_rep = self.get_representative_Q()
+
+
+        ## get sampled possible output of latent functions
         if isinstance(self.model, (PreferenceGP, GP)):
             cov = self.model.cov
 
+            x_both = np.append(candidate_pts, x_rep, axis=0)
+
+            # need to sample both representive and query samples at the same time.
+            mu_both, simga_both = self.model.predict(x_both)
+            cov_both = self.model.cov
+
             # sample M possible parameters w (reward values of the GP)
-            all_w = np.random.multivariate_normal(mu, cov, size=self.M)
+            all_samples = np.random.multivariate_normal(mu_both, cov_both, size=self.M)
+            all_Q = all_samples[:, :N]
+            all_rep = all_samples[:, N:]
         elif isinstance(self.model, PreferenceLinear):
             w_samples = metropolis_hastings(self.model.loss_func, self.M, dim=candidate_pts.shape[1])
 
             w_norm = np.linalg.norm(w_samples, axis=1)
             w_samples = w_samples / np.tile(w_norm, (2,1)).T
             # generate possible outputs from weighted samples
-            all_w = (candidate_pts @ w_samples.T).T
+            all_rep = (x_rep @ w_samples.T).T
+            all_Q = (candidate_pts @ w_samples.T).T
         else:
             raise ValueError("Aquisition Selection select_greedy given an unknown model type + " + str(type(self.model)))
         
-
-        # calculate the
-
-
-
+        # precalculate the probit between each candidate_pts
+        probit_mat_Q = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_Q])
+        #probit_mat_rep = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
 
 
 
 
-    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
-        raise NotImplementedError("AcquisitionSelection select_pair is not implemented and has been called")
+        ###### calculate the p_q for each Q {indicies} + prev_selection
+
+        # p_q_given_Q_w (M_samples, q, Q_new)
+        p_q = np.ones((self.M, size_query, len(indicies)))
+        
+        # calculate the p_q across the previous selection
+        if len(prev_selection) > 1:
+            for i in range(0, len(prev_selection)):
+                q_idx = prev_selection[i]
+                prev_except = copy.copy(prev_selection)
+                del prev_except[i]
+
+                p_q_i = np.prod(probit_mat_Q[:,q_idx, prev_except],axis=1)
+                p_q[:,i,:] = np.repeat(p_q_i[:,np.newaxis], len(indicies), axis=1)
+
+        # calculate p_q across the current possible selections
+        p_q[:,-1, :] = np.prod(probit_mat_Q[:, indicies,:][:,:,prev_selection], axis=2)
+
+        # and back calculate across possible selections the previous selections
+        p_q[:,:-1, :] *= probit_mat_Q[:, prev_selection,:][:,:,indicies]
+        
+        # normalize p_q given sum over q
+        sum_p_q = np.repeat(np.sum(p_q, axis=1)[:,np.newaxis,:], p_q.shape[1], axis=1)
+        p_q = p_q / sum_p_q
+
+        
+
+        ###### calculate alignment function
+        f = self.alignment(all_rep, all_Q)
+        f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
+
+        ##### calculate expected alignment
+        # equation (10)
+        align_expand = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0) * f_expand
+        E_align_q = np.sum(align_expand, axis=(0,1)) / (self.M * self.M)
+        E_p_q = np.mean(p_q, axis=0)
+
+        E_align_q / E_p_q
+
+        align_Q = np.sum(E_align_q, axis=0)
+
+        pdb.set_trace()
+
+        return np.argmax(align_Q)
+
+
+    # def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
+    #     raise NotImplementedError("AcquisitionSelection select_pair is not implemented and has been called")

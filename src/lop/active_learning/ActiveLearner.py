@@ -147,7 +147,7 @@ class ActiveLearner:
                         selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
                         all_not_selected.remove(selected_idx)
                 
-                if len(selected_idx) > 1:
+                if (isinstance(selected_idx, list) or isinstance(selected_idx, tuple)) and len(selected_idx) > 1:
                     sel_pts += list(selected_idx)
                 else:
                     # add the selected index
