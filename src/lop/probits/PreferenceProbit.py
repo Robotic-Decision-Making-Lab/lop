@@ -265,6 +265,11 @@ class PreferenceProbit(ProbitBase):
 
         return W, dpy_df, py
 
+    ## likelihood_all_pairs
+    # This function calculates the pairwise likelihood function of the probit for all pairs in F
+    # @param F - the estimated reward values numpy (n,)
+    #
+    # @return a matrix of pairwise probabilities p[0,1] indicates the P(F(0) > F(1))
     def likelihood_all_pairs(self, F):
         #F_pairs = np.array(np.meshgrid(F,F)).T.reshape(-1,2)
         z_k = np.repeat(F[:,np.newaxis], len(F), axis=1) - np.repeat(F[np.newaxis, :], len(F), axis=0)

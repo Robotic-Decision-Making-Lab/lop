@@ -199,12 +199,15 @@ class AcquisitionSelection(ActiveLearner):
         
 
         ###### calculate alignment function
-        f = self.alignment(all_rep, all_Q)
+        f = self.alignment(all_rep, Q_rep)
+        # [w,w', q, Q_new]
         f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
 
         ##### calculate expected alignment
         # equation (10)
-        align_expand = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0) * f_expand
+        p_q_w0 = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0)
+        p_q_w1 = np.repeat(p_q[:, np.newaxis,:,:], self.M, axis=1)
+        align_expand = p_q_w0 * p_q_w1 * f_expand
         E_align_q = np.sum(align_expand, axis=(0,1)) / (self.M * self.M)
         E_p_q = np.mean(p_q, axis=0)
 
@@ -212,9 +215,7 @@ class AcquisitionSelection(ActiveLearner):
 
         align_Q = np.sum(E_align_q, axis=0)
 
-        pdb.set_trace()
-
-        return np.argmax(align_Q)
+        return indicies[np.argmax(align_Q)]
 
 
     # def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):

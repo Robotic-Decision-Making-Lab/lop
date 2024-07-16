@@ -77,6 +77,7 @@ def test_acquisition_selection_basic():
     mu, sigma = model.predict(x_canidiates)
     sel_idx = al.select_greedy(x_canidiates, mu, None, {2,3,4,5}, [0,1])
 
+    assert sel_idx == 4
 
 
 

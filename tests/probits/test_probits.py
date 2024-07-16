@@ -61,6 +61,18 @@ def test_preference_probit_likelihood():
     assert W.shape[0] == F.shape[0]
     assert W.shape[1] == F.shape[0]
 
+def test_preference_probit_likelihood_all_pairs():
+    pp = lop.PreferenceProbit(0.5)
+
+    F = np.array([0, 0.5, 1.0, 1.5])
+
+    probit_mat = pp.likelihood_all_pairs(F)
+
+    assert (probit_mat.shape[0] == probit_mat.shape[1]) and (probit_mat.shape[0] == F.shape[0])
+
+    assert probit_mat[0,1] < 0.5
+    assert probit_mat[3,0] > 0.5
+    assert probit_mat[0,1] == (1 - probit_mat[1,0])
 
 def test_preference_hyper_modification():
     probit = lop.PreferenceProbit()
