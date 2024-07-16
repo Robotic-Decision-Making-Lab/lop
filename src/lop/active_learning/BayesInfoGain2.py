@@ -232,29 +232,7 @@ class BayesInfoGain2(BayesInfoGain):
             print(info_gain)
 
 
-        #idx_best = np.unravel_index(info_gain.argmax(), info_gain.shape)
-        sorted = np.argsort(info_gain.flatten())[-1::-1]
-
-        num_same = 0
-        for i in range(N):
-            num_same = i
-            if info_gain.flatten()[sorted[i]] != info_gain.flatten()[sorted[0]]:
-                break
-
-        
-
-        # randomly select from the same values
-        to_pick = np.random.randint(0, num_same)
-
-        idx_best = np.unravel_index(sorted[to_pick], info_gain.shape)
-
-        if idx_best[0] in prev_selection and idx_best[1] in prev_selection:
-            # handle case where index already selected (allow one selection but not both)
-            for i in range(len(sorted)):
-                idx_best = np.unravel_index(sorted[i], info_gain.shape)
-
-                if not (idx_best[0] in prev_selection and idx_best[1] in prev_selection):
-                    break
+        idx_best = self.pick_pair_from_metric(info_gain, prev_selection)
         
 
         print('idx_best: ' + str(idx_best))
@@ -263,4 +241,7 @@ class BayesInfoGain2(BayesInfoGain):
 
         return idx_best
         # TODO handle indicies correctly
+
+
+
 

@@ -114,30 +114,8 @@ class AcquisitionSelection(ActiveLearner):
             return np.ones((all_rep.shape[0], all_rep.shape[0]))
 
 
-
-    ## select_greedy
-    # This function greedily selects the best single data point
-    # Depending on the selection method, you are not forced to implement this function
-    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
-    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
-    # @param data - a user defined tuple of data (determined by the predict function of the model)
-    # @param indicies - a list or set of indicies in candidate points to consider.
-    # @param prev_selection - a set ofindicies of previously selected points
-    #
-    # @return the index of the greedy selection.
-    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
-        size_query = len(prev_selection) + 1 # prev_selection + every new addition to Q
-        N = len(mu)
-        indicies = list(indicies)
-
-        if size_query == 1:
-            # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
-            # But needs at least a pair in order to calculate properly.
-            return np.random.choice(indicies)
-            #return np.argmax(mu)
-
-        x_rep, Q_rep = self.get_representative_Q()
-
+    def get_samples_from_model(self, candidate_pts, x_rep):
+        N = candidate_pts.shape[0]
 
         ## get sampled possible output of latent functions
         if isinstance(self.model, (PreferenceGP, GP)):
@@ -162,7 +140,36 @@ class AcquisitionSelection(ActiveLearner):
             all_rep = (x_rep @ w_samples.T).T
             all_Q = (candidate_pts @ w_samples.T).T
         else:
-            raise ValueError("Aquisition Selection select_greedy given an unknown model type + " + str(type(self.model)))
+            raise ValueError("Aquisition Selection get_samples_from_model given an unknown model type + " + str(type(self.model)))
+
+        return all_rep, all_Q
+
+    ## select_greedy
+    # This function greedily selects the best single data point
+    # Depending on the selection method, you are not forced to implement this function
+    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    # @param data - a user defined tuple of data (determined by the predict function of the model)
+    # @param indicies - a list or set of indicies in candidate points to consider.
+    # @param prev_selection - a set ofindicies of previously selected points
+    #
+    # @return the index of the greedy selection.
+    def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
+        size_query = len(prev_selection) + 1 # prev_selection + every new addition to Q
+        N = len(mu)
+        indicies = list(indicies)
+
+        if size_query == 1:
+            # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
+            # But needs at least a pair in order to calculate properly.
+            return np.random.choice(indicies)
+            #return np.argmax(mu)
+
+        x_rep, Q_rep = self.get_representative_Q()
+
+        ## get sampled output from latent function
+        all_rep, all_Q = self.get_samples_from_model(candidate_pts, x_rep)
+        
         
         # precalculate the probit between each candidate_pts
         probit_mat_Q = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_Q])
@@ -218,5 +225,41 @@ class AcquisitionSelection(ActiveLearner):
         return indicies[np.argmax(align_Q)]
 
 
-    # def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
-    #     raise NotImplementedError("AcquisitionSelection select_pair is not implemented and has been called")
+    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
+        x_rep, Q_rep = self.get_representative_Q()
+
+        ## get sampled output from latent function
+        all_rep, all_Q = self.get_samples_from_model(candidate_pts, x_rep)
+        
+        # precalculate the probit between each candidate_pts
+        probit_mat_Q = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_Q])
+
+        # nothing needs to happen the p_q is already the probit mat since it is pairwise
+        # p_q[k,i,j] = p(q=i | Q=(i,j)) for sample k or rather p_q[k, 0,1] = p(F_k(0) > F_k(1))
+        p_q = probit_mat_Q
+
+
+        ##### Calculate alignment function
+        f = self.alignment(all_rep, Q_rep)
+        # [w,w', Q, Q]
+        f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
+
+        ##### calculate expected alignment
+        # equation (10)
+
+        # [w, w', Q, Q]
+        p_q_w0 = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0)
+        # [w', w, Q,Q]
+        p_q_w1 = np.repeat(p_q[:, np.newaxis,:,:], self.M, axis=1)
+
+        align_expand = p_q_w0 * p_q_w1 * f_expand
+        # [Q, Q]
+        E_align_q = np.sum(align_expand, axis=(0,1)) / (self.M * self.M)
+        E_p_q = np.mean(p_q, axis=0)
+
+        E_align_q / E_p_q
+
+        # represents the alignment metric for each pair being selected as align_Q
+        align_Q = E_align_q + E_align_q.T
+
+        return self.pick_pair_from_metric(align_Q, prev_selection)

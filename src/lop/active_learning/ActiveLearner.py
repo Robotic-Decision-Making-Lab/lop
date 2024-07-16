@@ -241,4 +241,36 @@ class ActiveLearner:
         return cur_selection, sel_values
 
 
+    ## pick_pair_from_metric
+    # pick a particular pair from a matrix of info gain
+    # @param info_gain - 2d matrix [Q,Q] each represents the info gain of picking
+    #                   pair [i,j].
+    #
+    # @return (i,j) pair to select
+    def pick_pair_from_metric(self, info_gain, prev_selection):
+        sorted = np.argsort(info_gain.flatten())[-1::-1]
+        N = info_gain.shape[0]
+
+        num_same = 0
+        for i in range(N):
+            num_same = i
+            if info_gain.flatten()[sorted[i]] != info_gain.flatten()[sorted[0]]:
+                break
+
+        
+
+        # randomly select from the same values
+        to_pick = np.random.randint(0, num_same)
+
+        idx_best = np.unravel_index(sorted[to_pick], info_gain.shape)
+
+        if idx_best[0] in prev_selection and idx_best[1] in prev_selection:
+            # handle case where index already selected (allow one selection but not both)
+            for i in range(len(sorted)):
+                idx_best = np.unravel_index(sorted[i], info_gain.shape)
+
+                if not (idx_best[0] in prev_selection and idx_best[1] in prev_selection):
+                    break
+        
+        return idx_best
 

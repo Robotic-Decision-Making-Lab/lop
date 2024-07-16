@@ -50,7 +50,7 @@ def test_get_representative_Q():
 
 
 def test_acquisition_selection_basic():
-    al = lop.AcquisitionSelection(M=5)
+    al = lop.AcquisitionSelection(M=400)
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')
@@ -81,14 +81,11 @@ def test_acquisition_selection_basic():
 
 
 
-    
 
 
 
-
-@pytest.mark.skip(reason="not ready for bimodal selection")
 def test_acquisition_selection_bimodal_selection():
-    al = lop.AcquisitionSelection()
+    al = lop.AcquisitionSelection(M=400)
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')
