@@ -164,6 +164,7 @@ class AcquisitionSelection(ActiveLearner):
         size_query = len(prev_selection) + 1 # prev_selection + every new addition to Q
         N = len(mu)
         indicies = list(indicies)
+        prev_selection = list(prev_selection)
 
         if size_query == 1:
             # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
