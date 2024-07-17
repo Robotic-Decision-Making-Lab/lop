@@ -70,7 +70,7 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER"]
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO']
 
 
 def main():
@@ -104,6 +104,12 @@ def main():
         al = lop.BayesInfoGain2()
     elif args.selector == 'PROB_LEARNER':
         al = lop.ProbabilityLearner()
+    elif args.selector == 'ACQ_RHO':
+        al = lop.AcquisitionSelection(M=400, alignment_f='rho')
+    elif args.selector == 'ACQ_LL':
+        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
+    elif args.selector == 'ACQ_EPIC':
+        al = lop.AcquisitionSelection(M=400, alignment_f='epic')
 
 
     #### create model

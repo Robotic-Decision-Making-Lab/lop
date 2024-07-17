@@ -80,6 +80,18 @@ def test_acquisition_selection_basic():
     assert sel_idx == 4
 
 
+def test_acquisition_selection_empty_model():
+    al = lop.AcquisitionSelection(M=400)
+    model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
+
+    # carefully selected to have 2.1 and 7.5 (indicies 0 and 1) to be the highest
+    # information gain points. (disambiguates which of the two peaks is higher.)
+    x_canidiates = np.array([2.1, 7.5, 0.5, 4.5,5.5,9])
+
+    test_pt_idxs = model.select(x_canidiates, 2)
+
+    assert test_pt_idxs is not None
+
 
 
 

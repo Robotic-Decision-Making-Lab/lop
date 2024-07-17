@@ -15,7 +15,7 @@ number_runs=50
 fake_func=linear
 #model=gp
 
-for selc in BAYES_INFO_GAIN SGV_UCB MUTUAL_INFO UCB
+for selc in ACQ_RHO #BAYES_INFO_GAIN SGV_UCB MUTUAL_INFO UCB
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
     for fake_func in min linear #squared_min_max max min logistic squared sin_exp 

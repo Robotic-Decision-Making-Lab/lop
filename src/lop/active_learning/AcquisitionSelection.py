@@ -76,6 +76,8 @@ class AcquisitionSelection(ActiveLearner):
             num_Q = self.rep_Q_data['num_Q']
 
             # sample data points from previous model data
+            if self.model.X_train is None:
+                return None, None
             num_X_train = len(self.model.X_train)
             N = min(num_X_train, N)
             X_pts = self.model.X_train[np.random.choice(num_X_train, N, replace=False)]
@@ -108,6 +110,10 @@ class AcquisitionSelection(ActiveLearner):
             f_rho = -np.linalg.norm(diff, axis=2, ord=2)
 
             return f_rho
+        elif self.alignment_f == 'loglikelihood':
+            pass
+        elif self.alignment_f == 'epic':
+            pass
 
         elif self.alignment_f == 'one':
             # will not work for anything meaningful, but can be used to check pipeline of working code
@@ -227,10 +233,14 @@ class AcquisitionSelection(ActiveLearner):
 
     def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
         x_rep, Q_rep = self.get_representative_Q()
+        if x_rep is None:
+            idxs = np.random.choice(list(indicies), 2, replace=False)
+            return (idxs[0], idxs[1])
 
         ## get sampled output from latent function
         all_rep, all_Q = self.get_samples_from_model(candidate_pts, x_rep)
         
+
         # precalculate the probit between each candidate_pts
         probit_mat_Q = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_Q])
 

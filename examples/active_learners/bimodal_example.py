@@ -59,7 +59,7 @@ def plot_data(gp):
     plt.legend(['Predicted function with predicted F'])
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER"]
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO']
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
@@ -92,6 +92,12 @@ def main():
         al = lop.BayesInfoGain2()
     elif args.selector == 'PROB_LEARNER':
         al = lop.ProbabilityLearner()
+    elif args.selector == 'ACQ_RHO':
+        al = lop.AcquisitionSelection(M=400, alignment_f='rho')
+    elif args.selector == 'ACQ_LL':
+        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
+    elif args.selector == 'ACQ_EPIC':
+        al = lop.AcquisitionSelection(M=400, alignment_f='epic')
 
 
     #### create model

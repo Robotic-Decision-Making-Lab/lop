@@ -54,6 +54,18 @@ def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=N
         al = lop.RandomLearner(default_to_pareto, always_select_best)
     elif selector == 'BAYES_INFO_GAIN':
         al = lop.BayesInfoGain2(default_to_pareto, always_select_best)
+    elif selector == 'ACQ_RHO':
+        al = lop.AcquisitionSelection(M=400, alignment_f='rho',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'ACQ_LL':
+        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)   
+    elif selector == 'ACQ_EPIC':
+        al = lop.AcquisitionSelection(M=400, alignment_f='epic',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
 
     return al
 
