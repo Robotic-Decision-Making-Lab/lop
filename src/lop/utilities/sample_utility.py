@@ -21,7 +21,7 @@ def sample_nonunique_sets(s, num_sets, size_set):
 # @param set_size - the size of the sets to return. Must be smaller than len(s)
 def sample_unique_sets_fast(s, num_sets, size_set):
     num_unique = 0
-    all_uniq = np.empty((0, size_set))
+    all_uniq = np.empty((0, size_set), dtype=int)
 
     while num_unique < num_sets:
         # defines whether to oversample, or exactly sample
@@ -55,5 +55,6 @@ def sample_unique_sets(s, num_sets, size_set):
     else:
         s_len = len(s)
 
-    return sample_unique_sets_fast(s, num_sets, size_set)
+    uniq_sets = sample_unique_sets_fast(s, num_sets, size_set)
+    return uniq_sets.astype(int)
     

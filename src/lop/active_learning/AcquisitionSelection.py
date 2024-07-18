@@ -111,8 +111,12 @@ class AcquisitionSelection(ActiveLearner):
 
             return f_rho
         elif self.alignment_f == 'loglikelihood':
-            # probit_mat = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
+            probit_mat = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
+            
 
+
+            q_best_w = np.argmax(all_rep[:,Q_rep], axis=2)
+            pdb.set_trace()
             # for Q in Q_rep:
             pass
 
