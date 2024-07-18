@@ -111,9 +111,27 @@ class AcquisitionSelection(ActiveLearner):
 
             return f_rho
         elif self.alignment_f == 'loglikelihood':
+            # probit_mat = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
+
+            # for Q in Q_rep:
             pass
+
         elif self.alignment_f == 'epic':
-            pass
+            # This is a naive approach that assumes the reward is already invariant to
+            # potential shaping
+            # This makes sense, since reward moving earlier or later in time does not
+            # really make sense in the full trajectory metric.
+            # However, the pearson correlation between represantive samples still makes sense
+            # for cases without particular actions
+
+            pear_dis = np.sqrt(1 - np.corrcoef(all_rep)) / np.sqrt(2)
+            return -pear_dis
+        elif self.alignment_f == 'spearman':
+            ranked = np.argsort(all_rep, axis=1)
+
+            spearman = np.corrcoef(ranked)
+            #spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            return spearman
 
         elif self.alignment_f == 'one':
             # will not work for anything meaningful, but can be used to check pipeline of working code

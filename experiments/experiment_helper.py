@@ -66,6 +66,10 @@ def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=N
         al = lop.AcquisitionSelection(M=400, alignment_f='epic',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
+    elif selector == 'ACQ_SPEAR':
+        al = lop.AcquisitionSelection(M=400, alignment_f='spearman',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
 
     return al
 

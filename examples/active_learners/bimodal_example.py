@@ -59,7 +59,7 @@ def plot_data(gp):
     plt.legend(['Predicted function with predicted F'])
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
@@ -98,6 +98,8 @@ def main():
         al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
     elif args.selector == 'ACQ_EPIC':
         al = lop.AcquisitionSelection(M=400, alignment_f='epic')
+    elif args.selector == 'ACQ_SPEAR':
+        al = lop.AcquisitionSelection(M=400, alignment_f='spearman')
 
 
     #### create model

@@ -70,7 +70,7 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN', "PROB_LEANER", 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
 
 
 def main():
@@ -110,6 +110,8 @@ def main():
         al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
     elif args.selector == 'ACQ_EPIC':
         al = lop.AcquisitionSelection(M=400, alignment_f='epic')
+    elif args.selector == 'ACQ_SPEAR':
+        al = lop.AcquisitionSelection(M=400, alignment_f='spearman')
 
 
     #### create model
