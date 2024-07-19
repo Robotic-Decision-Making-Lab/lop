@@ -116,6 +116,8 @@ class AcquisitionSelection(ActiveLearner):
 
 
             q_best_w = np.argmax(all_rep[:,Q_rep], axis=2)
+            q_idx_w = Q_rep[np.arange(Q_rep.shape[0]),q_best_w]
+
             pdb.set_trace()
             # for Q in Q_rep:
             pass
