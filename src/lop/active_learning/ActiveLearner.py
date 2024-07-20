@@ -248,6 +248,10 @@ class ActiveLearner:
     #
     # @return (i,j) pair to select
     def pick_pair_from_metric(self, info_gain, prev_selection):
+        # just a check to ensure the same points do not get selected twice.
+        # Shouldn't happen, but in case it does... really makes sure.
+        np.fill_diagonal(info_gain, -np.inf)
+
         sorted = np.argsort(info_gain.flatten())[-1::-1]
         N = info_gain.shape[0]
 

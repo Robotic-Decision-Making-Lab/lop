@@ -80,7 +80,7 @@ def test_acquisition_selection_basic():
     assert sel_idx == 4
 
 def test_acquisition_selection_loglikelihood():
-    al = lop.AcquisitionSelection(M=5, alignment_f='loglikelihood')
+    al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')

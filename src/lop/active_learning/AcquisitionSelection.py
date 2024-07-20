@@ -116,12 +116,26 @@ class AcquisitionSelection(ActiveLearner):
 
 
             q_best_w = np.argmax(all_rep[:,Q_rep], axis=2)
-            q_idx_w = Q_rep[np.arange(Q_rep.shape[0]),q_best_w]
 
-            pdb.set_trace()
-            # for Q in Q_rep:
-            pass
+            p_q = np.zeros((self.M, Q_rep.shape[1], Q_rep.shape[0]))
 
+            for i in range(Q_rep.shape[1]):
+                # calculate p_q for each q in Q
+                p_q[:, i, :] = np.prod(probit_mat[:,i, Q_rep], axis=2)
+
+            # normalize p_q to ensure it is correct
+            sum_p_q = np.repeat(np.sum(p_q, axis=1)[:,np.newaxis,:], p_q.shape[1], axis=1)
+            
+            # p_q_Q [w, q, Q]
+            p_q = p_q / sum_p_q
+
+            # calculate the probability of p(q=argmax Rw| Q,Rw')
+            p_q_mod = np.swapaxes(p_q, 1,2)
+            g = np.sum(np.log(p_q_mod[:,np.arange(Q_rep.shape[0]), q_best_w]), axis=2)
+
+            f = g + g.T
+            return f
+            
         elif self.alignment_f == 'epic':
             # This is a naive approach that assumes the reward is already invariant to
             # potential shaping
@@ -276,6 +290,9 @@ class AcquisitionSelection(ActiveLearner):
 
         ##### Calculate alignment function
         f = self.alignment(all_rep, Q_rep)
+        print('f')
+        print(f)
+
         # [w,w', Q, Q]
         f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
 
@@ -296,5 +313,6 @@ class AcquisitionSelection(ActiveLearner):
 
         # represents the alignment metric for each pair being selected as align_Q
         align_Q = E_align_q + E_align_q.T
-
+        print('align_Q pair')
+        print(align_Q)
         return self.pick_pair_from_metric(align_Q, prev_selection)
