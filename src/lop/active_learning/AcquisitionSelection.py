@@ -290,9 +290,7 @@ class AcquisitionSelection(ActiveLearner):
 
         ##### Calculate alignment function
         f = self.alignment(all_rep, Q_rep)
-        print('f')
-        print(f)
-
+        
         # [w,w', Q, Q]
         f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
 
@@ -313,6 +311,4 @@ class AcquisitionSelection(ActiveLearner):
 
         # represents the alignment metric for each pair being selected as align_Q
         align_Q = E_align_q + E_align_q.T
-        print('align_Q pair')
-        print(align_Q)
         return self.pick_pair_from_metric(align_Q, prev_selection)
