@@ -150,7 +150,8 @@ class AcquisitionSelection(ActiveLearner):
             ranked = np.argsort(all_rep, axis=1)
 
             spearman = np.corrcoef(ranked)
-            #spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            return -spear_dis
             return spearman
 
         elif self.alignment_f == 'one':
