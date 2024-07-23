@@ -111,6 +111,9 @@ class AcquisitionSelection(ActiveLearner):
 
             return f_rho
         elif self.alignment_f == 'loglikelihood':
+            if all_rep.shape[1] < 2:
+                return np.ones((all_rep.shape[0], all_rep.shape[0]))
+
             probit_mat = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
             
 
@@ -119,9 +122,14 @@ class AcquisitionSelection(ActiveLearner):
 
             p_q = np.zeros((self.M, Q_rep.shape[1], Q_rep.shape[0]))
 
+             # this could be vectorized to be faster
             for i in range(Q_rep.shape[1]):
-                # calculate p_q for each q in Q
-                p_q[:, i, :] = np.prod(probit_mat[:,i, Q_rep], axis=2)
+                p_q_i = np.ones((self.M, Q_rep.shape[0]))
+                for j in range(Q_rep.shape[1]):
+                    # calculate p_q for each q in Q
+                    if i != j:
+                        p_q_i *= probit_mat[:,Q_rep[:,i], Q_rep[:,j]]
+                p_q[:, i, :] = p_q_i#np.prod(probit_mat[:,Q_rep[:,i], Q_rep], axis=2) * 2.0
 
             # normalize p_q to ensure it is correct
             sum_p_q = np.repeat(np.sum(p_q, axis=1)[:,np.newaxis,:], p_q.shape[1], axis=1)
