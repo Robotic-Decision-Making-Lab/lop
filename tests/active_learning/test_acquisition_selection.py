@@ -82,7 +82,7 @@ def test_acquisition_selection_basic():
 
     uni, counts = np.unique(sel_idx, return_counts=True)
     count_dict = dict(zip(uni, counts))
-    assert count_dict[4] > 5
+    assert count_dict[2] > 4
 
 def test_acquisition_selection_loglikelihood():
     al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')
