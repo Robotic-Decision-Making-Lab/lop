@@ -23,10 +23,13 @@ class BayesInfoGain2(BayesInfoGain):
     #               prefering pareto optimal choices when selecting points, if not particulary told not to
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
     #               the top solution to the front of the solution set every time.
-    def __init__(self, default_to_pareto=False, always_select_best=False):
+    # @param p_q_B_method - [opt defautl='probit'] the method to calculate the p_q given B Options are:
+    #                    ['probit', '999', '99']
+    def __init__(self, default_to_pareto=False, always_select_best=False, p_q_B_method='probit'):
         super(BayesInfoGain2, self).__init__(default_to_pareto, always_select_best)
         # this just forces the object to fail if approxcdf is not installed
         import approxcdf
+        self.p_q_B_method = p_q_B_method
 
     ## calc_H_B_Q
     # Calculate the expected entropy of B given Q.
@@ -41,15 +44,23 @@ class BayesInfoGain2(BayesInfoGain):
         for i, q_i in enumerate(Q):
             Q_subi = np.copy(Q)
             Q_subi = np.delete(Q_subi, i)
-            p_q[i] = np.prod(probit_mat[q_i, Q_subi])
+            sub_probit = probit_mat[q_i, Q_subi]
+            p_q[i] = np.prod(sub_probit)
 
             # Calculate p_q_B for each B
             for B_i in range(N):
                 if B_i not in Q:
-                    p_q_B[i, B_i] = np.prod(probit_mat[q_i, Q_subi])
+                    p_q_B[i, B_i] = p_q[i]#np.prod(probit_mat[q_i, Q_subi])
                 else:
-                    # Set what p_q_B is 
-                    p_q_B[i, B_i] = np.prod(np.where(q_i == B_i, 0.999, 0.001))
+                    # Set what p_q_B is
+                    if self.p_q_B_method == 'probit':
+                        sub_probit = probit_mat[q_i, Q_subi]
+                        sub_probit_w = np.where(q_i == B_i, np.fmax(sub_probit, 1-sub_probit), sub_probit)
+                        p_q_B[i, B_i] = np.prod(sub_probit)
+                    elif self.p_q_B_method == '999': 
+                        p_q_B[i, B_i] = np.prod(np.where(q_i == B_i, 0.999, sub_probit))
+                    elif self.p_q_B_method == '99':
+                        p_q_B[i, B_i] = np.prod(np.where(q_i == B_i, 0.99, sub_probit))
 
         p_q = p_q / np.sum(p_q)
         p_q_B = p_q_B / np.sum(p_q_B, axis=0)
@@ -162,7 +173,7 @@ class BayesInfoGain2(BayesInfoGain):
                 
 
 
-    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
+    def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=False):
         p_B, probit_mat = self.get_p_B_probit(candidate_pts, mu)
 
         if self.model.X_train is None:
@@ -187,11 +198,16 @@ class BayesInfoGain2(BayesInfoGain):
         # This probably needs to be significantly updated
         p_q_B = np.repeat(p_q[:,:,np.newaxis], N, axis=2)
         for i in range(N):
-            #p_q_B[i,:,i] = np.fmax(p_q[i,:], p_q[:,i])#0.999
-            #p_q_B[:,i,i] = np.fmin(p_q[i,:], p_q[:,i])#0.001
-            p_q_B[i,:,i] = 0.999
-            p_q_B[:,i,i] = 0.001
-            
+            if self.p_q_B_method == 'probit':
+                p_q_B[i,:,i] = np.fmax(p_q[i,:], p_q[:,i])
+                p_q_B[:,i,i] = np.fmin(p_q[i,:], p_q[:,i])
+            elif self.p_q_B_method == '999':
+                p_q_B[i,:,i] = 0.999
+                p_q_B[:,i,i] = 0.001
+            elif self.p_q_B_method == '99':
+                p_q_B[i,:,i] = 0.99
+                p_q_B[:,i,i] = 0.01
+
             #p_q_B[i,i,i] = 0.99
 
             # Same query is always going to be probability of 0.5
@@ -245,10 +261,8 @@ class BayesInfoGain2(BayesInfoGain):
 
         print('idx_best: ' + str(idx_best))
 
-        #pdb.set_trace()
 
         return idx_best
-        # TODO handle indicies correctly
 
 
 
