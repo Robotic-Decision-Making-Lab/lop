@@ -77,6 +77,7 @@ def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
+    parser.add_argument('--num_itr', type=int, default=20, help='Number of iterations to run the solver default=20')
     args = parser.parse_args()
 
     if args.selector not in possible_selectors:
@@ -131,7 +132,7 @@ def main():
         writer.grab_frame()
 
         # Generate active learning point and add it to the model
-        for i in range(20):
+        for i in range(args.num_itr):
             # generate random test set to select test point from
             x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 

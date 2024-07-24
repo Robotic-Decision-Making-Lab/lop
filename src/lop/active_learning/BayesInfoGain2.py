@@ -119,6 +119,10 @@ class BayesInfoGain2(BayesInfoGain):
         N = len(mu)
         indicies = list(indicies)
 
+        # If there is no data, just provide a random selection
+        if self.model.X_train is None:
+            return np.random.choice(list(indicies), 1)[0]
+
         if debug:
             print('mu = ' + str(mu))
 
@@ -154,12 +158,16 @@ class BayesInfoGain2(BayesInfoGain):
         if debug:
             print('Info gain = ' + str(info_gain))
 
-        return indicies[np.argmax(info_gain[indicies])]               
+        return indicies[np.argmax(info_gain)] #indicies[np.argmax(info_gain[indicies])]               
                 
 
 
     def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
         p_B, probit_mat = self.get_p_B_probit(candidate_pts, mu)
+
+        if self.model.X_train is None:
+            idxs = np.random.choice(list(indicies), 2)
+            return (idxs[0], idxs[1])
 
         if debug:
             print('\t p_B: ' + str(p_B))
