@@ -75,6 +75,11 @@ class ActiveLearner:
         prefer_pts = self.get_prefered_set_of_pts(candidate_pts, prefer_pts)
         prev_selection = set(prev_selection)
 
+        # check if select_pair is even valid
+        sel_pair_f = getattr(self, "invert_op", None)
+        if not (sel_pair_f is not None and callable(sel_pair_f)):
+            select_pair_first = False
+
         # each model will predict slightly different values for data.
         # select_greedy will need to implement this
         mu, data = self.model.predict(candidate_pts)
@@ -100,9 +105,19 @@ class ActiveLearner:
                     selected_idx = not_selected[0]
                     not_selected.pop(0) 
                 else:
-                    if len(prev_selection) == 0 and select_pair_first:
-                        raise Exception("Oops, I didn't implement pairs for return not selected. TODO")
-                    selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
+                    if len(prev_selection) == 0 and select_pair_first and (num_alts - len(sel_pts) > 1):
+                        selected_pair = self.select_pair(candidate_pts, mu, data, pref_not_sel, prev_selection | set(sel_pts))
+                        selected_idx = selected_pair[0]
+
+                        # handle second index
+                        if selected_pair[1] in pref_not_sel or len(pref_not_sel) == 0:
+                            sel_pts.append(selected_pair[1])
+                            pref_not_sel.discard(selected_pair[1])
+                        else:
+                            not_selected.append(selected_pair[1])
+                        all_not_selected.discard(selected_pair[1])
+                    else:
+                        selected_idx = self.select_greedy(candidate_pts, mu, data, all_not_selected, prev_selection | set(sel_pts))
 
 
                 if selected_idx in pref_not_sel or len(pref_not_sel) == 0:

@@ -80,11 +80,11 @@ class OrdinalProbit(ProbitBase):
     def set_b(self, b):
         if not hasattr(b, "__len__"):
             b = abs(b)
-            self.b = np.hstack(([-np.Inf],np.linspace(0, b, self.n_ordinals-1), [np.Inf]))
+            self.b = np.hstack(([-np.inf],np.linspace(0, b, self.n_ordinals-1), [np.inf]))
         elif len(b) == self.n_ordinals+1:
             self.b = b
         elif len(b) == self.n_ordinals-1:
-            self.b = np.hstack(([-np.Inf], b, [np.Inf]))
+            self.b = np.hstack(([-np.inf], b, [np.inf]))
         else:
             raise ValueError('Specified b should be a scalar or vector of breakpoints')
 
