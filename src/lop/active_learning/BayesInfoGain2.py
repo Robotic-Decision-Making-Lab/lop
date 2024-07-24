@@ -203,7 +203,7 @@ class BayesInfoGain2(BayesInfoGain):
         p_B_q = p_B_q / np.repeat(np.sum(p_B_q, axis=2)[:,:,np.newaxis], N, axis=2)
 
         if debug:
-            print('\p_B_q:')
+            print('\tp_B_q:')
             for i in range(N):
                 print(p_B_q[:,:,i])
 

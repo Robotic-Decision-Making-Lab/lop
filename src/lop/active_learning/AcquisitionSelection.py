@@ -216,7 +216,7 @@ class AcquisitionSelection(ActiveLearner):
         if size_query == 1:
             # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
             # But needs at least a pair in order to calculate properly.
-            return np.random.choice(indicies)
+            return np.random.choice(indicies)[0]
             #return np.argmax(mu)
 
         x_rep, Q_rep = self.get_representative_Q()

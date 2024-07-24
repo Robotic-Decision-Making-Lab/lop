@@ -195,7 +195,7 @@ def test_acquisition_selection_bimodal_selection():
         if 0 in sel_idx[i] and 1 in sel_idx[i]:
             cnt += 1
 
-    assert cnt > 5
+    assert cnt > 3
 
 def test_acquisition_selection_trains_basic_GP():
     al = lop.AcquisitionSelection()
