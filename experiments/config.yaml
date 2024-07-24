@@ -1,6 +1,6 @@
 ######### for active learning selectors
 default_to_pareto: false
-always_select_best: true
+always_select_best: false
 
 # alpha
 UCB_scalar: 1.0
