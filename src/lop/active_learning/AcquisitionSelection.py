@@ -222,7 +222,7 @@ class AcquisitionSelection(ActiveLearner):
         x_rep, Q_rep = self.get_representative_Q()
 
         if x_rep is None:
-            return np.random.choice(list(indicies), 1)
+            return np.random.choice(list(indicies), 1)[0]
 
         ## get sampled output from latent function
         all_rep, all_Q = self.get_samples_from_model(candidate_pts, x_rep)
