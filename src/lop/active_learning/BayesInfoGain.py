@@ -6,11 +6,9 @@
 
 import numpy as np
 from lop.active_learning import ActiveLearner
-from lop.models import PreferenceGP, GP, PreferenceLinear
-from lop.utilities import calc_cdf
+from lop.models import PreferenceGP, PreferenceLinear
 
 
-from copy import deepcopy
 
 import pdb
 

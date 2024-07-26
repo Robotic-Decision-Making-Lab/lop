@@ -24,6 +24,7 @@
 import numpy as np
 
 from lop.utilities import get_pareto, calc_cdf
+from lop.utilities import metropolis_hastings
 
 import pdb
 
@@ -334,7 +335,7 @@ class ActiveLearner:
     # but only does it for preference GPs
     # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
     # @param mu - a numpy array of mu values outputed from predict. numpy (n)
-    def p_B_pref_linear(self, candidate_pts, mu, probit_mat):
+    def p_B_pref_linear(self, candidate_pts, mu):
         p = np.zeros(len(candidate_pts))
 
         #p = np.sum(np.log(probit_mat), axis=1) - np.log(probit_mat[0,0]) # * 2 multiplies the diagonal element (always 0.5)
