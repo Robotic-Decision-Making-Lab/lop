@@ -23,7 +23,7 @@
 
 import numpy as np
 
-from lop.utilities import get_pareto
+from lop.utilities import get_pareto, calc_cdf
 
 import pdb
 

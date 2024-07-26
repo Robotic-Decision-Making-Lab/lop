@@ -58,5 +58,5 @@ def test_bayes_info_gain_basic():
 
     uni, counts = np.unique(sel_idx, return_counts=True)
     count_dict = dict(zip(uni, counts))
-    #pdb.set_trace()
+    pdb.set_trace()
     assert count_dict[4] > 5

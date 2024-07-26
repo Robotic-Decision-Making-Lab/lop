@@ -5,7 +5,7 @@
 # Maybe this time it'll have positive information gain. lol
 
 import numpy as np
-from lop.active_learning import ActiveLearner, BayesInfoGain
+from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 from lop.utilities import calc_cdf
 
