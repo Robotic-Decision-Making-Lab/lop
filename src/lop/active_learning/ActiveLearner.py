@@ -288,3 +288,74 @@ class ActiveLearner:
         
         return idx_best
 
+
+    ################### Functions to calculate probability of each candidate being the best
+
+    ## p_B_pref_gp
+    # Calculates the probability of each pt in the given matrix as being the being the best path
+    # but only does it for preference GPs
+    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    def p_B_pref_gp(self, candidate_pts, mu, cdf_method='auto'):
+        K = self.model.cov
+
+        p = np.empty(len(candidate_pts))
+
+        # calculate the combined covariance matrix for if point i is the largest point.
+        for i in range(len(candidate_pts)):
+            K_star_i = np.zeros((len(p)-1, len(p)-1))
+
+            idx_i = list(range(len(p)))
+            idx_i.remove(i)
+
+            
+
+            for j in range(len(K_star_i)):
+                for k in range(len(K_star_i)):
+                    K_star_i[j,k] = K[i, i] + K[idx_i[j], idx_i[k]] - K[i, idx_i[j]] - K[i, idx_i[k]]
+
+            
+            sig = self.model.probits[0].sigma
+            #K_star_i += np.diag(np.ones(len(idx_i)) * 2 * sig * sig)
+            #K_star_i += np.ones((len(K_star_i), len(K_star_i))) * 2 * sig
+
+            mu_star = mu[idx_i] - mu[i]
+            #mu_star = mu[i] - mu[idx_i]
+
+
+            p[i] = calc_cdf(mu_star, K_star_i, method=cdf_method)
+
+        #print('p_sum = ' + str(np.sum(p)))
+        p = p / np.sum(p)
+        return p
+
+    ## p_B_pref_gp
+    # Calculates the probability of each pt in the given matrix as being the being the best path
+    # but only does it for preference GPs
+    # @param candidate_pts - a numpy array of points (nxk), n = number points, k = number of dimmensions
+    # @param mu - a numpy array of mu values outputed from predict. numpy (n)
+    def p_B_pref_linear(self, candidate_pts, mu, probit_mat):
+        p = np.zeros(len(candidate_pts))
+
+        #p = np.sum(np.log(probit_mat), axis=1) - np.log(probit_mat[0,0]) # * 2 multiplies the diagonal element (always 0.5)
+        #p = np.exp(p)
+
+        # sampling weights from linear model
+        w_samples = metropolis_hastings(self.model.loss_func, 2000, dim=candidate_pts.shape[1])
+
+        w_norm = np.linalg.norm(w_samples, axis=1)
+        w_samples = w_samples / np.tile(w_norm, (2,1)).T
+        # generate possible outputs from weighted samples
+        all_w = (candidate_pts @ w_samples.T).T
+
+        # frequentist approach from bayesian samples (not sure that's the correct term)
+        largest_sample = np.argmax(all_w, axis=1)
+        for s in largest_sample:
+            p[s] += 1
+
+        #print('p_sum = ' + str(np.sum(p)))
+        p = p / np.sum(p)
+        return p
+
+
+
