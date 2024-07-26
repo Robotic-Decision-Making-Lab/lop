@@ -1,4 +1,4 @@
-# BayesInfoGain2.py
+# BayesInfoGain.py
 # Written Ian Rankin - May 2024
 #
 # Take 2 on the Bayes info gain. Trying to see if I recalculate the info gain.
@@ -16,7 +16,7 @@ import pdb
 
 MIN_LOG_VALUE = 1e-17
 
-class BayesInfoGain2(BayesInfoGain):
+class BayesInfoGain(ActiveLearner):
 
     ## Constructor
     # @param default_to_pareto - [opt default=False] sets whether to always assume
@@ -26,7 +26,7 @@ class BayesInfoGain2(BayesInfoGain):
     # @param p_q_B_method - [opt defautl='probit'] the method to calculate the p_q given B Options are:
     #                    ['probit', '999', '99']
     def __init__(self, default_to_pareto=False, always_select_best=False, p_q_B_method='probit'):
-        super(BayesInfoGain2, self).__init__(default_to_pareto, always_select_best)
+        super(BayesInfoGain, self).__init__(default_to_pareto, always_select_best)
         # this just forces the object to fail if approxcdf is not installed
         import approxcdf
         self.p_q_B_method = p_q_B_method

@@ -12,18 +12,18 @@ import pdb
 
 def test_bayes_info_gain_constructs():
     try:
-        al = lop.BayesInfoGain2()
+        al = lop.BayesInfoGain()
     except:
         print('approxcdf not on this machine, cannot properly test this.')
         return
     model = lop.Model(active_learner=al)
 
-    assert isinstance(al, lop.BayesInfoGain2)
+    assert isinstance(al, lop.BayesInfoGain)
     assert isinstance(model, lop.Model)
 
 def test_bayes_info_gain_basic():
     try:
-        al = lop.BayesInfoGain2()
+        al = lop.BayesInfoGain()
     except:
         print('approxcdf not on this machine, cannot properly test this.')
         return

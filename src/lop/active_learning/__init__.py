@@ -8,5 +8,4 @@ from .GV_UCBLearner import GV_UCBLearner
 from .MutualInfoLearner import MutualInfoLearner
 from .ProbabilityLearner import ProbabilityLearner
 from .BayesInfoGain import BayesInfoGain
-from .BayesInfoGain2 import BayesInfoGain2
 from .AcquisitionSelection import AcquisitionSelection

@@ -53,9 +53,9 @@ def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=N
     elif selector == 'RANDOM':
         al = lop.RandomLearner(default_to_pareto, always_select_best)
     elif selector == 'BAYES_INFO_GAIN_PROBIT':
-        al = lop.BayesInfoGain2(default_to_pareto, always_select_best,p_q_B_method='probit')
+        al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='probit')
     elif selector == 'BAYES_INFO_GAIN_999':
-        al = lop.BayesInfoGain2(default_to_pareto, always_select_best,p_q_B_method='999')
+        al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='999')
     elif selector == 'ACQ_RHO':
         al = lop.AcquisitionSelection(M=400, alignment_f='rho',
                                     default_to_pareto=default_to_pareto, 

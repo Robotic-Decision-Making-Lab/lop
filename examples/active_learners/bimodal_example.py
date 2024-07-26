@@ -89,9 +89,9 @@ def main():
     elif args.selector == 'RANDOM':
         al = lop.RandomLearner()
     elif args.selector == 'BAYES_INFO_GAIN_PROBIT':
-        al = lop.BayesInfoGain2(p_q_B_method='probit')
+        al = lop.BayesInfoGain(p_q_B_method='probit')
     elif args.selector == 'BAYES_INFO_GAIN_999':
-        al = lop.BayesInfoGain2(p_q_B_method='999')
+        al = lop.BayesInfoGain(p_q_B_method='999')
     elif args.selector == 'PROB_LEARNER':
         al = lop.ProbabilityLearner()
     elif args.selector == 'ACQ_RHO':
