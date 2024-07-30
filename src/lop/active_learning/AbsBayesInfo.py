@@ -4,11 +4,14 @@
 # A set of code to select a single active learning examples as an absloute query
 
 import numpy as np
+from scipy.integrate import quad_vec
+from scipy.stats import beta
 
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, PreferenceLinear
-
 from lop.utilities import metropolis_hastings
+
+import pdb
 
 class AbsBayesInfo(ActiveLearner):
 
@@ -48,6 +51,37 @@ class AbsBayesInfo(ActiveLearner):
         return p_B, all_Q
 
 
+    ## integrand
+    # The dq function that is to be integrated to solve the information gain
+    # @param q - the query q value to be integrated over
+    # @param args - the arguments passed to the integrand (p_b, all_f)
+    #
+    # @return
+    def integrand(self, q, p_b, all_f, aa, bb, ml, integ_p_q_f_B):
+        # [samples, f]
+        p_q_f = beta.pdf(q, aa, bb)
+
+        N = all_f.shape[1]
+
+        # [samples, f, B]
+        p_q_f_B = self.p_q_f_B_unorm(q, aa, bb, ml) / integ_p_q_f_B
+
+        tmp = (p_q_f_B * p_b) / np.repeat(p_q_f[:,:,np.newaxis], p_q_f.shape[1], axis=2)
+        result = p_q_f_B * np.log(tmp)
+        result = np.where(np.isnan(result), 0, result)
+
+        return result
+
+
+    def p_q_f_B_unorm(self, q, aa, bb, ml):
+        ml_r = np.repeat(ml[:,np.newaxis, :], ml.shape[1], axis=1)
+        p_q_f = beta.pdf(q, aa, bb)
+        p_q_f_B = np.where(q > ml_r, np.repeat(p_q_f[:,:,np.newaxis], p_q_f.shape[1], axis=2), 0)
+        return p_q_f_B
+
+
+
+
     ## select_greedy
     # This function greedily selects the best single data point
     # Depending on the selection method, you are not forced to implement this function
@@ -70,7 +104,22 @@ class AbsBayesInfo(ActiveLearner):
         # all_f = [samples, num_candidate_pts]
         p_b, all_f = self.calc_one_time(candidate_pts, mu)
 
-        self.model.probits[1]??
+        ml = self.model.probits[2].mean_link(all_f)
+        aa, bb = self.model.probits[2].get_alpha_beta_ml(all_f, ml)
+
+        integ_p_q_f_B, err = quad_vec(self.p_q_f_B_unorm, 0,1, epsrel=0.001, workers=-1, limit=200, args=(aa,bb,ml))
+
+        integ_r, err = quad_vec(self.integrand, 0, 1, epsrel=0.001, workers=-1, limit=200, args=(p_b, all_f, aa, bb, ml, integ_p_q_f_B))
+
+        E_over_samples = np.sum(integ_r, axis=0) / self.M
+
+        E_q_H_B = np.sum(-p_b * E_over_samples, axis=1)
+        H_B = np.sum(-p_b * np.log(p_b))
+
+        info_gain = H_B - E_q_H_B
+
+        return np.argmax(info_gain)
+
 
 
         
