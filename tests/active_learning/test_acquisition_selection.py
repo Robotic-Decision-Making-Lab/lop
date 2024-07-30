@@ -14,6 +14,15 @@ def f_sin(x, data=None):
     return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
 
+def test_acquisition_base():
+    al = lop.AcquisitionBase()
+
+    assert isinstance(al, lop.ActiveLearner)
+
+    with pytest.raises(NotImplementedError) as e:
+        al.select_greedy(None,None, None, None, None)   
+
+
 def test_acquisition_selection_constructs():
     al = lop.AcquisitionSelection()
     model = lop.Model(active_learner=al)
@@ -23,7 +32,7 @@ def test_acquisition_selection_constructs():
 
 
 def test_get_representative_Q():
-    al = lop.AcquisitionSelection()
+    al = lop.AcquisitionBase()
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')

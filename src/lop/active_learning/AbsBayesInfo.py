@@ -102,7 +102,7 @@ class AbsBayesInfo(ActiveLearner):
 
         # Calculate p_B
         # all_f = [samples, num_candidate_pts]
-        p_b, all_f = self.calc_one_time(candidate_pts, mu)
+        p_b, all_f = self.calc_one_time(candidate_pts[indicies], mu)
 
         ml = self.model.probits[2].mean_link(all_f)
         aa, bb = self.model.probits[2].get_alpha_beta_ml(all_f, ml)
@@ -118,7 +118,7 @@ class AbsBayesInfo(ActiveLearner):
 
         info_gain = H_B - E_q_H_B
 
-        return np.argmax(info_gain)
+        return indicies[np.argmax(info_gain)]
 
 
 

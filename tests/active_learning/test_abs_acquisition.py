@@ -1,5 +1,5 @@
-# test_bayes_info_gain.py
-# Written Ian Rankin - July 2024
+# test_UCB_learner.py
+# Written Ian Rankin - December 2023
 #
 
 import pytest
@@ -9,24 +9,23 @@ import lop
 
 import pdb
 
+# the function to approximate
+def f_sin(x, data=None):
+    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
 
-def test_bayes_info_gain_constructs():
-    try:
-        al = lop.BayesInfoGain()
-    except:
-        print('approxcdf not on this machine, cannot properly test this.')
-        return
+
+def test_abs_acquisition_selection_constructs():
+    al = lop.AbsAcquisition()
     model = lop.Model(active_learner=al)
 
-    assert isinstance(al, lop.BayesInfoGain)
+    assert isinstance(al, lop.AbsAcquisition)
     assert isinstance(model, lop.Model)
 
-def test_bayes_info_gain_basic():
-    try:
-        al = lop.BayesInfoGain()
-    except:
-        print('approxcdf not on this machine, cannot properly test this.')
-        return
+
+
+
+def test_acquisition_selection_basic():
+    al = lop.AbsAcquisition(M=300)
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')
@@ -49,13 +48,8 @@ def test_bayes_info_gain_basic():
     # information gain points. (disambiguates which of the two peaks is higher.)
     x_canidiates = np.array([2.1, 7.5, 0.5, 4.5,5.5,9])
 
-    #test_pt_idxs = model.select(x_canidiates, 2)
-    
-    sel_idx = np.empty(10)
-    for i in range(10):
-        mu, sigma = model.predict(x_canidiates)
-        sel_idx[i] = al.select_greedy(x_canidiates, mu, None, {3,4,5}, [0,1, 2])
 
-    uni, counts = np.unique(sel_idx, return_counts=True)
-    count_dict = dict(zip(uni, counts))
-    assert count_dict[3] > 5
+    mu, sigma = model.predict(x_canidiates)
+    sel_idx = al.select_greedy(x_canidiates, mu, None, {2,3,4,5}, [0,1])
+
+    assert sel_idx > 0 and sel_idx < len(x_canidiates)

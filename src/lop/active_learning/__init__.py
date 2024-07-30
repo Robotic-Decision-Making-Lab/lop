@@ -9,4 +9,8 @@ from .MutualInfoLearner import MutualInfoLearner
 from .ProbabilityLearner import ProbabilityLearner
 from .BayesInfoGain import BayesInfoGain
 from .AbsBayesInfo import AbsBayesInfo
+from .AcquisitionBase import AcquisitionBase
 from .AcquisitionSelection import AcquisitionSelection
+from .AbsAcquisition import AbsAcquisition
+
+
