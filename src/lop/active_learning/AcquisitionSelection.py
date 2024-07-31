@@ -36,7 +36,24 @@ from lop.models import PreferenceGP, GP, PreferenceLinear
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
 
+from numba import jit
+
 import pdb
+
+
+
+
+@jit(nopython=True)
+def quick_calculation_sum_align_q(f, p_q):
+    sum_align_q = np.zeros((p_q.shape[1], p_q.shape[1]))
+
+    for i in range(f.shape[0]):
+        for j in range(f.shape[1]):
+            sum_align_q += f[i,j] * p_q[i] * p_q[j]
+
+    return sum_align_q
+
+
 
 class AcquisitionSelection(AcquisitionBase):
 
@@ -147,6 +164,8 @@ class AcquisitionSelection(AcquisitionBase):
         return indicies[np.argmax(align_Q)]
 
 
+
+
     def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
         x_rep, Q_rep = self.get_representative_Q()
         if x_rep is None:
@@ -162,26 +181,38 @@ class AcquisitionSelection(AcquisitionBase):
 
         # nothing needs to happen the p_q is already the probit mat since it is pairwise
         # p_q[k,i,j] = p(q=i | Q=(i,j)) for sample k or rather p_q[k, 0,1] = p(F_k(0) > F_k(1))
+        # [w, Q, Q]
         p_q = probit_mat_Q
 
 
         ##### Calculate alignment function
+        # [w, w']
         f = self.alignment(all_rep, Q_rep)
         
-        # [w,w', Q, Q]
-        f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
+        
 
         ##### calculate expected alignment
         # equation (10)
 
-        # [w, w', Q, Q]
-        p_q_w0 = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0)
-        # [w', w, Q,Q]
-        p_q_w1 = np.repeat(p_q[:, np.newaxis,:,:], self.M, axis=1)
+        if self.M * self.M * p_q.shape[1] * p_q.shape[1] > 1000:
+            sum_align_q = quick_calculation_sum_align_q(f, p_q)
 
-        align_expand = p_q_w0 * p_q_w1 * f_expand
-        # [Q, Q]
-        E_align_q = np.sum(align_expand, axis=(0,1)) / (self.M * self.M)
+            E_align_q = sum_align_q / (self.M * self.M)
+        else:
+
+            # [w,w', Q, Q]
+            f_expand = np.repeat(np.repeat(f[:,:,np.newaxis], p_q.shape[1],axis=2)[:,:,:,np.newaxis], p_q.shape[2], axis=3)
+
+
+            # [w, w', Q, Q]
+            p_q_w0 = np.repeat(p_q[np.newaxis, :,:,:], self.M, axis=0)
+            # [w', w, Q,Q]
+            p_q_w1 = np.repeat(p_q[:, np.newaxis,:,:], self.M, axis=1)
+
+            align_expand = p_q_w0 * p_q_w1 * f_expand
+            # [Q, Q]
+            E_align_q = np.sum(align_expand, axis=(0,1)) / (self.M * self.M)
+        
         E_p_q = np.mean(p_q, axis=0)
 
         E_align_q / E_p_q

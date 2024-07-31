@@ -98,6 +98,9 @@ class AcquisitionBase(ActiveLearner):
     #                   (M_samples num_rep) with sampled score
     # @param Q_rep - the set of represantive queries
     def alignment(self, all_rep, Q_rep):
+        if all_rep.shape[1] < 2:
+            return np.zeros((all_rep.shape[0], all_rep.shape[0]))
+        
         if self.alignment_f == 'rho':
             rho_R = np.exp(all_rep)
             rho_R_sum = np.sum(rho_R, axis=1)
@@ -150,6 +153,7 @@ class AcquisitionBase(ActiveLearner):
             # However, the pearson correlation between represantive samples still makes sense
             # for cases without particular actions
 
+            
             pear_dis = np.sqrt(1 - np.corrcoef(all_rep)) / np.sqrt(2)
             return -pear_dis
         elif self.alignment_f == 'spearman':

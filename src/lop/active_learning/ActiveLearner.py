@@ -275,6 +275,8 @@ class ActiveLearner:
         
 
         # randomly select from the same values
+        if num_same == 0:
+            pdb.set_trace()
         to_pick = np.random.randint(0, num_same)
 
         idx_best = np.unravel_index(sorted[to_pick], info_gain.shape)
