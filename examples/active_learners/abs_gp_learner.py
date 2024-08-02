@@ -16,57 +16,72 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# GP_UCB_learner.py
-# Written Ian Rankin - January 2024
+# abs_gp_learner
+# Written Ian Rankin - August 2024
 #
-# An example usage of preference GP with a UCB active learning algorithm
-# This is done using a 1D function.
+# An example usage of preference GP with absloute queries.
 
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+from matplotlib.animation import FFMpegWriter
 import argparse
 import sys
 
 import lop
 
-import pdb
+
+# the function to approximate
+def f_sin(x, data=None):
+    x = 10-x
+    return 2 * np.cos(np.pi * (x-2) / 3.0) * np.exp(-(0.99*x))
 
 
+def sigmoid(x):
+    k = 4
+    return 1 / (1 + np.exp(-k*x))
 
 
-def plot_data(gp):
+def plot_data(model, new_selections=None):
     # Create test output of model
-    # predict output of GP
-    X = np.arange(-0.5, 10, 0.1)
-    mu, sigma = gp.predict(X)
-    std = np.sqrt(sigma)
+    x_test = np.arange(0,10,0.005)
+    y_test = f_sin(x_test)
+    y_pred,y_sigma = model.predict(x_test)
+    std = np.sqrt(y_sigma)
 
+    # Plot output of model with uncertianty
+    sigma_to_plot = 1.96
 
-    print('Sigma = '+str(gp.probits[0].sigma))
+    plt.clf()
+    ax = plt.gca()
+    ax.plot(x_test, y_test, zorder=5)
+    ax.plot(x_test, y_pred, zorder=5)
 
+    if hasattr(model, "F"):
+        ax.scatter(model.X_train, model.F, zorder=10)
 
-    # Plotting output for easy viewing
-    plt.plot(X, mu)
-    sigma_to_plot = 1
-
-    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
-
-    gp.plot_preference()
-    plt.scatter(gp.X_train, gp.F)
-
-    plt.title('Gaussian Process estimate (1 sigma)')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.legend(['Predicted function with predicted F'])
+    
+    ax.fill_between(x_test, y_pred-(sigma_to_plot*std), y_pred+(sigma_to_plot*std), color='#dddddd', zorder=1)
+    if new_selections is not None:
+        print('Show scatter?')
+        print(new_selections)
+        print(model.F[-len(new_selections):])
+        ax.scatter(new_selections, model.F[-len(new_selections):], color='orange', zorder=20)
+    plt.xlabel('input values')
+    plt.ylabel('GP output')
+    plt.legend(['Real function', 'Predicted function', 'Active learning points', '95% condidence region'])
+    model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
 possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
+
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
+    parser.add_argument('--num_itr', type=int, default=20, help='Number of iterations to run the solver default=20')
     args = parser.parse_args()
 
     if args.selector not in possible_selectors:
@@ -102,35 +117,40 @@ def main():
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
 
+    fig = plt.figure()
+    writer = FFMpegWriter(fps=1)
 
-    #model.add(np.array([5]), np.array([0.5]), type='abs')
-    #
+    #model.add(np.array([7]), np.array([0.5]), type='abs')
 
-    X_train = np.array([0,1,2,3,4,5,6,7,8,9,9.5])
-    pairs = [   lop.preference(2,0),
-                lop.preference(2,1),
-                lop.preference(2,3),
-                lop.preference(2,4),
-                lop.preference(7,6),
-                lop.preference(7,5),
-                lop.preference(7,9),
-                lop.preference(8,10),
-                lop.preference(8,9)]
+    with writer.saving(fig, "abs_gp.gif", 100):
 
-    model.add(X_train, pairs)
+        plot_data(model)
+        writer.grab_frame()
 
+        # Generate active learning point and add it to the model
+        for i in range(args.num_itr):
+            # generate random test set to select test point from
+            x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 
-    plot_data(model)
+            test_pt_idx = model.select(x_canidiates, 1)
 
 
-    # carefully selected to have 2.1 and 7.5 (indicies 0 and 1) to be the highest
-    # information gain points. (disambiguates which of the two peaks is higher.)
-    x_canidiates = np.array([2.1, 7.5, 0.5, 4.5,5.5,9.2])
+            x_train = x_canidiates[test_pt_idx]
+            y_raw = f_sin(x_train)
+            
+            # input must be mapped to [0,1] so this is a way to do that.
+            y_user = sigmoid(y_raw)
 
-    #model.probits[0].set_sigma(0.1)
-    test_pt_idxs = model.select(x_canidiates, 1)
-    plt.scatter(x_canidiates[test_pt_idxs], model(x_canidiates[test_pt_idxs]))
+            print('y_user: ' + str(y_user))
 
+            model.add(x_train, y_user, type='abs')
+
+            plot_data(model, x_train)
+            writer.grab_frame()
+        
+        # plot_data(model)
+        # writer.grab_frame()
+    
     plt.show()
 
 if __name__ == '__main__':

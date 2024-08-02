@@ -529,3 +529,9 @@ class PreferenceModel(Model):
 
                     # ax.arrow(sm_pt[0], sm_pt[1], diff[0]/2, diff[1]/2, \
                     #             color=color, alpha=alpha, head_width=head_width)
+
+            abs_data = y_train[self.probit_idxs['abs']]
+
+            if abs_data is not None:
+
+                ax.scatter(X_train[abs_data[1]], abs_data[0])
