@@ -30,6 +30,7 @@ import copy
 from scipy.integrate import quad_vec
 from scipy.stats import beta
 
+from numba import jit
 
 from lop.active_learning import AcquisitionBase
 from lop.models import PreferenceGP, GP, PreferenceLinear
@@ -81,10 +82,11 @@ class AbsAcquisition(AcquisitionBase):
 
         return p_q_ww
 
-    def pq_integrand(self, q, aa, bb):
-        p_q_w = beta.pdf(q, aa, bb)
+    # @jit(nopython=True)
+    # def pq_integrand(self, q, aa, bb):
+    #     p_q_w = beta.pdf(q, aa, bb)
 
-        return p_q_w
+    #     return p_q_w
 
     ## select_greedy
     # This function greedily selects the best single data point
