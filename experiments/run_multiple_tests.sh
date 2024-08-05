@@ -15,7 +15,7 @@ number_runs=50
 fake_func=linear
 #model=gp
 
-for selc in ACQ_EPIC ACQ_LL ACQ_SPEAR ACQ_RHO #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
+for selc in ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
     for fake_func in min #linear #squared_min_max max min logistic squared sin_exp 
