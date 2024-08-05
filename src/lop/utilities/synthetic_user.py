@@ -5,7 +5,13 @@
 
 import numpy as np
 
-from lop.utilities import gen_pairs_from_idx, sample_human_choice
+from lop.utilities import gen_pairs_from_idx, \
+                            sample_human_choice, p_human_choice, \
+                            sample_unique_sets
+from math import comb
+from scipy.optimize import minimize_scalar
+
+import pdb
 
 def sigmoid(x):
     k = 4
@@ -68,6 +74,10 @@ class PerfectUser(SyntheticUser):
 
         return sigmoid(y)
     
+
+
+
+
 class HumanChoiceUser(SyntheticUser):
 
     ## constructor
@@ -78,14 +88,87 @@ class HumanChoiceUser(SyntheticUser):
         self.beta = beta
 
 
+    def beta_objective(self, b, desired_p, sample_queries):
+        y = self.fake_f(sample_queries)
+        p = p_human_choice(y, p=b)
+
+
+
+        p_max = np.max(p, axis=1)
+        
+        
+        p_max = np.where(p_max > 0.999999, 0.999999, p_max)
+        p_max = np.where(p_max < 0.000001, 0.000001, p_max)
+        
+        # Minimize the matched KL divergence
+        KL_1 = p_max * np.log(p_max / desired_p) + ((1 - p_max) * np.log((1- p_max) / (1 - desired_p)))
+
+        tmp = p_max
+        p_max = desired_p
+        desired_p = tmp
+        
+        KL_2 = p_max * np.log(p_max / desired_p) + ((1 - p_max) * np.log((1- p_max) / (1 - desired_p)))
+
+        return np.mean(KL_1+KL_2)
+
+        # BC = np.sqrt(p_max*desired_p) * np.sqrt((1-p_max)*(1-desired_p))
+
+        # DB = -np.log(BC)
+        # #pdb.set_trace()
+
+        # return -np.mean(DB)
+
+
+    def sampled_objective(self, b, desired_p, sample_queries):
+        y = self.fake_f(sample_queries)
+        p = p_human_choice(y, p=b)
+
+        p_max = np.max(p, axis=1)
+
+        pf = np.random.random(p_max.shape[0])
+
+        count = np.sum(pf <= p_max)
+        p_samp = count / sample_queries.shape[0]
+
+        # num_correct = 0
+        # for Q in y:
+        #     best = np.argmax(Q)
+        #     sampled = sample_human_choice(Q, p=b)
+
+        #     if best == sampled:
+        #         num_correct += 1
+
+
+        # p_samp = num_correct / len(y)
+
+        # pdb.set_trace()
+
+        return (p_samp - desired_p)**2
+
+        
+
+
+
     ## learn_beta
     # This function learns the required beta value
     # @param rewards - a set of reward values to try
     # @param p - the probability of selecting the best value
     # @param num_Q - [opt default=2] the number of points in each query
-    def learn_beta(self, rewards, p, num_Q=2):
-        pass
-        # TODO
+    def learn_beta(self, rewards, p, Q_size=2):
+        num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 5000)
+        if num_Q < 30:
+            num_Q = min(30, comb(rewards.shape[0], Q_size))
+        num_Q = int(num_Q)
+
+        Qs = sample_unique_sets(rewards.shape[0], num_Q, Q_size)
+
+        sample_Q = rewards[Qs]
+
+        res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
+
+        self.beta = res.x
+        self.beta_objective(self.beta, p, sample_Q)
+
 
     ## choose
     # The function called to have the synthetic user choose a particular query rewards 
@@ -97,6 +180,6 @@ class HumanChoiceUser(SyntheticUser):
 
         best_idx = sample_human_choice(y, p=self.beta)
 
-        return np.argmax(y)
+        return best_idx
 
 
