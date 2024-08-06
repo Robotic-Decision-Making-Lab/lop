@@ -105,7 +105,7 @@ class AbsAcquisition(AcquisitionBase):
         prev_selection = list(prev_selection)
 
         # get representative query for alignment function
-        x_rep, Q_rep = self.get_representative_Q()
+        x_rep, Q_rep = self.get_representative_Q(candidate_pts)
 
         # If there is no data
         if x_rep is None:

@@ -101,7 +101,7 @@ class AcquisitionSelection(AcquisitionBase):
             return np.random.choice(indicies)[0]
             #return np.argmax(mu)
 
-        x_rep, Q_rep = self.get_representative_Q()
+        x_rep, Q_rep = self.get_representative_Q(candidate_pts)
 
         if x_rep is None:
             return np.random.choice(list(indicies), 1)[0]
@@ -167,7 +167,7 @@ class AcquisitionSelection(AcquisitionBase):
 
 
     def select_pair(self, candidate_pts, mu, data, indicies, prev_selection, debug=True):
-        x_rep, Q_rep = self.get_representative_Q()
+        x_rep, Q_rep = self.get_representative_Q(candidate_pts)
         if x_rep is None:
             idxs = np.random.choice(list(indicies), 2, replace=False)
             return (idxs[0], idxs[1])

@@ -62,7 +62,7 @@ class AcquisitionBase(ActiveLearner):
     ## get_representative_Q
     # This function gets a set of queries and target points.
     # Left as a function to allow a few different method to potentially be used.
-    def get_representative_Q(self):
+    def get_representative_Q(self, candidate_pts=None):
         # get the number of points in each query.
         try:
             num_alts = self.num_alts
@@ -76,9 +76,15 @@ class AcquisitionBase(ActiveLearner):
             # sample data points from previous model data
             if self.model.X_train is None:
                 return None, None
+            X_train = self.model.X_train
             num_X_train = len(self.model.X_train)
+            
+            if num_X_train < 4:
+                X_train = np.append(X_train, candidate_pts, axis=0)
+                num_X_train = X_train.shape[0]
+
             N = min(num_X_train, N)
-            X_pts = self.model.X_train[np.random.choice(num_X_train, N, replace=False)]
+            X_pts = X_train[np.random.choice(num_X_train, N, replace=False)]
 
             num_Q = min(num_Q, math.comb(N, num_alts))
 
