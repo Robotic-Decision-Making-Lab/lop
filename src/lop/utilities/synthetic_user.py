@@ -88,7 +88,7 @@ class HumanChoiceUser(SyntheticUser):
         self.beta = beta
 
 
-    def beta_objective(self, b, desired_p, sample_queries):
+    def kl_objective(self, b, desired_p, sample_queries):
         y = self.fake_f(sample_queries)
         p = p_human_choice(y, p=b)
 
@@ -111,13 +111,6 @@ class HumanChoiceUser(SyntheticUser):
 
         return np.mean(KL_1+KL_2)
 
-        # BC = np.sqrt(p_max*desired_p) * np.sqrt((1-p_max)*(1-desired_p))
-
-        # DB = -np.log(BC)
-        # #pdb.set_trace()
-
-        # return -np.mean(DB)
-
 
     def sampled_objective(self, b, desired_p, sample_queries):
         y = self.fake_f(sample_queries)
@@ -129,19 +122,6 @@ class HumanChoiceUser(SyntheticUser):
 
         count = np.sum(pf <= p_max)
         p_samp = count / sample_queries.shape[0]
-
-        # num_correct = 0
-        # for Q in y:
-        #     best = np.argmax(Q)
-        #     sampled = sample_human_choice(Q, p=b)
-
-        #     if best == sampled:
-        #         num_correct += 1
-
-
-        # p_samp = num_correct / len(y)
-
-        # pdb.set_trace()
 
         return (p_samp - desired_p)**2
 
@@ -155,7 +135,7 @@ class HumanChoiceUser(SyntheticUser):
     # @param p - the probability of selecting the best value
     # @param num_Q - [opt default=2] the number of points in each query
     def learn_beta(self, rewards, p, Q_size=2):
-        num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 5000)
+        num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 20000)
         if num_Q < 30:
             num_Q = min(30, comb(rewards.shape[0], Q_size))
         num_Q = int(num_Q)
@@ -167,7 +147,6 @@ class HumanChoiceUser(SyntheticUser):
         res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
 
         self.beta = res.x
-        self.beta_objective(self.beta, p, sample_Q)
 
 
     ## choose

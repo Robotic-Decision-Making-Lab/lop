@@ -31,8 +31,8 @@ import lop
 
 from GP_visualization import record_gp_state, visualize_data
 
-def get_active_learner(selector, selection_type, UCB_scalar, config, fake_func=None):
-    default_to_pareto = config['default_to_pareto']
+def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, config, fake_func=None):
+    #default_to_pareto = config['default_to_pareto']
     if selection_type == 'rating':
         always_select_best = False
     else:
@@ -103,6 +103,13 @@ def get_model(model_desc, active_learner, hyper, config):
     
     return model
 
+def get_synth_user(user_desc, utility_f, config):
+    if user_desc == 'perfect':
+        func = lop.PerfectUser(utility_f)
+    elif user_desc == 'human_choice':
+        func = lop.HumanChoiceUser(utility_f)
+
+    return func
 
 def get_fake_func(fake_func_desc, config):
     if fake_func_desc == 'linear':
@@ -157,6 +164,7 @@ def train_and_eval(config_filename,
                     rbf_sigma=None,
                     synth_user='perfect',
                     hyper='no',
+                    default_pareto=False,
                     num_train=10,
                     num_eval=10,
                     verbose = False):
@@ -178,10 +186,21 @@ def train_and_eval(config_filename,
     num_training = num_train#10
 
     #### Get required models and fake functions
-    active_learner = get_active_learner(selector, selection_type, UCB_scaler, config)
+    active_learner = get_active_learner(selector, selection_type, UCB_scaler, default_pareto, config)
     model = get_model(model_desc, active_learner, hyper, config)
     utility_f = get_fake_func(fake_function_desc, config)
+    user_f = get_synth_user(synth_user, utility_f, config)
 
+
+    eval_user_d = np.empty((0,2))
+    for eval_env_d in eval_data:
+        for path_d in eval_env_d:
+            eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
+
+    try:
+        user_f.learn_beta(eval_user_d, config['p_correct'], Q_size=num_alts)
+    except:
+        print('Unable to tune beta for user synth')
 
     if config['add_model_prior']:
         model.add_prior(bounds = config['prior_bounds'], num_pts=config['prior_pts'])
@@ -246,11 +265,7 @@ def train_and_eval(config_filename,
 
             # get pairs
             if selection_type == 'choose1':
-                if synth_user == 'perfect':
-                    best_idx = np.argmax(y_fake)
-                else:
-                    best_idx = lop.sample_human_choice(y_fake)
-                y_pairs = lop.gen_pairs_from_idx(best_idx, list(range(len(y_fake))))
+                y_pairs = user_f.choose_pairs(rewards[sel_idx])
             else:
                 if synth_user != 'perfect':
                     raise(Exception('human choice not implemented for ranking'))
@@ -263,10 +278,11 @@ def train_and_eval(config_filename,
                 model.add(rewards[non_shown_paths], [])
 
         elif selection_type == 'rating':
-            sel_idx = model.select(rewards, num_alts)
+            sel_idx = model.select(rewards, 1)[0]
 
-            rating = rating_score_from_fake_f(rewards[sel_idx], utility_f, rating_bounds_global)
-            rating_np = np.array(rating)
+            #rating = rating_score_from_fake_f(rewards[sel_idx], utility_f, rating_bounds_global)
+            rating = user_f.rate(rewards[sel_idx])
+            rating_np = np.array([rating])
 
             model.add(rewards[sel_idx], rating_np, type='abs')
         # end else if for selection type

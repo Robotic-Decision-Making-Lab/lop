@@ -112,6 +112,7 @@ def main():
     parser.add_argument('--num_alts', type=int, default=4, help='The number of alternatives to show to the user')
     parser.add_argument('--user', type=str, default='human_choice', help='Set the synthetic user type to use options [ perfect human_choice ]')
     parser.add_argument('--hyper', type=str, default='hyper', help='Sets whether to perform hyperparameter optimization [ hyper no ]')
+    parser.add_argument('--def_pareto', type=str, default='false', help='Sets whether optimization defaults to user pareto optimal points first or not bool [true, false]')
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
@@ -138,9 +139,17 @@ def main():
         print('selection types should be one of these '+str(possible_selection_types)+' not ' + str(args.model))
         sys.exit(0)
 
+    if args.def_pareto == 'true':
+        args.def_pareto = True
+    elif args.def_pareto == 'false':
+        args.def_pareto = False
+    else:
+        print('def_pareto should be either [true, false]')
+        sys.exit(0)
+
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_user_'+args.user+'_fake_'+args.fake_func+'_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
@@ -176,6 +185,7 @@ def main():
                                             selection_type=args.sel_type,
                                             model_desc=args.model, \
                                             num_alts = args.num_alts, \
+                                            default_pareto = args.def_pareto, \
                                             synth_user=args.user, \
                                             hyper=args.hyper, \
                                             num_train=num_train, \

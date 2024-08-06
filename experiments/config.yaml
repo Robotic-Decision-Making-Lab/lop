@@ -1,5 +1,5 @@
 ######### for active learning selectors
-default_to_pareto: false
+#default_to_pareto: false
 always_select_best: false
 
 # alpha
@@ -16,6 +16,9 @@ abs_point_loc:
 
 abs_point_value: 0.5
 
+# the approximate probability the synth user
+# has of selecting the correct path.
+p_correct: 0.95
 
 rbf_sigma: 0.8
 rbf_lengthscale: 0.25
