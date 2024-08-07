@@ -40,6 +40,11 @@ from scipy.stats import norm, beta
 
 import pdb
 
+# @jit(nopython=True)
+# def numba_beta_pdf(q, aa, bb):
+
+
+
 ## AbsBoundProbit
 # This is almost directly Nick's code, for absolute bounded inputs.
 # Pairwise Judgements and Absolute Ratings with Gaussian Process Priors
@@ -58,7 +63,7 @@ class AbsBoundProbit(ProbitBase):
     #               basically relate to the range of the latent function
     # @param v - the precision, kind of related to inverse of noise, high v is sharp distributions
     # @param eps - epsilon to avoid division by 0 errors.
-    def __init__(self, sigma=1.0, v=10.0, optimize_parameters=True, eps=1e-10):
+    def __init__(self, sigma=1.0, v=80.0, optimize_parameters=True, eps=1e-10):
         self.set_sigma(sigma)
         self.set_v(v)
         

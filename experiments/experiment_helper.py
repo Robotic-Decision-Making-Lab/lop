@@ -284,7 +284,7 @@ def train_and_eval(config_filename,
             rating = user_f.rate(rewards[sel_idx])
             rating_np = np.array([rating])
 
-            model.add(rewards[sel_idx], rating_np, type='abs')
+            model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
         # end else if for selection type
 
         accuracy[itr+1], avg_selection[itr+1], all_ranks[itr+1], estimated_scores[itr+1], real_scores[itr+1], score_diff[itr+1] = \

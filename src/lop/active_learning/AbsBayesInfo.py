@@ -11,6 +11,8 @@ from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, PreferenceLinear
 from lop.utilities import metropolis_hastings
 
+from numba import jit
+
 import pdb
 
 class AbsBayesInfo(ActiveLearner):
@@ -76,10 +78,19 @@ class AbsBayesInfo(ActiveLearner):
     def p_q_f_B_unorm(self, q, aa, bb, ml):
         ml_r = np.repeat(ml[:,np.newaxis, :], ml.shape[1], axis=1)
         p_q_f = beta.pdf(q, aa, bb)
+        pdb.set_trace()
         p_q_f_B = np.where(q > ml_r, np.repeat(p_q_f[:,:,np.newaxis], p_q_f.shape[1], axis=2), 0)
         return p_q_f_B
 
 
+    # @jit(nopython=True)
+    # def p_q_f_B_unorm(self, q, aa, bb, ml, p_q_f=None):
+    #     if p_q_f is None:
+    #         # calculate p_q_f
+    #         pass
+
+    #     p_q_f_B = np.empty((p_q_f.shape[0], p_q_f.shape[1], p_q_f.shape[2]))
+        
 
 
     ## select_greedy
@@ -102,14 +113,15 @@ class AbsBayesInfo(ActiveLearner):
 
         # Calculate p_B
         # all_f = [samples, num_candidate_pts]
+        
         p_b, all_f = self.calc_one_time(candidate_pts[indicies], mu)
 
         ml = self.model.probits[2].mean_link(all_f)
         aa, bb = self.model.probits[2].get_alpha_beta_ml(all_f, ml)
 
-        integ_p_q_f_B, err = quad_vec(self.p_q_f_B_unorm, 0,1, epsrel=0.001, workers=-1, limit=200, args=(aa,bb,ml))
+        integ_p_q_f_B, err = quad_vec(self.p_q_f_B_unorm, 0,1, epsrel=0.01, workers=-1, limit=200, args=(aa,bb,ml))
 
-        integ_r, err = quad_vec(self.integrand, 0, 1, epsrel=0.001, workers=-1, limit=200, args=(p_b, all_f, aa, bb, ml, integ_p_q_f_B))
+        integ_r, err = quad_vec(self.integrand, 0, 1, epsrel=0.01, workers=-1, limit=200, args=(p_b, all_f, aa, bb, ml, integ_p_q_f_B))
 
         E_over_samples = np.sum(integ_r, axis=0) / self.M
 
