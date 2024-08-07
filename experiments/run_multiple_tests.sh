@@ -12,15 +12,15 @@ trap killgroup INT TERM
 #user_type=human_choice
 number_runs=50
 #hyper_sel=no
-fake_func=linear
 #model=gp
 
 def_pareto=false
-# choose-1
-sel_type=rating
+# choose1, rating
+sel_type=choose1
 num_alts=1
 
-for selc in UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL #MUTUAL_INFO SGV_UCB RANDOM BAYES_INFO_GAIN_PROBIT BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
+
+for selc in UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB RANDOM BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
     for fake_func in min #linear #squared_min_max max min logistic squared sin_exp 
@@ -29,7 +29,7 @@ do
         do
             for model in gp
             do
-                for user in perfect
+                for user in human_choice
                 do
                     for i_env in 0 1 2 3 4 5 6 7 8 9
                     do

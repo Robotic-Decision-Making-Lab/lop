@@ -136,7 +136,7 @@ def main():
         print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
         sys.exit(0)
     if args.sel_type not in possible_selection_types:
-        print('selection types should be one of these '+str(possible_selection_types)+' not ' + str(args.model))
+        print('selection types should be one of these '+str(possible_selection_types)+' not ' + str(args.sel_type))
         sys.exit(0)
 
     if args.def_pareto == 'true':
@@ -149,7 +149,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
