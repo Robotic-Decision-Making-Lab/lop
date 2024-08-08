@@ -38,6 +38,7 @@ class RandomLearner(ActiveLearner):
     # @return the index of the greedy selection.
     def select_greedy(self, candidate_pts, mu, data, indicies, prev_selection):
         indicies = list(indicies)
+        self.sel_metric = 0
         return indicies[np.random.randint(0, len(indicies))]
         
 

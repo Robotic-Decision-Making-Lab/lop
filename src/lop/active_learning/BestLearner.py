@@ -45,6 +45,7 @@ class BestLearner(ActiveLearner):
 
         select_mu = mu[indicies]
 
+        self.sel_metric = np.max(select_mu)
         return indicies[np.argmax(select_mu)]
 
 
@@ -65,5 +66,6 @@ class WorstLearner(ActiveLearner):
 
         select_mu = mu[indicies]
 
+        self.sel_metric = np.min(select_mu)
         return indicies[np.argmin(select_mu)]
 

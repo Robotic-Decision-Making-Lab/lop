@@ -139,6 +139,8 @@ class AbsAcquisition(AcquisitionBase):
 
         align_Q = E_align
 
-        return indicies[np.argmax(align_Q)]
+        best_idx = np.argmax(align_Q)
+        self.sel_metric = align_Q[best_idx]
+        return indicies[best_idx]
 
 
