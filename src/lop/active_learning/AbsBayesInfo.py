@@ -130,7 +130,9 @@ class AbsBayesInfo(ActiveLearner):
 
         info_gain = H_B - E_q_H_B
 
-        return indicies[np.argmax(info_gain)]
+        best_idx = np.argmax(info_gain)
+        self.sel_metric = info_gain[best_idx]
+        return indicies[best_idx]
 
 
 

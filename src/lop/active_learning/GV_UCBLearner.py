@@ -66,7 +66,9 @@ class GV_UCBLearner(UCBLearner):
 
         selected_GV_UCB = mu[indicies] + self.alpha*np.array(SGV)
 
-        return indicies[np.argmax(selected_GV_UCB)]
+        best_idx = np.argmax(selected_GV_UCB)
+        self.sel_metric = selected_GV_UCB[best_idx]
+        return indicies[best_idx]
         
 
 

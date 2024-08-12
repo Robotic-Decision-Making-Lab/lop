@@ -44,6 +44,7 @@ class ActiveLearner:
         self.default_to_pareto=default_to_pareto
         self.always_select_best = always_select_best
         self.first_call_greedy = True
+        self.sel_metric = None
 
     ## set_model
     # sets the model being used by the active learning framework.
@@ -165,6 +166,9 @@ class ActiveLearner:
                     sel_pts.append(selected_idx)
             # end while loop
             return sel_pts   
+
+
+
 
 
     ## get_prefered_set_of_pts

@@ -167,7 +167,10 @@ class BayesInfoGain(ActiveLearner):
         if debug:
             print('Info gain = ' + str(info_gain))
 
-        return indicies[np.argmax(info_gain)] #indicies[np.argmax(info_gain[indicies])]               
+        best_idx = np.argmax(info_gain)
+        self.sel_metric = info_gain[best_idx]  
+
+        return indicies[best_idx] #indicies[np.argmax(info_gain[indicies])]               
                 
 
 
@@ -259,6 +262,7 @@ class BayesInfoGain(ActiveLearner):
 
         print('idx_best: ' + str(idx_best))
 
+        self.sel_metric = info_gain[idx_best[0], idx_best[1]]
 
         return idx_best
 

@@ -161,7 +161,11 @@ class AcquisitionSelection(AcquisitionBase):
 
         align_Q = np.sum(align_Q, axis=0)
 
-        return indicies[np.argmax(align_Q)]
+
+        best_idx = np.argmax(align_Q)
+        self.sel_metric = align_Q[best_idx]
+
+        return indicies[best_idx]
 
 
 
@@ -219,4 +223,7 @@ class AcquisitionSelection(AcquisitionBase):
 
         # represents the alignment metric for each pair being selected as align_Q
         align_Q = E_align_q + E_align_q.T
-        return self.pick_pair_from_metric(align_Q, prev_selection)
+        
+        pair = self.pick_pair_from_metric(align_Q, prev_selection)
+        self.sel_metric = align_Q[pair[0], pair[1]]
+        return pair

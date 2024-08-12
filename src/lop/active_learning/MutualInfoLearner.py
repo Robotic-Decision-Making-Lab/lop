@@ -87,7 +87,9 @@ class MutualInfoLearner(ActiveLearner):
 
         info_gain = [self.calc_info_gain(prev_selection + [idx], all_w) for idx in indicies]
 
-        return indicies[np.argmax(info_gain)]
+        best_idx = np.argmax(info_gain)
+        self.sel_metric = info_gain[best_idx]
+        return indicies[best_idx]
         
 
     # calculate the info gain for a query Q given the sampled parameters / reward W

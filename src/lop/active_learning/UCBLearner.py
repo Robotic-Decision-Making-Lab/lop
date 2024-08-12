@@ -67,4 +67,6 @@ class UCBLearner(ActiveLearner):
 
         selected_UCB = mu[indicies] + self.alpha*np.sqrt(variance[indicies])
 
-        return indicies[np.argmax(selected_UCB)]
+        best_idx = np.argmax(selected_UCB)
+        self.sel_metric = selected_UCB[best_idx]
+        return indicies[best_idx]
