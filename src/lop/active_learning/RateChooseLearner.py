@@ -71,6 +71,12 @@ class RateChooseLearner(ActiveLearner):
         print('Absloute selected metric: ' + str(self.abs_l.sel_metric))
         if self.pairwise_l.sel_metric > self.abs_l.sel_metric:
             sel_idxs = pair_idxs
+        elif self.pairwise_l.sel_metric == self.abs_l.sel_metric:
+            # both the same, just randomly pick one of the options.
+            if np.random.random() > 0.5:
+                sel_idxs = pair_idxs
+            else:
+                sel_idxs = abs_idxs
         else:
             sel_idxs = abs_idxs
 

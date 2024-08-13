@@ -35,6 +35,8 @@ def f_sin(x, data=None):
 def main():
     # Create preference gp and optimize given training data
     gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7))
+    gp.probits[2].set_v(1200.0)
+    gp.probits[2].set_sigma(1.0)
     
     X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
     y_train = lop.normalize_0_1(f_sin(X_train), 0.05)

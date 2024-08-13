@@ -16,10 +16,11 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# abs_gp_learner
-# Written Ian Rankin - August 2024
+# GP_UCB_learner.py
+# Written Ian Rankin - January 2024
 #
-# An example usage of preference GP with absloute queries.
+# An example usage of preference GP with a UCB active learning algorithm
+# This is done using a 1D function.
 
 
 import numpy as np
@@ -36,11 +37,6 @@ import lop
 def f_sin(x, data=None):
     x = 10-x
     return 2 * np.cos(np.pi * (x-2) / 3.0) * np.exp(-(0.99*x))
-
-
-def sigmoid(x):
-    k = 4
-    return 1 / (1 + np.exp(-k*x))
 
 
 def plot_data(model, new_selections=None):
@@ -74,7 +70,7 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', "PROB_LEANER", 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
 
 
 def main():
@@ -97,24 +93,33 @@ def main():
         al = lop.UCBLearner()
     elif args.selector == 'SGV_UCB':
         al = lop.GV_UCBLearner()
+    elif args.selector == 'MUTUAL_INFO':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'MUTUAL_INFO':
+        al = lop.MutualInfoLearner()
+    elif args.selector == 'MUTUAL_INFO_PERF':
+        al = lop.MutualInfoLearner()
     elif args.selector == 'RANDOM':
         al = lop.RandomLearner()
-    elif args.selector == 'ABS_BAYES_PROBIT':
-        al = lop.AbsBayesInfo(M=200)
+    elif args.selector == 'BAYES_INFO_GAIN_PROBIT':
+        al = lop.BayesInfoGain(p_q_B_method='probit')
+    elif args.selector == 'BAYES_INFO_GAIN_999':
+        al = lop.BayesInfoGain(p_q_B_method='999')
+    elif args.selector == 'PROB_LEARNER':
+        al = lop.ProbabilityLearner()
     elif args.selector == 'ACQ_RHO':
-        al = lop.AbsAcquisition(M=200, alignment_f='rho')
+        al = lop.AcquisitionSelection(M=400, alignment_f='rho')
     elif args.selector == 'ACQ_LL':
-        al = lop.AbsAcquisition(M=200, alignment_f='loglikelihood')   
+        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
     elif args.selector == 'ACQ_EPIC':
-        al = lop.AbsAcquisition(M=200, alignment_f='epic')
+        al = lop.AcquisitionSelection(M=400, alignment_f='epic')
     elif args.selector == 'ACQ_SPEAR':
-        al = lop.AbsAcquisition(M=200, alignment_f='spearman')
+        al = lop.AcquisitionSelection(M=400, alignment_f='spearman')
 
 
     #### create model
     if args.model == 'gp':
         model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
-        model.probits[2].set_v(10.0)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
 
@@ -123,7 +128,7 @@ def main():
 
     #model.add(np.array([7]), np.array([0.5]), type='abs')
 
-    with writer.saving(fig, "abs_gp.gif", 100):
+    with writer.saving(fig, "pref_gp.gif", 100):
 
         plot_data(model)
         writer.grab_frame()
@@ -133,18 +138,17 @@ def main():
             # generate random test set to select test point from
             x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 
-            test_pt_idx = model.select(x_canidiates, 1)
+            test_pt_idxs = model.select(x_canidiates, 2)
 
 
-            x_train = x_canidiates[test_pt_idx]
-            y_raw = f_sin(x_train)
-            
-            # input must be mapped to [0,1] so this is a way to do that.
-            y_user = sigmoid(y_raw)
+            x_train = x_canidiates[test_pt_idxs]
+            y_train = f_sin(x_train)
+            y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
+            # y_pairs = lop.generate_fake_pairs(x_train, f_sin, 0) + \
+            #             lop.generate_fake_pairs(x_train, f_sin, 1) + \
+            #             lop.generate_fake_pairs(x_train, f_sin, 2)
 
-            print('y_user: ' + str(y_user))
-
-            model.add(x_train, y_user, type='abs')
+            model.add(x_train, y_pairs)
 
             plot_data(model, x_train)
             writer.grab_frame()
