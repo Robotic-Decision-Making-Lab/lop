@@ -34,10 +34,29 @@ from numba import jit
 
 from lop.active_learning import AcquisitionBase
 from lop.models import PreferenceGP, GP, PreferenceLinear
+from lop.probits import numba_beta_pdf2
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
 
 import pdb
+
+
+@jit(nopython=True)
+def pq_integrand(q, aa, bb, f):
+    # [w, Q]
+    p_q_w = numba_beta_pdf2(q, aa, bb)
+
+    M = f.shape[0]
+
+    p_q = np.sum(p_q_w, axis=0) / M
+
+    sum_Q = np.zeros(p_q_w.shape[1])
+
+    for i in range(M):
+        for j in range(M):
+            sum_Q += f[i,j] * p_q_w[i,:] * p_q_w[j,:] / p_q
+
+    return sum_Q / (M * M)
 
 class AbsAcquisition(AcquisitionBase):
 
@@ -62,31 +81,10 @@ class AbsAcquisition(AcquisitionBase):
         self.M = M
 
 
-    ## pq_ww_integrand
-    # Calculate integrand p(q|w,Q)p(q|w',Q)
-    # @param q - a float value for the query q
-    # @param all_Q_exp - the sampled query values for each given weight
-    #
-    # @return p(q|w,Q)p(q|w',Q)*dq [w, w', Q] matrix
-    def pq_ww_integrand(self, q, aa, bb):
-        # [w, Q]
-        p_q_w = beta.pdf(q, aa, bb)
+    
 
-        # [w, w', Q]
-        p_q_w_exp = np.repeat(p_q_w[:,np.newaxis,:], p_q_w.shape[0], axis=1)
 
-        # [Q]
-        p_q = np.mean(p_q_w, axis=0)
 
-        p_q_ww = p_q_w_exp * np.swapaxes(p_q_w_exp, 0, 1) / p_q
-
-        return p_q_ww
-
-    # @jit(nopython=True)
-    # def pq_integrand(self, q, aa, bb):
-    #     p_q_w = beta.pdf(q, aa, bb)
-
-    #     return p_q_w
 
     ## select_greedy
     # This function greedily selects the best single data point
@@ -121,23 +119,17 @@ class AbsAcquisition(AcquisitionBase):
         aa, bb = self.model.probits[2].get_alpha_beta(all_Q)
 
 
-
-        integ_p_q_ww, err = quad_vec(self.pq_ww_integrand, 0, 1, epsrel=0.001, 
-                                    workers=-1, limit=200, args=(aa, bb))
-
         ####### Calculate alignment function
         # [w, w']
         f = self.alignment(all_rep, Q_rep)
-        # [w, w', Q]
-        f_exp = np.repeat(f[:,:,np.newaxis], all_Q.shape[1], axis=2)
 
-        ####### Calculate expected alignment
 
-        f_p_q = f_exp * integ_p_q_ww
+        ########## values post summation
 
-        E_align = np.sum(f_p_q, axis=(0,1)) / (self.M * self.M)
+        integ_p_q, err = quad_vec(pq_integrand, 0, 1, epsrel=0.001, 
+                                    workers=-1, limit=200, args=(aa, bb, f))
 
-        align_Q = E_align
+        align_Q = integ_p_q
 
         best_idx = np.argmax(align_Q)
         self.sel_metric = align_Q[best_idx]

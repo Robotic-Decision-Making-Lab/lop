@@ -114,7 +114,7 @@ def main():
     #### create model
     if args.model == 'gp':
         model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
-        model.probits[2].set_v(10.0)
+        model.probits[2].set_v(80.0)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
 

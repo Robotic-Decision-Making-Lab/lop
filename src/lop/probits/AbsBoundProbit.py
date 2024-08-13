@@ -38,12 +38,83 @@ from lop.utilities import d_log_pdf_gamma, log_pdf_gamma
 from scipy.special import digamma, polygamma
 from scipy.stats import norm, beta
 
+import math
+
+from numba import jit
+
 import pdb
 
-# @jit(nopython=True)
-# def numba_beta_pdf(q, aa, bb):
+@jit(nopython=True)
+def numba_beta_pdf1(x, aa, bb):
+    B_inv = np.empty(aa.shape, dtype=float)
+
+    for i in range(aa.shape[0]):
+        B_inv[i] = math.gamma(aa[i] + bb[i]) / (math.gamma(aa[i]) * math.gamma(bb[i]))
+
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+
+    return top * B_inv
+
+@jit(nopython=True)
+def numba_beta_pdf2(x, aa, bb):
+    B_inv = np.empty(aa.shape, dtype=float)
+
+    for i in range(aa.shape[0]):
+        for j in range(aa.shape[1]):
+            B_inv[i,j] = math.gamma(aa[i,j] + bb[i,j]) / (math.gamma(aa[i,j]) * math.gamma(bb[i,j]))
+
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+    return top * B_inv
+
+@jit(nopython=True)
+def numba_beta_pdf3(x, aa, bb):
+    B_inv = np.empty(aa.shape, dtype=float)
+
+    for i in range(aa.shape[0]):
+        for j in range(aa.shape[1]):
+            for k in range(aa.shape[2]):
+                B_inv[i,j,k] = math.gamma(aa[i,j,k] + bb[i,j,k]) / (math.gamma(aa[i,j,k]) * math.gamma(bb[i,j,k]))
+
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+
+    return top * B_inv
+
+@jit(nopython=True)
+def numba_beta_pdf4(x, aa, bb):
+    B_inv = np.empty(aa.shape, dtype=float)
+
+    for i in range(aa.shape[0]):
+        for j in range(aa.shape[1]):
+            for k in range(aa.shape[2]):
+                for l in range(aa.shape[3]):
+                    B_inv[i,j,k,l] = math.gamma(aa[i,j,k,l] + bb[i,j,k,l]) / (math.gamma(aa[i,j,k,l]) * math.gamma(bb[i,j,k,l]))
+
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+
+    return top * B_inv
+
+@jit(nopython=True)
+def numba_beta_pdf5(x, aa, bb):
+    B_inv = np.empty(aa.shape, dtype=float)
+
+    for i in range(aa.shape[0]):
+        for j in range(aa.shape[1]):
+            for k in range(aa.shape[2]):
+                for l in range(aa.shape[3]):
+                    B_inv[i,j,k,l] = math.gamma(aa[i,j,k,l] + bb[i,j,k,l]) / (math.gamma(aa[i,j,k,l]) * math.gamma(bb[i,j,k,l]))
+
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+
+    return top * B_inv
+
+@jit(nopython=True)
+def numba_beta_pdf(x, aa, bb):
+    B_inv = math.gamma(aa + bb) / (math.gamma(aa) * math.gamma(bb))
 
 
+    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+
+    return top * B_inv
 
 ## AbsBoundProbit
 # This is almost directly Nick's code, for absolute bounded inputs.
@@ -171,6 +242,7 @@ class AbsBoundProbit(ProbitBase):
         aa = self.v * ml
         bb = self.v - aa    # = self.v * (1-ml)
         return aa, bb
+
 
     ## derivatives
     # Calculates the derivatives of the probit with the given input data
