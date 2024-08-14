@@ -113,7 +113,7 @@ def main():
 
     #### create model
     if args.model == 'gp':
-        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
+        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7, sigma_noise=0.000001), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
         model.probits[2].set_v(80.0)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
@@ -134,6 +134,7 @@ def main():
             x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 
             test_pt_idx = model.select(x_canidiates, 1)
+            print('sel_metric = ' + str(model.active_learner.sel_metric))
 
 
             x_train = x_canidiates[test_pt_idx]

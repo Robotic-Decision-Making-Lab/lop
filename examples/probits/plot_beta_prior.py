@@ -1,4 +1,4 @@
-# Copyright 2023 Ian Rankin
+# Copyright 2024 Ian Rankin
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
@@ -16,66 +16,54 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-# pref_gp_abs_bound.py
-# Written Ian Rankin - December 2023
+# plot_beta_prior.py
+# Written Ian Rankin - August 2024
 #
-# An example usage of a simple pref with abs bound probit.
-# Abs bound requires continous input values between 0,1
-
+# An example usage that plots the beta distribution of the prior given different input F
+# and parameter v and sigma values.
 
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
-
+from scipy.stats import norm, beta
 import lop
 
 
-def f_sin(x, data=None):
-    return 2 * np.cos(np.pi * (x-2)) * np.exp(-(0.9*x))
-
 def main():
     parser = argparse.ArgumentParser(description='beta distribution plotter')
+    parser.add_argument('-F', type=float, default=1.0, help='Enter F value to plot')
     parser.add_argument('-v', type=float, default=80, help='the precision variable on the distribution')
     parser.add_argument('--sigma', type=float, default=1.0, help='Enter sigma parameter of the mean link of the beta distribution (scale parameter)')
     args = parser.parse_args()
 
-    # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7, sigma_noise=0.000001))
-    gp.probits[2].set_v(args.v)
-    gp.probits[2].set_sigma(args.sigma)
-    
-    X_train = np.array([0.0, 1.0, 1.8, 3.0, 5.6, 6.9])
-    y_train = lop.normalize_0_1(f_sin(X_train), 0.05)
 
-    gp.add(X_train, y_train, type='abs')
+    q = np.arange(0.0, 1.0, 0.001)
 
-    gp.optimize()
+    F = np.array([args.F])
+    sigma = args.sigma
+    v = args.v
 
-    # predict output of GP
-    X = np.arange(0.0, 9.0, 0.1)
-    mu, sigma = gp.predict(X)
-    std = np.sqrt(sigma)
+    abs_probit = lop.AbsBoundProbit(sigma=sigma, v=v, eps=0.0)
 
-    
+    aa, bb = abs_probit.get_alpha_beta(F)
 
-    print(gp.n_loops)
+    print('aa: ' + str(aa))
+    print('bb: ' + str(bb))
 
-    # Plotting output for easy viewing
-    plt.plot(X, mu)
-    sigma_to_plot = 1
 
-    plt.gca().fill_between(X, mu-(sigma_to_plot*std), mu+(sigma_to_plot*std), color='#dddddd')
-    Y_actual = f_sin(X)
-    Y_max = np.linalg.norm(Y_actual, ord=np.inf)
-    Y_actual = Y_actual / Y_max
-    plt.plot(X, Y_actual)
-    plt.scatter(X_train, gp.F)
 
-    plt.title('Gaussian Process estimate (1 sigma)')
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.legend(['Predicted function with predicted F', 'Real function'])
+    y = beta.pdf(q, aa, bb)
+
+    print(y[int(y.shape[0]/2)])
+
+    plt.plot(q, y)
+    #plt.plot(q, y_other)
+
+    plt.xlabel('q')
+    plt.ylabel('p(q|F)')
+    plt.legend(['pdf'])
     plt.show()
+
 
 
 if __name__ == '__main__':

@@ -139,6 +139,7 @@ def main():
             x_canidiates = np.arange(0,10.1,0.2)#np.random.random(12)*10
 
             test_pt_idxs = model.select(x_canidiates, 2)
+            print('sel_metric = ' + str(model.active_learner.sel_metric))
 
 
             x_train = x_canidiates[test_pt_idxs]

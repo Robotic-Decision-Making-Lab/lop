@@ -44,77 +44,66 @@ from numba import jit
 
 import pdb
 
-@jit(nopython=True)
-def numba_beta_pdf1(x, aa, bb):
-    B_inv = np.empty(aa.shape, dtype=float)
+# #@jit(nopython=True)
+# def numba_beta_pdf1(x, aa, bb):
+#     eps = 1e-11
+#     B_inv = np.empty(aa.shape, dtype=float)
 
-    for i in range(aa.shape[0]):
-        B_inv[i] = math.gamma(aa[i] + bb[i]) / (math.gamma(aa[i]) * math.gamma(bb[i]))
+#     for i in range(aa.shape[0]):
+#         B_inv[i] = math.lgamma(aa[i] + bb[i]) - math.lgamma(aa) - math.lgamma(bb)
+#         #B_inv[i] = math.gamma(aa[i] + bb[i]) / (math.gamma(aa[i]) * math.gamma(bb[i]))
 
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+#     top = (aa-1) * np.log(x) + (bb-1) * np.log(1-x)
+#     log_beta = top + B_inv
+#     beta = np.exp(log_beta)
+#     return beta
 
-    return top * B_inv
+# @jit(nopython=True)
+# def numba_beta_pdf2(x, aa, bb):
+#     B_inv = np.empty(aa.shape, dtype=float)
 
-@jit(nopython=True)
-def numba_beta_pdf2(x, aa, bb):
-    B_inv = np.empty(aa.shape, dtype=float)
+#     for i in range(aa.shape[0]):
+#         for j in range(aa.shape[1]):
+#             B_inv[i,j] = math.gamma(aa[i,j] + bb[i,j]) / (math.gamma(aa[i,j]) * math.gamma(bb[i,j]))
 
-    for i in range(aa.shape[0]):
-        for j in range(aa.shape[1]):
-            B_inv[i,j] = math.gamma(aa[i,j] + bb[i,j]) / (math.gamma(aa[i,j]) * math.gamma(bb[i,j]))
+#     top = np.power(x, aa-1) * np.power(1-x, bb-1)
+#     return top * B_inv
 
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
-    return top * B_inv
+# @jit(nopython=True)
+# def numba_beta_pdf3(x, aa, bb):
+#     B_inv = np.empty(aa.shape, dtype=float)
 
-@jit(nopython=True)
-def numba_beta_pdf3(x, aa, bb):
-    B_inv = np.empty(aa.shape, dtype=float)
+#     for i in range(aa.shape[0]):
+#         for j in range(aa.shape[1]):
+#             for k in range(aa.shape[2]):
+#                 B_inv[i,j,k] = math.gamma(aa[i,j,k] + bb[i,j,k]) / (math.gamma(aa[i,j,k]) * math.gamma(bb[i,j,k]))
 
-    for i in range(aa.shape[0]):
-        for j in range(aa.shape[1]):
-            for k in range(aa.shape[2]):
-                B_inv[i,j,k] = math.gamma(aa[i,j,k] + bb[i,j,k]) / (math.gamma(aa[i,j,k]) * math.gamma(bb[i,j,k]))
+#     top = np.power(x, aa-1) * np.power(1-x, bb-1)
 
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+#     return top * B_inv
 
-    return top * B_inv
+# @jit(nopython=True)
+# def numba_beta_pdf4(x, aa, bb):
+#     B_inv = np.empty(aa.shape, dtype=float)
 
-@jit(nopython=True)
-def numba_beta_pdf4(x, aa, bb):
-    B_inv = np.empty(aa.shape, dtype=float)
+#     for i in range(aa.shape[0]):
+#         for j in range(aa.shape[1]):
+#             for k in range(aa.shape[2]):
+#                 for l in range(aa.shape[3]):
+#                     B_inv[i,j,k,l] = math.gamma(aa[i,j,k,l] + bb[i,j,k,l]) / (math.gamma(aa[i,j,k,l]) * math.gamma(bb[i,j,k,l]))
 
-    for i in range(aa.shape[0]):
-        for j in range(aa.shape[1]):
-            for k in range(aa.shape[2]):
-                for l in range(aa.shape[3]):
-                    B_inv[i,j,k,l] = math.gamma(aa[i,j,k,l] + bb[i,j,k,l]) / (math.gamma(aa[i,j,k,l]) * math.gamma(bb[i,j,k,l]))
+#     top = np.power(x, aa-1) * np.power(1-x, bb-1)
 
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+#     return top * B_inv
 
-    return top * B_inv
-
-@jit(nopython=True)
-def numba_beta_pdf5(x, aa, bb):
-    B_inv = np.empty(aa.shape, dtype=float)
-
-    for i in range(aa.shape[0]):
-        for j in range(aa.shape[1]):
-            for k in range(aa.shape[2]):
-                for l in range(aa.shape[3]):
-                    B_inv[i,j,k,l] = math.gamma(aa[i,j,k,l] + bb[i,j,k,l]) / (math.gamma(aa[i,j,k,l]) * math.gamma(bb[i,j,k,l]))
-
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
-
-    return top * B_inv
-
-@jit(nopython=True)
-def numba_beta_pdf(x, aa, bb):
-    B_inv = math.gamma(aa + bb) / (math.gamma(aa) * math.gamma(bb))
+# @jit(nopython=True)
+# def numba_beta_pdf(x, aa, bb):
+#     B_inv = math.gamma(aa + bb) / (math.gamma(aa) * math.gamma(bb))
 
 
-    top = np.power(x, aa-1) * np.power(1-x, bb-1)
+#     top = np.power(x, aa-1) * np.power(1-x, bb-1)
 
-    return top * B_inv
+#     return top * B_inv
 
 ## AbsBoundProbit
 # This is almost directly Nick's code, for absolute bounded inputs.
@@ -268,7 +257,8 @@ class AbsBoundProbit(ProbitBase):
             self.v * self._isqrt2sig * std_norm_pdf(f*self._isqrt2sig) * (polygamma(1, aa) + polygamma(1, bb)) )
 
 
-        py = np.log(beta.pdf(y_sel, aa, bb))
+        #py = np.log(beta.pdf(y_sel, aa, bb))
+        py = beta.logpdf(y_sel, aa, bb)
 
         # setup the indexing
         full_W = np.zeros((F.shape[0], F.shape[0]))
@@ -287,15 +277,19 @@ class AbsBoundProbit(ProbitBase):
     #
     # @return P(y|F)
     def likelihood(self, y, F):
+        return np.exp(self.log_likelihood(y, F))
+
+    def log_likelihood(self, y, F):
         y_selected = y[0]
         f = F[y[1]]
         aa, bb = self.get_alpha_beta(f)
 
-        py = np.log(beta.pdf(y_selected, aa, bb))
+        py = beta.logpdf(y_selected, aa, bb)
         full_py = np.zeros(F.shape[0])
         full_py[y[1]] = py
-        
-        return np.exp(np.sum(full_py))
+
+        return np.sum(full_py)
+
 
 
     ## calc_W_dF

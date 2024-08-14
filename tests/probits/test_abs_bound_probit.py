@@ -132,3 +132,11 @@ def test_numba_beta_pdf():
     assert len(res5.shape) == 3
     assert res5.shape[0] == 2 and res5.shape[1] == 2
     assert (res5 > 0).all()
+
+
+@pytest.mark.skipif('numba' not in sys.modules, reason='requires the numba library')
+def test_numba_beta_pdf():
+    res1 = lop.numba_beta_pdf(0.5, 200, 200)
+
+    assert not np.isnan(res1)
+    

@@ -34,22 +34,23 @@ from numba import jit
 
 from lop.active_learning import AcquisitionBase
 from lop.models import PreferenceGP, GP, PreferenceLinear
-from lop.probits import numba_beta_pdf2
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
 
 import pdb
 
 
-@jit(nopython=True)
+#@jit(nopython=True)
 def pq_integrand(q, aa, bb, f):
     # [w, Q]
-    p_q_w = numba_beta_pdf2(q, aa, bb)
+    #p_q_w = numba_beta_pdf2(q, aa, bb)
+    p_q_w = beta.pdf(q, aa, bb)
 
     M = f.shape[0]
 
     p_q = np.sum(p_q_w, axis=0) / M
 
+    return fast_sum_Q(p_q_w, p_q, f, M)
     sum_Q = np.zeros(p_q_w.shape[1])
 
     for i in range(M):
@@ -57,6 +58,17 @@ def pq_integrand(q, aa, bb, f):
             sum_Q += f[i,j] * p_q_w[i,:] * p_q_w[j,:] / p_q
 
     return sum_Q / (M * M)
+
+@jit(nopython=True)
+def fast_sum_Q(p_q_w, p_q, f, M):
+    sum_Q = np.zeros(p_q_w.shape[1])
+
+    for i in range(M):
+        for j in range(M):
+            sum_Q += f[i,j] * p_q_w[i,:] * p_q_w[j,:] / p_q
+
+    return sum_Q / (M * M)
+
 
 class AbsAcquisition(AcquisitionBase):
 

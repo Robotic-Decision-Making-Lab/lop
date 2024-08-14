@@ -35,7 +35,7 @@ def main():
     args = parser.parse_args()
 
 
-    x = np.arange(0.1,3.0,0.01)
+    x = np.arange(0.1,200.0,0.1)
 
     k = args.k
     theta = args.theta
