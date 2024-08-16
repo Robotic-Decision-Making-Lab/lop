@@ -50,14 +50,10 @@ def pq_integrand(q, aa, bb, f):
 
     p_q = np.sum(p_q_w, axis=0) / M
 
-    return fast_sum_Q(p_q_w, p_q, f, M)
-    sum_Q = np.zeros(p_q_w.shape[1])
+    integr = fast_sum_Q(p_q_w, p_q, f, M)
 
-    for i in range(M):
-        for j in range(M):
-            sum_Q += f[i,j] * p_q_w[i,:] * p_q_w[j,:] / p_q
+    return integr
 
-    return sum_Q / (M * M)
 
 @jit(nopython=True)
 def fast_sum_Q(p_q_w, p_q, f, M):
@@ -119,6 +115,7 @@ class AbsAcquisition(AcquisitionBase):
 
         # If there is no data
         if x_rep is None:
+            self.sel_metric = 0
             return np.random.choice(list(indicies), 1)[0]
 
         ## get sampled output from latent function
@@ -138,8 +135,10 @@ class AbsAcquisition(AcquisitionBase):
 
         ########## values post summation
 
-        integ_p_q, err = quad_vec(pq_integrand, 0, 1, epsrel=0.001, 
+        integ_p_q, err = quad_vec(pq_integrand, 0.0001, 0.9999, epsrel=0.001, 
                                     workers=-1, limit=200, args=(aa, bb, f))
+
+        print('err = ' + str(err))
 
         align_Q = integ_p_q
 

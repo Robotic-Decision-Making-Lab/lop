@@ -33,6 +33,7 @@ from lop.models import Model
 from lop.utilities import get_dk
 from lop.probits import PreferenceProbit, AbsBoundProbit, OrdinalProbit
 
+import pdb
 
 class PreferenceModel(Model):
 
@@ -533,5 +534,5 @@ class PreferenceModel(Model):
             abs_data = y_train[self.probit_idxs['abs']]
 
             if abs_data is not None:
-
+                
                 ax.scatter(X_train[abs_data[1]], abs_data[0])

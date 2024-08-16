@@ -66,6 +66,8 @@ class AcquisitionBase(ActiveLearner):
         # get the number of points in each query.
         try:
             num_alts = self.num_alts
+            if num_alts == 1:
+                num_alts = 2
         except:
             num_alts = 2
         

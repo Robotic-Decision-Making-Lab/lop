@@ -75,8 +75,6 @@ class PreferenceGP(PreferenceModel):
         self.cov_func = cov_func
         self.invert_function = mat_inv
 
-        self.lambda_gp = 0.9
-
         self.normalize_gp = normalize_gp
         
         self.normalize_positive = normalize_positive

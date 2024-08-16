@@ -82,6 +82,8 @@ def main():
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
     parser.add_argument('--num_itr', type=int, default=20, help='Number of iterations to run the solver default=20')
+    parser.add_argument('-v', type=float, default=80.0, help='abs probit v parameter default=80.0')
+    parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     args = parser.parse_args()
 
     if args.selector not in possible_selectors:
@@ -90,6 +92,7 @@ def main():
     if args.model not in possible_models:
         print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
         sys.exit(0)
+
 
     # Create active learner
     al = None
@@ -114,9 +117,11 @@ def main():
     #### create model
     if args.model == 'gp':
         model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7, sigma_noise=0.000001), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
-        model.probits[2].set_v(80.0)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
+
+    model.probits[2].set_sigma(args.sigma_abs)
+    model.probits[2].set_v(args.v)
 
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)

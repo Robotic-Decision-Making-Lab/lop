@@ -30,6 +30,8 @@ from matplotlib.animation import FFMpegWriter
 import argparse
 import sys
 
+import pdb
+
 import lop
 
 
@@ -70,14 +72,16 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', "PROB_LEANER", 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR']
-
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR','SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR']
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
     parser.add_argument('--num_itr', type=int, default=20, help='Number of iterations to run the solver default=20')
+    parser.add_argument('-v', type=float, default=80.0, help='abs probit v parameter default=80.0')
+    parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
+    parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     args = parser.parse_args()
 
     if args.selector not in possible_selectors:
@@ -87,48 +91,67 @@ def main():
         print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
         sys.exit(0)
 
+
+    fake_f = lop.FakeStaticSin()
+    synth_user = lop.PerfectUser(fake_f=fake_f)
+
+    M = 200
     # Create active learner
     al = None
     if args.selector == 'UCB':
         al = lop.UCBLearner()
     elif args.selector == 'SGV_UCB':
         al = lop.GV_UCBLearner()
-    elif args.selector == 'MUTUAL_INFO':
-        al = lop.MutualInfoLearner()
-    elif args.selector == 'MUTUAL_INFO':
-        al = lop.MutualInfoLearner()
-    elif args.selector == 'MUTUAL_INFO_PERF':
-        al = lop.MutualInfoLearner()
     elif args.selector == 'RANDOM':
         al = lop.RandomLearner()
-    elif args.selector == 'BAYES_INFO_GAIN_PROBIT':
-        al = lop.BayesInfoGain(p_q_B_method='probit')
-    elif args.selector == 'BAYES_INFO_GAIN_999':
-        al = lop.BayesInfoGain(p_q_B_method='999')
-    elif args.selector == 'PROB_LEARNER':
-        al = lop.ProbabilityLearner()
+    elif args.selector == 'ABS_BAYES_PROBIT':
+        al = lop.AbsBayesInfo(M=M)
     elif args.selector == 'ACQ_RHO':
-        al = lop.AcquisitionSelection(M=400, alignment_f='rho')
+        al = lop.AbsAcquisition(M=M, alignment_f='rho')
     elif args.selector == 'ACQ_LL':
-        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood')   
+        al = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')   
     elif args.selector == 'ACQ_EPIC':
-        al = lop.AcquisitionSelection(M=400, alignment_f='epic')
+        al = lop.AbsAcquisition(M=M, alignment_f='epic')
     elif args.selector == 'ACQ_SPEAR':
-        al = lop.AcquisitionSelection(M=400, alignment_f='spearman')
+        al = lop.AbsAcquisition(M=M, alignment_f='spearman')
+    elif args.selector == 'SW_ACQ_RHO':
+        abs = lop.AbsAcquisition(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
+    elif args.selector == 'SW_ACQ_LL':
+        abs = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
+    elif args.selector == 'SW_ACQ_EPIC':
+        abs = lop.AbsAcquisition(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
+    elif args.selector == 'SW_ACQ_SPEAR':
+        abs = lop.AbsAcquisition(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
+    elif args.selector == 'SW_BAYES_PROBIT':
+        abs = lop.AbsBayesInfo(M=M)
+        pair = lop.BayesInfoGain()
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
 
 
     #### create model
     if args.model == 'gp':
-        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
+        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7, sigma_noise=0.000001), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
+
+    model.probits[0].set_sigma(args.sigma_pair)
+    model.probits[2].set_sigma(args.sigma_abs)
+    model.probits[2].set_v(args.v)
 
     fig = plt.figure()
     writer = FFMpegWriter(fps=1)
 
     #model.add(np.array([7]), np.array([0.5]), type='abs')
 
-    with writer.saving(fig, "pref_gp.gif", 100):
+    with writer.saving(fig, "switch.gif", 100):
 
         plot_data(model)
         writer.grab_frame()
@@ -142,13 +165,17 @@ def main():
 
 
             x_train = x_canidiates[test_pt_idxs]
-            y_train = f_sin(x_train)
-            y_pairs = lop.gen_pairs_from_idx(np.argmax(y_train), list(range(len(y_train))))
-            # y_pairs = lop.generate_fake_pairs(x_train, f_sin, 0) + \
-            #             lop.generate_fake_pairs(x_train, f_sin, 1) + \
-            #             lop.generate_fake_pairs(x_train, f_sin, 2)
+            
+            if x_train.shape[0] == 1:
+                print('abs')
+                rating = synth_user.rate(x_train)
 
-            model.add(x_train, y_pairs)
+                model.add(x_train, rating, type='abs')
+            else:
+                print('pair')
+                y_pairs = synth_user.choose_pairs(x_train)
+
+                model.add(x_train, y_pairs)
 
             plot_data(model, x_train)
             writer.grab_frame()

@@ -65,7 +65,7 @@ class RateChooseLearner(ActiveLearner):
     #          only returns highest mean if "always select best is set"
     def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False, select_pair_first=True):
         pair_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
-        abs_idxs = self.abs_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
+        abs_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
 
         print('Pairwise selected metric: ' + str(self.pairwise_l.sel_metric))
         print('Absloute selected metric: ' + str(self.abs_l.sel_metric))

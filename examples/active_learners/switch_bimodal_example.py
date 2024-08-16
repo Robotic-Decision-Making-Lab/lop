@@ -62,11 +62,16 @@ def plot_data(gp):
 
 possible_models = ['gp', 'linear']
 possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR','SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR']
+possible_prior = ['bimodal', 'empty', 'a', 'b']
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
+    parser.add_argument('-v', type=float, default=80.0, help='abs probit v parameter default=80.0')
+    parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
+    parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
+    parser.add_argument('--prior', type=str, default='bimodal', help='Selects prior given to model between '+str(possible_prior))
     args = parser.parse_args()
 
     if args.selector not in possible_selectors:
@@ -74,6 +79,9 @@ def main():
         sys.exit(0)
     if args.model not in possible_models:
         print('model should be one of these '+str(possible_models)+' not ' + str(args.model))
+        sys.exit(0)
+    if args.prior not in possible_prior:
+        print('prior should be one of these '+str(possible_prior)+' not ' + str(args.prior))
         sys.exit(0)
 
     # Create active learner
@@ -120,29 +128,59 @@ def main():
 
     #### create model
     if args.model == 'gp':
-        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
-        #model.probits[2].set
+        model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7, sigma_noise=0.000001), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     if args.model == 'linear':
         model = lop.PreferenceLinear(active_learner=al)
 
+    model.probits[0].set_sigma(args.sigma_pair)
+    model.probits[2].set_sigma(args.sigma_abs)
+    model.probits[2].set_v(args.v)
 
     #model.add(np.array([5]), np.array([0.5]), type='abs')
     #
+    print('v = ' + str(model.probits[2].v))
+    print('pair sigma = ' + str(model.probits[0].sigma))
+    print('abs sigma = ' + str(model.probits[2].sigma))
 
-    X_train = np.array([0,1,2,3,4,5,6,7,8,9,9.5])
-    pairs = [   lop.preference(2,0),
-                lop.preference(2,1),
-                lop.preference(2,3),
-                lop.preference(2,4),
-                lop.preference(7,6),
-                lop.preference(7,5),
-                lop.preference(7,9),
-                lop.preference(8,10),
-                lop.preference(8,9)]
 
-    model.add(X_train, pairs)
+    if args.prior == 'bimodal':
+        X_train = np.array([0,1,2,3,4,5,6,7,8,9,9.5])
+        pairs = [   lop.preference(2,0),
+                    lop.preference(2,1),
+                    lop.preference(2,3),
+                    lop.preference(2,4),
+                    lop.preference(7,6),
+                    lop.preference(7,5),
+                    lop.preference(7,9),
+                    lop.preference(8,10),
+                    lop.preference(8,9)]
 
+        model.add(X_train, pairs)
+    elif args.prior == 'empty':
+        pass
+    elif args.prior == 'a':
+        X_train = np.array([0,1,2,3,4,5,6,7,8,9,9.5])
+        pairs = [   lop.preference(4,0),
+                    lop.preference(3,2),
+                    lop.preference(6,9),
+                    lop.preference(7, 10),
+                    lop.preference(1,8),
+                    lop.preference(5,4)]
+
+        model.add(X_train, pairs)
+    elif args.prior == 'b':
+        X_train = np.array([0,1,4,5,6,9.5])
+        pairs = [   lop.preference(2,0),
+                    lop.preference(1, 4),
+                    lop.preference(2,3),
+                    lop.preference(1, 5)]
+
+        x_abs = np.array([3, 7, 9.2, 2.2])
+        y_abs = np.array([0.4, 0.7, 0.1, 0.36])
+
+        model.add(X_train, pairs)
+        model.add(x_abs, y_abs, type='abs')
 
     plot_data(model)
 

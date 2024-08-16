@@ -98,12 +98,14 @@ class AcquisitionSelection(AcquisitionBase):
         if size_query == 1:
             # THIS IS PROBABLY NOT THE RIGHT WAY TO HANDLE THIS
             # But needs at least a pair in order to calculate properly.
+            self.sel_metric = 0
             return np.random.choice(indicies)[0]
             #return np.argmax(mu)
 
         x_rep, Q_rep = self.get_representative_Q(candidate_pts)
 
         if x_rep is None:
+            self.sel_metric = 0
             return np.random.choice(list(indicies), 1)[0]
 
         ## get sampled output from latent function
@@ -174,6 +176,7 @@ class AcquisitionSelection(AcquisitionBase):
         x_rep, Q_rep = self.get_representative_Q(candidate_pts)
         if x_rep is None:
             idxs = np.random.choice(list(indicies), 2, replace=False)
+            self.sel_metric = 0
             return (idxs[0], idxs[1])
 
         ## get sampled output from latent function

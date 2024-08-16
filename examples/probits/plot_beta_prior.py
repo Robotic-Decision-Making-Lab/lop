@@ -59,7 +59,8 @@ def main():
     plt.plot(q, y)
     #plt.plot(q, y_other)
 
-    plt.xlabel('q')
+    plt.title('Probit PDF over possible query values')
+    plt.xlabel('q, for v='+str(v)+', sigma='+str(sigma)+', F='+str(F))
     plt.ylabel('p(q|F)')
     plt.legend(['pdf'])
     plt.show()

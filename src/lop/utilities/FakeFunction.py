@@ -219,3 +219,17 @@ class FakeSinExp(FakeFunction):
 
 
 
+
+################################ Non-randomized functions
+
+class FakeStaticSin(FakeFunction):
+
+    def randomize(self):
+        pass
+
+    def calc(self, rewards):
+        rewards = 10-rewards
+        return 2 * np.cos(np.pi * (rewards-2) / 3.0) * np.exp(-(0.99*rewards))
+
+
+
