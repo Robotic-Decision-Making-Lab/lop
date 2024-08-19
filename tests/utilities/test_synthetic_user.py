@@ -103,6 +103,7 @@ def test_human_choice_beta_opt():
 
     us.learn_beta(r_train, 0.95)
 
+    # pairwise comparision
     num_correct = 0
     for i in range(N_test):
         correct = np.argmax(us.fake_f(r_test[i]))
@@ -115,6 +116,18 @@ def test_human_choice_beta_opt():
 
     assert p > 0.92 and p < 0.97
 
+    # Rating comparision
+    num_correct = 0
+    for i in range(N_test):
+        correct = np.argmax(us.fake_f(r_test[i]))
+        rating = us.rate(r_test[i])
+
+        if correct == np.argmax(rating):
+            num_correct += 1
+
+    p = num_correct / N_test
+
+    assert p > 0.92 and p < 0.97
 
 
     us.learn_beta(r_train, 0.9)

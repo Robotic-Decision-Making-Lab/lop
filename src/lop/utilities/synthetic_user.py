@@ -82,10 +82,11 @@ class HumanChoiceUser(SyntheticUser):
 
     ## constructor
     # @param fake_f - the fake function for the user.
-    def __init__(self, fake_f, beta = 1.0):
+    def __init__(self, fake_f, beta = 1.0, sigma = 1.0):
         super(HumanChoiceUser, self).__init__(fake_f)
 
         self.beta = beta
+        self.sigma = sigma
 
 
     def kl_objective(self, b, desired_p, sample_queries):
@@ -125,28 +126,74 @@ class HumanChoiceUser(SyntheticUser):
 
         return (p_samp - desired_p)**2
 
-        
+    def rate_sampled_objective(self, sigma, desired_p, sample_queries, y):
+        # [N x size_Query]
+        rating = np.random.normal(y, scale=sigma)
 
+        num_correct = np.sum(np.argmax(rating, axis=1) == np.argmax(y, axis=1))
+        p_samp = (num_correct / y.shape[0])
 
+        return (p_samp - desired_p)**2
 
-    ## learn_beta
-    # This function learns the required beta value
-    # @param rewards - a set of reward values to try
-    # @param p - the probability of selecting the best value
-    # @param num_Q - [opt default=2] the number of points in each query
-    def learn_beta(self, rewards, p, Q_size=2):
+    def sample_Qs(self, rewards, Q_size):
         num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 20000)
         if num_Q < 30:
             num_Q = min(30, comb(rewards.shape[0], Q_size))
         num_Q = int(num_Q)
 
         Qs = sample_unique_sets(rewards.shape[0], num_Q, Q_size)
+        return Qs
+
+
+    ## learn_beta
+    # This function learns the required beta value and sigma for both 
+    # pairwise and absloute queries
+    # @param rewards - a set of reward values to try
+    # @param p - the probability of selecting the best value
+    # @param num_Q - [opt default=2] the number of points in each query
+    def learn_beta(self, rewards, p, Q_size=2):
+        Qs = self.sample_Qs(rewards, Q_size)
+
+        self.learn_beta_pairwise(rewards, p, Q_size, Qs=Qs)
+        self.learn_sigma(rewards, p, Q_size, Qs=Qs)
+
+
+    ## learn_sigma
+    # this function learns
+    def learn_sigma(self, rewards, p, Q_size=2, Qs=None):
+        if Qs is None:
+            Qs = self.sample_Qs(rewards, Q_size)
+
+        sample_Q = rewards[Qs]
+        y = self.fake_f(sample_Q)
+
+        res = minimize_scalar(self.rate_sampled_objective, bounds=[0.001, 10.0], args=(p, sample_Q, y), options={'xatol': 0.01})
+
+        self.sigma = res.x
+
+
+    ## learn_beta_pairwise
+    # This function learns the required beta value
+    # @param rewards - a set of reward values to try
+    # @param p - the probability of selecting the best value
+    # @param num_Q - [opt default=2] the number of points in each query
+    def learn_beta_pairwise(self, rewards, p, Q_size=2, Qs=None):
+        if Qs is None:
+            Qs = self.sample_Qs(rewards, Q_size)
 
         sample_Q = rewards[Qs]
 
         res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
 
         self.beta = res.x
+
+
+
+    def rate(self, query_rewards):
+        y = self.fake_f(query_rewards)
+        val = np.random.normal(loc=y, scale=self.sigma)
+
+        return sigmoid(val)
 
 
     ## choose
