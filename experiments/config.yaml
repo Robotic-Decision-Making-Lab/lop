@@ -22,6 +22,14 @@ p_correct: 0.95
 
 rbf_sigma: 0.8
 rbf_lengthscale: 0.25
+sigma_noise: 0.00001
+
+
+# set probit variables (may be overwritten by tests)
+
+sigma_pair: 1.0
+sigma_abs: 0.1
+v: 80.0
 
 #hyperparameter_optimization: false
 

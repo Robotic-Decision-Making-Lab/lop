@@ -93,7 +93,10 @@ def main():
 
 
     fake_f = lop.FakeStaticSin()
-    synth_user = lop.PerfectUser(fake_f=fake_f)
+    synth_user = lop.HumanChoiceUser(fake_f=fake_f)
+    s_rand = np.random.random((200,))*10.0
+    synth_user.learn_beta(s_rand, 0.95, 2)
+    
 
     M = 200
     # Create active learner

@@ -167,7 +167,13 @@ class HumanChoiceUser(SyntheticUser):
         sample_Q = rewards[Qs]
         y = self.fake_f(sample_Q)
 
-        res = minimize_scalar(self.rate_sampled_objective, bounds=[0.001, 10.0], args=(p, sample_Q, y), options={'xatol': 0.01})
+        for i in range(10):
+            res = minimize_scalar(self.rate_sampled_objective, bounds=[0.001, 10.0], args=(p, sample_Q, y), options={'xatol': 0.01})
+        
+            if res.fun < 0.02:
+                break
+        if res.fun > 0.02:
+            print('Bad setting of sigma value after 10 tries. IDK, figure it out yourself')
 
         self.sigma = res.x
 
@@ -183,8 +189,15 @@ class HumanChoiceUser(SyntheticUser):
 
         sample_Q = rewards[Qs]
 
-        res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
+        for i in range(10):
+            res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
 
+            if res.fun < 0.02:
+                break
+        if res.fun > 0.02:
+            print('Bad setting of beta value after 10 tries. IDK, figure it out yourself')
+
+       
         self.beta = res.x
 
 

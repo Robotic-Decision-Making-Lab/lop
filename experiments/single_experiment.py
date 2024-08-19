@@ -95,7 +95,7 @@ def str_timestamp():
     return timestamp
 
 possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', 'ACQ_RHO', 'ACQ_LL', 'ACQ_EPIC', 'ACQ_SPEAR']
-possible_selection_types = ['choose1', 'ranking', 'rating']
+possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']
 possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max']
 possible_models = ['gp', 'linear']
 
@@ -115,6 +115,9 @@ def main():
     parser.add_argument('--def_pareto', type=str, default='false', help='Sets whether optimization defaults to user pareto optimal points first or not bool [true, false]')
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
+    parser.add_argument('--v_abs', type=float, default=80.0, help='abs probit v parameter default=80.0')
+    parser.add_argument('--sigma_abs', type=float, default=0.1, help='abs probit sigma parameter default=0.1')
+    parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
     args = parser.parse_args()
 
@@ -149,7 +152,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_v_'+str(args.v_abs)+'_sigabs_'+str(args.sigma_abs)+'_sigpair_'+str(args.sigma_pair)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 

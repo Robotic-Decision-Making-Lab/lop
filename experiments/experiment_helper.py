@@ -90,7 +90,7 @@ def get_model(model_desc, active_learner, hyper, config):
             sys.exit(0)
 
         model = lop.PreferenceGP(
-                    cov_func=lop.RBF_kern(config['rbf_sigma'], config['rbf_lengthscale']),
+                    cov_func=lop.RBF_kern(config['rbf_sigma'], config['rbf_lengthscale'], sigma_noise=config['sigma_noise']),
                     normalize_gp=config['normalize_gp'],
                     pareto_pairs=pareto_pairs,
                     normalize_positive=config['normalize_postive'],
@@ -101,6 +101,10 @@ def get_model(model_desc, active_learner, hyper, config):
         model = lop.PreferenceLinear(pareto_pairs=pareto_pairs,\
                                     active_learner=active_learner)
     
+    model.probits[0].set_sigma(config['sigma_pair'])
+    model.probits[2].set_sigma(config['sigma_abs'])
+    model.probits[2].set_v(config['v'])
+
     return model
 
 def get_synth_user(user_desc, utility_f, config):
@@ -285,6 +289,21 @@ def train_and_eval(config_filename,
             rating_np = np.array([rating])
 
             model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
+        elif selection_type == 'switch':
+            sel_idx = model.select(rewards, num_alts)
+            x_train = rewards[sel_idx]
+            
+            # check if a rating or choose is selected by the active learning
+            if len(sel_idx) == 1:
+                rating = user_f.rate(x_train)
+
+                model.add(x_train, rating, type='abs')
+            else:
+                y_pairs = user_f.choose_pairs(x_train)
+
+                model.add(x_train, y_pairs)
+            
+
         # end else if for selection type
 
         accuracy[itr+1], avg_selection[itr+1], all_ranks[itr+1], estimated_scores[itr+1], real_scores[itr+1], score_diff[itr+1] = \
