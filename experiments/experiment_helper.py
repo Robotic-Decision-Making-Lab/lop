@@ -38,6 +38,7 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
     else:
         always_select_best = config['always_select_best']
 
+    M=300
 
     al = None
     if selector == 'UCB':
@@ -57,20 +58,45 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
     elif selector == 'BAYES_INFO_GAIN_999':
         al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='999')
     elif selector == 'ACQ_RHO':
-        al = lop.AcquisitionSelection(M=400, alignment_f='rho',
+        al = lop.AcquisitionSelection(M=M, alignment_f='rho',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ACQ_LL':
-        al = lop.AcquisitionSelection(M=400, alignment_f='loglikelihood',
+        al = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)   
     elif selector == 'ACQ_EPIC':
-        al = lop.AcquisitionSelection(M=400, alignment_f='epic',
+        al = lop.AcquisitionSelection(M=M, alignment_f='epic',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ACQ_SPEAR':
-        al = lop.AcquisitionSelection(M=400, alignment_f='spearman',
+        al = lop.AcquisitionSelection(M=M, alignment_f='spearman',
                                     default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_ACQ_RHO':
+        abs = lop.AbsAcquisition(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_ACQ_LL':
+        abs = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_ACQ_EPIC':
+        abs = lop.AbsAcquisition(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_ACQ_SPEAR':
+        abs = lop.AbsAcquisition(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_BAYES_PROBIT':
+        abs = lop.AbsBayesInfo(M=M)
+        pair = lop.BayesInfoGain()
+        al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
 
     return al

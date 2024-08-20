@@ -94,7 +94,10 @@ def str_timestamp():
     timestamp = time.strftime('%Y-%m-%d_%H-%M-%S', t)
     return timestamp
 
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', 'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', 'ACQ_RHO', 'ACQ_LL', 'ACQ_EPIC', 'ACQ_SPEAR']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PERF', \
+                        'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', \
+                        'ACQ_RHO', 'ACQ_LL', 'ACQ_EPIC', 'ACQ_SPEAR',\
+                        'SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR']
 possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']
 possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max']
 possible_models = ['gp', 'linear']

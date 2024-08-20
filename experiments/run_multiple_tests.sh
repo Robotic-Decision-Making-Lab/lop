@@ -17,10 +17,10 @@ number_runs=10
 def_pareto=false
 # choose1, rating, switch
 sel_type=switch
-num_alts=1
+num_alts=4
 
-
-for selc in UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB #BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
+# SW_BAYES_PROBIT
+for selc in SW_ACQ_RHO SW_ACQ_LL SW_ACQ_EPIC SW_ACQ_SPEAR #UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB #BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
 #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB
 do
     for fake_func in min #linear #squared_min_max max min logistic squared sin_exp 
@@ -31,11 +31,11 @@ do
             do
                 for user in human_choice
                 do
-                    for v in 80.0 10.0 160.0
+                    for v in 80.0 #10.0 160.0
                     do
-                        for sigma_abs in 0.1 1.0 0.5 0.2
+                        for sigma_abs in 0.1 #1.0 0.5 0.2
                         do
-                            for sigma_pair in 1.0
+                            for sigma_pair in 0.1 1.0 10.0 0.5 0.01 100.0
                             do
                                 for i_env in 0 1 2 3 4 5 6 7 8 9
                                 do
