@@ -69,8 +69,9 @@ def visualize_data(X,Y, num_side, fake_ut, pred_ut, pred_sigma, \
     plt.figure()
     ax = plt.gca()
 
-    ax.pcolor(X, Y, Z_pred)
+    c = ax.pcolor(X, Y, Z_pred)
     ax.contour(X, Y, Z_pred)
+    plt.colorbar(c, ax=ax)
     if GP_prior_idx is None:
         GP_prior_idx = [0,0]
     if GP_pts is not None:
@@ -127,3 +128,31 @@ def visualize_data(X,Y, num_side, fake_ut, pred_ut, pred_sigma, \
 
     if also_display:
         plt.show()
+
+
+# param score_diff - numpy array [iterations, num_evals]
+def visualize_single_run_regret(folder, score_diff):
+    avg_regret = np.mean(score_diff, axis=1)
+    std_regret = np.std(score_diff, axis=1)
+    std_error_mean = std_regret / np.sqrt(score_diff.shape[1])
+
+    plt.figure()
+    x = np.arange(0, score_diff.shape[0],dtype=int)
+    ax = plt.gca()
+
+    sigma_to_plot=1.0
+
+    ax.fill_between(x,
+                    avg_regret-(sigma_to_plot*std_error_mean),
+                    avg_regret+(sigma_to_plot*std_error_mean),
+                    alpha=0.1,
+                    label='_nolegend_')
+    ax.plot(x, avg_regret)
+
+    plt.xticks(x)
+    plt.ylabel('avg regret')
+    plt.title('Regret over single run')
+
+    plt.savefig(folder+'single_run_regret.jpg')
+
+

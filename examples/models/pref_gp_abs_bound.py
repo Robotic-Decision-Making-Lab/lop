@@ -37,10 +37,12 @@ def main():
     parser = argparse.ArgumentParser(description='beta distribution plotter')
     parser.add_argument('-v', type=float, default=80, help='the precision variable on the distribution')
     parser.add_argument('--sigma', type=float, default=1.0, help='Enter sigma parameter of the mean link of the beta distribution (scale parameter)')
+    parser.add_argument('--rbf_sigma', type=float, default=1.0, help='Enter sigma parameter of the rbf kernel')
+    parser.add_argument('--rbf_l', type=float, default=0.7, help='Enter lengthscale of rbf kernel')
     args = parser.parse_args()
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern(0.5, 0.7, sigma_noise=0.000001))
+    gp = lop.PreferenceGP(lop.RBF_kern(args.rbf_sigma, args.rbf_l, sigma_noise=0.000001))
     gp.probits[2].set_v(args.v)
     gp.probits[2].set_sigma(args.sigma)
     

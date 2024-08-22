@@ -20,8 +20,10 @@ abs_point_value: 0.5
 # has of selecting the correct path.
 p_correct: 0.95
 
-rbf_sigma: 0.8
-rbf_lengthscale: 0.25
+#rbf_sigma: 0.8
+#rbf_lengthscale: 0.25
+rbf_sigma: 1.0
+rbf_lengthscale: 0.4
 sigma_noise: 0.00001
 
 

@@ -29,7 +29,7 @@ import pdb
 
 import lop
 
-from GP_visualization import record_gp_state, visualize_data
+from GP_visualization import record_gp_state, visualize_data, visualize_single_run_regret
 
 def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, config, fake_func=None):
     #default_to_pareto = config['default_to_pareto']
@@ -197,6 +197,9 @@ def train_and_eval(config_filename,
                     default_pareto=False,
                     num_train=10,
                     num_eval=10,
+                    sigma_abs=0.1,
+                    sigma_pair=1.0,
+                    v=80.0,
                     verbose = False):
     #
     with open(config_filename, 'rb') as f:
@@ -217,6 +220,9 @@ def train_and_eval(config_filename,
 
     #### Get required models and fake functions
     active_learner = get_active_learner(selector, selection_type, UCB_scaler, default_pareto, config)
+    config['sigma_pair'] = sigma_pair
+    config['sigma_abs'] = sigma_abs
+    config['v'] = v
     model = get_model(model_desc, active_learner, hyper, config)
     utility_f = get_fake_func(fake_function_desc, config)
     user_f = get_synth_user(synth_user, utility_f, config)
@@ -342,6 +348,8 @@ def train_and_eval(config_filename,
         record_gp_state(model, utility_f, config['prior_bounds'], folder, \
                         file_header=str_header, visualize=True)
     # end for loop for training loop
+
+    visualize_single_run_regret(folder, score_diff)
 
     return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff
 

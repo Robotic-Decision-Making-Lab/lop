@@ -25,6 +25,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 import lop
 
@@ -33,6 +34,11 @@ def f_sin(x, data=None):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='pref gp')
+    parser.add_argument('--sigma', type=float, default=1.0, help='Enter sigma parameter of the discrete probit')
+    parser.add_argument('--rbf_sigma', type=float, default=1.0, help='Enter sigma parameter of the rbf kernel')
+    parser.add_argument('--rbf_l', type=float, default=0.7, help='Enter lengthscale of rbf kernel')
+    args = parser.parse_args()
     X_train = np.array([0,1,2,3,4.2,6,7])
     pairs = lop.generate_fake_pairs(X_train, f_sin, 0) + \
             lop.generate_fake_pairs(X_train, f_sin, 1) + \
@@ -42,9 +48,10 @@ def main():
 
 
     # Create preference gp and optimize given training data
-    gp = lop.PreferenceGP(lop.RBF_kern_zeroed(0.5, 0.7))
+    gp = lop.PreferenceGP(lop.RBF_kern(args.rbf_sigma, args.rbf_l))
+    gp.probits[0].sigma = args.sigma
     
-    gp.add(np.array([7.5]), np.array([0.5]), type='abs')
+    #gp.add(np.array([7.5]), np.array([0.5]), type='abs')
     gp.add(X_train, pairs)
     gp.optimize(optimize_hyperparameter=False)
 

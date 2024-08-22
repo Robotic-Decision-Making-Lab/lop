@@ -68,7 +68,7 @@ eval_files = [['21.plan', '22.plan', '23.plan', '24.plan', '25.plan', '26.plan',
             ]
 
 
-train_files_short = [ ['1.plan'],
+train_files_short = [ ['1.plan', '2.plan'],
                 ['31.plan'],
                 ['61.plan'],
                 ['91.plan']]
@@ -77,7 +77,7 @@ train_files_short = [ ['1.plan'],
 #                 ['51.plan', '52.plan'],
 #                 ['81.plan', '82.plan'],
 #                 ['111.plan', '112.plan']]
-eval_files_short = [  ['21.plan'],
+eval_files_short = [  ['21.plan', '22,plan'],
                 ['51.plan'],
                 ['81.plan'],
                 ['111.plan']]
@@ -160,6 +160,8 @@ def main():
         folder_name = 'results/'+args.dir
 
 
+
+
     os.mkdir(folder_name)
 
     num_runs = args.num_runs
@@ -196,6 +198,9 @@ def main():
                                             hyper=args.hyper, \
                                             num_train=num_train, \
                                             num_eval=num_eval,\
+                                            sigma_abs=args.sigma_abs,\
+                                            sigma_pair=args.sigma_pair,\
+                                            v=args.v_abs,\
                                             verbose = args.v)
 
 
