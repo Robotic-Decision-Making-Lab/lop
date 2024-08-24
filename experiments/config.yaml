@@ -31,7 +31,7 @@ sigma_noise: 0.00001
 
 sigma_pair: 1.0
 sigma_abs: 0.1
-v: 80.0
+v: 60.0
 
 #hyperparameter_optimization: false
 
