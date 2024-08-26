@@ -27,7 +27,7 @@ do
     do
         for hyper_sel in no
         do
-            for model in gp
+            for model in linear
             do
                 for user in human_choice
                 do
