@@ -144,6 +144,9 @@ class SimplelestModel(Model):
         else:
             return X, None
 
+    def add(self, X, y, type='relative_discrete', training_sigma=0):
+        pass
+    
     def reset(self):
         pass
 
