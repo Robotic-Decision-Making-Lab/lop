@@ -121,6 +121,8 @@ def main():
     parser.add_argument('--v_abs', type=float, default=80.0, help='abs probit v parameter default=80.0')
     parser.add_argument('--sigma_abs', type=float, default=0.1, help='abs probit sigma parameter default=0.1')
     parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
+    parser.add_argument('--rbf_sigma', type=float, default=1.0, help='RBF sigma parameter (unused for linear) default=1.0')
+    parser.add_argument('--rbf_l', type=float, default=0.4, help='lengthscale of the rbf, unused for linear default=0.4')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
     args = parser.parse_args()
 
@@ -201,6 +203,8 @@ def main():
                                             sigma_abs=args.sigma_abs,\
                                             sigma_pair=args.sigma_pair,\
                                             v=args.v_abs,\
+                                            rbf_l=args.rbf_l,\
+                                            rbf_sigma=args.rbf_sigma, \
                                             verbose = args.v)
 
 

@@ -200,6 +200,7 @@ def train_and_eval(config_filename,
                     sigma_abs=0.1,
                     sigma_pair=1.0,
                     v=80.0,
+                    rbf_l=None,
                     verbose = False):
     #
     with open(config_filename, 'rb') as f:
@@ -213,6 +214,8 @@ def train_and_eval(config_filename,
 
     if rbf_sigma is not None:
         config['rbf_sigma'] = rbf_sigma
+    if rbf_l is not None:
+        config['rbf_lengthscale'] = rbf_l
     if UCB_scaler is None:
         UCB_scaler = config['UCB_scalar']
 
@@ -223,6 +226,8 @@ def train_and_eval(config_filename,
     config['sigma_pair'] = sigma_pair
     config['sigma_abs'] = sigma_abs
     config['v'] = v
+    # config['rbf_lengthscale'] = rbf_l
+
     model = get_model(model_desc, active_learner, hyper, config)
     utility_f = get_fake_func(fake_function_desc, config)
     user_f = get_synth_user(synth_user, utility_f, config)
