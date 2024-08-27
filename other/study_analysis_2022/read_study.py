@@ -100,8 +100,11 @@ def main():
     args = parser.parse_args()
 
 
-    model_l = lop.PreferenceLinear()
-    model_gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.5))
+    model_l = lop.PreferenceLinear(pareto_pairs=True)
+    #model_l.add_prior(bounds=np.array([[0,1.5],[0,1.5]]),num_pts=25)
+
+    model_gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.5), pareto_pairs=True)
+    #model_gp.add_prior(bounds=np.array([[0,1.5],[0,1.5]]),num_pts=25)
     model_s = lop.SimplelestModel()
 
     if args.f == '':
@@ -120,7 +123,7 @@ def main():
 
         ## plotting code
         ax = plt.gca()
-        colors = {'lin': '#000000', 'gp': '#E69F00', 'random': '#56B4E9', 'sum': '#332288'}
+        colors = {'lin': '#000000', 'gp': '#E69F00', 'random': '#56B4E9', 'sum': '#009E73'}
 
         x = np.arange(acc_l.shape[1])
         
@@ -134,7 +137,7 @@ def main():
                         alpha=0.1, color=colors['gp'], label='_nolegend_')
         
         ax.plot(x, mean_s, color=colors['sum'])
-        ax.fill_between(x, mean_s-std_s, mean_gp+std_s, 
+        ax.fill_between(x, mean_s-std_s, mean_s+std_s, 
                         alpha=0.1, color=colors['sum'], label='_nolegend_')
 
 
