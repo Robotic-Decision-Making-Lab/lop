@@ -13,6 +13,9 @@ add_abs_point: true
 abs_point_loc:
   - 0.0
   - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
 
 abs_point_value: 0.5
 
@@ -38,6 +41,10 @@ v: 60.0
 # does this need to be updated for depending on the fake function being used?
 normalize_gp: false
 normalize_postive: false
+
+
+# simple_rewards.rew
+simple_rewards_file: "../../other_repos/ice-soil-planner/scripts/plan_saving/rewards_ice_soil.pickle"
 
 
 add_model_prior: false

@@ -143,19 +143,19 @@ def get_synth_user(user_desc, utility_f, config):
 
 def get_fake_func(fake_func_desc, config):
     if fake_func_desc == 'linear':
-        func = lop.FakeLinear()
+        func = lop.FakeLinear(config['dim_rewards'])
     elif fake_func_desc == 'squared':
-        func = lop.FakeSquared()
+        func = lop.FakeSquared(config['dim_rewards'])
     elif fake_func_desc == 'logistic':
-        func = lop.FakeLogistic()
+        func = lop.FakeLogistic(config['dim_rewards'])
     elif fake_func_desc == 'sin_exp':
-        func = lop.FakeSinExp()
+        func = lop.FakeSinExp(config['dim_rewards'])
     elif fake_func_desc == 'min':
-        func = lop.FakeWeightedMin()
+        func = lop.FakeWeightedMin(config['dim_rewards'])
     elif fake_func_desc == 'max':
-        func = lop.FakeWeightedMax() 
+        func = lop.FakeWeightedMax(config['dim_rewards']) 
     elif fake_func_desc == 'squared_min_max':
-        func = lop.FakeSquaredMinMax()
+        func = lop.FakeSquaredMinMax(config['dim_rewards'])
 
     return func
 
@@ -206,11 +206,13 @@ def train_and_eval(config_filename,
     with open(config_filename, 'rb') as f:
         config = yaml.load(f.read(), Loader=yaml.Loader)
 
-    with open('simple_rewards.rew', 'rb') as f:
+    with open(config['simple_rewards_file'], 'rb') as f:
         path_data = pickle.load(f)
 
     train_data = [path_d[:num_train] for path_d in path_data['train']]
     eval_data = [path_d[:num_eval] for path_d in path_data['eval']]
+
+    dim_rewards = eval_data[env_num][0]['rewards'].shape[1]
 
     if rbf_sigma is not None:
         config['rbf_sigma'] = rbf_sigma
@@ -226,6 +228,7 @@ def train_and_eval(config_filename,
     config['sigma_pair'] = sigma_pair
     config['sigma_abs'] = sigma_abs
     config['v'] = v
+    config['dim_rewards'] = dim_rewards
     # config['rbf_lengthscale'] = rbf_l
 
     model = get_model(model_desc, active_learner, hyper, config)
@@ -233,10 +236,11 @@ def train_and_eval(config_filename,
     user_f = get_synth_user(synth_user, utility_f, config)
 
 
-    eval_user_d = np.empty((0,2))
-    for eval_env_d in eval_data:
-        for path_d in eval_env_d:
-            eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
+    eval_env_d = eval_data[env_num]
+    
+    eval_user_d = np.empty((0, dim_rewards))
+    for path_d in eval_env_d:
+        eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
 
     try:
         user_f.learn_beta(eval_user_d, config['p_correct'], Q_size=num_alts)
@@ -374,6 +378,7 @@ def evaluation(env_num, utility_f, config, model, eval_data):
     for i in range(num_eval):
         ##### Generate paths and select paths for explanation
         rewards, indicies = eval_data[env_num][i]['rewards'], eval_data[env_num][i]['indicies']
+        #pdb.set_trace()
         scores = model(rewards)
 
         best_idx = model.active_learner.select_best(scores, set(indicies['pareto']))

@@ -11,47 +11,58 @@ import lop
 
 def record_gp_state(model, fake_f, bounds=[(0,0),(2.0,2.0)], folder='./', \
                     file_header='', visualize=False):
-    # Generate test grid
-    num_side = 25
-    x = np.linspace(bounds[0][0], bounds[0][1], num_side)
-    y = np.linspace(bounds[1][0], bounds[1][1], num_side)
+    
+    if fake_f.w.shape[0] == 2:
+        # Generate test grid
+        num_side = 25
+        x = np.linspace(bounds[0][0], bounds[0][1], num_side)
+        y = np.linspace(bounds[1][0], bounds[1][1], num_side)
 
-    X, Y = np.meshgrid(x,y)
-    pts = np.vstack([X.ravel(), Y.ravel()]).transpose()
-
-
-    fake_ut = fake_f(pts)
-    max_fake = np.linalg.norm(fake_ut, ord=np.inf)
-    fake_ut = fake_ut / max_fake
-
-    pred_ut, pred_sigma = model.predict_large(pts)
+        X, Y = np.meshgrid(x,y)
+        pts = np.vstack([X.ravel(), Y.ravel()]).transpose()
 
 
-    # save useful data
-    # save entire pickle file
-    gp_filename = folder+file_header+'_gp.p'
-    print(gp_filename)
-    #pickle.dump(gp, open(gp_filename, "wb"))
-    # Save useful visualization data
-    viz_filename = folder+file_header+'_viz'
-    print(viz_filename)
-    np.savez(viz_filename, \
-            pts=pts, \
-            fake_ut=fake_ut, \
-            pred_ut=pred_ut, \
-            pred_sigma=pred_sigma, \
-            GP_pts=model.X_train, \
-            GP_pref_0=model.y_train[0], \
-            GP_pref_1=model.y_train[1], \
-            GP_pref_2=model.y_train[2], \
-            GP_prior_idx=model.prior_idx)
+        fake_ut = fake_f(pts)
+        max_fake = np.linalg.norm(fake_ut, ord=np.inf)
+        fake_ut = fake_ut / max_fake
+
+        pred_ut, pred_sigma = model.predict_large(pts)
 
 
-    if visualize == True:
-        visualize_data(X, Y, num_side, fake_ut, pred_ut, pred_sigma,
-            model.X_train, model.prior_idx, model.y_train[0], model.y_train[1], model.y_train[2], \
-            folder, file_header, \
-            also_display=False)
+        # save useful data
+        # save entire pickle file
+        gp_filename = folder+file_header+'_gp.p'
+        print(gp_filename)
+        #pickle.dump(gp, open(gp_filename, "wb"))
+        # Save useful visualization data
+        viz_filename = folder+file_header+'_viz'
+        print(viz_filename)
+        np.savez(viz_filename, \
+                pts=pts, \
+                fake_ut=fake_ut, \
+                pred_ut=pred_ut, \
+                pred_sigma=pred_sigma, \
+                GP_pts=model.X_train, \
+                GP_pref_0=model.y_train[0], \
+                GP_pref_1=model.y_train[1], \
+                GP_pref_2=model.y_train[2], \
+                GP_prior_idx=model.prior_idx)
+
+
+        if visualize == True:
+            visualize_data(X, Y, num_side, fake_ut, pred_ut, pred_sigma,
+                model.X_train, model.prior_idx, model.y_train[0], model.y_train[1], model.y_train[2], \
+                folder, file_header, \
+                also_display=False)
+            
+    else:
+        viz_filename = folder+file_header+'_viz'
+        np.savez(viz_filename, \
+                GP_pts=model.X_train, \
+                GP_pref_0=model.y_train[0], \
+                GP_pref_1=model.y_train[1], \
+                GP_pref_2=model.y_train[2], \
+                GP_prior_idx=model.prior_idx)
 
 
 def visualize_data(X,Y, num_side, fake_ut, pred_ut, pred_sigma, \
