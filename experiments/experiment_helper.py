@@ -55,6 +55,8 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         al = lop.RandomLearner(default_to_pareto, always_select_best)
     elif selector == 'BAYES_INFO_GAIN_PROBIT':
         al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='probit')
+    elif selector == 'ABS_BAYES_PROBIT':
+        al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='probit')
     elif selector == 'BAYES_INFO_GAIN_999':
         al = lop.BayesInfoGain(default_to_pareto, always_select_best,p_q_B_method='999')
     elif selector == 'ACQ_RHO':
@@ -71,6 +73,22 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ACQ_SPEAR':
         al = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'ABS_ACQ_RHO':
+        al = lop.AbsBayesInfo(M=M, alignment_f='rho',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'ABS_ACQ_LL':
+        al = lop.AbsBayesInfo(M=M, alignment_f='loglikelihood',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)   
+    elif selector == 'ABS_ACQ_EPIC':
+        al = lop.AbsBayesInfo(M=M, alignment_f='epic',
+                                    default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'ABS_ACQ_SPEAR':
+        al = lop.AbsBayesInfo(M=M, alignment_f='spearman',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ACQ_RHO':
