@@ -38,7 +38,7 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
     else:
         always_select_best = config['always_select_best']
 
-    M=300
+    M=200
 
     al = None
     if selector == 'UCB':
@@ -76,19 +76,19 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ABS_ACQ_RHO':
-        al = lop.AbsBayesInfo(M=M, alignment_f='rho',
+        al = lop.AbsAcquisition(M=M, alignment_f='rho',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ABS_ACQ_LL':
-        al = lop.AbsBayesInfo(M=M, alignment_f='loglikelihood',
+        al = lop.AbsAcquisition(M=M, alignment_f='loglikelihood',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)   
     elif selector == 'ABS_ACQ_EPIC':
-        al = lop.AbsBayesInfo(M=M, alignment_f='epic',
+        al = lop.AbsAcquisition(M=M, alignment_f='epic',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'ABS_ACQ_SPEAR':
-        al = lop.AbsBayesInfo(M=M, alignment_f='spearman',
+        al = lop.AbsAcquisition(M=M, alignment_f='spearman',
                                     default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ACQ_RHO':

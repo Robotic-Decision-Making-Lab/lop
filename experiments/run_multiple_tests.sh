@@ -17,7 +17,7 @@ number_runs=10
 def_pareto=false
 # choose1, rating, switch
 sel_type=switch
-num_alts=4
+num_alts=2
 
 # SW_BAYES_PROBIT
 for selc in SW_ACQ_RHO ACQ_RHO ABS_ACQ_RHO SW_ACQ_LL ACQ_LL ABS_ACQ_RHO MUTUAL_INFO SW_ACQ_EPIC SW_ACQ_SPEAR ACQ_SPEAR ABS_ACQ_SPEAR #UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB #BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
@@ -37,7 +37,7 @@ do
                         do
                             for sigma_pair in 1.0
                             do
-                                for rbf_l in 0.5 0.8
+                                for rbf_l in 0.8
                                 do
                                     for rbf_sigma in 1.0
                                     do

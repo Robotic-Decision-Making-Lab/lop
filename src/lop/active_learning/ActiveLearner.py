@@ -73,6 +73,10 @@ class ActiveLearner:
     #          only returns highest mean if "always select best is set"
     def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False, select_pair_first=True):
         self.first_call_greedy = True
+        try:
+            num_alts = min(num_alts, self.max_num_alts)
+        except:
+            pass
         self.num_alts = num_alts
         prefer_pts = self.get_prefered_set_of_pts(candidate_pts, prefer_pts)
         prev_selection = set(prev_selection)

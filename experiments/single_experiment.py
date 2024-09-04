@@ -121,7 +121,7 @@ def main():
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
     parser.add_argument('--v_abs', type=float, default=80.0, help='abs probit v parameter default=80.0')
-    parser.add_argument('--sigma_abs', type=float, default=0.1, help='abs probit sigma parameter default=0.1')
+    parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('--rbf_sigma', type=float, default=1.0, help='RBF sigma parameter (unused for linear) default=1.0')
     parser.add_argument('--rbf_l', type=float, default=0.4, help='lengthscale of the rbf, unused for linear default=0.4')
@@ -159,7 +159,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_v_'+str(args.v_abs)+'_sigabs_'+str(args.sigma_abs)+'_sigpair_'+str(args.sigma_pair)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_v_'+str(args.v_abs)+'_sigabs_'+str(args.sigma_abs)+'_sigpair_'+str(args.sigma_pair)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 

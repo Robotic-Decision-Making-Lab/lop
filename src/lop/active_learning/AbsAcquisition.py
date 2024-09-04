@@ -87,6 +87,7 @@ class AbsAcquisition(AcquisitionBase):
                                                     always_select_best=always_select_best)
         
         self.M = M
+        self.max_num_alts = 1
 
 
     
@@ -136,7 +137,7 @@ class AbsAcquisition(AcquisitionBase):
         ########## values post summation
 
         integ_p_q, err = quad_vec(pq_integrand, 0.0001, 0.9999, epsrel=0.001, 
-                                    workers=-1, limit=200, args=(aa, bb, f))
+                                    workers=-1, limit=150, args=(aa, bb, f))
 
         print('err = ' + str(err))
 

@@ -198,7 +198,7 @@ class AcquisitionBase(ActiveLearner):
             w_samples = metropolis_hastings(self.model.loss_func, self.M, dim=candidate_pts.shape[1])
 
             w_norm = np.linalg.norm(w_samples, axis=1)
-            w_samples = w_samples / np.tile(w_norm, (2,1)).T
+            w_samples = w_samples / np.tile(w_norm, (candidate_pts.shape[1],1)).T
             # generate possible outputs from weighted samples
             all_rep = (x_rep @ w_samples.T).T
             all_Q = (candidate_pts @ w_samples.T).T

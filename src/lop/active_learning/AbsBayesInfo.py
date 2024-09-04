@@ -22,6 +22,7 @@ class AbsBayesInfo(ActiveLearner):
     def __init__(self, M=100, default_to_pareto=False, always_select_best=False):
         super(AbsBayesInfo, self).__init__(default_to_pareto,always_select_best)
         self.M = M
+        self.max_num_alts = 1
         
 
     def calc_one_time(self, candidate_pts, mu):
