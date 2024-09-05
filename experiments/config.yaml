@@ -19,6 +19,9 @@ abs_point_loc:
 
 abs_point_value: 0.5
 
+# the number of points to downselect to
+downselect_num: 50
+
 # the approximate probability the synth user
 # has of selecting the correct path.
 p_correct: 0.95

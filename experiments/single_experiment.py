@@ -104,6 +104,11 @@ possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']
 possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max']
 possible_models = ['gp', 'linear']
 
+def boolean_string(s):
+    if s not in {'False', 'True', 'false', 'true'}:
+        raise ValueError('Not a valid boolean string')
+    return s == 'True' or s == 'true'
+
 def main():
     # Read in arguments required
     parser = argparse.ArgumentParser(description='User preferences')
@@ -120,6 +125,7 @@ def main():
     parser.add_argument('--def_pareto', type=str, default='false', help='Sets whether optimization defaults to user pareto optimal points first or not bool [true, false]')
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
+    parser.add_argument('--kmedoid', type=boolean_string, default=True, help='Sets whether to use kmediod downsampling to decrease the input points to the query selection algorithm')
     parser.add_argument('--v_abs', type=float, default=80.0, help='abs probit v parameter default=80.0')
     parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
@@ -159,7 +165,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) +  '_'+args.hyper+'_v_'+str(args.v_abs)+'_sigabs_'+str(args.sigma_abs)+'_sigpair_'+str(args.sigma_pair)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' +str(args.kmedoid)+  '_'+args.hyper+'_v_'+str(args.v_abs)+'_sigabs_'+str(args.sigma_abs)+'_sigpair_'+str(args.sigma_pair)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
@@ -208,6 +214,7 @@ def main():
                                             v=args.v_abs,\
                                             rbf_l=args.rbf_l,\
                                             rbf_sigma=args.rbf_sigma, \
+                                            use_kmedoid=args.kmedoid, \
                                             verbose = args.v)
 
 

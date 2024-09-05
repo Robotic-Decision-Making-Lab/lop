@@ -25,6 +25,7 @@ import numpy as np
 import oyaml as yaml
 import sys
 import pickle
+from sklearn_extra.cluster import KMedoids
 import pdb
 
 import lop
@@ -220,6 +221,7 @@ def train_and_eval(config_filename,
                     sigma_abs=0.1,
                     sigma_pair=1.0,
                     v=80.0,
+                    use_kmedoid=True,
                     rbf_l=None,
                     verbose = False):
     #
@@ -317,6 +319,12 @@ def train_and_eval(config_filename,
                 bounds[j] = (mins[j], bounds[j][1])
             if maxs[j] > bounds[j][1]:
                 bounds[j] = (bounds[j][0], maxs[j])
+
+        if use_kmedoid:
+            if rewards.shape[0] > config['downselect_num']:
+                kmed = KMedoids(n_clusters=60).fit(rewards)
+                rewards = kmed.cluster_centers_
+                print('Downselected using k-medoids')
 
         if selection_type == 'choose1' or selection_type == 'ranking':
             if config['pareto_pairs']:
