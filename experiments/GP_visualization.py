@@ -142,7 +142,7 @@ def visualize_data(X,Y, num_side, fake_ut, pred_ut, pred_sigma, \
 
 
 # param score_diff - numpy array [iterations, num_evals]
-def visualize_single_run_regret(folder, score_diff):
+def visualize_single_run_regret(folder, score_diff, query_type_is_abs):
     avg_regret = np.mean(score_diff, axis=1)
     std_regret = np.std(score_diff, axis=1)
     std_error_mean = std_regret / np.sqrt(score_diff.shape[1])
@@ -153,15 +153,25 @@ def visualize_single_run_regret(folder, score_diff):
 
     sigma_to_plot=1.0
 
+    c1 = '#000000'
+    c2= '#E69F00'
+
     ax.fill_between(x,
                     avg_regret-(sigma_to_plot*std_error_mean),
                     avg_regret+(sigma_to_plot*std_error_mean),
                     alpha=0.1,
+                    color=c1,
                     label='_nolegend_')
-    ax.plot(x, avg_regret)
-
+    ax.plot(x, avg_regret, color=c1)
+    ax.set_ylabel('avg regret', color=c1)
+    ax.tick_params(axis='y', labelcolor=c1)
+    
+    ax2 = ax.twinx()
+    ax2.plot(x[1:], query_type_is_abs[1:], color=c2)
+    ax2.set_ylabel('Query type selected (1=abs, 0=pair)', color=c2)
+    ax2.tick_params(axis='y', labelcolor=c2)
+    
     plt.xticks(x)
-    plt.ylabel('avg regret')
     plt.title('Regret over single run')
 
     plt.savefig(folder+'single_run_regret.jpg')

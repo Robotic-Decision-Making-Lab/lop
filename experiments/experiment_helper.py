@@ -199,6 +199,8 @@ def rating_score_from_fake_f(rewards, fake_func, rating_bounds):
 
     return ratings
 
+PAIR_QUERY = 0
+ABS_QUERY = 1
 
 def train_and_eval(config_filename, 
                     env_num, 
@@ -275,6 +277,7 @@ def train_and_eval(config_filename,
     # setup storage of scores
     accuracy = np.zeros(num_training+1)
     avg_selection = np.zeros(num_training+1)
+    query_type_is_abs = np.zeros(num_training+1, dtype=int) - 1
     all_ranks = np.zeros((num_training+1, len(eval_data[0])))
 
     estimated_scores = np.zeros((num_training+1, len(eval_data[0])))
@@ -340,6 +343,7 @@ def train_and_eval(config_filename,
             if len(non_shown_paths) > 0:
                 model.add(rewards[non_shown_paths], [])
 
+            query_type_is_abs[itr+1] = PAIR_QUERY
         elif selection_type == 'rating':
             sel_idx = model.select(rewards, 1)[0]
 
@@ -348,6 +352,7 @@ def train_and_eval(config_filename,
             rating_np = np.array([rating])
 
             model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
+            query_type_is_abs[itr+1] = ABS_QUERY
         elif selection_type == 'switch':
             sel_idx = model.select(rewards, num_alts)
             x_train = rewards[sel_idx]
@@ -357,10 +362,12 @@ def train_and_eval(config_filename,
                 rating = user_f.rate(x_train)
 
                 model.add(x_train, rating, type='abs')
+                query_type_is_abs[itr+1] = ABS_QUERY
             else:
                 y_pairs = user_f.choose_pairs(x_train)
 
                 model.add(x_train, y_pairs)
+                query_type_is_abs[itr+1] = PAIR_QUERY
             
 
         # end else if for selection type
@@ -376,9 +383,9 @@ def train_and_eval(config_filename,
                         file_header=str_header, visualize=True)
     # end for loop for training loop
 
-    visualize_single_run_regret(folder, score_diff)
+    visualize_single_run_regret(folder, score_diff, query_type_is_abs)
 
-    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff
+    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs
 
 
 
