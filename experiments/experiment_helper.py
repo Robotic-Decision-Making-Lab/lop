@@ -26,6 +26,7 @@ import oyaml as yaml
 import sys
 import pickle
 from sklearn_extra.cluster import KMedoids
+import scipy.spatial as spa
 import pdb
 
 import lop
@@ -200,6 +201,25 @@ def rating_score_from_fake_f(rewards, fake_func, rating_bounds):
 
     return ratings
 
+def downsample_hull(X, num_downselect):
+    hull_idxs = spa.ConvexHull(X).vertices
+
+    if len(hull_idxs) < num_downselect:
+
+        non_hull_idxs = list(set(list(range(X.shape[0]))) - set(hull_idxs))
+
+        cents_non_hull = KMedoids(n_clusters=num_downselect - len(hull_idxs)).fit(X[non_hull_idxs]).cluster_centers_
+
+
+        down_pts = np.append(X[hull_idxs], cents_non_hull, axis=0)
+    else:
+        print(len(X[hull_idxs]))
+        cents_hulls = KMedoids(n_clusters=num_downselect).fit(X[hull_idxs]).cluster_centers_
+
+        down_pts = cents_hulls
+    return down_pts
+
+
 PAIR_QUERY = 0
 ABS_QUERY = 1
 
@@ -320,11 +340,20 @@ def train_and_eval(config_filename,
             if maxs[j] > bounds[j][1]:
                 bounds[j] = (bounds[j][0], maxs[j])
 
-        if use_kmedoid:
+        if use_kmedoid == 'True' or use_kmedoid == 'true':
             if rewards.shape[0] > config['downselect_num']:
                 kmed = KMedoids(n_clusters=60).fit(rewards)
                 rewards = kmed.cluster_centers_
                 print('Downselected using k-medoids')
+        elif use_kmedoid == 'uni':
+            if rewards.shape[0] > config['downselect_num']:
+                subset = np.random.choice(np.arange(0, rewards.shape[0]), config['downselect_num'], replace=False)
+                rewards = rewards[subset]
+                print('Downselected using random')
+        elif use_kmedoid == 'downhull':
+            if rewards.shape[0] > config['downselect_num']:
+                rewards = downsample_hull(rewards, config['downselect_num'])
+                print('Downselected using downsample_hull')
 
         if selection_type == 'choose1' or selection_type == 'ranking':
             if config['pareto_pairs']:

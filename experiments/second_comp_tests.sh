@@ -17,12 +17,11 @@ number_runs=10
 def_pareto=false
 # choose1, rating, switch
 sel_type=switch
-# True False uni downhull
-kmedoid=downhull
+kmedoid=true
 num_alts=2
 
 # SW_BAYES_PROBIT
-for model in gp #linear
+for model in gp linear
 do
     for selc in SW_ACQ_RHO ACQ_RHO ABS_ACQ_RHO #SW_ACQ_LL ACQ_LL ABS_ACQ_RHO MUTUAL_INFO SW_ACQ_EPIC SW_ACQ_SPEAR ACQ_SPEAR ABS_ACQ_SPEAR #UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB #BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
     #for selc in UCB SGV_UCB MUTUAL_INFO MUTUAL_UCB

@@ -125,7 +125,7 @@ def main():
     parser.add_argument('--def_pareto', type=str, default='false', help='Sets whether optimization defaults to user pareto optimal points first or not bool [true, false]')
     parser.add_argument('--fake_func', type=str, default='linear', help='fake function for synthetic user: '+str(possible_fake_funcs))
     parser.add_argument('--test_experiment', type=bool, default=False, help='Shortens the number of plans to make testing the experiment easier')
-    parser.add_argument('--kmedoid', type=boolean_string, default=True, help='Sets whether to use kmediod downsampling to decrease the input points to the query selection algorithm')
+    parser.add_argument('--kmedoid', type=str, default='True', help='Sets whether to use kmediod downsampling to decrease the input points to the query selection algorithm')
     parser.add_argument('--v_abs', type=float, default=80.0, help='abs probit v parameter default=80.0')
     parser.add_argument('--sigma_abs', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
@@ -247,7 +247,8 @@ def main():
                     ranks=ranks[:j+1], 
                     estimated_scores=estimated_scores[:j+1], \
                     real_scores = real_scores[:j+1], \
-                    score_diff = score_diff[:j+1])
+                    score_diff = score_diff[:j+1], \
+                    query_type_is_abs = query_type_is_abs[:j+1])
         sys.exit(0)
 
 if __name__ == '__main__':
