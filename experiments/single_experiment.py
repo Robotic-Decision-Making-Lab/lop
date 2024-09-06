@@ -184,6 +184,9 @@ def main():
     estimated_scores = np.empty((num_runs, num_train+1, num_eval))
     real_scores = np.empty((num_runs, num_train+1, num_eval))
     score_diff = np.empty((num_runs, num_train+1, num_eval))
+    spearmans = np.empty((num_runs, num_train+1, num_eval))
+    pearsons = np.empty((num_runs, num_train+1, num_eval))
+    rhos = np.empty((num_runs, num_train+1, num_eval))
     avg_ranks = np.empty((num_runs, num_train+1))
     avg_correct = np.empty((num_runs, num_train+1))
     query_type_is_abs = np.empty((num_runs, num_train+1))
@@ -195,7 +198,7 @@ def main():
             run_folder = folder_name+'run_'+str(j)+'/'
             os.mkdir(run_folder)
             print('VERBOSE: ' + str(args.v))
-            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type = \
+            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type, spearman, pearson, rho = \
                             train_and_eval( args.config, \
                                             env_num=args.env, \
                                             fake_function_desc=args.fake_func, \
@@ -226,6 +229,9 @@ def main():
 
             estimated_scores[j] = est_score
             real_scores[j] = real_score
+            spearmans[j] = spearman
+            pearsons[j] = pearson
+            rhos[j] = rho
             score_diff[j] = s_diff
 
             print('Updating savez file with data from run: '+str(j))
@@ -236,6 +242,9 @@ def main():
                     estimated_scores=estimated_scores[:j+1], \
                     real_scores = real_scores[:j+1], \
                     score_diff = score_diff[:j+1], \
+                    spearmans = spearmans[:j+1], \
+                    pearsons = pearsons[:j+1], \
+                    rhos = rhos[:j+1], \
                     query_type_is_abs = query_type_is_abs[:j+1])
 
     except KeyboardInterrupt:
@@ -247,6 +256,9 @@ def main():
                     ranks=ranks[:j+1], 
                     estimated_scores=estimated_scores[:j+1], \
                     real_scores = real_scores[:j+1], \
+                    spearmans = spearmans[:j+1], \
+                    pearsons = pearsons[:j+1], \
+                    rhos = rhos[:j+1], \
                     score_diff = score_diff[:j+1], \
                     query_type_is_abs = query_type_is_abs[:j+1])
         sys.exit(0)

@@ -219,6 +219,17 @@ def downsample_hull(X, num_downselect):
         down_pts = cents_hulls
     return down_pts
 
+def downsample_kmed_rand(X, num_downselect, kmed_pct=0.5):
+    num_kmed = int(kmed_pct * num_downselect)
+    num_rand = num_downselect - num_kmed
+    
+    rand_idxs = np.random.choice(X.shape[0], num_rand, replace=False)
+    non_rand_idxs = list(set(list(range(X.shape[0]))) - set(rand_idxs))
+    
+    cent_pts = KMedoids(n_clusters=num_kmed).fit(X[non_rand_idxs]).cluster_centers_
+
+    return np.append(cent_pts, X[rand_idxs], axis=0)
+
 
 PAIR_QUERY = 0
 ABS_QUERY = 1
@@ -305,9 +316,12 @@ def train_and_eval(config_filename,
     estimated_scores = np.zeros((num_training+1, len(eval_data[0])))
     real_scores = np.zeros((num_training+1, len(eval_data[0])))
     score_diff = np.zeros((num_training+1, len(eval_data[0])))
+    spearmans = np.zeros((num_training+1, len(eval_data[0])))
+    pearsons = np.zeros((num_training+1, len(eval_data[0])))
+    rhos = np.zeros((num_training+1, len(eval_data[0])))
 
     # test untrained model
-    accuracy[0], avg_selection[0], all_ranks[0], estimated_scores[0], real_scores[0], score_diff[0] = \
+    accuracy[0], avg_selection[0], all_ranks[0], estimated_scores[0], real_scores[0], score_diff[0], spearmans[0], pearsons[0], rhos[0] = \
                         evaluation(env_num, utility_f, config, model, eval_data)
 
     str_header = str(0)
@@ -354,6 +368,10 @@ def train_and_eval(config_filename,
             if rewards.shape[0] > config['downselect_num']:
                 rewards = downsample_hull(rewards, config['downselect_num'])
                 print('Downselected using downsample_hull')
+        elif use_kmedoid == 'medrand':
+            if rewards.shape[0] > config['downselect_num']:
+                rewards = downsample_kmed_rand(rewards, config['downselect_num'])
+                print('Downselected using kmed_rand')
 
         if selection_type == 'choose1' or selection_type == 'ranking':
             if config['pareto_pairs']:
@@ -409,7 +427,7 @@ def train_and_eval(config_filename,
 
         # end else if for selection type
 
-        accuracy[itr+1], avg_selection[itr+1], all_ranks[itr+1], estimated_scores[itr+1], real_scores[itr+1], score_diff[itr+1] = \
+        accuracy[itr+1], avg_selection[itr+1], all_ranks[itr+1], estimated_scores[itr+1], real_scores[itr+1], score_diff[itr+1], spearmans[itr+1], pearsons[itr+1], rhos[itr+1] = \
                         evaluation(env_num, utility_f, config, model, eval_data)
 
         str_header = str(itr+1)
@@ -422,7 +440,7 @@ def train_and_eval(config_filename,
 
     visualize_single_run_regret(folder, score_diff, query_type_is_abs)
 
-    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs
+    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs, spearmans, pearsons, rhos
 
 
 
@@ -435,6 +453,10 @@ def evaluation(env_num, utility_f, config, model, eval_data):
 
     estimated_scores = np.empty(num_eval)
     real_scores = np.empty(num_eval)
+    score_diff = np.empty(num_eval)
+    spearmans = np.empty(num_eval)
+    pearsons = np.empty(num_eval)
+    rhos = np.empty(num_eval)
     score_diff = np.empty(num_eval)
 
     for i in range(num_eval):
@@ -451,6 +473,24 @@ def evaluation(env_num, utility_f, config, model, eval_data):
         best_path = sorted_idx[0]
         selected_rank = np.where(sorted_idx == indicies['best'])[0][0]
 
+
+        # calculate spearman and pearson correlation
+        score_sort = np.argsort(scores)[::-1]
+
+        spearman = np.corrcoef(np.array([sorted_idx, score_sort]))[0,1]
+        pearson = np.corrcoef(np.array([fake_utility, scores]))[0,1]
+
+        # calculate rho space
+        rho_w = np.exp(scores)
+        rho = np.exp(fake_utility)
+
+        rho_w = rho_w / np.sum(rho_w)
+        rho = rho / np.sum(rho)
+        f_rho = -np.linalg.norm(rho - rho_w, ord=2)
+
+        spearmans[i] = spearman
+        pearsons[i] = pearson
+        rhos[i] = f_rho
         estimated_scores[i] = scores[indicies['best']]
         real_scores[i] = fake_utility[indicies['best']]
         score_diff[i] = fake_utility[best_path] - fake_utility[indicies['best']]
@@ -461,4 +501,4 @@ def evaluation(env_num, utility_f, config, model, eval_data):
         rank_sum += selected_rank
         ranks[i] = selected_rank
 
-    return num_correct / num_eval, rank_sum / num_eval, ranks, estimated_scores, real_scores, score_diff
+    return num_correct / num_eval, rank_sum / num_eval, ranks, estimated_scores, real_scores, score_diff, spearmans, pearsons, rhos
