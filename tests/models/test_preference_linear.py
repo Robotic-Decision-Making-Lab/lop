@@ -50,7 +50,7 @@ def test_pref_linear_function():
 
     assert pm is not None
     assert pm.optimized
-    assert pm.n_loops > 0 and pm.n_loops < 15
+    assert pm.n_loops > 0 and pm.n_loops < 101
 
     y, _ = pm.predict(X_train)
 

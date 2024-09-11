@@ -48,8 +48,8 @@ class GV_UCBLearner(UCBLearner):
         elif isinstance(self.model, PreferenceLinear):
             w_samples = metropolis_hastings(self.model.loss_func, 200, dim=candidate_pts.shape[1])
 
-            w_norm = np.linalg.norm(w_samples, axis=1)
-            w_samples = w_samples / np.tile(w_norm, (2,1)).T
+            #w_norm = np.linalg.norm(w_samples, axis=1)
+            #w_samples = w_samples / np.tile(w_norm, (2,1)).T
             # generate possible outputs from weighted samples
             all_w = (candidate_pts @ w_samples.T).T
 

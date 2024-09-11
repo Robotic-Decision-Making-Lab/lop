@@ -535,4 +535,7 @@ class PreferenceModel(Model):
 
             if abs_data is not None:
                 
-                ax.scatter(X_train[abs_data[1]], abs_data[0])
+                if len(X_train.shape) == 1:
+                    ax.scatter(X_train[abs_data[1]], abs_data[0])
+                if len(X_train.shape) > 1 and X_train.shape[1] == 2:
+                    ax.scatter(X_train[abs_data[1]][:,0], X_train[abs_data[1]][:,1])

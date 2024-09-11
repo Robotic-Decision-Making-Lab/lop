@@ -55,7 +55,8 @@ class PreferenceLinear(PreferenceModel):
                 print('Only 1 reward parameter... linear model practically does not make sense')
                 raise Exception("PreferenceLinear can't optimize a single reward value (just scales it)")
             w = np.random.random(X.shape[1])
-            self.w = w / np.linalg.norm(w, ord=2)
+            #self.w = w / np.linalg.norm(w, ord=2)
+            self.w = w
 
         F = (X @ self.w[:,np.newaxis])[:,0]
         return F, None
@@ -94,7 +95,7 @@ class PreferenceLinear(PreferenceModel):
                                        line_search_max_itr=5)
 
             # normalize the weights
-            w_new = w_new / np.linalg.norm(w_new, ord=2)
+            #w_new = w_new / np.linalg.norm(w_new, ord=2)
 
             # measure error convergence
             w_err = np.linalg.norm(w_new - w, ord=2)
@@ -147,6 +148,6 @@ class PreferenceLinear(PreferenceModel):
     def loss_func(self, w):
         if self.X_train is None:
             return 0
-        w = w / np.linalg.norm(w, ord=2)
+        #w = w / np.linalg.norm(w, ord=2)
         F = (self.X_train @ w[:,np.newaxis])[:,0]
         return self.log_likelyhood_training(F, self.y_train)

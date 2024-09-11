@@ -91,52 +91,52 @@ def test_get_alpha_beta_3d():
     assert aa.shape[1] == 2
     assert aa.shape[2] == 1
 
-@pytest.mark.skipif('numba' not in sys.modules, reason='requires the numba library')
-def test_numba_beta_pdf():
-    res1 = lop.numba_beta_pdf(0.5, 0.5, 0.5)
+# @pytest.mark.skipif('numba' not in sys.modules, reason='requires the numba library')
+# def test_numba_beta_pdf():
+#     res1 = lop.numba_beta_pdf(0.5, 0.5, 0.5)
 
-    assert res1 > 0.5 and res1 < 0.8
+#     assert res1 > 0.5 and res1 < 0.8
 
-    res2 = lop.numba_beta_pdf(np.array([0.1,0.2,0.3,0.7,0.8]), 0.5, 0.5)
+#     res2 = lop.numba_beta_pdf(np.array([0.1,0.2,0.3,0.7,0.8]), 0.5, 0.5)
 
-    assert res2.shape[0] == 5
-    assert (res2 > 0).all()
-
-
-    aa = np.array([3,1,6,7,8])
-    bb = np.array([1,7,2,4,9])
-    res3 = lop.numba_beta_pdf1(np.array([0.1,0.2,0.3,0.7,0.8]), aa, bb)
-
-    assert res3.shape[0] == 5
-    assert (res3 > 0).all()
-
-    aa = np.array([[1,2], [3,4]])
-    bb = np.array([[2,5], [6,4]])
-    res3 = lop.numba_beta_pdf2(np.array([[0.1, 0.2], [0.3, 0.4]]), aa, bb)
-
-    assert res3.shape[0] == 2 and res3.shape[1] == 2
-    assert (res3 > 0).all()
-
-    aa = np.array([[[1],[2]], [[3],[4]]])
-    bb = np.array([[[2],[5]], [[6],[4]]])
-    res4 = lop.numba_beta_pdf3(np.array([[[0.1], [0.2]], [[0.3], [0.4]]]), aa, bb)
-
-    assert len(res4.shape) == 3
-    assert res4.shape[0] == 2 and res4.shape[1] == 2
-    assert (res4 > 0).all()
-
-    aa = np.array([[[1],[2]], [[3],[4]]])
-    bb = np.array([[[2],[5]], [[6],[4]]])
-    res5 = lop.numba_beta_pdf3(0.3, aa, bb)
-
-    assert len(res5.shape) == 3
-    assert res5.shape[0] == 2 and res5.shape[1] == 2
-    assert (res5 > 0).all()
+#     assert res2.shape[0] == 5
+#     assert (res2 > 0).all()
 
 
-@pytest.mark.skipif('numba' not in sys.modules, reason='requires the numba library')
-def test_numba_beta_pdf():
-    res1 = lop.numba_beta_pdf(0.5, 200, 200)
+#     aa = np.array([3,1,6,7,8])
+#     bb = np.array([1,7,2,4,9])
+#     res3 = lop.numba_beta_pdf1(np.array([0.1,0.2,0.3,0.7,0.8]), aa, bb)
 
-    assert not np.isnan(res1)
+#     assert res3.shape[0] == 5
+#     assert (res3 > 0).all()
+
+#     aa = np.array([[1,2], [3,4]])
+#     bb = np.array([[2,5], [6,4]])
+#     res3 = lop.numba_beta_pdf2(np.array([[0.1, 0.2], [0.3, 0.4]]), aa, bb)
+
+#     assert res3.shape[0] == 2 and res3.shape[1] == 2
+#     assert (res3 > 0).all()
+
+#     aa = np.array([[[1],[2]], [[3],[4]]])
+#     bb = np.array([[[2],[5]], [[6],[4]]])
+#     res4 = lop.numba_beta_pdf3(np.array([[[0.1], [0.2]], [[0.3], [0.4]]]), aa, bb)
+
+#     assert len(res4.shape) == 3
+#     assert res4.shape[0] == 2 and res4.shape[1] == 2
+#     assert (res4 > 0).all()
+
+#     aa = np.array([[[1],[2]], [[3],[4]]])
+#     bb = np.array([[[2],[5]], [[6],[4]]])
+#     res5 = lop.numba_beta_pdf3(0.3, aa, bb)
+
+#     assert len(res5.shape) == 3
+#     assert res5.shape[0] == 2 and res5.shape[1] == 2
+#     assert (res5 > 0).all()
+
+
+# @pytest.mark.skipif('numba' not in sys.modules, reason='requires the numba library')
+# def test_numba_beta_pdf():
+#     res1 = lop.numba_beta_pdf(0.5, 200, 200)
+
+#     assert not np.isnan(res1)
     

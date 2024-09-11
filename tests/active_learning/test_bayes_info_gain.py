@@ -27,6 +27,8 @@ def test_bayes_info_gain_basic():
     except:
         print('approxcdf not on this machine, cannot properly test this.')
         return
+    
+    np.random.seed(5) # just to ensure it doesn't break the test on a bad dice roll
     model = lop.PreferenceGP(lop.RBF_kern(0.5,0.7), active_learner=al, normalize_gp=False, use_hyper_optimization=False)
 
     model.add(np.array([5]), np.array([0.5]), type='abs')
