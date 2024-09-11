@@ -17,7 +17,7 @@ number_runs=50
 def_pareto=false
 # choose1, rating, switch
 sel_type=switch
-kmedoid=true
+kmedoid=medrand
 num_alts=2
 
 # SW_BAYES_PROBIT
