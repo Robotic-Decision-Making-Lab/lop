@@ -25,7 +25,7 @@ for model in linear
 do
     for rbf_sigma in 1.0
     do
-        for fake_func in min #linear #squared_min_max max min logistic squared sin_exp 
+        for fake_func in linear #linear #squared_min_max max min logistic squared sin_exp 
         do
             for hyper_sel in no
             do
@@ -33,9 +33,9 @@ do
                 do
                     for v in 60.0 #10.0 160.0
                     do
-                        for sigma_abs in 0.1 0.5 1.0 1.5 2.0 10.0
+                        for sigma_abs in 0.5 1.0 2.0 5.0 #0.1 0.5 1.0 1.5 2.0 10.0
                         do
-                            for sigma_pair in 2.0 1.0 0.5 0.1
+                            for sigma_pair in 1.5 2.0 2.5 #2.0 1.0 0.5 0.1
                             do
                                 for rbf_l in 1.0
                                 do

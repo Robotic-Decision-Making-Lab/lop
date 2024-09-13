@@ -302,7 +302,7 @@ def train_and_eval(config_filename,
 
     if config['add_model_prior']:
         model.add_prior(bounds = config['prior_bounds'], num_pts=config['prior_pts'])
-    if config['add_abs_point']:
+    if config['add_abs_point'] and model_desc != 'linear':
         x = np.array([config['abs_point_loc']])
         y = np.array([config['abs_point_value']])
         model.add(x,y,type='abs')
