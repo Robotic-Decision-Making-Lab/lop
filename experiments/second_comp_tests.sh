@@ -31,9 +31,9 @@ do
             do
                 for user in human_choice
                 do
-                    for v in 60.0 #10.0 160.0
+                    for v in 10.0 120.0 30.0 #60.0 #10.0 160.0
                     do
-                        for sigma_abs in 0.5 1.0 2.0 5.0 #0.1 0.5 1.0 1.5 2.0 10.0
+                        for sigma_abs in 0.5 1.0 2.0 #5.0 #0.1 0.5 1.0 1.5 2.0 10.0
                         do
                             for sigma_pair in 1.5 2.0 2.5 #2.0 1.0 0.5 0.1
                             do
