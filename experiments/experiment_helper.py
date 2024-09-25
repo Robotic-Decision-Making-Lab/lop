@@ -254,13 +254,18 @@ def train_and_eval(config_filename,
                     v=80.0,
                     use_kmedoid=True,
                     rbf_l=None,
+                    path_data=None,
                     verbose = False):
     #
     with open(config_filename, 'rb') as f:
         config = yaml.load(f.read(), Loader=yaml.Loader)
 
-    with open(config['simple_rewards_file'], 'rb') as f:
-        path_data = pickle.load(f)
+    print('Staring to read in pickle file')
+    if path_data is None:
+        with open(config['simple_rewards_file'], 'rb') as f:
+            path_data = pickle.load(f)
+
+    print('Done reading pickle file')
 
     train_data = [path_d[:num_train] for path_d in path_data['train']]
     eval_data = [path_d[:num_eval] for path_d in path_data['eval']]
@@ -370,6 +375,7 @@ def train_and_eval(config_filename,
                 print('Downselected using downsample_hull')
         elif use_kmedoid == 'medrand':
             if rewards.shape[0] > config['downselect_num']:
+                print('Starting downsampling process')
                 rewards = downsample_kmed_rand(rewards, config['downselect_num'])
                 print('Downselected using kmed_rand')
 
@@ -440,7 +446,7 @@ def train_and_eval(config_filename,
 
     visualize_single_run_regret(folder, score_diff, query_type_is_abs)
 
-    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs, spearmans, pearsons, rhos
+    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs, spearmans, pearsons, rhos, path_data
 
 
 
@@ -463,6 +469,7 @@ def evaluation(env_num, utility_f, config, model, eval_data):
         ##### Generate paths and select paths for explanation
         rewards, indicies = eval_data[env_num][i]['rewards'], eval_data[env_num][i]['indicies']
         #pdb.set_trace()
+        rewards = rewards[indicies['pareto']]
         scores = model(rewards)
 
         best_idx = model.active_learner.select_best(scores, set(indicies['pareto']))

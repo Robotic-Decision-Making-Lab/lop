@@ -193,12 +193,13 @@ def main():
 
     cur_run = 0
     try:
+        path_data = None
         for j in tqdm(range(num_runs)):
             cur_run = j
             run_folder = folder_name+'run_'+str(j)+'/'
             os.mkdir(run_folder)
             print('VERBOSE: ' + str(args.v))
-            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type, spearman, pearson, rho = \
+            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type, spearman, pearson, rho, path_data = \
                             train_and_eval( args.config, \
                                             env_num=args.env, \
                                             fake_function_desc=args.fake_func, \
@@ -218,6 +219,7 @@ def main():
                                             rbf_l=args.rbf_l,\
                                             rbf_sigma=args.rbf_sigma, \
                                             use_kmedoid=args.kmedoid, \
+                                            path_data = path_data, \
                                             verbose = args.v)
 
 
