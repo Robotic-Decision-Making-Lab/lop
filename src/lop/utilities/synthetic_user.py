@@ -174,6 +174,7 @@ class HumanChoiceUser(SyntheticUser):
                 break
         if res.fun > 0.02:
             print('Bad setting of sigma value after 10 tries. IDK, figure it out yourself')
+            pdb.set_trace()
 
         self.sigma = res.x
 

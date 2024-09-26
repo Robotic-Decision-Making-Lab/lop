@@ -98,7 +98,9 @@ class FakeLogistic(FakeFunction):
         self.A = 0
         self.K = 1.0
         self.C = 1.0
-        self.Q = (np.random.random()*3)**2
+        #self.Q = (np.random.random()*3)**2
+        #self.v = np.random.random()*2
+        self.Q = 2
         self.v = np.random.random()*2
 
     def calc(self, rewards):

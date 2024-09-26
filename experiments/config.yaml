@@ -9,7 +9,7 @@ UCB_scalar: 1.0
 
 ######## For model
 pareto_pairs: false
-add_abs_point: true
+add_abs_point: false
 abs_point_loc:
   - 0.0
   - 0.0

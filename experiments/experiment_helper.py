@@ -437,12 +437,14 @@ def train_and_eval(config_filename,
             rating = user_f.rate(rewards[sel_idx])
             rating_np = np.array([rating])
 
+            print(rating_np)
             model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
             query_type_is_abs[itr+1] = ABS_QUERY
         elif selection_type == 'switch':
             sel_idx = model.select(rewards, num_alts)
             x_train = rewards[sel_idx]
             
+
             # check if a rating or choose is selected by the active learning
             if len(sel_idx) == 1:
                 rating = user_f.rate(x_train)
