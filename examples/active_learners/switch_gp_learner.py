@@ -72,7 +72,8 @@ def plot_data(model, new_selections=None):
     model.plot_preference(ax)
 
 possible_models = ['gp', 'linear']
-possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR','SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR']
+possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO', 'ACQ_EPIC', 'ACQ_LL', 'ACQ_SPEAR','SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR', 
+                      'SW_UCB_RHO', 'SW_UCB_LL', 'SW_UCB_SPEAR']
 
 def main():
     parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
@@ -137,6 +138,18 @@ def main():
         abs = lop.AbsBayesInfo(M=M)
         pair = lop.BayesInfoGain()
         al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs)
+    elif args.selector == 'SW_UCB_RHO':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        al = lop.MixedComparision(pairwise_l=pair, abs_l=lop.UCBLearner(), abs_comp=abs_comp)
+    elif args.selector == 'SW_UCB_LL':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        al = lop.MixedComparision(pairwise_l=pair, abs_l=lop.UCBLearner(), abs_comp=abs_comp)
+    elif args.selector == 'SW_UCB_SPEAR':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        al = lop.MixedComparision(pairwise_l=pair, abs_l=lop.UCBLearner(), abs_comp=abs_comp)
 
 
     #### create model

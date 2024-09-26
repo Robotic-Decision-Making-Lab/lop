@@ -98,6 +98,7 @@ possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PE
                         'BAYES_INFO_GAIN_PROBIT', 'BAYES_INFO_GAIN_999', \
                         'ACQ_RHO', 'ACQ_LL', 'ACQ_EPIC', 'ACQ_SPEAR',\
                         'SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR',\
+                        'SW_UCB_RHO', 'SW_UCB_EPIC', 'SW_UCB_LL', 'SW_UCB_SPEAR', \
                         'ABS_ACQ_RHO', 'ABS_ACQ_LL', 'ABS_ACQ_EPIC', 'ABS_ACQ_SPEAR',\
                         'ABS_BAYES_PROBIT']
 possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']

@@ -47,8 +47,8 @@ normalize_postive: false
 
 
 # simple_rewards.rew
-#simple_rewards_file: "../../other_repos/ice-soil-planner/scripts/plan_saving/rewards_ice_soil.pickle"
-simple_rewards_file: "../../other_repos/ice-soil-planner/scripts/plan_saving/rewards_ice_soil_no_pareto.pickle"
+simple_rewards_file: "../../other_repos/ice-soil-planner/scripts/plan_saving/rewards_ice_soil.pickle"
+#simple_rewards_file: "../../other_repos/ice-soil-planner/scripts/plan_saving/rewards_ice_soil_no_pareto.pickle"
 
 
 
