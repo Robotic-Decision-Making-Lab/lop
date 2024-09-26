@@ -142,8 +142,28 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)   
+    elif selector == 'SW_FIXED_RHO':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
+    elif selector == 'SW_FIXED_LL':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
+    elif selector == 'SW_FIXED_SPEAR':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
+    elif selector == 'SW_FIXED_EPIC':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
 
-    
+
     return al
 
 def get_model(model_desc, active_learner, hyper, config):
@@ -437,14 +457,12 @@ def train_and_eval(config_filename,
             rating = user_f.rate(rewards[sel_idx])
             rating_np = np.array([rating])
 
-            print(rating_np)
             model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
             query_type_is_abs[itr+1] = ABS_QUERY
         elif selection_type == 'switch':
             sel_idx = model.select(rewards, num_alts)
             x_train = rewards[sel_idx]
             
-
             # check if a rating or choose is selected by the active learning
             if len(sel_idx) == 1:
                 rating = user_f.rate(x_train)
