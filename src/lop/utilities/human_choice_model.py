@@ -41,6 +41,7 @@ from scipy import stats
 #
 # @return output probability distribution of human choice
 def p_human_choice(r, p=1.0):
+    r = r - np.max(r)
     e = np.exp(r*p) # exponent of r
     if len(r.shape) > 1:
         sum_e = np.sum(e,axis=-1)

@@ -37,7 +37,7 @@ rbf_l=1.2
 
 
 # Already generated SW_ACQ_RHO ABS_ACQ_RHO 
-for selc in UCB ABS_ACQ_RHO RANDOM ABS_ACQ_LL ABS_ACQ_SPEAR
+for selc in UCB #ABS_ACQ_RHO RANDOM ABS_ACQ_LL ABS_ACQ_SPEAR
 do
     for i_env in 0 1 2 3 4 5 6 7 8 9
     do
