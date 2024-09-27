@@ -181,7 +181,7 @@ class MixedComparisionSetFixed(RateChooseLearner):
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
     #               the top solution to the front of the solution set every time.
     def __init__(self, pairwise_l, abs_l, comp_func='set_time', params={}, default_to_pareto=False, always_select_best=False):
-        super(MixedComparision, self).__init__(pairwise_l, abs_l, default_to_pareto, always_select_best)
+        super(MixedComparisionSetFixed, self).__init__(pairwise_l, abs_l, default_to_pareto, always_select_best)
 
         self.comp_func = comp_func
         self.num_calls = 0

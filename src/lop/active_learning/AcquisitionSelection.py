@@ -222,7 +222,10 @@ class AcquisitionSelection(AcquisitionBase):
         
         E_p_q = np.mean(p_q, axis=0)
 
-        E_align_q / E_p_q
+        E_align_q = E_align_q / E_p_q
+
+        ################## Add a print statement here, is E_p_q a weird number???
+        #pdb.set_trace()
 
         # represents the alignment metric for each pair being selected as align_Q
         align_Q = E_align_q + E_align_q.T
