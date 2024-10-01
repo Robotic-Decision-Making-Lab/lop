@@ -168,7 +168,7 @@ class HumanChoiceUser(SyntheticUser):
         y = self.fake_f(sample_Q)
 
         for i in range(10):
-            res = minimize_scalar(self.rate_sampled_objective, bounds=[0.001, 10.0], args=(p, sample_Q, y), options={'xatol': 0.01})
+            res = minimize_scalar(self.rate_sampled_objective, bounds=[0.0001, 2.0], args=(p, sample_Q, y), options={'xatol': 0.01})
         
             if res.fun < 0.02:
                 break
@@ -191,7 +191,7 @@ class HumanChoiceUser(SyntheticUser):
         sample_Q = rewards[Qs]
 
         for i in range(10):
-            res = minimize_scalar(self.sampled_objective, bounds=[0.01, 100.0], args=(p, sample_Q), options={'xatol': 0.01})
+            res = minimize_scalar(self.sampled_objective, bounds=[0.1, 150.0], args=(p, sample_Q), options={'xatol': 0.01})
 
             if res.fun < 0.02:
                 break

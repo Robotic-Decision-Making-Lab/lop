@@ -26,7 +26,7 @@ for model in gp #linear
 do
     for rbf_sigma in 1.0
     do
-        for fake_func in min #linear #squared_min_max max min logistic squared sin_exp 
+        for fake_func in logistic #linear #squared_min_max max min logistic squared sin_exp 
         do
             for hyper_sel in no
             do
@@ -38,7 +38,7 @@ do
                         do
                             for sigma_pair in 1.0 0.1 0.5
                             do
-                                for rbf_l in 0.4 0.6 0.8 1.0 1.2 1.5
+                                for rbf_l in 1.2 0.4 0.6 0.8 1.0 1.5
                                 do
                                     for selc in SW_ACQ_RHO ACQ_RHO #SW_ACQ_LL ACQ_LL ABS_ACQ_RHO MUTUAL_INFO SW_ACQ_EPIC SW_ACQ_SPEAR ACQ_SPEAR ABS_ACQ_SPEAR #UCB RANDOM ACQ_SPEAR ACQ_RHO ACQ_EPIC ACQ_LL MUTUAL_INFO SGV_UCB #BAYES_INFO_GAIN_PROBIT #BAYES_INFO_GAIN_999 #ACQ_LL ACQ_SPEAR MUTUAL_INFO SGV_UCB UCB 
                                     do

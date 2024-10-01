@@ -60,6 +60,9 @@ class FakeLinear(FakeFunction):
                 return (rewards * self.w)[0]
         return np.dot(rewards, self.w)
 
+    def __str__(self):
+        return 'FakeLinear: (w: ' + str(self.w) + ')'
+
 ## Fake squared
 # A randomized squared function
 class FakeSquared(FakeFunction):
@@ -83,6 +86,9 @@ class FakeSquared(FakeFunction):
 
         return np.dot(rewards*rewards, self.w)
 
+    def __str__(self):
+        return 'FakeSquared: (w: ' + str(self.w) + ')'
+
 ## Fake logistic
 # A randomized logistic function
 class FakeLogistic(FakeFunction):
@@ -92,16 +98,17 @@ class FakeLogistic(FakeFunction):
 
 
     def randomize(self):
-        w = np.random.random(self.w.shape) * 2
+        w = np.random.random(self.w.shape) * 1.5
         self.w = w
 
         self.A = 0
         self.K = 1.0
         self.C = 1.0
-        #self.Q = (np.random.random()*3)**2
+        self.Q = (np.random.random()*2)**2 + 1.2
+        self.M = np.random.random()*1.5
         #self.v = np.random.random()*2
-        self.Q = 2
-        self.v = np.random.random()*2
+        #self.Q = 2
+        self.v = np.random.random() + 2.0
 
     def calc(self, rewards):
         if self.w.shape[0] == 1:
@@ -109,10 +116,14 @@ class FakeLogistic(FakeFunction):
                 rewards = np.array(rewards)
             wx = rewards * self.w[0]
         else:
-            wx = np.dot(rewards, self.w)
+            wx = np.dot(rewards, self.w) - self.M
         
         logi = self.A + ((self.K - self.A) / (self.C + self.Q*np.exp(-wx)**(1/self.v)))
         return logi
+
+    def __str__(self):
+        return 'FakeLogistic: (w: ' + str(self.w) + ' Q: ' + str(self.Q) + ' v: ' + str(self.v) + ' M: ' + str(self.M) + ')'
+
 
 
 
@@ -138,6 +149,11 @@ class FakeWeightedMax(FakeFunction):
             return np.max(rewards * self.w)
         return np.max(rewards * self.w, axis=1)
 
+    def __str__(self):
+        return 'FakeWeightedMax: (w: ' + str(self.w) + ')'
+
+    
+
 ## FakeWeightedMin
 # Takes the max of a set of weighted function as the method to combine the reward values.
 class FakeWeightedMin(FakeFunction):
@@ -159,6 +175,9 @@ class FakeWeightedMin(FakeFunction):
         if len(rewards.shape) == 1:
             return np.min(rewards * self.w)
         return np.min(rewards * self.w, axis=1)
+
+    def __str__(self):
+        return 'FakeWeightedMin: (w: ' + str(self.w) + ')'
 
 
 class FakeSquaredMinMax(FakeFunction):
@@ -185,6 +204,9 @@ class FakeSquaredMinMax(FakeFunction):
         vals = rewards * self.w
         mins = np.min(vals, axis=1)
         return np.sqrt(np.max(vals, axis=1)) + mins*mins
+
+    def __str__(self):
+        return 'FakeSquaredMinMax: (w: ' + str(self.w) + ')'
 
 
 ################################# Non-monotonic function (does not satisfy pareto-optimality)
@@ -218,6 +240,9 @@ class FakeSinExp(FakeFunction):
 
         return np.sin(kr+self.phase) * np.exp(-wr)
 
+    def __str__(self):
+        return 'FakeSinExp: (w: ' + str(self.w) + ' k: ' + str(self.k) + ' phase: ' + str(self.phase) + ')'
+
 
 
 
@@ -233,5 +258,8 @@ class FakeStaticSin(FakeFunction):
         rewards = 10-rewards
         return 2 * np.cos(np.pi * (rewards-2) / 3.0) * np.exp(-(0.99*rewards))
 
+    
+    def __str__(self):
+        return 'FakeStaticSin: ()'
 
 

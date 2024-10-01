@@ -235,7 +235,7 @@ class MixedComparisionSetFixed(RateChooseLearner):
     def set_model(self, model):
         self.pairwise_l.set_model(model)
         self.abs_l.set_model(model)
-        self.abs_comp.set_model(model)
+        self.num_calls = 0
 
 
 
