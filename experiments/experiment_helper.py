@@ -298,6 +298,8 @@ def train_and_eval(config_filename,
                     sigma_pair=1.0,
                     v=80.0,
                     use_kmedoid=True,
+                    p_synth_pair=0.95,
+                    p_synth_abs=0.95,
                     rbf_l=None,
                     path_data=None,
                     verbose = False):
@@ -346,7 +348,7 @@ def train_and_eval(config_filename,
         eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
 
     try:
-        user_f.learn_beta(eval_user_d, config['p_correct'], Q_size=num_alts)
+        user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
     except:
         print('Unable to tune beta for user synth')
 

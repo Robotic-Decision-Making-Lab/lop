@@ -151,11 +151,14 @@ class HumanChoiceUser(SyntheticUser):
     # @param rewards - a set of reward values to try
     # @param p - the probability of selecting the best value
     # @param num_Q - [opt default=2] the number of points in each query
-    def learn_beta(self, rewards, p, Q_size=2):
+    def learn_beta(self, rewards, p, Q_size=2, p_sigma=None):
         Qs = self.sample_Qs(rewards, Q_size)
 
+        if p_sigma is None:
+            p_sigma = p
+
         self.learn_beta_pairwise(rewards, p, Q_size, Qs=Qs)
-        self.learn_sigma(rewards, p, Q_size, Qs=Qs)
+        self.learn_sigma(rewards, p_sigma, Q_size, Qs=Qs)
 
 
     ## learn_sigma
