@@ -6,15 +6,108 @@
 
 
 import numpy as np
+import random
 import pickle
 import argparse
 import lop
+import matplotlib.pyplot as plt
+from tqdm import tqdm
+
+import pdb
 
 import sys
 # caution: path[0] is reserved for script path (or '' in REPL)
 sys.path.insert(1, '../../experiments')
 
 from experiment_helper import get_synth_user, get_fake_func
+
+
+from sklearn_extra.cluster import KMedoids
+def downsample_kmed_rand(X, num_downselect, kmed_pct=0.5):
+    num_kmed = int(kmed_pct * num_downselect)
+    num_rand = num_downselect - num_kmed
+    
+    rand_idxs = np.random.choice(X.shape[0], num_rand, replace=False)
+    non_rand_idxs = list(set(list(range(X.shape[0]))) - set(rand_idxs))
+    
+    cent_pts = KMedoids(n_clusters=num_kmed).fit(X[non_rand_idxs]).cluster_centers_
+
+    return np.append(cent_pts, X[rand_idxs], axis=0)
+
+
+def test_trained_model(user_f, eval_r):
+    print(eval_r)
+    print(user_f)
+    #pdb.set_trace()
+
+    print('Rating')
+
+    down_r = downsample_kmed_rand(eval_r, 50)
+
+    num_pairs = int(down_r.shape[0] * (down_r.shape[0]-1) / 2)
+    
+    rates = np.empty(num_pairs)
+    chooses = np.empty(num_pairs)
+    del_ys = np.empty(num_pairs)
+
+    cnt = 0
+    for i in tqdm(range(down_r.shape[0])):
+        for j in range(i+1, down_r.shape[0]):
+            pair = [i,j]
+
+            rate_avg, choose_avg, delta_y =  test_pair_error_model(user_f, eval_r, pair)
+            rates[cnt] = rate_avg
+            chooses[cnt] = choose_avg
+            del_ys[cnt] = delta_y
+
+            cnt += 1
+
+    n_bins = 200
+    plt.hist(rates,n_bins)
+    plt.title('Rate probability')
+
+    plt.figure()
+    plt.hist(chooses, n_bins)
+    plt.title('Choose probabilties')
+
+    plt.figure()
+    plt.hist(del_ys, n_bins)
+    plt.title('Delta ys')
+
+    plt.show()
+        
+
+
+
+def test_pair_error_model(user_f, eval_r, pair):
+    N=1000
+    correct = 0
+
+    y = user_f.fake_f(eval_r[pair])
+    delta_y = y[0] - y[1]
+    for i in range(N):
+        r = user_f.rate(eval_r[pair])
+        
+
+        #print(r)
+
+        if (r[0] > r[1]) == (y[0] > y[1]):
+            correct += 1
+
+    rate_avg = correct / N
+        
+    correct = 0
+    for i in range(N):
+        r = user_f.choose(eval_r[pair])
+
+        #print(r)
+
+        if r == np.argmax(y):
+            correct += 1
+
+    choose_avg = correct / N
+
+    return rate_avg, choose_avg, delta_y
 
 
 
@@ -49,8 +142,10 @@ def main():
     
     config = {'dim_rewards': dim_rewards}
 
+    np.random.seed(0)
+    random.seed(0)
 
-    for i in range(10):
+    for i in range(1):
         print('Starting run '+str(i)+' of tuning synth user')
         fake_f = get_fake_func(args.fake_func, config)
         user_f = get_synth_user(args.user, fake_f, config)
@@ -67,8 +162,9 @@ def main():
         print('user_f sigma: ' + str(user_f.sigma) +' beta: ' + str(user_f.beta))
         print('\n\n')
 
-
     print(user_f)
+    test_trained_model(user_f, eval_user_d)
+
 
 
 

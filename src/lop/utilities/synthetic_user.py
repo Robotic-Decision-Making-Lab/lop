@@ -179,6 +179,7 @@ class HumanChoiceUser(SyntheticUser):
             print('Bad setting of sigma value after 10 tries. IDK, figure it out yourself')
             pdb.set_trace()
 
+        print('Tuned sigma with error =' + str(res.fun))
         self.sigma = res.x
 
 
@@ -201,6 +202,7 @@ class HumanChoiceUser(SyntheticUser):
         if res.fun > 0.02:
             print('Bad setting of beta value after 10 tries. IDK, figure it out yourself')
 
+        print('Tuned beta with error =' + str(res.fun))
        
         self.beta = res.x
 
