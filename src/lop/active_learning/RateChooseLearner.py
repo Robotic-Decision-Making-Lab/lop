@@ -64,8 +64,20 @@ class RateChooseLearner(ActiveLearner):
     #          selection values for candidate_pts,
     #          only returns highest mean if "always select best is set"
     def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False, select_pair_first=True):
+        # generate sampled points
+        self.pairwise_l.unset_samples()
+        mu, data = self.pairwise_l.model.predict(candidate_pts)
+        x_rep, Q_rep = self.pairwise_l.get_representative_Q(candidate_pts)
+        all_rep, all_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
+        
+        # set samples
+        self.pairwise_l.set_samples(all_rep, all_Q)
+        self.abs_l.set_samples(all_rep, all_Q)
+        
+        
         pair_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
         abs_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
+
 
         print('Pairwise selected metric: ' + str(self.pairwise_l.sel_metric))
         print('Absloute selected metric: ' + str(self.abs_l.sel_metric))
@@ -131,13 +143,23 @@ class MixedComparision(RateChooseLearner):
     #          selection values for candidate_pts,
     #          only returns highest mean if "always select best is set"
     def select(self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False, select_pair_first=True):
+        # generate sampled points
+        self.pairwise_l.unset_samples()
+        mu, data = self.pairwise_l.model.predict(candidate_pts)
+        x_rep, Q_rep = self.pairwise_l.get_representative_Q(candidate_pts)
+        all_rep, all_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
+        
+        # set samples
+        self.pairwise_l.set_samples(all_rep, all_Q)
+        self.abs_comp.set_samples(all_rep, all_Q)
+        
         pair_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
         abs_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
 
         pair_metric = self.pairwise_l.sel_metric
 
         # calculate absloute selected metric
-        _ = self.abs_comp.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
+        _ = self.abs_comp.select_greedy(candidate_pts, mu , None, [abs_idxs], [])
         abs_metric = self.abs_comp.sel_metric
         
         print('Pairwise selected metric: ' + str(pair_metric))
@@ -213,9 +235,6 @@ class MixedComparisionSetFixed(RateChooseLearner):
         pair_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
         abs_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
 
-        pair_metric = self.pairwise_l.sel_metric
-
-        
 
         if self.num_calls > 7:
             sel_idxs = pair_idxs

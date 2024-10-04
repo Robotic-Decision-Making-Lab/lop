@@ -120,7 +120,7 @@ class AbsAcquisition(AcquisitionBase):
             return np.random.choice(list(indicies), 1)[0]
 
         ## get sampled output from latent function
-        all_rep, all_Q = self.get_samples_from_model(candidate_pts[indicies], x_rep)
+        all_rep, all_Q = self.get_samples_from_model(candidate_pts[indicies], x_rep, indicies=indicies)
         # all_Q [w, Q]
 
         ####### Calculate probability query for each sampled weight

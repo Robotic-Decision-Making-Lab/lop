@@ -57,6 +57,8 @@ class AcquisitionBase(ActiveLearner):
         self.rep_Q_data = rep_Q_data
         self.alignment_f = alignment_f
 
+        self.samples_set = False
+
 
 
     ## get_representative_Q
@@ -176,8 +178,20 @@ class AcquisitionBase(ActiveLearner):
             # will not work for anything meaningful, but can be used to check pipeline of working code
             return np.ones((all_rep.shape[0], all_rep.shape[0]))
 
+    def set_samples(self, all_rep, all_Q):
+        self.all_rep = all_rep
+        self.all_Q = all_Q
+        self.samples_set = True
 
-    def get_samples_from_model(self, candidate_pts, x_rep):
+    def unset_samples(self):
+        self.samples_set = False
+
+    def get_samples_from_model(self, candidate_pts, x_rep, indicies=None):
+        if self.samples_set:
+            if indicies is not None:
+                return self.all_rep, self.all_Q[:,indicies]
+            return self.all_rep, self.all_Q
+        
         N = candidate_pts.shape[0]
 
         ## get sampled possible output of latent functions
