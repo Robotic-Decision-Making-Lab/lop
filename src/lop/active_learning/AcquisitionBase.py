@@ -194,6 +194,9 @@ class AcquisitionBase(ActiveLearner):
         
         N = candidate_pts.shape[0]
 
+        if x_rep is None:
+            x_rep = np.empty((0, candidate_pts.shape[1]))
+
         ## get sampled possible output of latent functions
         if isinstance(self.model, (PreferenceGP, GP)):
             cov = self.model.cov
