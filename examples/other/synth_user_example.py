@@ -77,6 +77,36 @@ def test_trained_model(user_f, eval_r):
     plt.show()
         
 
+def test_trained_model2(user_f, eval_r):
+    down_r = downsample_kmed_rand(eval_r, 50)
+
+    num_pairs = int(down_r.shape[0] * (down_r.shape[0]-1) / 2)
+    
+
+    del_ys = np.empty(num_pairs)
+    cnt = 0
+    for i in tqdm(range(down_r.shape[0])):
+        for j in range(i+1, down_r.shape[0]):
+            pair = [i,j]
+
+            y = user_f.fake_f(eval_r[pair])
+            del_ys[cnt] = y[0] - y[1]
+
+            cnt += 1
+
+    n_bins = 20
+
+    plt.figure()
+    plt.hist(del_ys, n_bins)
+    plt.title('Delta ys')
+
+    plt.figure()
+    plt.hist(del_ys, 50)
+    plt.title('Delta ys')
+
+    plt.show()
+    
+
 
 
 def test_pair_error_model(user_f, eval_r, pair):
@@ -163,8 +193,8 @@ def main():
         print('\n\n')
 
     print(user_f)
-    test_trained_model(user_f, eval_user_d)
-
+    #test_trained_model(user_f, eval_user_d)
+    test_trained_model2(user_f, eval_user_d)
 
 
 

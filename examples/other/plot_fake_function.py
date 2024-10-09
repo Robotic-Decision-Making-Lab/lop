@@ -56,7 +56,7 @@ def main():
         return
 
     if dim == 1:
-        x = np.arange(0,10,0.01)
+        x = np.arange(0,5,0.01)
         y = fc(x)
 
         plt.plot(x,y)
@@ -64,7 +64,7 @@ def main():
         plt.ylabel('y output values')
         plt.show()    
     elif dim == 2:
-        grid = np.arange(0,5,0.1)
+        grid = np.arange(0,2,0.01)
         xv, yv = np.meshgrid(grid, grid)
         x_l = xv.reshape(-1)
         y_l = yv.reshape(-1)
@@ -76,7 +76,9 @@ def main():
 
         fig = plt.figure()
 
-        cont = plt.contourf(xv, yv, z_plt)
+
+        cont = plt.contourf(xv, yv, z_plt, levels=300)
+        plt.contour(xv,yv, z_plt)
         fig.colorbar(cont, label='output values')
         plt.xlabel('x')
         plt.ylabel('y')

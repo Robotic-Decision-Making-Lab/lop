@@ -161,7 +161,31 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_CHECK_RHO':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
+    elif selector == 'SW_CHECK_LL':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
+    elif selector == 'SW_CHECK_SPEAR':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best) 
+    elif selector == 'SW_CHECK_EPIC':
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best)  
 
 
     return al
