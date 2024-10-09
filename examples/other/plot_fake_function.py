@@ -27,10 +27,11 @@ import matplotlib.pyplot as plt
 import argparse
 import lop
 
+import pdb
 
 def main():
     parser = argparse.ArgumentParser(description='Fake function plotter')
-    parser.add_argument('-f', type=str, default='logistic', help='Enter the type of function [linear squared logistic sin_exp max min squared_min_max]')
+    parser.add_argument('-f', type=str, default='logistic', help='Enter the type of function [linear squared logistic sin_exp max min squared_min_max mix_gauss int_gauss]')
     parser.add_argument('-d', type=int, default=1, help='Enter the dimmensionality of the fake function (1 or 2) for plotting')
     args = parser.parse_args()
 
@@ -51,6 +52,11 @@ def main():
         fc = lop.FakeWeightedMin(dim)
     elif args.f == 'squared_min_max':
         fc = lop.FakeSquaredMinMax(dim)
+    elif args.f == 'mix_gauss':
+        fc = lop.FakeMixtureGaussian(dim)
+    elif args.f == 'int_gauss':
+        f_to_int = lop.FakeMixtureGaussian(dim)
+        fc = lop.FakeIntegrate(dim, f_to_int)
     else:
         print('Unknown function: ' + str(args.f))
         return

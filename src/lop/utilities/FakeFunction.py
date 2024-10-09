@@ -23,6 +23,8 @@
 # Includes randomization for full tests. Some of this code I wrote in 2022.
 
 import numpy as np
+from scipy.stats import norm, multivariate_normal
+
 import pdb
 
 ## Fake function
@@ -244,6 +246,36 @@ class FakeSinExp(FakeFunction):
         return 'FakeSinExp: (w: ' + str(self.w) + ' k: ' + str(self.k) + ' phase: ' + str(self.phase) + ')'
 
 
+class FakeMixtureGaussian(FakeFunction):
+
+    def __init__(self, dimension=2):
+        self.dim = dimension
+        self.randomize()
+
+    def randomize(self):
+        self.num_kerns = np.random.randint(2, 10)
+        
+        self.sigs = np.random.exponential(1.0, size=(self.num_kerns, self.dim))
+        self.covs = np.array([np.diag(self.sigs[i]) for i in range(len(self.sigs))])
+        self.means = np.random.random(size=(self.num_kerns, self.dim)) * 3.0
+
+    def calc(self, rewards):
+        
+
+        if isinstance(rewards, np.ndarray):
+            z = np.zeros(rewards.shape[0])
+        else:
+            z = 0
+
+        for i in range(self.num_kerns):
+            #z += norm.pdf(rewards, loc=self.means[i], scale=self.sigs[i])
+            z += multivariate_normal.pdf(rewards, mean=self.means[i], cov=self.covs[i])
+
+        return z
+
+    def __str__(self):
+        return 'MixtureGaussian (num_kerns: '+ str(self.num_kerns) + ', sigs: ' + str(self.sigs) + ', means=' + str(self.means)
+
 
 
 
@@ -261,5 +293,39 @@ class FakeStaticSin(FakeFunction):
     
     def __str__(self):
         return 'FakeStaticSin: ()'
+
+
+
+
+############################## integrate fake function (for monotonic (if postive values))
+
+class FakeIntegrate(FakeFunction):
+
+    def __init__(self, dimension, fc):
+        print(dimension)
+        self.dim = dimension
+        self.fc = fc
+        self.randomize()
+
+    
+    def randomize(self):
+        self.fc.randomize()
+
+        # perform "integration" between 0, 3
+        grid_size = 0.05
+        ticks = np.arange(0, 10.2, grid_size)
+
+        vals = np.zeros((len(ticks),) * self.dim)
+
+        
+        for i in range(1,len(ticks)):
+            for j in range(1, len(ticks)):
+                vals[i,j] = vals[i-1, j] + vals[i, j-1] - vals[i-1, j-1] + self.fc.calc(np.array([[ticks[i], ticks[j]]]))*grid_size
+
+        self.vals = vals
+        self
+
+    def calc(self, rewards):
+        return rewards[:,0]
 
 
