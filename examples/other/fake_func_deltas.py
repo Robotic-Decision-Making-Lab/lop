@@ -98,6 +98,7 @@ def main():
     parser.add_argument('--user', type=str, default='human_choice', help='Selects the type of user [human_choice perfect]')
     parser.add_argument('--p_correct', type=float, default=0.95, help='value to tune synth user to')
     parser.add_argument('--num_alts', type=int, default=2, help='Number of alternative assumed to be passed to user')
+    parser.add_argument('--alpha', type=float, default=0.5, help='The alpha to min to logistic function 1 is fully min, 0 is fully logistic')
     args = parser.parse_args()
 
     dim_rewards = 5
@@ -133,7 +134,7 @@ def main():
     # plt.show()
     # return
 
-    config = {'dim_rewards': dim_rewards}
+    config = {'dim_rewards': dim_rewards, 'alpha_fake': args.alpha}
 
     for i in range(5):
         fake_f = get_fake_func(args.fake_func, config)

@@ -297,7 +297,29 @@ class FakeStaticSin(FakeFunction):
 
 
 
-############################## integrate fake function (for monotonic (if postive values))
+############################## mixed fake function (for monotonic (if postive values))
+
+
+class FakeMinLog(FakeFunction):
+    def __init__(self, dimension, alpha=0.5):
+        self.min = FakeWeightedMin(dimension)
+        self.logistic = FakeLogistic(dimension)
+
+        self.alpha = alpha
+
+        self.randomize()
+
+    def randomize(self):
+        self.min.randomize()
+        self.logistic.randomize()
+
+    def calc(self, rewards):
+        m_f = self.min.calc(rewards)
+        l_f = self.logistic.calc(rewards)
+
+        return (self.alpha * m_f) + ((1 - self.alpha) * l_f)
+
+
 
 class FakeIntegrate(FakeFunction):
 

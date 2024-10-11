@@ -117,10 +117,11 @@ class MixedComparision(RateChooseLearner):
     #               prefering pareto optimal choices when selecting points, if not particulary told not to
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
     #               the top solution to the front of the solution set every time.
-    def __init__(self, pairwise_l, abs_l, abs_comp, default_to_pareto=False, always_select_best=False):
+    def __init__(self, pairwise_l, abs_l, abs_comp, default_to_pareto=False, always_select_best=False, alpha=0.5):
         super(MixedComparision, self).__init__(pairwise_l, abs_l, default_to_pareto, always_select_best)
 
         self.abs_comp = abs_comp
+        self.alpha = alpha
 
     
 
@@ -164,6 +165,10 @@ class MixedComparision(RateChooseLearner):
         _ = self.abs_comp.select_greedy(candidate_pts, mu , None, abs_idxs, [])
         abs_metric = self.abs_comp.sel_metric
         
+
+        abs_metric = self.alpha * abs_metric
+        pair_metric = (1 - self.alpha) * pair_metric
+
         print('Pairwise selected metric: ' + str(pair_metric))
         print('Absloute selected metric: ' + str(abs_metric))
         if pair_metric > abs_metric:
@@ -368,6 +373,14 @@ class MixedComparisionEqualChecking(RateChooseLearner):
         self.pairwise_l.set_model(model)
         self.abs_l.set_model(model)
         self.abs_comp.set_model(model)
+
+
+
+
+
+
+
+
 
 
 

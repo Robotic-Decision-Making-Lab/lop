@@ -26,7 +26,7 @@ for model in gp #linear
 do
     for rbf_sigma in 1.0
     do
-        for fake_func in logistic #linear #squared_min_max max min logistic squared sin_exp 
+        for fake_func in min logistic linear #linear #squared_min_max max min logistic squared sin_exp 
         do
             for hyper_sel in no
             do
@@ -36,11 +36,11 @@ do
                     do
                         for sigma_abs in 1.0
                         do
-                            for v in 50000 2000 10 60
+                            for v in 50000 2000
                             do
                                 for rbf_l in 1.2
                                 do
-                                    for selc in SW_CHECK_RHO
+                                    for selc in SW_ACQ_RHO ABS_ACQ_RHO
                                     do
                                         for i_env in 0 1 2 3 4 5 6 7 8 9
                                         do

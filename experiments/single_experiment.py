@@ -104,7 +104,7 @@ possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PE
                         'ABS_ACQ_RHO', 'ABS_ACQ_LL', 'ABS_ACQ_EPIC', 'ABS_ACQ_SPEAR',\
                         'ABS_BAYES_PROBIT']
 possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']
-possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max']
+possible_fake_funcs = ['linear', 'squared', 'logistic', 'sin_exp', 'max', 'min', 'squared_min_max', 'min_log']
 possible_models = ['gp', 'linear']
 
 def boolean_string(s):
@@ -134,6 +134,8 @@ def main():
     parser.add_argument('--sigma_pair', type=float, default=1.0, help='abs probit sigma parameter default=1.0')
     parser.add_argument('--rbf_sigma', type=float, default=1.0, help='RBF sigma parameter (unused for linear) default=1.0')
     parser.add_argument('--rbf_l', type=float, default=0.4, help='lengthscale of the rbf, unused for linear default=0.4')
+    parser.add_argument('--alpha', type=float, default=0.5, help='Set the alpha value to tune between selecting pairwise and absloute queries')
+    parser.add_argument('--alpha_fake', type=float, default=0.5, help='Set the alpha value to tune between selecting min or log values 1 is fully min, 0 is fully logistic')
     parser.add_argument('--p_synth_pair', type=float, default=0.95, help='tuned average probability of selecting correct synth pair')
     parser.add_argument('--p_synth_abs', type=float, default=0.95, help='Tuned average probability of ratings matching the correct pair similar to the synth pair abs')
     parser.add_argument('-v', type=bool, default=False, help='Verbose print statements')
@@ -170,7 +172,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' +str(args.kmedoid)+ '_ppair_' + str(args.p_synth_pair) + '_pabs_' + str(args.p_synth_abs) + '_'+args.hyper+'_v_'+str(args.v_abs) + '_sigabs_' + str(args.sigma_abs) + '_sigpair_'+str(args.sigma_pair)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' +str(args.kmedoid)+ '_ppair_' + str(args.p_synth_pair) + '_pabs_' + str(args.p_synth_abs) + '_falp_' + str(args.alpha_fake) + '_'+args.hyper+'_v_'+str(args.v_abs) + '_sigabs_' + str(args.sigma_abs) + '_sigpair_'+str(args.sigma_pair)+'_alpha_'+str(args.alpha)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
@@ -224,6 +226,8 @@ def main():
                                             rbf_l=args.rbf_l,\
                                             rbf_sigma=args.rbf_sigma, \
                                             use_kmedoid=args.kmedoid, \
+                                            alpha = args.alpha, \
+                                            alpha_fake = args.alpha_fake, \
                                             p_synth_pair=args.p_synth_pair, \
                                             p_synth_abs=args.p_synth_abs, \
                                             path_data = path_data, \

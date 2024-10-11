@@ -41,6 +41,7 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         always_select_best = config['always_select_best']
 
     M=200
+    alpha = config['alpha']
 
     al = None
     if selector == 'UCB':
@@ -123,25 +124,25 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)              
+                                    always_select_best=always_select_best, alpha=alpha)              
     elif selector == 'SW_UCB_LL':
         abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
         pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)   
+                                    always_select_best=always_select_best, alpha=alpha)   
     elif selector == 'SW_UCB_SPEAR':
         abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
         pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best, alpha=alpha)
     elif selector == 'SW_UCB_EPIC':
         abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic')
         pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)   
+                                    always_select_best=always_select_best, alpha=alpha)   
     elif selector == 'SW_FIXED_RHO':
         pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
         abs_l = lop.UCBLearner(UCB_scalar)
@@ -245,6 +246,8 @@ def get_fake_func(fake_func_desc, config):
         func = lop.FakeWeightedMax(config['dim_rewards']) 
     elif fake_func_desc == 'squared_min_max':
         func = lop.FakeSquaredMinMax(config['dim_rewards'])
+    elif fake_func_desc == 'min_log':
+        func = lop.FakeMinLog(config['dim_rewards'], config['alpha_fake'])
 
     return func
 
@@ -322,6 +325,8 @@ def train_and_eval(config_filename,
                     sigma_pair=1.0,
                     v=80.0,
                     use_kmedoid=True,
+                    alpha=0.5,
+                    alpha_fake=0.5,
                     p_synth_pair=0.95,
                     p_synth_abs=0.95,
                     rbf_l=None,
@@ -352,12 +357,15 @@ def train_and_eval(config_filename,
 
     num_training = num_train#10
 
+    config['alpha'] = alpha
+
     #### Get required models and fake functions
     active_learner = get_active_learner(selector, selection_type, UCB_scaler, default_pareto, config)
     config['sigma_pair'] = sigma_pair
     config['sigma_abs'] = sigma_abs
     config['v'] = v
     config['dim_rewards'] = dim_rewards
+    config['alpha_fake'] = alpha_fake
     # config['rbf_lengthscale'] = rbf_l
 
     model = get_model(model_desc, active_learner, hyper, config)

@@ -258,6 +258,24 @@ def test_fake_min_1d():
     assert z3 <= 1.0
 
 
+def test_min_log_func():
+    f = lop.FakeMinLog(dimension=2)
+
+    assert f is not None
+    assert isinstance(f, lop.FakeFunction)
+
+    f.randomize()
+
+    assert f is not None
+
+    z = f(np.array([[0.7, 1.2], [4.5, 3.2]]))
+    z2 = f(np.array([[0.7, 1.2], [4.5, 3.2]]))
+
+    assert len(z) == 2
+    assert (z == z2).all
+
+
+
 
 
 def test_mixture_gaussians():
