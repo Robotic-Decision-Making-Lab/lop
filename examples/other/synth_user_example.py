@@ -104,6 +104,12 @@ def test_trained_model2(user_f, eval_r):
     plt.hist(del_ys, 50)
     plt.title('Delta ys')
 
+
+    plt.figure()
+    ys = user_f.rate(eval_r)
+    plt.hist(ys, 50)
+    plt.title('Values of rating output')
+
     plt.show()
     
 

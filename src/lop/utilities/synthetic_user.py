@@ -13,9 +13,8 @@ from scipy.optimize import minimize_scalar
 
 import pdb
 
-def sigmoid(x):
-    k = 4
-    return 1 / (1 + np.exp(-k*x))
+def sigmoid(x, k=4, b=0):
+    return 1 / (1 + np.exp(-(k*x+b)))
 
 class SyntheticUser():
 
@@ -82,11 +81,17 @@ class HumanChoiceUser(SyntheticUser):
 
     ## constructor
     # @param fake_f - the fake function for the user.
-    def __init__(self, fake_f, beta = 1.0, sigma = 1.0):
+    def __init__(self, fake_f, beta = 1.0, sigma = 1.0, bot_range=0.1, top_range=0.9):
         super(HumanChoiceUser, self).__init__(fake_f)
 
         self.beta = beta
         self.sigma = sigma
+
+        self.bot_range = bot_range
+        self.top_range = top_range
+
+        self.k = 4.0
+        self.b = 0.0
 
 
     def kl_objective(self, b, desired_p, sample_queries):
@@ -154,6 +159,21 @@ class HumanChoiceUser(SyntheticUser):
     def learn_beta(self, rewards, p, Q_size=2, p_sigma=None):
         Qs = self.sample_Qs(rewards, Q_size)
 
+        ### before training everything else, set sigmoid such that 
+        # the ranges are about the same across functions
+        min_sigmoid = np.log(self.bot_range) - np.log(1 - self.bot_range)
+        max_sigmoid = np.log(self.top_range) - np.log(1 - self.top_range)
+        
+        y = self.fake_f(rewards)
+        f_max = np.max(y)
+        f_min = np.min(y)
+
+        # learn linear equation so min and max sigmoid are mapped to the highest and lowest points
+        self.k = (max_sigmoid - min_sigmoid) / (f_max - f_min)
+        self.b = min_sigmoid - self.k * f_min
+
+        print('k = ' + str(self.k) + ' b = ' + str(self.b))
+
         if p_sigma is None:
             p_sigma = p
 
@@ -212,7 +232,7 @@ class HumanChoiceUser(SyntheticUser):
         y = self.fake_f(query_rewards)
         val = np.random.normal(loc=y, scale=self.sigma)
 
-        return sigmoid(val)
+        return sigmoid(val, k=self.k, b=self.b)
 
 
     ## choose

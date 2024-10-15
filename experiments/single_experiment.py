@@ -172,7 +172,12 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' +str(args.kmedoid)+ '_ppair_' + str(args.p_synth_pair) + '_pabs_' + str(args.p_synth_abs) + '_falp_' + str(args.alpha_fake) + '_'+args.hyper+'_v_'+str(args.v_abs) + '_sigabs_' + str(args.sigma_abs) + '_sigpair_'+str(args.sigma_pair)+'_alpha_'+str(args.alpha)+'_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+ \
+            str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' + \
+            str(args.kmedoid)+ '_ppair_' + str(args.p_synth_pair) + '_pabs_' + str(args.p_synth_abs) + \
+            '_falp_' + str(args.alpha_fake) + '_'+args.hyper+'_v_'+str(args.v_abs) + \
+            '_sigabs_' + str(args.sigma_abs) + '_sigpair_'+str(args.sigma_pair)+'_alpha_'+str(args.alpha)+\
+            '_rbfl_'+str(args.rbf_l)+'_rbfsig_'+str(args.rbf_sigma)+'_env'+str(args.env)+'_'+str_timestamp()+'/'
     else:
         folder_name = 'results/'+args.dir
 
