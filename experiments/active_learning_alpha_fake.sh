@@ -56,7 +56,7 @@ do
         sel_type=switch
 
         # SW_UCB_RHO SW_UCB_SPEAR SW_FIXED_RHO SW_ACQ_RHO SW_ACQ_SPEAR SW_FIXED_SPEAR SW_UCB_RHO ACQ_RHO SW_UCB_SPEAR MUTUAL_INFO SW_FIXED_RHO SW_ACQ_RHO ACQ_SPEAR SW_ACQ_SPEAR SW_FIXED_SPEAR RANDOM
-        for selc in SW_UCB_RHO SW_UCB_SPEAR SW_UCB_LL
+        for selc in SW_UCB_SPEAR
         do
             for i_env in 0 1 2 3 4 5 6 7 8 9
             do

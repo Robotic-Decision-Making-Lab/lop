@@ -379,10 +379,14 @@ def train_and_eval(config_filename,
     for path_d in eval_env_d:
         eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
 
-    try:
-        user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
-    except:
-        print('Unable to tune beta for user synth')
+    while True:
+        try:
+            user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
+            break
+        except:
+            print('Unable to tune beta for user synth')
+            # gonna randomize the function and try again
+            utility_f.randomize()
 
     if config['add_model_prior']:
         model.add_prior(bounds = config['prior_bounds'], num_pts=config['prior_pts'])

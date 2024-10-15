@@ -95,7 +95,7 @@ class HumanChoiceUser(SyntheticUser):
 
 
     def kl_objective(self, b, desired_p, sample_queries):
-        y = self.fake_f(sample_queries)
+        y = (self.fake_f(sample_queries) * self.k) + self.b
         p = p_human_choice(y, p=b)
 
 
@@ -119,7 +119,7 @@ class HumanChoiceUser(SyntheticUser):
 
 
     def sampled_objective(self, b, desired_p, sample_queries):
-        y = self.fake_f(sample_queries)
+        y = (self.fake_f(sample_queries) * self.k) + self.b
         p = p_human_choice(y, p=b)
 
         p_max = np.max(p, axis=1)
@@ -188,7 +188,7 @@ class HumanChoiceUser(SyntheticUser):
             Qs = self.sample_Qs(rewards, Q_size)
 
         sample_Q = rewards[Qs]
-        y = self.fake_f(sample_Q)
+        y = (self.fake_f(sample_Q) * self.k) + self.b
 
         for i in range(10):
             res = minimize_scalar(self.rate_sampled_objective, bounds=[0.0001, 2.0], args=(p, sample_Q, y), options={'xatol': 0.01})
@@ -229,10 +229,10 @@ class HumanChoiceUser(SyntheticUser):
 
 
     def rate(self, query_rewards):
-        y = self.fake_f(query_rewards)
+        y = (self.fake_f(query_rewards) * self.k) + self.b
         val = np.random.normal(loc=y, scale=self.sigma)
 
-        return sigmoid(val, k=self.k, b=self.b)
+        return sigmoid(val, k=1, b=0)
 
 
     ## choose
@@ -241,7 +241,7 @@ class HumanChoiceUser(SyntheticUser):
     #
     # @return integer which query to select
     def choose(self, query_rewards):
-        y = self.fake_f(query_rewards)
+        y = (self.fake_f(query_rewards) * self.k) + self.b
 
         best_idx = sample_human_choice(y, p=self.beta)
 

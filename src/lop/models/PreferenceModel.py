@@ -242,7 +242,8 @@ class PreferenceModel(Model):
 
             if (v < 0).any() or (v > 1.0).any():
                 raise ValueError("Absloute bounded input must be between 0 and 1. v = " + str(v))
-            v = np.where(v < 0.0001, 0.0001, v)            
+            v = np.where(v < 0.001, 0.001, v)
+            v = np.where(v > 0.999, 0.999, v)            
 
             if self.y_train[self.probit_idxs[type]] is not None:
                 v = np.append(self.y_train[self.probit_idxs[type]][0], v, axis=0)

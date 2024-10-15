@@ -77,7 +77,7 @@ def test_trained_model(user_f, eval_r):
     plt.show()
         
 
-def test_trained_model2(user_f, eval_r):
+def test_trained_model2(user_f, eval_r, train_r):
     down_r = downsample_kmed_rand(eval_r, 50)
 
     num_pairs = int(down_r.shape[0] * (down_r.shape[0]-1) / 2)
@@ -166,13 +166,18 @@ def main():
     num_train = -1
     num_eval = -1
 
-    #train_data = [path_d[:num_train] for path_d in path_data['train']]
+    train_data = [path_d[:num_train] for path_d in path_data['train']]
     eval_data = [path_d[:num_eval] for path_d in path_data['eval']]
     eval_env_d = eval_data[args.env]
+    train_env_d = train_data[args.env]
 
     eval_user_d = np.empty((0, dim_rewards))
     for path_d in eval_env_d:
         eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
+
+    train_user_d = np.empty((0, dim_rewards))
+    for path_d in train_env_d:
+        train_user_d = np.append(train_user_d, path_d['rewards'], axis=0)
 
     ###### Create fake function and synthetic user
     
@@ -181,7 +186,7 @@ def main():
     np.random.seed(0)
     random.seed(0)
 
-    for i in range(1):
+    for i in range(50):
         print('Starting run '+str(i)+' of tuning synth user')
         fake_f = get_fake_func(args.fake_func, config)
         user_f = get_synth_user(args.user, fake_f, config)
@@ -199,8 +204,8 @@ def main():
         print('\n\n')
 
     print(user_f)
-    #test_trained_model(user_f, eval_user_d)
-    test_trained_model2(user_f, eval_user_d)
+    test_trained_model(user_f, eval_user_d)
+    test_trained_model2(user_f, eval_user_d, train_user_d)
 
 
 
