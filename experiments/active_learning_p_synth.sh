@@ -36,11 +36,9 @@ sigma_pair=0.1
 rbf_l=1.2
 
 
-
-for p_synth_abs in 0.9 0.8 0.85 0.7
+for fake_func in min logistic linear
 do
-
-    for fake_func in min logistic linear
+    for p_synth_abs in 0.9 0.8 0.85 0.7
     do
         sel_type=rating
         alpha=0.5
