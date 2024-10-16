@@ -186,7 +186,7 @@ def main():
     np.random.seed(0)
     random.seed(0)
 
-    for i in range(50):
+    for i in range(1):
         print('Starting run '+str(i)+' of tuning synth user')
         fake_f = get_fake_func(args.fake_func, config)
         user_f = get_synth_user(args.user, fake_f, config)
@@ -204,7 +204,7 @@ def main():
         print('\n\n')
 
     print(user_f)
-    test_trained_model(user_f, eval_user_d)
+    #test_trained_model(user_f, eval_user_d)
     test_trained_model2(user_f, eval_user_d, train_user_d)
 
 

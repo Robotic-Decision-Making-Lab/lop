@@ -196,8 +196,8 @@ class HumanChoiceUser(SyntheticUser):
             if res.fun < 0.02:
                 break
         if res.fun > 0.02:
-            print('Bad setting of sigma value after 10 tries. IDK, figure it out yourself')
-            pdb.set_trace()
+            print('Bad setting of sigma value after 10 tries. Throwing exception')
+            raise Exception("Bad setting of sigma values after 10 tries.")
 
         print('Tuned sigma with error =' + str(res.fun))
         self.sigma = res.x
@@ -215,12 +215,13 @@ class HumanChoiceUser(SyntheticUser):
         sample_Q = rewards[Qs]
 
         for i in range(10):
-            res = minimize_scalar(self.sampled_objective, bounds=[0.1, 150.0], args=(p, sample_Q), options={'xatol': 0.01})
+            res = minimize_scalar(self.sampled_objective, bounds=[0.01, 150.0], args=(p, sample_Q), options={'xatol': 0.01})
 
             if res.fun < 0.02:
                 break
         if res.fun > 0.02:
-            print('Bad setting of beta value after 10 tries. IDK, figure it out yourself')
+            print('Bad setting of beta value after 10 tries. This probably means the set is inseperable. Throwing excpetion')
+            raise Exception("Bad setting of beta values after 10 tries. This probably means the evaluation set is inseperable")
 
         print('Tuned beta with error =' + str(res.fun))
        

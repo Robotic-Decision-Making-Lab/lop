@@ -381,7 +381,9 @@ def train_and_eval(config_filename,
 
     while True:
         try:
+            print('Running tune beta')
             user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
+            print('Completed, breaking out of loop')
             break
         except:
             print('Unable to tune beta for user synth')
