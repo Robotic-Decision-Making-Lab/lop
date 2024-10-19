@@ -64,6 +64,8 @@ def sample_human_choice(r, p=1.0, samples=None):
     xk = np.arange(len(r))
     pdf = p_human_choice(r, p=p)
 
+    print('pdf = ' + str(pdf))
+
     if samples is None:
         return np.random.choice(xk, p=pdf)
     else:

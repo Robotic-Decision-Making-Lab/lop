@@ -118,8 +118,7 @@ class HumanChoiceUser(SyntheticUser):
         return np.mean(KL_1+KL_2)
 
 
-    def sampled_objective(self, b, desired_p, sample_queries):
-        y = (self.fake_f(sample_queries) * self.k) + self.b
+    def sampled_objective(self, b, desired_p, sample_queries, y):
         p = p_human_choice(y, p=b)
 
         p_max = np.max(p, axis=1)
@@ -141,7 +140,7 @@ class HumanChoiceUser(SyntheticUser):
         return (p_samp - desired_p)**2
 
     def sample_Qs(self, rewards, Q_size):
-        num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 20000)
+        num_Q = min(comb(rewards.shape[0], Q_size) * 0.5, 60000)
         if num_Q < 30:
             num_Q = min(30, comb(rewards.shape[0], Q_size))
         num_Q = int(num_Q)
@@ -177,8 +176,10 @@ class HumanChoiceUser(SyntheticUser):
         if p_sigma is None:
             p_sigma = p
 
+
         self.learn_beta_pairwise(rewards, p, Q_size, Qs=Qs)
         self.learn_sigma(rewards, p_sigma, Q_size, Qs=Qs)
+        print('beta = ' + str(self.beta) + ' sigma=' + str(self.sigma))
 
 
     ## learn_sigma
@@ -214,8 +215,10 @@ class HumanChoiceUser(SyntheticUser):
 
         sample_Q = rewards[Qs]
 
+        y = (self.fake_f(sample_Q) * self.k) + self.b
+
         for i in range(10):
-            res = minimize_scalar(self.sampled_objective, bounds=[0.01, 150.0], args=(p, sample_Q), options={'xatol': 0.01})
+            res = minimize_scalar(self.sampled_objective, bounds=[0.01, 150.0], args=(p, sample_Q, y), options={'xatol': 0.01})
 
             if res.fun < 0.02:
                 break

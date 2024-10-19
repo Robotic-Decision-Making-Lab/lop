@@ -503,6 +503,7 @@ def train_and_eval(config_filename,
             sel_idx = model.select(rewards, num_alts)
             x_train = rewards[sel_idx]
             
+
             # check if a rating or choose is selected by the active learning
             if len(sel_idx) == 1:
                 rating = user_f.rate(x_train)
@@ -553,7 +554,7 @@ def evaluation(env_num, utility_f, config, model, eval_data):
     for i in range(num_eval):
         ##### Generate paths and select paths for explanation
         rewards, indicies = eval_data[env_num][i]['rewards'], eval_data[env_num][i]['indicies']
-        #pdb.set_trace()
+        
         rewards = rewards[indicies['pareto']]
         scores = model(rewards)
 
