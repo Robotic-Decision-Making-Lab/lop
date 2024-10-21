@@ -1,9 +1,19 @@
 <map id="lop.active_learning.ActiveLearner.ActiveLearner" name="lop.active_learning.ActiveLearner.ActiveLearner">
-<area shape="rect" id="node1" title="Base Active Learning class." alt="" coords="5,136,196,177"/>
-<area shape="rect" id="node2" href="$classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html" title=" " alt="" coords="270,5,449,47"/>
-<area shape="rect" id="node3" href="$classlop_1_1active__learning_1_1BestLearner_1_1WorstLearner.html" title=" " alt="" coords="270,71,449,112"/>
-<area shape="rect" id="node4" href="$classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html" title=" " alt="" coords="250,136,469,177"/>
-<area shape="rect" id="node5" href="$classlop_1_1active__learning_1_1RandomLearner_1_1RandomLearner.html" title=" " alt="" coords="257,201,461,243"/>
-<area shape="rect" id="node6" href="$classlop_1_1active__learning_1_1UCBLearner_1_1UCBLearner.html" title=" " alt="" coords="244,267,475,308"/>
-<area shape="rect" id="node7" href="$classlop_1_1active__learning_1_1GV__UCBLearner_1_1GV__UCBLearner.html" title=" " alt="" coords="523,267,735,308"/>
+<area shape="rect" id="node1" title="Base Active Learning class." alt="" coords="5,300,196,341"/>
+<area shape="rect" id="node2" href="$classlop_1_1active__learning_1_1AbsBayesInfo_1_1AbsBayesInfo.html" title=" " alt="" coords="261,5,476,47"/>
+<area shape="rect" id="node3" href="$classlop_1_1active__learning_1_1AcquisitionBase_1_1AcquisitionBase.html" title=" " alt="" coords="257,71,480,112"/>
+<area shape="rect" id="node6" href="$classlop_1_1active__learning_1_1BayesInfoGain_1_1BayesInfoGain.html" title=" " alt="" coords="273,136,464,177"/>
+<area shape="rect" id="node7" href="$classlop_1_1active__learning_1_1BestLearner_1_1BestLearner.html" title=" " alt="" coords="279,201,458,243"/>
+<area shape="rect" id="node8" href="$classlop_1_1active__learning_1_1BestLearner_1_1WorstLearner.html" title=" " alt="" coords="279,267,458,308"/>
+<area shape="rect" id="node9" href="$classlop_1_1active__learning_1_1MutualInfoLearner_1_1MutualInfoLearner.html" title=" " alt="" coords="259,332,478,373"/>
+<area shape="rect" id="node10" href="$classlop_1_1active__learning_1_1ProbabilityLearner_1_1ProbabilityLearner.html" title=" " alt="" coords="259,397,479,439"/>
+<area shape="rect" id="node11" href="$classlop_1_1active__learning_1_1RandomLearner_1_1RandomLearner.html" title=" " alt="" coords="267,463,471,504"/>
+<area shape="rect" id="node12" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1RateChooseLearner.html" title="RateChooseLearner." alt="" coords="244,528,493,569"/>
+<area shape="rect" id="node16" href="$classlop_1_1active__learning_1_1UCBLearner_1_1UCBLearner.html" title=" " alt="" coords="253,597,484,639"/>
+<area shape="rect" id="node4" href="$classlop_1_1active__learning_1_1AbsAcquisition_1_1AbsAcquisition.html" title=" " alt="" coords="541,39,792,80"/>
+<area shape="rect" id="node5" href="$classlop_1_1active__learning_1_1AcquisitionSelection_1_1AcquisitionSelection.html" title=" " alt="" coords="555,104,778,145"/>
+<area shape="rect" id="node13" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparision.html" title=" " alt="" coords="545,415,788,456"/>
+<area shape="rect" id="node14" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparisionEqualChecking.html" title=" " alt="" coords="545,481,788,537"/>
+<area shape="rect" id="node15" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparisionSetFixed.html" title=" " alt="" coords="545,561,788,617"/>
+<area shape="rect" id="node17" href="$classlop_1_1active__learning_1_1GV__UCBLearner_1_1GV__UCBLearner.html" title=" " alt="" coords="561,641,773,683"/>
 </map>

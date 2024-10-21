@@ -72,14 +72,16 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afe76e44ef7ce1c8cebcf05a6825832bc"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGP__visualization.html#afe76e44ef7ce1c8cebcf05a6825832bc">record_gp_state</a> (model, fake_f, bounds=[(0, 0),(1.5, 1.5)], folder='./', file_header='', visualize=False)</td></tr>
-<tr class="separator:afe76e44ef7ce1c8cebcf05a6825832bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adae3c176156ac66454dafceb2214e78a"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGP__visualization.html#adae3c176156ac66454dafceb2214e78a">visualize_data</a> (X, Y, num_side, fake_ut, pred_ut, pred_sigma, GP_pts, GP_prior_idx, folder='./', file_header='', also_display=False)</td></tr>
-<tr class="separator:adae3c176156ac66454dafceb2214e78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3c0d27a2e9d24c6ddfe82f450fcc104"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGP__visualization.html#ae3c0d27a2e9d24c6ddfe82f450fcc104">record_gp_state</a> (model, fake_f, bounds=[(0, 0),(2.0, 2.0)], folder='./', file_header='', visualize=False)</td></tr>
+<tr class="separator:ae3c0d27a2e9d24c6ddfe82f450fcc104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2af9832008a33c7449ee313f367aa54b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGP__visualization.html#a2af9832008a33c7449ee313f367aa54b">visualize_data</a> (X, Y, num_side, fake_ut, pred_ut, pred_sigma, GP_pts, GP_prior_idx, GP_pref_0, GP_pref_1, GP_pref_2, folder='./', file_header='', also_display=False)</td></tr>
+<tr class="separator:a2af9832008a33c7449ee313f367aa54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e39c503ba75eba3df2b46a264d8e18d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGP__visualization.html#a2e39c503ba75eba3df2b46a264d8e18d">visualize_single_run_regret</a> (folder, score_diff, query_type_is_abs)</td></tr>
+<tr class="separator:a2e39c503ba75eba3df2b46a264d8e18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="afe76e44ef7ce1c8cebcf05a6825832bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe76e44ef7ce1c8cebcf05a6825832bc">&#9670;&nbsp;</a></span>record_gp_state()</h2>
+<a id="ae3c0d27a2e9d24c6ddfe82f450fcc104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3c0d27a2e9d24c6ddfe82f450fcc104">&#9670;&nbsp;</a></span>record_gp_state()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -100,7 +102,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>bounds</em> = <code>[(0,0),(1.5,1.5)]</code>, </td>
+          <td class="paramname"><em>bounds</em> = <code>[(0,0),(2.0,2.0)]</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -130,8 +132,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="adae3c176156ac66454dafceb2214e78a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adae3c176156ac66454dafceb2214e78a">&#9670;&nbsp;</a></span>visualize_data()</h2>
+<a id="a2af9832008a33c7449ee313f367aa54b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2af9832008a33c7449ee313f367aa54b">&#9670;&nbsp;</a></span>visualize_data()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,6 +190,24 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>GP_pref_0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>GP_pref_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>GP_pref_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
           <td class="paramname"><em>folder</em> = <code>'./'</code>, </td>
         </tr>
         <tr>
@@ -201,6 +221,40 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>also_display</em> = <code>False</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e39c503ba75eba3df2b46a264d8e18d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e39c503ba75eba3df2b46a264d8e18d">&#9670;&nbsp;</a></span>visualize_single_run_regret()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def GP_visualization.visualize_single_run_regret </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>folder</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>score_diff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>query_type_is_abs</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

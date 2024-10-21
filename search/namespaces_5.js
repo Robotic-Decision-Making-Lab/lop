@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['sample_5fprior_590',['sample_prior',['../namespacesample__prior.html',1,'']]],
-  ['setup_591',['setup',['../namespacesetup.html',1,'']]],
-  ['single_5fexperiment_592',['single_experiment',['../namespacesingle__experiment.html',1,'']]]
+  ['gp_5fucb_5flearner_800',['GP_UCB_learner',['../namespaceGP__UCB__learner.html',1,'']]],
+  ['gp_5fvisualization_801',['GP_visualization',['../namespaceGP__visualization.html',1,'']]]
 ];

@@ -1,23 +1,4 @@
 var searchData=
 [
-  ['pareto_2epy_638',['pareto.py',['../pareto_8py.html',1,'']]],
-  ['periodickern_2epy_639',['PeriodicKern.py',['../PeriodicKern_8py.html',1,'']]],
-  ['plot_5ffake_5ffunction_2epy_640',['plot_fake_function.py',['../plot__fake__function_8py.html',1,'']]],
-  ['plot_5fgamma_5fdist_2epy_641',['plot_gamma_dist.py',['../plot__gamma__dist_8py.html',1,'']]],
-  ['plot_5fmcmc_5fsampling_2epy_642',['plot_mcmc_sampling.py',['../plot__mcmc__sampling_8py.html',1,'']]],
-  ['pref_5fgp_2epy_643',['pref_gp.py',['../pref__gp_8py.html',1,'']]],
-  ['pref_5fgp_5fabs_5fbound_2epy_644',['pref_gp_abs_bound.py',['../pref__gp__abs__bound_8py.html',1,'']]],
-  ['pref_5fgp_5fbreak_5fit_2epy_645',['pref_gp_break_it.py',['../pref__gp__break__it_8py.html',1,'']]],
-  ['pref_5fgp_5fordinal_2epy_646',['pref_gp_ordinal.py',['../pref__gp__ordinal_8py.html',1,'']]],
-  ['pref_5fgp_5fpairwise_5fordinal_2epy_647',['pref_gp_pairwise_ordinal.py',['../pref__gp__pairwise__ordinal_8py.html',1,'']]],
-  ['pref_5fgp_5fsmall_5fnumber_2epy_648',['pref_gp_small_number.py',['../pref__gp__small__number_8py.html',1,'']]],
-  ['pref_5fgp_5fucb_5flearner_2epy_649',['pref_gp_ucb_learner.py',['../pref__gp__ucb__learner_8py.html',1,'']]],
-  ['pref_5flinear_5flearner_2epy_650',['pref_linear_learner.py',['../pref__linear__learner_8py.html',1,'']]],
-  ['preference_5fpairs_2epy_651',['preference_pairs.py',['../preference__pairs_8py.html',1,'']]],
-  ['preferencegp_2epy_652',['PreferenceGP.py',['../PreferenceGP_8py.html',1,'']]],
-  ['preferencelinear_2epy_653',['PreferenceLinear.py',['../PreferenceLinear_8py.html',1,'']]],
-  ['preferencemodel_2epy_654',['PreferenceModel.py',['../PreferenceModel_8py.html',1,'']]],
-  ['preferenceprobit_2epy_655',['PreferenceProbit.py',['../PreferenceProbit_8py.html',1,'']]],
-  ['prior_5fonly_2epy_656',['prior_only.py',['../prior__only_8py.html',1,'']]],
-  ['probitbase_2epy_657',['ProbitBase.py',['../ProbitBase_8py.html',1,'']]]
+  ['ordinalprobit_2epy_936',['OrdinalProbit.py',['../OrdinalProbit_8py.html',1,'']]]
 ];

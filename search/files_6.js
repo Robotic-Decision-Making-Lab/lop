@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['human_5fchoice_5fmodel_2epy_629',['human_choice_model.py',['../human__choice__model_8py.html',1,'']]],
-  ['hyperparameter_5fgp_2epy_630',['hyperparameter_gp.py',['../hyperparameter__gp_8py.html',1,'']]],
-  ['hyperparameter_5fvisualization_2epy_631',['hyperparameter_visualization.py',['../hyperparameter__visualization_8py.html',1,'']]]
+  ['gamma_5fdist_2epy_922',['gamma_dist.py',['../gamma__dist_8py.html',1,'']]],
+  ['gp_2epy_923',['GP.py',['../GP_8py.html',1,'']]],
+  ['gp_5fucb_5flearner_2epy_924',['GP_UCB_learner.py',['../GP__UCB__learner_8py.html',1,'']]],
+  ['gp_5fvisualization_2epy_925',['GP_visualization.py',['../GP__visualization_8py.html',1,'']]],
+  ['gv_5fucblearner_2epy_926',['GV_UCBLearner.py',['../GV__UCBLearner_8py.html',1,'']]]
 ];

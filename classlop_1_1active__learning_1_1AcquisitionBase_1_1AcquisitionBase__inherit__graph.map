@@ -1,0 +1,6 @@
+<map id="lop.active_learning.AcquisitionBase.AcquisitionBase" name="lop.active_learning.AcquisitionBase.AcquisitionBase">
+<area shape="rect" id="node1" title=" " alt="" coords="244,39,467,80"/>
+<area shape="rect" id="node3" href="$classlop_1_1active__learning_1_1AbsAcquisition_1_1AbsAcquisition.html" title=" " alt="" coords="515,5,765,47"/>
+<area shape="rect" id="node4" href="$classlop_1_1active__learning_1_1AcquisitionSelection_1_1AcquisitionSelection.html" title=" " alt="" coords="529,71,751,112"/>
+<area shape="rect" id="node2" href="$classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html" title="Base Active Learning class." alt="" coords="5,39,196,80"/>
+</map>

@@ -87,6 +87,7 @@ Inheritance diagram for lop.kernels.KernelFunc.KernelFunc:</div>
 <area shape="rect" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html" title="LinearKern A linear kernel for gaussian processes." alt="" coords="296,56,535,83"/>
 <area shape="rect" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html" title="periodic_kern A periodic kernel for gaussian processes" alt="" coords="324,107,507,149"/>
 <area shape="rect" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html" title="RBF_kern Radial basis function for two points." alt="" coords="304,173,527,200"/>
+<area shape="rect" href="classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html" title="RBF_kern_zeroed Radial basis function for two points." alt="" coords="583,166,772,207"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -209,7 +210,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a40c4e58f2e5f332c6333fc618af0a56a">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#ac2940de7ae84da0d3acb0a5528589e8e">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a79a421ab869080dcb07be704a18c5261">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a0ad8f45e1ec451feb37d66e6c6d1072d">lop.kernels.KernelFunc.DualKern</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html#a96d837ef26f6c2001bcc234c746f47e8">lop.kernels.RBF_kern_zeroed.RBF_kern_zeroed</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a40c4e58f2e5f332c6333fc618af0a56a">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#ac2940de7ae84da0d3acb0a5528589e8e">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a79a421ab869080dcb07be704a18c5261">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#a0ad8f45e1ec451feb37d66e6c6d1072d">lop.kernels.KernelFunc.DualKern</a>.</p>
 
 </div>
 </div>
@@ -303,7 +304,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the covariance matrix of the samples. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a88a49d29df921d32b8e774af69448b8a">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a57b04b2e244369a32a1891fe033e9f9d">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#ab99a623b6bbd7c7aa98925e32570f23c">lop.kernels.KernelFunc.DualKern</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html#ad6e24771701caf38c3038479a21e39cf">lop.kernels.RBF_kern_zeroed.RBF_kern_zeroed</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a57ae11d3d4fe235014feeed539cf6d6f">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a88a49d29df921d32b8e774af69448b8a">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a57b04b2e244369a32a1891fe033e9f9d">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#ab99a623b6bbd7c7aa98925e32570f23c">lop.kernels.KernelFunc.DualKern</a>.</p>
 
 </div>
 </div>
@@ -349,7 +350,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the covariance gradient tensor of the samples. [n1, n2, k] </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#adf2a504fdab6accb0044b4e809604406">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a6aca4eb23fd936fe51d5d680329be50b">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a2071ff3d8d52f981b81b19069695396f">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#ac557211866eb8afc927359983de0736f">lop.kernels.KernelFunc.DualKern</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html#a213ee4215d990dab291dbaaefdd1cde4">lop.kernels.RBF_kern_zeroed.RBF_kern_zeroed</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#adf2a504fdab6accb0044b4e809604406">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a6aca4eb23fd936fe51d5d680329be50b">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#a2071ff3d8d52f981b81b19069695396f">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#ac557211866eb8afc927359983de0736f">lop.kernels.KernelFunc.DualKern</a>.</p>
 
 </div>
 </div>
@@ -432,7 +433,7 @@ Public Member Functions</h2></td></tr>
 
 <p>gradient Calculates the gradient of the kernel function between the u, v terms. </p>
 
-<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a47bd95d87bc2abaf8d60578fc05c79fd">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a4090ac3c7084d1a088ac1b27d95be4a4">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#ab194f680aa8010a4644afc084bd40da4">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#acd9a537b25979a7875948768800ea68e">lop.kernels.KernelFunc.DualKern</a>.</p>
+<p>Reimplemented in <a class="el" href="classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html#aaf900808fd976d110d2124119cd4cc96">lop.kernels.RBF_kern_zeroed.RBF_kern_zeroed</a>, <a class="el" href="classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html#a47bd95d87bc2abaf8d60578fc05c79fd">lop.kernels.RBF_kern.RBF_kern</a>, <a class="el" href="classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html#a4090ac3c7084d1a088ac1b27d95be4a4">lop.kernels.PeriodicKern.PeriodicKern</a>, <a class="el" href="classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html#ab194f680aa8010a4644afc084bd40da4">lop.kernels.LinearKern.LinearKern</a>, and <a class="el" href="classlop_1_1kernels_1_1KernelFunc_1_1DualKern.html#acd9a537b25979a7875948768800ea68e">lop.kernels.KernelFunc.DualKern</a>.</p>
 
 </div>
 </div>

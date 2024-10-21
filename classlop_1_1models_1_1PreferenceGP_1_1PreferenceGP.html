@@ -145,9 +145,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af2d1350ac2f02dcd91262da082fb59f6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#af2d1350ac2f02dcd91262da082fb59f6">likli_f_hyper</a> (self, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a000ad39d2789bd100069eede6fe04d21">F</a>, x, y)</td></tr>
 <tr class="memdesc:af2d1350ac2f02dcd91262da082fb59f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">likli_f_hyper calculates the posterior log liklihood function for the model given parameters This is equation (25)  <a href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#af2d1350ac2f02dcd91262da082fb59f6">More...</a><br /></td></tr>
 <tr class="separator:af2d1350ac2f02dcd91262da082fb59f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22e40786fa35068513c496c40431d514"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a22e40786fa35068513c496c40431d514">likli_f</a> (self, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a000ad39d2789bd100069eede6fe04d21">F</a>, x, y)</td></tr>
-<tr class="memdesc:a22e40786fa35068513c496c40431d514"><td class="mdescLeft">&#160;</td><td class="mdescRight">likli_f calculates the posterior log liklihood function for the model  <a href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a22e40786fa35068513c496c40431d514">More...</a><br /></td></tr>
-<tr class="separator:a22e40786fa35068513c496c40431d514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d29e2268e2ab3f8923b3d19a6ed9d00"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a7d29e2268e2ab3f8923b3d19a6ed9d00">likli_f</a> (self, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a000ad39d2789bd100069eede6fe04d21">F</a>, x, y, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#ace2e4b98edc57d1af8a3f6c892fd334b">K</a>, L)</td></tr>
+<tr class="memdesc:a7d29e2268e2ab3f8923b3d19a6ed9d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">likli_f calculates the posterior log liklihood function for the model  <a href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a7d29e2268e2ab3f8923b3d19a6ed9d00">More...</a><br /></td></tr>
+<tr class="separator:a7d29e2268e2ab3f8923b3d19a6ed9d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa59f0f7cd7d1b39aa5b32c5bd8262894"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#aa59f0f7cd7d1b39aa5b32c5bd8262894">visualize_hyperparameter</a> (self, <a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a000ad39d2789bd100069eede6fe04d21">F</a>, x, x_train, y, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a7f6931376d8179e154b4fe3284617f56">y_train</a>, itr=0)</td></tr>
 <tr class="memdesc:aa59f0f7cd7d1b39aa5b32c5bd8262894"><td class="mdescLeft">&#160;</td><td class="mdescRight">visualize_hyperparameter Visualize the hyperparameter space for debug purposes  <a href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#aa59f0f7cd7d1b39aa5b32c5bd8262894">More...</a><br /></td></tr>
 <tr class="separator:aa59f0f7cd7d1b39aa5b32c5bd8262894"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,9 +187,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5afe0a29e2ffc92acfc05c678a2e9c38 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69058672189609cd5d9319f88f8e237f inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a69058672189609cd5d9319f88f8e237f">iterative_line_search</a> (self, F, descent, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a0ed1931039f1424492f2eaf91a2d4c4c">loss_func</a>, loss_args, min_lambda=0.01, max_lambda=1.5, max_itr=10)</td></tr>
 <tr class="separator:a69058672189609cd5d9319f88f8e237f inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39d34bc1d81a131ff20694b7b137aa19 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a39d34bc1d81a131ff20694b7b137aa19">plot_preference</a> (self, ax=plt.gca(), color='#E69F00', alpha=0.3, width=0.005, head_width=0.015, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a7f6931376d8179e154b4fe3284617f56">y_train</a>=None, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21">X_train</a>=None, F=None)</td></tr>
-<tr class="memdesc:a39d34bc1d81a131ff20694b7b137aa19 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">plot_preference This function plots the preference training data defined by the preference model This defines a set of arrows to show the preferences between each different point.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a39d34bc1d81a131ff20694b7b137aa19">More...</a><br /></td></tr>
-<tr class="separator:a39d34bc1d81a131ff20694b7b137aa19 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a0319a2c03d8f1ece426bba30ad933 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a48a0319a2c03d8f1ece426bba30ad933">plot_preference</a> (self, ax=None, color='#E69F00', alpha=0.3, width=1.0, head_size=15, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a7f6931376d8179e154b4fe3284617f56">y_train</a>=None, <a class="el" href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a703b49ff1bef69bcc07d8d62789b3d21">X_train</a>=None, F=None)</td></tr>
+<tr class="memdesc:a48a0319a2c03d8f1ece426bba30ad933 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">plot_preference This function plots the preference training data defined by the preference model This defines a set of arrows to show the preferences between each different point.  <a href="classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a48a0319a2c03d8f1ece426bba30ad933">More...</a><br /></td></tr>
+<tr class="separator:a48a0319a2c03d8f1ece426bba30ad933 inherit pub_methods_classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlop_1_1models_1_1Model_1_1Model"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlop_1_1models_1_1Model_1_1Model')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html">lop.models.Model.Model</a></td></tr>
 <tr class="memitem:a316afa91f5c49f0f948eec033b3390bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">__init__</a> (self, <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a945e63343cca2a4d42652f017b9496a7">active_learner</a>=None)</td></tr>
 <tr class="memdesc:a316afa91f5c49f0f948eec033b3390bc inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor constructor for the base model  <a href="classlop_1_1models_1_1Model_1_1Model.html#a316afa91f5c49f0f948eec033b3390bc">More...</a><br /></td></tr>
@@ -203,6 +203,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a763f8c3adc321234256515199ed17a0d inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a763f8c3adc321234256515199ed17a0d">select_best</a> (self, candidate_pts)</td></tr>
 <tr class="memdesc:a763f8c3adc321234256515199ed17a0d inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">select_best Returns the best index from the list of candidate_pts  <a href="classlop_1_1models_1_1Model_1_1Model.html#a763f8c3adc321234256515199ed17a0d">More...</a><br /></td></tr>
 <tr class="separator:a763f8c3adc321234256515199ed17a0d inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab405d205e6f22094152eccee656dc03e inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#ab405d205e6f22094152eccee656dc03e">likli_f</a> (self, F, x, y)</td></tr>
+<tr class="memdesc:ab405d205e6f22094152eccee656dc03e inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">likli_f calculates the posterior log liklihood function for the model  <a href="classlop_1_1models_1_1Model_1_1Model.html#ab405d205e6f22094152eccee656dc03e">More...</a><br /></td></tr>
+<tr class="separator:ab405d205e6f22094152eccee656dc03e inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b0546e213ffb9efe3b1f29f025e38ee inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#a2b0546e213ffb9efe3b1f29f025e38ee">select</a> (self, candidate_pts, num_alts, prev_selection=[], prefer_pts=None, return_not_selected=False)</td></tr>
 <tr class="memdesc:a2b0546e213ffb9efe3b1f29f025e38ee inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="mdescLeft">&#160;</td><td class="mdescRight">select This function calls the active learner and specifies the number of alternatives to select A wrapper around calling model.active_learner.select  <a href="classlop_1_1models_1_1Model_1_1Model.html#a2b0546e213ffb9efe3b1f29f025e38ee">More...</a><br /></td></tr>
 <tr class="separator:a2b0546e213ffb9efe3b1f29f025e38ee inherit pub_methods_classlop_1_1models_1_1Model_1_1Model"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,8 +216,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8856d4e5355df5a23f93006d062ef352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad82d7f6df0a22d5f96a8d0faf8d72a18"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#ad82d7f6df0a22d5f96a8d0faf8d72a18">invert_function</a></td></tr>
 <tr class="separator:ad82d7f6df0a22d5f96a8d0faf8d72a18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5880a423dbbd133aa838492ac513f926"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a5880a423dbbd133aa838492ac513f926">lambda_gp</a></td></tr>
-<tr class="separator:a5880a423dbbd133aa838492ac513f926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a889775082bf26547d6b286d694dc6ed8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a889775082bf26547d6b286d694dc6ed8">normalize_gp</a></td></tr>
 <tr class="separator:a889775082bf26547d6b286d694dc6ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01cd672cf1fbf467d063c17ab2e3a87f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a01cd672cf1fbf467d063c17ab2e3a87f">normalize_positive</a></td></tr>
@@ -737,8 +738,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a22e40786fa35068513c496c40431d514"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22e40786fa35068513c496c40431d514">&#9670;&nbsp;</a></span>likli_f()</h2>
+<a id="a7d29e2268e2ab3f8923b3d19a6ed9d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d29e2268e2ab3f8923b3d19a6ed9d00">&#9670;&nbsp;</a></span>likli_f()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -765,7 +766,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>K</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>L</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -785,8 +798,6 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a scalar value as the log liklihood of the model </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classlop_1_1models_1_1Model_1_1Model.html#ab405d205e6f22094152eccee656dc03e">lop.models.Model.Model</a>.</p>
 
 </div>
 </div>
@@ -1214,20 +1225,6 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">lop.models.PreferenceGP.PreferenceGP.K</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5880a423dbbd133aa838492ac513f926"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5880a423dbbd133aa838492ac513f926">&#9670;&nbsp;</a></span>lambda_gp</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">lop.models.PreferenceGP.PreferenceGP.lambda_gp</td>
         </tr>
       </table>
 </div><div class="memdoc">

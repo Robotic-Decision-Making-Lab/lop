@@ -1,0 +1,7 @@
+<map id="lop.active_learning.RateChooseLearner.RateChooseLearner" name="lop.active_learning.RateChooseLearner.RateChooseLearner">
+<area shape="rect" id="node1" title="RateChooseLearner." alt="" coords="244,79,493,120"/>
+<area shape="rect" id="node3" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparision.html" title=" " alt="" coords="541,5,784,47"/>
+<area shape="rect" id="node4" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparisionEqualChecking.html" title=" " alt="" coords="541,71,784,127"/>
+<area shape="rect" id="node5" href="$classlop_1_1active__learning_1_1RateChooseLearner_1_1MixedComparisionSetFixed.html" title=" " alt="" coords="541,151,784,207"/>
+<area shape="rect" id="node2" href="$classlop_1_1active__learning_1_1ActiveLearner_1_1ActiveLearner.html" title="Base Active Learning class." alt="" coords="5,79,196,120"/>
+</map>

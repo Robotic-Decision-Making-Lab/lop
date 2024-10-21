@@ -1,28 +1,5 @@
 var searchData=
 [
-  ['test_5factive_5flearner_593',['test_active_learner',['../namespacetest__active__learner.html',1,'']]],
-  ['test_5fdual_5fkernel_594',['test_dual_kernel',['../namespacetest__dual__kernel.html',1,'']]],
-  ['test_5ffake_5ffunction_595',['test_fake_function',['../namespacetest__fake__function.html',1,'']]],
-  ['test_5fgamma_5fdist_596',['test_gamma_dist',['../namespacetest__gamma__dist.html',1,'']]],
-  ['test_5fgp_597',['test_GP',['../namespacetest__GP.html',1,'']]],
-  ['test_5fgv_5fucb_5flearner_598',['test_GV_UCB_learner',['../namespacetest__GV__UCB__learner.html',1,'']]],
-  ['test_5fhuman_5fchoice_599',['test_human_choice',['../namespacetest__human__choice.html',1,'']]],
-  ['test_5fhyperparameter_5fsearch_600',['test_hyperparameter_search',['../namespacetest__hyperparameter__search.html',1,'']]],
-  ['test_5flinear_5fkernel_601',['test_linear_kernel',['../namespacetest__linear__kernel.html',1,'']]],
-  ['test_5fmcmc_5fsampling_602',['test_mcmc_sampling',['../namespacetest__mcmc__sampling.html',1,'']]],
-  ['test_5fmodel_603',['test_model',['../namespacetest__model.html',1,'']]],
-  ['test_5fmutual_5finfo_5flearner_604',['test_mutual_info_learner',['../namespacetest__mutual__info__learner.html',1,'']]],
-  ['test_5fpareto_605',['test_pareto',['../namespacetest__pareto.html',1,'']]],
-  ['test_5fperiodic_5fkernel_606',['test_periodic_kernel',['../namespacetest__periodic__kernel.html',1,'']]],
-  ['test_5fpreference_5fgp_607',['test_preference_GP',['../namespacetest__preference__GP.html',1,'']]],
-  ['test_5fpreference_5fgp_5fspecial_5fcases_608',['test_preference_GP_special_cases',['../namespacetest__preference__GP__special__cases.html',1,'']]],
-  ['test_5fpreference_5flinear_609',['test_preference_linear',['../namespacetest__preference__linear.html',1,'']]],
-  ['test_5fpreference_5fmodel_610',['test_preference_model',['../namespacetest__preference__model.html',1,'']]],
-  ['test_5fpreference_5fpair_611',['test_preference_pair',['../namespacetest__preference__pair.html',1,'']]],
-  ['test_5fprobit_5fderivative_612',['test_probit_derivative',['../namespacetest__probit__derivative.html',1,'']]],
-  ['test_5fprobits_613',['test_probits',['../namespacetest__probits.html',1,'']]],
-  ['test_5frandom_5flearner_614',['test_random_learner',['../namespacetest__random__learner.html',1,'']]],
-  ['test_5frbf_5fkernel_615',['test_rbf_kernel',['../namespacetest__rbf__kernel.html',1,'']]],
-  ['test_5ftraining_5futility_616',['test_training_utility',['../namespacetest__training__utility.html',1,'']]],
-  ['test_5fucb_5flearner_617',['test_UCB_learner',['../namespacetest__UCB__learner.html',1,'']]]
+  ['hyperparameter_5fgp_802',['hyperparameter_gp',['../namespacehyperparameter__gp.html',1,'']]],
+  ['hyperparameter_5fvisualization_803',['hyperparameter_visualization',['../namespacehyperparameter__visualization.html',1,'']]]
 ];

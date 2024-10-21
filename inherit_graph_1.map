@@ -4,4 +4,5 @@
 <area shape="rect" id="node3" href="$classlop_1_1kernels_1_1LinearKern_1_1LinearKern.html" title="LinearKern A linear kernel for gaussian processes." alt="" coords="296,56,535,83"/>
 <area shape="rect" id="node4" href="$classlop_1_1kernels_1_1PeriodicKern_1_1PeriodicKern.html" title="periodic_kern A periodic kernel for gaussian processes" alt="" coords="324,107,507,149"/>
 <area shape="rect" id="node5" href="$classlop_1_1kernels_1_1RBF__kern_1_1RBF__kern.html" title="RBF_kern Radial basis function for two points." alt="" coords="304,173,527,200"/>
+<area shape="rect" id="node6" href="$classlop_1_1kernels_1_1RBF__kern__zeroed_1_1RBF__kern__zeroed.html" title="RBF_kern_zeroed Radial basis function for two points." alt="" coords="583,166,772,207"/>
 </map>

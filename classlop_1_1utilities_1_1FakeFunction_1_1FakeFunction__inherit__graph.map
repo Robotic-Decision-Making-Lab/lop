@@ -1,7 +1,14 @@
 <map id="lop.utilities.FakeFunction.FakeFunction" name="lop.utilities.FakeFunction.FakeFunction">
-<area shape="rect" id="node1" title="Fake function Abstract class for a Fake Function for experiments with different learning methods for ..." alt="" coords="5,104,192,145"/>
-<area shape="rect" id="node2" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLinear.html" title="Fake linear A reasonably simple linear function to test with." alt="" coords="240,5,427,47"/>
-<area shape="rect" id="node3" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html" title="Fake logistic A randomized logistic function." alt="" coords="240,71,427,112"/>
-<area shape="rect" id="node4" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSinExp.html" title="Fake sin with dimenshing exponenent." alt="" coords="240,136,427,177"/>
-<area shape="rect" id="node5" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSquared.html" title="Fake squared A randomized squared function." alt="" coords="240,201,427,243"/>
+<area shape="rect" id="node1" title="Fake function Abstract class for a Fake Function for experiments with different learning methods for ..." alt="" coords="5,332,192,373"/>
+<area shape="rect" id="node2" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeIntegrate.html" title=" " alt="" coords="240,5,427,47"/>
+<area shape="rect" id="node3" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLinear.html" title="Fake linear A reasonably simple linear function to test with." alt="" coords="240,71,427,112"/>
+<area shape="rect" id="node4" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeLogistic.html" title="Fake logistic A randomized logistic function." alt="" coords="240,136,427,177"/>
+<area shape="rect" id="node5" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeMinLog.html" title=" " alt="" coords="240,201,427,243"/>
+<area shape="rect" id="node6" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeMixtureGaussian.html" title=" " alt="" coords="240,267,427,308"/>
+<area shape="rect" id="node7" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSinExp.html" title="Fake sin with dimenshing exponenent." alt="" coords="240,332,427,373"/>
+<area shape="rect" id="node8" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSquared.html" title="Fake squared A randomized squared function." alt="" coords="240,397,427,439"/>
+<area shape="rect" id="node9" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeSquaredMinMax.html" title=" " alt="" coords="240,463,427,504"/>
+<area shape="rect" id="node10" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeStaticSin.html" title=" " alt="" coords="240,528,427,569"/>
+<area shape="rect" id="node11" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeWeightedMax.html" title="FakeWeightedMax Takes the max of a set of weighted function as the method to combine the reward value..." alt="" coords="240,593,427,635"/>
+<area shape="rect" id="node12" href="$classlop_1_1utilities_1_1FakeFunction_1_1FakeWeightedMin.html" title="FakeWeightedMin Takes the max of a set of weighted function as the method to combine the reward value..." alt="" coords="240,659,427,700"/>
 </map>

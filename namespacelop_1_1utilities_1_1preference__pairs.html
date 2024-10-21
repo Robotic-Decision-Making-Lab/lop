@@ -79,6 +79,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab39f48fcbcaba11692170f1a193aca85"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1preference__pairs.html#ab39f48fcbcaba11692170f1a193aca85">get_dk</a> (u, v)</td></tr>
 <tr class="memdesc:ab39f48fcbcaba11692170f1a193aca85"><td class="mdescLeft">&#160;</td><td class="mdescRight">get_df This function returns the dk of the preference pair.  <a href="namespacelop_1_1utilities_1_1preference__pairs.html#ab39f48fcbcaba11692170f1a193aca85">More...</a><br /></td></tr>
 <tr class="separator:ab39f48fcbcaba11692170f1a193aca85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5dc4227bf8ee505f81f36a7a4c7b906"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1preference__pairs.html#af5dc4227bf8ee505f81f36a7a4c7b906">preference</a> (u_idx, v_idx)</td></tr>
+<tr class="memdesc:af5dc4227bf8ee505f81f36a7a4c7b906"><td class="mdescLeft">&#160;</td><td class="mdescRight">preference a function that generates a preference between two indicies  <a href="namespacelop_1_1utilities_1_1preference__pairs.html#af5dc4227bf8ee505f81f36a7a4c7b906">More...</a><br /></td></tr>
+<tr class="separator:af5dc4227bf8ee505f81f36a7a4c7b906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81287cbafb80d3dcc5929abb7d4df95b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelop_1_1utilities_1_1preference__pairs.html#a81287cbafb80d3dcc5929abb7d4df95b">gen_pairs_from_idx</a> (best_idx, indicies)</td></tr>
 <tr class="memdesc:a81287cbafb80d3dcc5929abb7d4df95b"><td class="mdescLeft">&#160;</td><td class="mdescRight">gen_pairs_from_idx This function is given the best index selected from a user selection and generates the pairs needed to be passed to a preference GP  <a href="namespacelop_1_1utilities_1_1preference__pairs.html#a81287cbafb80d3dcc5929abb7d4df95b">More...</a><br /></td></tr>
 <tr class="separator:a81287cbafb80d3dcc5929abb7d4df95b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +254,44 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="af5dc4227bf8ee505f81f36a7a4c7b906"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5dc4227bf8ee505f81f36a7a4c7b906">&#9670;&nbsp;</a></span>preference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.utilities.preference_pairs.preference </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>u_idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>v_idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>preference a function that generates a preference between two indicies </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">u_idx</td><td>- the index of the larger point </td></tr>
+    <tr><td class="paramname">v_idx</td><td>- the index of the smaller point</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the preference pair (-1, u_idx, v_idx) </dd></dl>
 
 </div>
 </div>

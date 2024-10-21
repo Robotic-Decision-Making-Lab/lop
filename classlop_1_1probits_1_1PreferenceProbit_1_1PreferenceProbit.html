@@ -146,6 +146,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae2a6408314e8a3c864b9bedc4fa88a88"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ae2a6408314e8a3c864b9bedc4fa88a88">derivatives</a> (self, y, F)</td></tr>
 <tr class="memdesc:ae2a6408314e8a3c864b9bedc4fa88a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">derivatives Calculates the derivatives of the probit with the given input data  <a href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#ae2a6408314e8a3c864b9bedc4fa88a88">More...</a><br /></td></tr>
 <tr class="separator:ae2a6408314e8a3c864b9bedc4fa88a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91e0d99671f6e21988d131ddbe1153cb"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a91e0d99671f6e21988d131ddbe1153cb">likelihood_all_pairs</a> (self, F)</td></tr>
+<tr class="memdesc:a91e0d99671f6e21988d131ddbe1153cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">likelihood_all_pairs This function calculates the pairwise likelihood function of the probit for all pairs in F  <a href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#a91e0d99671f6e21988d131ddbe1153cb">More...</a><br /></td></tr>
+<tr class="separator:a91e0d99671f6e21988d131ddbe1153cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac8ee554b33f63030a41dc7eb46c42ab"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aac8ee554b33f63030a41dc7eb46c42ab">likelihood</a> (self, y, F)</td></tr>
 <tr class="memdesc:aac8ee554b33f63030a41dc7eb46c42ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">likelihood Returns the liklihood function for the given probit  <a href="classlop_1_1probits_1_1PreferenceProbit_1_1PreferenceProbit.html#aac8ee554b33f63030a41dc7eb46c42ab">More...</a><br /></td></tr>
 <tr class="separator:aac8ee554b33f63030a41dc7eb46c42ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -725,6 +728,43 @@ Private Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>P(y|F) </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html#ac61a755d2479a20027a0a51274945711">lop.probits.ProbitBase.ProbitBase</a>.</p>
+
+</div>
+</div>
+<a id="a91e0d99671f6e21988d131ddbe1153cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91e0d99671f6e21988d131ddbe1153cb">&#9670;&nbsp;</a></span>likelihood_all_pairs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def lop.probits.PreferenceProbit.PreferenceProbit.likelihood_all_pairs </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>F</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>likelihood_all_pairs This function calculates the pairwise likelihood function of the probit for all pairs in F </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">F</td><td>- the estimated reward values numpy (n,)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a matrix of pairwise probabilities p[0,1] indicates the P(F(0) &gt; F(1)) </dd></dl>
 
 </div>
 </div>
