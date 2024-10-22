@@ -85,6 +85,36 @@ def test_perfect_user_rate():
 
 #     assert sel >= 0 and sel <= 1
 
+
+def test_human_choice_beta_different_p():
+    f = lop.FakeWeightedMin(2)
+    #f.w = np.array([0.707, 0.707])
+
+    us = lop.HumanChoiceUser(f)
+
+    r_train = np.random.random((100,2))
+
+    N_test = 10000
+    r_test = np.random.random((N_test, 2, 2))
+
+    for p_exp in [0.95, 0.9, 0.8, 0.7]:
+
+        us.learn_beta(r_train, p_exp)
+
+        # pairwise comparision
+        num_correct = 0
+        for i in range(N_test):
+            correct = np.argmax(us.fake_f(r_test[i]))
+            sel = us.choose(r_test[i])
+
+            if correct == sel:
+                num_correct += 1
+
+        p = num_correct / N_test
+
+        assert p > (p_exp-0.04) and p < (p_exp+0.04)
+
+
 def test_human_choice_beta_opt():
     f = lop.FakeLinear(2)
     f.w = np.array([0.707, 0.707])

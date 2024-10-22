@@ -379,6 +379,14 @@ def train_and_eval(config_filename,
     for path_d in eval_env_d:
         eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
 
+    # M = 30
+
+    # a_r = np.empty(M)
+    # a_c = np.empty(M)
+    # for j in range(M):
+
+    #     user_f.fake_f.randomize()
+
     while True:
         try:
             print('Running tune beta')
@@ -389,6 +397,82 @@ def train_and_eval(config_filename,
             print('Unable to tune beta for user synth')
             # gonna randomize the function and try again
             utility_f.randomize()
+
+
+        # ### Test user synth
+        # train_env_d = train_data[env_num]
+        # train_user_d = np.empty((0, dim_rewards))
+        # for path_d in train_env_d:
+        #     train_user_d = np.append(train_user_d, path_d['rewards'], axis=0)
+
+        # N = 2500
+
+        # count_choose = 0
+        # count_rate = 0
+
+        # for i in range(N):
+        #     pair = np.random.choice(train_user_d.shape[0], 2, replace=False)
+
+        #     idx = user_f.choose(train_user_d[pair])
+        #     idx_rate = np.argmax(user_f.rate(train_user_d[pair]))
+        #     corr_idx = np.argmax(user_f.fake_f(train_user_d[pair]))
+
+        #     if corr_idx == idx:
+        #         count_choose += 1
+
+        #     if idx_rate == idx:
+        #         count_rate += 1 
+
+        # acc_rate = count_rate / N
+        # acc = count_choose / N
+        # print('Train Accuracy of choose is = ' + str(acc))
+        # print('Train Accuracy of rate is = ' + str(acc_rate))
+
+        # count_choose = 0
+        # count_rate = 0
+
+        # for i in range(N):
+        #     pair = np.random.choice(eval_user_d.shape[0], 2, replace=False)
+
+        #     idx = user_f.choose(eval_user_d[pair])
+        #     idx_rate = np.argmax(user_f.rate(eval_user_d[pair]))
+        #     corr_idx = np.argmax(user_f.fake_f(eval_user_d[pair]))
+
+        #     if corr_idx == idx:
+        #         count_choose += 1
+
+        #     if idx_rate == idx:
+        #         count_rate += 1 
+
+        # acc_rate = count_rate / N
+        # acc = count_choose / N
+
+        # a_r[j] = acc_rate
+        # a_c[j] = acc
+
+        # print('Eval Accuracy of choose is = ' + str(acc))
+        # print('Eval Accuracy of rate is = ' + str(acc_rate))
+
+    print('\nacc choice = '+str(a_c))
+    print('acc rate = '+str(a_r))
+
+    print('acc_choice mean=' + str(np.mean(a_c)) + ' std='+str(np.std(a_c)))
+    print('acc_rate mean=' + str(np.mean(a_r)) + ' std='+str(np.std(a_r)))
+
+    import matplotlib.pyplot as plt
+
+
+    plt.hist(a_c)
+    plt.title('Choice p_c='+str(p_synth_pair))
+    plt.figure()
+    plt.hist(a_r)
+    plt.title('Rating p_r='+str(p_synth_abs))
+
+    plt.show()
+
+    sys.exit(0)
+
+    ###
 
     if config['add_model_prior']:
         model.add_prior(bounds = config['prior_bounds'], num_pts=config['prior_pts'])

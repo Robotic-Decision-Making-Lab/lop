@@ -130,6 +130,22 @@ class HumanChoiceUser(SyntheticUser):
 
         return (p_samp - desired_p)**2
 
+    def sampled_objective2(self, b, desired_p, rewards, Q_size, Qs=None):
+        if Qs is None:
+            Qs = self.sample_Qs(rewards, Q_size)
+
+        y = (self.fake_f(rewards[Qs]) * self.k) + self.b
+
+        p = p_human_choice(y, p=b)
+        p_max = np.max(p, axis=1)
+
+        pf = np.random.random(p_max.shape[0])
+
+        count = np.sum(pf <= p_max)
+        p_samp = count / sample_queries.shape[0]
+
+        return (p_samp - desired_p)**2
+
     def rate_sampled_objective(self, sigma, desired_p, sample_queries, y):
         # [N x size_Query]
         rating = np.random.normal(y, scale=sigma)
@@ -219,6 +235,8 @@ class HumanChoiceUser(SyntheticUser):
 
         for i in range(10):
             res = minimize_scalar(self.sampled_objective, bounds=[0.01, 150.0], args=(p, sample_Q, y), options={'xatol': 0.01})
+            #res = minimize_scalar(self.sampled_objective2, bounds=[0.01, 150.0], args=(p, rewards, Q_size), options={'xatol': 0.01})
+
 
             if res.fun < 0.02:
                 break
