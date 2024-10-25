@@ -453,24 +453,24 @@ def train_and_eval(config_filename,
         # print('Eval Accuracy of choose is = ' + str(acc))
         # print('Eval Accuracy of rate is = ' + str(acc_rate))
 
-    print('\nacc choice = '+str(a_c))
-    print('acc rate = '+str(a_r))
+    # print('\nacc choice = '+str(a_c))
+    # print('acc rate = '+str(a_r))
 
-    print('acc_choice mean=' + str(np.mean(a_c)) + ' std='+str(np.std(a_c)))
-    print('acc_rate mean=' + str(np.mean(a_r)) + ' std='+str(np.std(a_r)))
+    # print('acc_choice mean=' + str(np.mean(a_c)) + ' std='+str(np.std(a_c)))
+    # print('acc_rate mean=' + str(np.mean(a_r)) + ' std='+str(np.std(a_r)))
 
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
 
-    plt.hist(a_c)
-    plt.title('Choice p_c='+str(p_synth_pair))
-    plt.figure()
-    plt.hist(a_r)
-    plt.title('Rating p_r='+str(p_synth_abs))
+    # plt.hist(a_c)
+    # plt.title('Choice p_c='+str(p_synth_pair))
+    # plt.figure()
+    # plt.hist(a_r)
+    # plt.title('Rating p_r='+str(p_synth_abs))
 
-    plt.show()
+    # plt.show()
 
-    sys.exit(0)
+    # sys.exit(0)
 
     ###
 
@@ -485,6 +485,7 @@ def train_and_eval(config_filename,
     accuracy = np.zeros(num_training+1)
     avg_selection = np.zeros(num_training+1)
     query_type_is_abs = np.zeros(num_training+1, dtype=int) - 1
+    query_is_correct = np.zeros(num_training+1, dtype=int) - 1
     all_ranks = np.zeros((num_training+1, len(eval_data[0])))
 
     estimated_scores = np.zeros((num_training+1, len(eval_data[0])))
@@ -574,6 +575,7 @@ def train_and_eval(config_filename,
                 model.add(rewards[non_shown_paths], [])
 
             query_type_is_abs[itr+1] = PAIR_QUERY
+            query_is_correct[itr+1] = -1
         elif selection_type == 'rating':
             sel_idx = model.select(rewards, 1)[0]
 
@@ -583,6 +585,7 @@ def train_and_eval(config_filename,
 
             model.add(rewards[np.newaxis,sel_idx], rating_np, type='abs')
             query_type_is_abs[itr+1] = ABS_QUERY
+            query_is_correct[itr+1] = -1
         elif selection_type == 'switch':
             sel_idx = model.select(rewards, num_alts)
             x_train = rewards[sel_idx]
@@ -595,10 +598,13 @@ def train_and_eval(config_filename,
                 model.add(x_train, rating, type='abs')
                 query_type_is_abs[itr+1] = ABS_QUERY
             else:
+                correct_idx = np.argmax(user_f.fake_f(x_train))
                 y_pairs = user_f.choose_pairs(x_train)
 
                 model.add(x_train, y_pairs)
                 query_type_is_abs[itr+1] = PAIR_QUERY
+                query_is_correct[itr+1] = (correct_idx == y_pairs[0][1])
+                
             
 
         # end else if for selection type
@@ -616,7 +622,7 @@ def train_and_eval(config_filename,
 
     visualize_single_run_regret(folder, score_diff, query_type_is_abs)
 
-    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs, spearmans, pearsons, rhos, path_data
+    return accuracy, avg_selection, all_ranks, estimated_scores, real_scores, score_diff, query_type_is_abs, query_is_correct, spearmans, pearsons, rhos, path_data
 
 
 

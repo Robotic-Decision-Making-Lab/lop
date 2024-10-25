@@ -187,6 +187,8 @@ class HumanChoiceUser(SyntheticUser):
         self.k = (max_sigmoid - min_sigmoid) / (f_max - f_min)
         self.b = min_sigmoid - self.k * f_min
 
+        self.k = 4.0
+        self.b = 0.0
         print('k = ' + str(self.k) + ' b = ' + str(self.b))
 
         if p_sigma is None:
@@ -214,6 +216,8 @@ class HumanChoiceUser(SyntheticUser):
                 break
         if res.fun > 0.02:
             print('Bad setting of sigma value after 10 tries. Throwing exception')
+            ##### REMOVED THIS TO TEST IF THIS CAUSING THE PROBLEM, LIKE LITERALLY THE ONLY THING
+            # IT CAN BE
             raise Exception("Bad setting of sigma values after 10 tries.")
 
         print('Tuned sigma with error =' + str(res.fun))

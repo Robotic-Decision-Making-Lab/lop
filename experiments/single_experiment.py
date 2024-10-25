@@ -202,6 +202,7 @@ def main():
     avg_ranks = np.empty((num_runs, num_train+1))
     avg_correct = np.empty((num_runs, num_train+1))
     query_type_is_abs = np.empty((num_runs, num_train+1))
+    query_is_correct = np.empty((num_runs, num_train+1))
 
     cur_run = 0
     try:
@@ -211,7 +212,7 @@ def main():
             run_folder = folder_name+'run_'+str(j)+'/'
             os.mkdir(run_folder)
             print('VERBOSE: ' + str(args.v))
-            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type, spearman, pearson, rho, path_data = \
+            accuracy, avg_selection, all_ranks, est_score, real_score, s_diff, query_type, query_correct, spearman, pearson, rho, path_data = \
                             train_and_eval( args.config, \
                                             env_num=args.env, \
                                             fake_function_desc=args.fake_func, \
@@ -242,6 +243,7 @@ def main():
             avg_correct[j] = accuracy
             avg_ranks[j] = avg_selection
             query_type_is_abs[j] = query_type
+            query_is_correct[j] = query_correct
             
             ranks[j] = all_ranks
 
@@ -263,7 +265,8 @@ def main():
                     spearmans = spearmans[:j+1], \
                     pearsons = pearsons[:j+1], \
                     rhos = rhos[:j+1], \
-                    query_type_is_abs = query_type_is_abs[:j+1])
+                    query_type_is_abs = query_type_is_abs[:j+1], \
+                    query_is_correct = query_is_correct[:j+1])
 
     except KeyboardInterrupt:
         j = cur_run
@@ -278,7 +281,8 @@ def main():
                     pearsons = pearsons[:j+1], \
                     rhos = rhos[:j+1], \
                     score_diff = score_diff[:j+1], \
-                    query_type_is_abs = query_type_is_abs[:j+1])
+                    query_type_is_abs = query_type_is_abs[:j+1], \
+                    query_is_correct = query_is_correct[:j+1])
         sys.exit(0)
 
 if __name__ == '__main__':
