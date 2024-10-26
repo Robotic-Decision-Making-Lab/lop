@@ -10,3 +10,4 @@ from .gamma_dist import pdf_gamma, log_pdf_gamma, d_log_pdf_gamma
 from .probability_utility import calc_cdf
 from .sample_utility import sample_unique_sets, sample_nonunique_sets
 from .synthetic_user import SyntheticUser, PerfectUser, HumanChoiceUser, sigmoid
+from .HumanChoiceUser2 import HumanChoiceUser2
