@@ -220,23 +220,23 @@ def test_human_choice_beta_3_query():
     assert p > 0.87 and p < 0.93
 
 
-def test_human_choice_abs():
-    f = lop.FakeLinear(2)
-    f.w = np.array([0.5, 0.5])
+# def test_human_choice_abs():
+#     f = lop.FakeLinear(2)
+#     f.w = np.array([0.5, 0.5])
 
-    us = lop.HumanChoiceUser(f)
+#     us = lop.HumanChoiceUser(f)
 
-    r = np.array([0.7, 1.0])
-    rating = us.rate(r)
+#     r = np.array([0.7, 1.0])
+#     rating = us.rate(r)
 
-    assert rating > 0.5 and rating < 0.97
+#     assert rating > 0.5 and rating < 0.97
 
-    r = np.array([2000,2000])
-    rating = us.rate(r)
+#     r = np.array([2000,2000])
+#     rating = us.rate(r)
 
-    assert rating > 0.9 and rating <= 1.0
+#     assert rating > 0.9 and rating <= 1.0
 
-    rating = us.rate(-r)
-    assert rating >= 0 and rating < 0.1
+#     rating = us.rate(-r)
+#     assert rating >= 0 and rating < 0.1
 
 

@@ -29,7 +29,7 @@ def main():
     parser.add_argument('--fake_func', type=str, default='min', help='Selects fake function type [linear, squared, logistic, sin_exp, min, max, squared_min_max]')
     parser.add_argument('--user', type=str, default='human_choice', help='Selects the type of user [human_choice perfect]')
     parser.add_argument('--p_pair', type=float, default=0.95, help='value to tune synth user to for choose comparisions')
-    #parser.add_argument('--p_abs', type=float, default=0.95, help='value to tune synth user to for ratings')
+    parser.add_argument('--p_abs', type=float, default=0.95, help='value to tune synth user to for ratings')
     parser.add_argument('--num_alts', type=int, default=2, help='Number of alternative assumed to be passed to user')
     args = parser.parse_args()
 
@@ -52,7 +52,75 @@ def main():
     f = lop.FakeWeightedMin(dim_rewards)
     usr = lop.HumanChoiceUser2(f)
 
-    usr.learn_beta(eval_rew, 0.95, Q_size=2, p_sigma=0.7)
+    usr.learn_beta(eval_rew, args.p_pair, Q_size=2, p_sigma=args.p_abs)
+
+    ### Test user synth
+
+    N = 10000
+
+    train_rew = eval_rew
+
+    count_choose = 0
+    count_rate = 0
+    total_count = 0
+
+    for i in range(N):
+        env_num = int(i * (len(train_rew) / N))
+        pro_num = np.random.randint(0, len(train_rew[env_num]))
+        pair = np.random.choice(train_rew[env_num][pro_num].shape[0], 2, replace=False)
+
+        rew_pair = train_rew[env_num][pro_num][pair]
+        idx = usr.choose(rew_pair)
+        idx_rate = np.argmax(usr.rate(rew_pair))
+        score_pair = usr.fake_f(rew_pair)
+        corr_idx = np.argmax(score_pair)
+
+        if score_pair[0] != score_pair[1]:
+            if corr_idx == idx:
+                count_choose += 1
+
+            if idx_rate == idx:
+                count_rate += 1 
+            total_count += 1
+
+    acc_rate = count_rate / total_count
+    acc = count_choose / total_count
+
+    print('All acc choose = ' + str(acc))
+    print('All acc rate = ' + str(acc_rate))
+
+    N = 7500
+
+    count_choose = 0
+    count_rate = 0
+    total_count = 0
+
+    for i in range(N):
+        #env_num = int(i * (len(train_rew) / N))
+        env_num = 7
+        pro_num = np.random.randint(0, len(train_rew[env_num]))
+        pair = np.random.choice(train_rew[env_num][pro_num].shape[0], 2, replace=False)
+
+        rew_pair = train_rew[env_num][pro_num][pair]
+        idx = usr.choose(rew_pair)
+        idx_rate = np.argmax(usr.rate(rew_pair))
+        score_pair = usr.fake_f(rew_pair)
+        corr_idx = np.argmax(score_pair)
+
+        if score_pair[0] != score_pair[1]:
+            if corr_idx == idx:
+                count_choose += 1
+
+            if idx_rate == idx:
+                count_rate += 1 
+            total_count += 1
+
+    acc_rate = count_rate / total_count
+    acc = count_choose / total_count
+
+    print('Env acc choose = ' + str(acc))
+    print('Env acc rate = ' + str(acc_rate))
+
 
 
 

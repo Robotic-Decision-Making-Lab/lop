@@ -36,11 +36,11 @@ sigma_pair=0.1
 rbf_l=1.2
 
 
-for fake_func in logistic linear
+for fake_func in min logistic linear
 do
     for p_synth_abs in 0.95 0.9 0.8 0.85 0.7 0.65
     do
-        # sel_type=rating
+        sel_type=rating
         alpha=0.5
 
         for selc in UCB
@@ -53,6 +53,7 @@ do
         done
 
         sel_type=switch
+        alpha=0.5
         for selc in ACQ_SPEAR
         do
             for i_env in 0 1 2 3 4 5 6 7 8 9
@@ -64,7 +65,7 @@ do
 
 
 
-        for alpha in 0.1 0.9
+        for alpha in 0.5 0.1 0.9
         do
             sel_type=switch
 

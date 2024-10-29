@@ -227,7 +227,7 @@ def get_synth_user(user_desc, utility_f, config):
     if user_desc == 'perfect':
         func = lop.PerfectUser(utility_f)
     elif user_desc == 'human_choice':
-        func = lop.HumanChoiceUser(utility_f)
+        func = lop.HumanChoiceUser2(utility_f)
 
     return func
 
@@ -372,12 +372,13 @@ def train_and_eval(config_filename,
     utility_f = get_fake_func(fake_function_desc, config)
     user_f = get_synth_user(synth_user, utility_f, config)
 
-
+    eval_rew = [[env_p['rewards'] for env_p in data_env] for data_env in eval_data]
+    train_rew = [[env_p['rewards'] for env_p in data_env] for data_env in train_data]
     eval_env_d = eval_data[env_num]
     
-    eval_user_d = np.empty((0, dim_rewards))
-    for path_d in eval_env_d:
-        eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
+    # eval_user_d = np.empty((0, dim_rewards))
+    # for path_d in eval_env_d:
+    #     eval_user_d = np.append(eval_user_d, path_d['rewards'], axis=0)
 
     # M = 30
 
@@ -387,16 +388,18 @@ def train_and_eval(config_filename,
 
     #     user_f.fake_f.randomize()
 
-    while True:
-        try:
-            print('Running tune beta')
-            user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
-            print('Completed, breaking out of loop')
-            break
-        except:
-            print('Unable to tune beta for user synth')
-            # gonna randomize the function and try again
-            utility_f.randomize()
+    user_f.learn_beta(eval_rew, p_synth_pair, Q_size=2, p_sigma=p_synth_abs)
+
+    # while True:
+    #     try:
+    #         print('Running tune beta')
+    #         user_f.learn_beta(eval_user_d, p_synth_pair, Q_size=num_alts, p_sigma=p_synth_abs)
+    #         print('Completed, breaking out of loop')
+    #         break
+    #     except:
+    #         print('Unable to tune beta for user synth')
+    #         # gonna randomize the function and try again
+    #         utility_f.randomize()
 
 
         # ### Test user synth

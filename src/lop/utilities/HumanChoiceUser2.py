@@ -10,7 +10,10 @@ import pdb
 from copy import copy
 
 from lop.utilities import HumanChoiceUser
+from lop.probits import std_norm_cdf
 from scipy.optimize import minimize_scalar
+import scipy.stats as st
+import scipy.special as spec
 import itertools
 
 class HumanChoiceUser2(HumanChoiceUser):
@@ -33,6 +36,21 @@ class HumanChoiceUser2(HumanChoiceUser):
 
         return (obj_sum - p)**2
     
+    def rate_obj(self, sigma, diffs, p):
+        diffs = np.abs(diffs)
+        sig_scalar = 1.0 / (np.sqrt(2) * sigma)
+
+
+        F = spec.ndtr(diffs * sig_scalar)
+
+        F = np.where(diffs == 0.0, np.nan, F)
+        avg = np.nanmean(F)
+
+        return (avg - p)**2
+
+
+
+
 
     def get_k_b(self, f):
         min_sigmoid = np.log(self.bot_range) - np.log(1 - self.bot_range)
@@ -52,19 +70,15 @@ class HumanChoiceUser2(HumanChoiceUser):
     # @param p - the probability of selecting the best value
     # @param num_Q - [opt default=2] the number of points in each query
     def learn_beta(self, rewards, p, Q_size=2, p_sigma=None):
-        
+        if p_sigma is None:
+            p_sigma = p
         min_path_problems = min([min([len(problem) for problem in env]) for env in rewards])
         
-        min_path_problems = min([min_path_problems, 300])
+        min_path_problems = min([min_path_problems, 500])
 
-        num_functions = 30
-        fake_fs = []
-        for i in range(num_functions):
-            cp_f = copy(self.fake_f)
-            cp_f.randomize()
-            fake_fs.append(cp_f)
-
-
+        num_functions = 1
+        fake_fs = [self.fake_f]
+   
 
 
 
@@ -89,19 +103,20 @@ class HumanChoiceUser2(HumanChoiceUser):
 
                     F[f_idx, idx] = f[samp_idx]
 
-        #pairs = np.array([[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]], dtype=int)
         pairs = np.array(list(itertools.combinations(range(F.shape[2]), 2)), dtype=int)
-
-        
         diffs = F[:,:, pairs[:,0]] - F[:,:,pairs[:,1]]
-        
-        for i in range(num_functions):
-            res = minimize_scalar(self.obj, bounds=[0.1, 200.0], args=(diffs[i], p), options={'xatol': 0.001})
-            print(res)
 
-        print('\nalltogether')
+
+        ## rating tuning
+        #print('p_sigma = ' + str(p_sigma))
+        res = minimize_scalar(self.rate_obj, bounds=[0.001, 5.0], args=(diffs, p_sigma), options={'xatol': 0.001})
+
+        self.sigma = res.x
+        #print('Rating tuning')
+        #print(res)
+
+        ## Pairwise tuning
         res = minimize_scalar(self.obj, bounds=[0.01, 200.0], args=(diffs, p), options={'xatol': 0.001})
-        print(res)
 
         f_list = [[self.fake_f(r_problem) for r_problem in r_env] for r_env in rewards]
         min_max = np.array([min([min([np.min(f1) for f1 in f2]) for f2 in f_list]),  \
@@ -109,4 +124,9 @@ class HumanChoiceUser2(HumanChoiceUser):
 
         self.k, self.b = self.get_k_b(min_max)
         self.beta = res.x
+
+        
+
+
+
 
