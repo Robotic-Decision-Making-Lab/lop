@@ -100,6 +100,7 @@ possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PE
                         'SW_BAYES_PROBIT', 'SW_ACQ_RHO', 'SW_ACQ_EPIC', 'SW_ACQ_LL', 'SW_ACQ_SPEAR',\
                         'SW_UCB_RHO', 'SW_UCB_EPIC', 'SW_UCB_LL', 'SW_UCB_SPEAR', \
                         'SW_FIXED_RHO', 'SW_FIXED_EPIC', 'SW_FIXED_LL', 'SW_FIXED_SPEAR', \
+                        'SW_ALT_RHO', 'SW_ALT_EPIC', 'SW_ALT_LL', 'SW_ALT_SPEAR', \
                         'SW_CHECK_RHO', 'SW_CHECK_EPIC', 'SW_CHECK_LL', 'SW_CHECK_SPEAR', \
                         'ABS_ACQ_RHO', 'ABS_ACQ_LL', 'ABS_ACQ_EPIC', 'ABS_ACQ_SPEAR',\
                         'ABS_BAYES_PROBIT']
