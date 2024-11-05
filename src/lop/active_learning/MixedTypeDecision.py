@@ -77,8 +77,16 @@ class AlignmentDecision(RateChooseLearner):
                 select_pair = False
         else:
             # select using decision metric.
-            select_pair = self.determine_query_type(self.model)
+            select_pair = self.determine_query_type(candidate_pts)
 
+
+
+        if select_pair:
+            print('Selecting a PREFERENCE query')
+            sel_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
+        else:
+            print('Selecting a RATING query')
+            sel_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
 
 
         self.num_calls += 1
@@ -89,16 +97,30 @@ class AlignmentDecision(RateChooseLearner):
     def determine_query_type(self, candidate_pts):
         self.pairwise_l.unset_samples()
         #mu, data = self.pairwise_l.model.predict(candidate_pts)
+        M_prev = self.pairwise_l.M
+        self.pairwise_l.M = 8000
+
+        
         x_rep, Q_rep = self.pairwise_l.get_representative_Q(candidate_pts)
+        mu, sig = self.model.predict(x_rep)
+        all_cov = self.model.cov
         all_rep, all_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
 
 
-        pref_data = self.model.y_train[self.probit_idxs['relative_discrete']]
-        rating_data = self.model.y_train[self.probit_idxs['abs']]
+
+        pref_data = self.model.y_train[self.model.probit_idxs['relative_discrete']]
+        rating_data = self.model.y_train[self.model.probit_idxs['abs']]
+
+        print('pref_data')
+        print(pref_data)
+        print('rating_data')
+        print(rating_data)
 
         ## Generate samples using only preference data
         self.model.y_train[2] = None
         self.model.optimize()
+        mu_pref, sig_pref = self.model.predict(x_rep)
+        pref_cov = self.model.cov
 
         pref_rep, pref_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
 
@@ -106,8 +128,11 @@ class AlignmentDecision(RateChooseLearner):
         ## Generate samples using only rating data
         self.model.y_train[0] = None
         self.model.y_train[2] = rating_data
+        
 
         self.model.optimize()
+        mu_rating, sig_rating = self.model.predict(x_rep)
+        rating_cov = self.model.cov
 
         rating_rep, rating_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
         
@@ -117,7 +142,34 @@ class AlignmentDecision(RateChooseLearner):
         self.model.y_train[2] = rating_data
 
         ## Evaluate samples
-        pdb.set_trace()
+        align_pref_f = self.pairwise_l.alignment_between(pref_rep, all_rep)
+        align_rate_f = self.pairwise_l.alignment_between(rating_rep, all_rep)
+        #align_pref_f = self.pairwise_l.alignment(pref_rep, Q_rep)
+        #align_rate_f = self.pairwise_l.alignment(rating_rep, Q_rep)
+
+        align_pref_mu = np.mean(align_pref_f)
+        align_rate_mu = np.mean(align_rate_f)
+
+        print('Align Preference = ' +str(align_pref_mu) + ' align rate = ' + str(align_rate_mu))
+
+
+        ranked_full = np.argsort(mu)
+        ranked_pref = np.argsort(pref_rep, axis=1)
+        ranked_rating = np.argsort(rating_rep, axis=1)
+        # ranked_full = mu
+        # ranked_pref = pref_rep
+        # ranked_rating = rating_rep
+
+
+        corr_pref = np.corrcoef(ranked_pref, ranked_full[np.newaxis,:])
+        corr_rating = np.corrcoef(ranked_rating, ranked_full[np.newaxis,:])
+
+        print('corr pref = ' + str(np.mean(corr_pref[:-1, -1])) + 
+              ' corr rating = ' + str(np.mean(corr_rating[:-1, -1])))
+        #pdb.set_trace()
+
+        self.pairwise_l.M = M_prev
+        return align_pref_mu > align_rate_mu
 
 
     # @overide
@@ -125,6 +177,7 @@ class AlignmentDecision(RateChooseLearner):
     # sets the model being used by the active learning framework.
     # should only be called inside a model class,
     def set_model(self, model):
+        self.model = model
         self.pairwise_l.set_model(model)
         self.abs_l.set_model(model)
         self.num_calls = 0

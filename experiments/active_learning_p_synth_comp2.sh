@@ -54,7 +54,7 @@ do
 
         sel_type=switch
         alpha=0.5
-        for selc in SW_ALT_SPEAR #ACQ_SPEAR
+        for selc in SW_DEC_SPEAR #ACQ_SPEAR
         do
             for i_env in 0 1 2 3 4 5 6 7 8 9
             do

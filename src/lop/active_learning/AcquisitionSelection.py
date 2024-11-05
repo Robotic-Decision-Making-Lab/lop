@@ -66,7 +66,7 @@ class AcquisitionSelection(AcquisitionBase):
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
     #               the top solution to the front of the solution set every time.
     def __init__(self, M=300, 
-                 rep_Q_method = 'sampled', rep_Q_data = {'num_pts': 10, 'num_Q': 20},
+                 rep_Q_method = 'sampled', rep_Q_data = {'num_pts': 60, 'num_Q': 50},
                  alignment_f = 'rho',
                  default_to_pareto=False, always_select_best=False):
         super(AcquisitionSelection, self).__init__(rep_Q_method=rep_Q_method,

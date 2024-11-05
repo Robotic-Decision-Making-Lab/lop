@@ -48,7 +48,7 @@ class AcquisitionBase(ActiveLearner):
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
     #               the top solution to the front of the solution set every time.
     def __init__(self, 
-                rep_Q_method = 'sampled', rep_Q_data = {'num_pts': 10, 'num_Q': 20},
+                rep_Q_method = 'sampled', rep_Q_data = {'num_pts': 30, 'num_Q': 50},
                 alignment_f = 'rho',
                 default_to_pareto=False, always_select_best=False):
         super(AcquisitionBase, self).__init__(default_to_pareto,always_select_best)
@@ -177,6 +177,56 @@ class AcquisitionBase(ActiveLearner):
         elif self.alignment_f == 'one':
             # will not work for anything meaningful, but can be used to check pipeline of working code
             return np.ones((all_rep.shape[0], all_rep.shape[0]))
+
+
+    ## alignment_between
+    # this allignment function is the f(R_w, R_w') defined in the paper
+    # This is a score of how similar the two reward functions are to each other.
+    # @param all_rep - scores of each sampled weight function with represenative points
+    #                   (M_samples num_rep) with sampled score
+    # @param Q_rep - the set of represantive queries
+    def alignment_between(self, all_rep_1, all_rep_2, Q_rep_1=None, Q_rep_2=None):
+        if all_rep_1.shape != all_rep_2.shape:
+            raise Exception('Alignment between must have equal shapes passed')
+        if all_rep_1.shape[1] < 2:
+            return np.zeros((all_rep_1.shape[0], all_rep_1.shape[0]))
+        
+        M = all_rep_1.shape[0]
+        if self.alignment_f == 'rho':
+            raise NotImplementedError("rho not implemented")
+
+            return f_rho
+        elif self.alignment_f == 'loglikelihood':
+            raise NotImplementedError("loglikelihood not implemented")
+
+            return f
+            
+        elif self.alignment_f == 'epic':
+            # This is a naive approach that assumes the reward is already invariant to
+            # potential shaping
+            # This makes sense, since reward moving earlier or later in time does not
+            # really make sense in the full trajectory metric.
+            # However, the pearson correlation between represantive samples still makes sense
+            # for cases without particular actions
+
+            pearson = np.corrcoef(all_rep_1, all_rep_2)
+            pearson = pearson[:M, M:]           
+            pear_dis = np.sqrt(1 - pearson) / np.sqrt(2)
+            return -pear_dis
+        elif self.alignment_f == 'spearman':
+            ranked_1 = np.argsort(all_rep_1, axis=1)
+            ranked_2 = np.argsort(all_rep_2, axis=1)
+
+            spearman = np.corrcoef(ranked_1, ranked_2)
+            spearman = spearman[:M, M:]
+            spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            return -spear_dis
+            return spearman
+
+        elif self.alignment_f == 'one':
+            # will not work for anything meaningful, but can be used to check pipeline of working code
+            return np.ones((all_rep_1.shape[0], all_rep_1.shape[0]))
+
 
     def set_samples(self, all_rep, all_Q):
         self.all_rep = all_rep
