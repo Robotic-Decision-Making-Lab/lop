@@ -69,6 +69,7 @@ class AlignmentDecision(RateChooseLearner):
         #abs_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
 
         select_pair = True
+        
 
         if self.num_calls < self.calls_to_decision:
             if self.num_calls % 2 == 0:
@@ -80,14 +81,13 @@ class AlignmentDecision(RateChooseLearner):
             select_pair = self.determine_query_type(candidate_pts)
 
 
-
+        
         if select_pair:
             print('Selecting a PREFERENCE query')
             sel_idxs = self.pairwise_l.select(candidate_pts, num_alts, prev_selection, prefer_pts, return_not_selected, select_pair_first)
         else:
             print('Selecting a RATING query')
             sel_idxs = self.abs_l.select(candidate_pts, 1, prev_selection, prefer_pts, return_not_selected, select_pair_first)
-
 
         self.num_calls += 1
         # return the selected indicies from pairwise select
@@ -166,7 +166,6 @@ class AlignmentDecision(RateChooseLearner):
 
         print('corr pref = ' + str(np.mean(corr_pref[:-1, -1])) + 
               ' corr rating = ' + str(np.mean(corr_rating[:-1, -1])))
-        #pdb.set_trace()
 
         self.pairwise_l.M = M_prev
         return align_pref_mu > align_rate_mu

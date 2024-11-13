@@ -122,6 +122,7 @@ def main():
     parser.add_argument('--env', type=int, default=2, help='environment number, using 2,4,7 [0,9] allowed')
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
     parser.add_argument('--selector', type=str, default='SGV_UCB', help='Set the selectors to use options '+str(possible_selectors))
+    parser.add_argument('--rep_pt_type', type=str, default='stable', help='Set the type of representive pts [sampled, stable]')
     parser.add_argument('--sel_type', type=str, default='choose1', help='Set the selection type to use options '+str(possible_selection_types))
     parser.add_argument('--num_runs', type=int, default=100, help='The number of runs')
     parser.add_argument('--num_alts', type=int, default=4, help='The number of alternatives to show to the user')
@@ -174,7 +175,7 @@ def main():
 
     # create a results folder named by the selector, user type, fake_func, and environment number.
     if args.dir == '':
-        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_user_'+args.user+ \
+        folder_name = 'results/AT_'+args.selector+'_model_'+args.model+'_'+args.sel_type+'_'+args.rep_pt_type+'_user_'+args.user+ \
             str(args.num_alts)+'_fake_'+args.fake_func+'_pareto_' + str(args.def_pareto) + '_kmed_' + \
             str(args.kmedoid)+ '_ppair_' + str(args.p_synth_pair) + '_pabs_' + str(args.p_synth_abs) + \
             '_falp_' + str(args.alpha_fake) + '_'+args.hyper+'_v_'+str(args.v_abs) + \
@@ -220,7 +221,8 @@ def main():
                                             fake_function_desc=args.fake_func, \
                                             folder=run_folder, \
                                             selector=args.selector, \
-                                            selection_type=args.sel_type,
+                                            selection_type=args.sel_type, \
+                                            rep_pt_type=args.rep_pt_type, \
                                             model_desc=args.model, \
                                             num_alts = args.num_alts, \
                                             default_pareto = args.def_pareto, \

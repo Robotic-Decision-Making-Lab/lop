@@ -35,6 +35,7 @@ from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
+from itertools import combinations
 
 import pdb
 
@@ -93,9 +94,26 @@ class AcquisitionBase(ActiveLearner):
             num_Q = min(num_Q, math.comb(N, num_alts))
 
             Q = sample_unique_sets(N, num_Q, num_alts)
-
+            
 
             return X_pts, Q
+
+        elif self.rep_Q_method == 'stable':
+            X_pts = np.load(self.rep_Q_data['filename'])
+            
+
+            num_per_env = int(X_pts.shape[0] / 10)
+
+            combs = np.array(list(combinations(range(num_per_env), num_alts)), dtype=int)
+            Q = np.empty((combs.shape[0] * 10, combs.shape[1]), dtype=int)
+
+            for i in range(10):
+                Q[i*combs.shape[0]:(i+1)*combs.shape[0]] = combs + (i*combs.shape[0])
+
+            return X_pts, Q
+
+            
+
         else:
             raise ValueError("AcquisitionSelection get_representative_Q given an incorrect method type of: " + str(self.rep_Q_method))
 

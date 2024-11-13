@@ -33,7 +33,7 @@ import lop
 
 from GP_visualization import record_gp_state, visualize_data, visualize_single_run_regret
 
-def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, config, fake_func=None):
+def get_active_learner(selector, selection_type, rep_pt_type, UCB_scalar, default_to_pareto, config, fake_func=None):
     #default_to_pareto = config['default_to_pareto']
     if selection_type == 'rating':
         always_select_best = False
@@ -42,6 +42,14 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
 
     M=200
     alpha = config['alpha']
+
+    rep_type = rep_pt_type# ['stable' 'sampled']
+    if rep_type == 'sampled':
+        rep_pt_data = {'num_pts': 30, 'num_Q': 50}
+    elif rep_type == 'stable':
+        rep_pt_data = {'filename': config['stable_comp_file']}
+    
+
 
     al = None
     if selector == 'UCB':
@@ -65,48 +73,62 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
     elif selector == 'ACQ_RHO':
         al = lop.AcquisitionSelection(M=M, alignment_f='rho',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'ACQ_LL':
         al = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)   
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)   
     elif selector == 'ACQ_EPIC':
         al = lop.AcquisitionSelection(M=M, alignment_f='epic',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'ACQ_SPEAR':
         al = lop.AcquisitionSelection(M=M, alignment_f='spearman',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'ABS_ACQ_RHO':
         al = lop.AbsAcquisition(M=M, alignment_f='rho',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'ABS_ACQ_LL':
         al = lop.AbsAcquisition(M=M, alignment_f='loglikelihood',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)   
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)   
     elif selector == 'ABS_ACQ_EPIC':
         al = lop.AbsAcquisition(M=M, alignment_f='epic',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'ABS_ACQ_SPEAR':
         al = lop.AbsAcquisition(M=M, alignment_f='spearman',
                                     default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)
+                                    always_select_best=always_select_best,
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
     elif selector == 'SW_ACQ_RHO':
-        abs_l = lop.AbsAcquisition(M=M, alignment_f='rho')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        abs_l = lop.AbsAcquisition(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ACQ_LL':
-        abs_l = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        abs_l = lop.AbsAcquisition(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ACQ_EPIC':
-        abs_l = lop.AbsAcquisition(M=M, alignment_f='epic')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        abs_l = lop.AbsAcquisition(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ACQ_SPEAR':
@@ -120,14 +142,18 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         al = lop.RateChooseLearner(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_UCB_RHO':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)              
     elif selector == 'SW_UCB_LL':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)   
@@ -144,47 +170,56 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)   
     elif selector == 'SW_FIXED_RHO':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_FIXED_LL':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_FIXED_SPEAR':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_FIXED_EPIC':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionSetFixed(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_ALT_RHO':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedAlternating(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_ALT_LL':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedAlternating(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_ALT_SPEAR':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedAlternating(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_ALT_EPIC':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedAlternating(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_DEC_RHO':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.AlignmentDecision(pairwise_l=pair, abs_l=abs_l,num_calls_decision=2, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
@@ -194,36 +229,46 @@ def get_active_learner(selector, selection_type, UCB_scalar, default_to_pareto, 
         al = lop.AlignmentDecision(pairwise_l=pair, abs_l=abs_l,num_calls_decision=2, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_DEC_SPEAR':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.AlignmentDecision(pairwise_l=pair, abs_l=abs_l,num_calls_decision=2, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_DEC_EPIC':
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.AlignmentDecision(pairwise_l=pair, abs_l=abs_l,num_calls_decision=2, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)
     elif selector == 'SW_CHECK_RHO':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='rho')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_CHECK_LL':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_CHECK_SPEAR':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best) 
     elif selector == 'SW_CHECK_EPIC':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best)  
@@ -351,6 +396,7 @@ def train_and_eval(config_filename,
                     folder,
                     selector='UCB',
                     selection_type='choose1',
+                    rep_pt_type='stable',
                     model_desc='gp',
                     fake_function_desc='linear',
                     num_alts=4,
@@ -400,7 +446,7 @@ def train_and_eval(config_filename,
     config['alpha'] = alpha
 
     #### Get required models and fake functions
-    active_learner = get_active_learner(selector, selection_type, UCB_scaler, default_pareto, config)
+    active_learner = get_active_learner(selector, selection_type, rep_pt_type, UCB_scaler, default_pareto, config)
     config['sigma_pair'] = sigma_pair
     config['sigma_abs'] = sigma_abs
     config['v'] = v
