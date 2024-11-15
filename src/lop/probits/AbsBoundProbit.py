@@ -123,20 +123,21 @@ class AbsBoundProbit(ProbitBase):
     #               basically relate to the range of the latent function
     # @param v - the precision, kind of related to inverse of noise, high v is sharp distributions
     # @param eps - epsilon to avoid division by 0 errors.
-    def __init__(self, sigma=1.0, v=80.0, optimize_parameters=True, eps=1e-10):
+    def __init__(self, sigma=1.0, v=80.0, optimize_parameters=True, optimize_v_only=True, eps=1e-10):
         self.set_sigma(sigma)
         self.set_v(v)
         
         self.log2pi = np.log(2.0*np.pi)
         self.eps = eps
 
-        self.sigma_k = 4
-        self.sigma_theta = 0.4
+        self.sigma_k = 1
+        self.sigma_theta = 1
 
-        self.v_k = 3
-        self.v_theta = 5
+        self.v_k = 2.0
+        self.v_theta = 25.0
 
         self.optimize_parameters = optimize_parameters
+        self.optimize_v_only = optimize_v_only
 
     ## set_hyper
     # Sets the hyperparameters for the probit
@@ -145,14 +146,20 @@ class AbsBoundProbit(ProbitBase):
     #               v, precision, related to inverse of noise
     def set_hyper(self, hyper):
         if self.optimize_parameters:
-            self.set_sigma(hyper[0])
-            self.set_v(hyper[1])
+            if self.optimize_v_only:
+                self.set_v(hyper[0])
+            else:
+                self.set_v(hyper[1])
+                self.set_sigma(hyper[0])
 
     ## get_hyper
     # Gets a numpy array of hyperparameters for the probit
     def get_hyper(self):
         if self.optimize_parameters:
-            return np.array([self.sigma, self.v])
+            if self.optimize_v_only:
+                return np.array([self.v])
+            else:
+                return np.array([self.sigma, self.v])
         else:
             return super().get_hyper()
 
@@ -160,9 +167,12 @@ class AbsBoundProbit(ProbitBase):
     # liklihood function
     # @return numpy array of independent samples.
     def randomize_hyper(self):
-        return np.array([
-            np.random.gamma(self.sigma_k, self.sigma_theta),
-            np.random.gamma(self.v_k, self.v_theta)])
+        if self.optimize_v_only:
+            return np.array([np.random.gamma(self.v_k, self.v_theta)])
+        else:
+            return np.array([
+                np.random.gamma(self.sigma_k, self.sigma_theta),
+                np.random.gamma(self.v_k, self.v_theta)])
 
     ## param_likli
     # log liklihood of the parameter (prior)
@@ -170,8 +180,11 @@ class AbsBoundProbit(ProbitBase):
     # approximently size 1 and distance between points in [0,10] ish range
     def param_likli(self):
         if self.optimize_parameters:
-            return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + \
-                    log_pdf_gamma(self.v, self.v_k, self.v_theta)
+            L_v = log_pdf_gamma(self.v, self.v_k, self.v_theta)
+            if self.optimize_v_only:
+                return L_v
+            return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + L_v
+                    
         else:
             return super().param_likli()
 
@@ -180,8 +193,11 @@ class AbsBoundProbit(ProbitBase):
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
         if self.optimize_parameters:
-            return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
-                    d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
+            if self.optimize_v_only:
+                return np.array([d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
+            else:
+                return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),
+                        d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
         else:
             return super().grad_param_likli()
 
@@ -405,9 +421,13 @@ class AbsBoundProbit(ProbitBase):
         # if (dW_dSigma > 1000).any():
         #     pdb.set_trace()
 
-        dW_dHyper = np.zeros((2, len(F), len(F)))
-        dW_dHyper[1, y[1], y[1]] = dW_dv
-        dW_dHyper[0, y[1], y[1]] = dW_dSigma
+        if self.optimize_v_only:
+            dW_dHyper = np.zeros((1, len(F), len(F)))
+            dW_dHyper[0, y[1], y[1]] = dW_dv
+        else:
+            dW_dHyper = np.zeros((2, len(F), len(F)))
+            dW_dHyper[1, y[1], y[1]] = dW_dv
+            dW_dHyper[0, y[1], y[1]] = dW_dSigma
 
         return -dW_dHyper
 
@@ -449,6 +469,8 @@ class AbsBoundProbit(ProbitBase):
 
         #pdb.set_trace()
 
+        if self.optimize_v_only:
+            return np.array([dpy_dv])
         return np.array([dpy_dSigma, dpy_dv])
 
 

@@ -151,7 +151,7 @@ def main():
     Y_actual = Y_actual / Y_max
     ax.plot(X, Y_actual)
     ax.legend(['Predicted function with predicted F', 'Real function'])
-    gp.plot_preference(head_width=0.1, ax=ax)
+    gp.plot_preference(ax=ax)
     
     ax.scatter(gp.X_train, gp.F)
     if args.i == 'abs' or args.i == 'ordinal':

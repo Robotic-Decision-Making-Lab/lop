@@ -52,8 +52,8 @@ class PreferenceProbit(ProbitBase):
         self.log2pi = np.log(2.0*np.pi)
 
         # parameters for prior on the hyperparameters
-        self.sigma_k = 2.5
-        self.sigma_theta = 0.8
+        self.sigma_k = 2.0
+        self.sigma_theta = 0.1
 
     ## set_hyper
     # Sets the hyperparameters for the probit

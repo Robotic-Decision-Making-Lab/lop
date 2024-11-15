@@ -32,10 +32,14 @@ def main():
     parser = argparse.ArgumentParser(description='Gamma distribution plotter')
     parser.add_argument('-k', type=float, default=10.0, help='Enter k parameter of the gamma distribution (shape parameter)) mean = k*theta')
     parser.add_argument('--theta', type=float, default=0.1, help='Enter theta parameter of the gamma distribution (scale parameter) mean = k*theta')
+    parser.add_argument('--max_x', type=float, default=200.0, help='Enter the max x to plot')
     args = parser.parse_args()
 
 
-    x = np.arange(0.1,200.0,0.1)
+    x = np.arange(0.1,args.max_x,0.1)
+
+    if args.max_x < 10.0:
+        x = np.arange(0.01, args.max_x, 0.001)
 
     k = args.k
     theta = args.theta

@@ -69,7 +69,7 @@ class PreferenceGP(PreferenceModel):
     # @param active_learner - defines if there is an active learner for this model
     def __init__(self, cov_func, normalize_gp=False, pareto_pairs=False, \
                 normalize_positive=False, other_probits={}, mat_inv=np.linalg.pinv, \
-                use_hyper_optimization=False, active_learner=None):
+                use_hyper_optimization=False, active_learner=None, hyperparam_only_probit=True):
         super(PreferenceGP, self).__init__(pareto_pairs, other_probits, active_learner)
 
         self.cov_func = cov_func
@@ -79,6 +79,7 @@ class PreferenceGP(PreferenceModel):
         
         self.normalize_positive = normalize_positive
         self.use_hyper_optimization = use_hyper_optimization
+        self.hyperparam_only_probit = hyperparam_only_probit
 
         self.hyper_grad_avg = 4
         self.hyper_grad_tol = 0.3
@@ -452,6 +453,9 @@ class PreferenceGP(PreferenceModel):
         # get probit hyperparameters
         probit_p = super().get_hyper()
 
+        if self.hyperparam_only_probit:
+            return probit_p
+
         kernel_p = self.cov_func.get_param()
         #return np.array([probit_p[0], kernel_p[1]])
 
@@ -467,10 +471,10 @@ class PreferenceGP(PreferenceModel):
 
 
         super().set_hyper(x[:num_probit_p])
-        #super().set_hyper(np.array([x[0]]))
-        self.cov_func.set_param(x[num_probit_p:])
 
-        #self.cov_func.set_param(np.array([0.5, x[1]]))
+        if not self.hyperparam_only_probit:
+            self.cov_func.set_param(x[num_probit_p:])
+
 
     # sample a random hyper parameter from the liklihood functions
     def randomize_hyper(self):
@@ -479,20 +483,29 @@ class PreferenceGP(PreferenceModel):
             sample = self.probits[i].randomize_hyper()
             probit_samples = np.append(probit_samples, sample, axis=0)
 
+        if self.hyperparam_only_probit:
+            self.set_hyper(probit_samples)
+        
         cov_samples = self.cov_func.randomize_hyper()
 
         self.set_hyper(np.append(probit_samples, cov_samples, axis=0))
         
 
     def hyper_liklihood(self):
-        cov_likli = self.cov_func.param_likli()
         probit_likli = super().hyper_liklihood()
+        if self.hyperparam_only_probit:
+            return probit_likli
+        cov_likli = self.cov_func.param_likli()
 
         return cov_likli + probit_likli
 
     def grad_hyper_liklihood(self):
-        d_cov_likli = self.cov_func.grad_param_likli()
         d_probit_likli = super().grad_hyper_liklihood()
+        
+        if self.hyperparam_only_probit:
+            return d_probit_likli
+
+        d_cov_likli = self.cov_func.grad_param_likli()
 
         return np.append(d_probit_likli, d_cov_likli, axis=0)
 
@@ -565,6 +578,8 @@ class PreferenceGP(PreferenceModel):
                 grad_hyper = probit_grad
             else:
                 grad_hyper = np.append(grad_hyper, probit_grad, axis=0)
+        if self.hyperparam_only_probit:
+            return grad_hyper
         if grad_hyper is None:
             grad_hyper = dL_cov_f
         else:
