@@ -361,7 +361,9 @@ class PreferenceGP(PreferenceModel):
         W, grad_ll, log_py_f = self.derivatives(y_train, self.F)
         F,_ = self.predict(X_valid, X_train, self.F, W)
 
-        return -self.grad_likli_f_hyper(F, X_valid, y_valid) - self.grad_hyper_liklihood()
+        grad = -self.grad_likli_f_hyper(F, X_valid, y_valid) - self.grad_hyper_liklihood()
+        
+        return grad
 
     ## hyperparameter_search
     # This function performs an iteration of searching hyperparemters
@@ -385,6 +387,7 @@ class PreferenceGP(PreferenceModel):
         grad_hyper = self.hyperparamter_obj_grad(x0, X_train, y_train, X_valid, y_valid, bounds)
         #grad_hyper[1] = 0
         #print('grad_hyper = ' + str(grad_hyper))
+
 
         x_new = x0 - grad_hyper * 0.01
         #post_cost = self.hyperparameter_obj(x_new, X_train, y_train, X_valid, y_valid, bounds)
@@ -559,7 +562,7 @@ class PreferenceGP(PreferenceModel):
         # Liklihood function parameters
         probit_grads = []
         for i, probit in enumerate(self.probits):
-            if y[i] is not None:
+            if y[i] is not None and probit.optimize_parameters:
                 grad_theta = probit.grad_hyper(y[i], F)
                 dW_hyper = probit.calc_W_dHyper(y[i], F)
 

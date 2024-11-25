@@ -26,7 +26,8 @@ def main():
 
     M=200
     #abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
-    pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+    pair = lop.AcquisitionSelection(M=M, alignment_f='spearman', rep_Q_method='stable',
+                            rep_Q_data={'filename': '../../../experiments/comparision_pts.npy'})
     abs_l = lop.UCBLearner(1.0)
     al = lop.AlignmentDecision(pairwise_l=pair, abs_l=abs_l, num_calls_decision=2,
                                 default_to_pareto=False, always_select_best=False) 
@@ -52,6 +53,8 @@ def main():
 
     pref_count = np.zeros((len(p_abss), len(envs), len(trainitrs)))
     total_count = np.zeros((len(p_abss), len(envs), len(trainitrs)))
+    rate_scores = np.zeros((len(p_abss), len(envs), len(trainitrs), 20))
+    pref_scores = np.zeros((len(p_abss), len(envs), len(trainitrs), 20))
 
     for i_p, p_abs in enumerate(p_abss):
         for i_env, env in enumerate(envs):
@@ -66,8 +69,13 @@ def main():
                     il.model_load(model, model_path)
 
                     model.active_learner.num_calls = trainitr
-                    sel_idxs = model.select(np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [0,0,0,0,0]]), 2)
+                    sel_idxs, rating_score, pref_score = model.select(np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [0,0,0,0,0]]), 2)
                     
+                    print('rate_score = ' +str(rating_score) + ' pref_score = ' + str(pref_score))
+                    rate_scores[i_p, i_env, i_itr, run] = rating_score
+                    pref_scores[i_p, i_env, i_itr, run] = pref_score
+
+                    print(sel_idxs)
                     if len(sel_idxs) > 1:
                         pref_count[i_p, i_env, i_itr] += 1
                     total_count[i_p,i_env, i_itr] += 1
@@ -85,7 +93,7 @@ def main():
     print(pref_pct)
     
 
-    np.savez('result_p_abs_'+'all'+'.npz', pref_pct=pref_pct, total_count=total_count, pref_count=pref_count)
+    np.savez('result_p_abs_'+'stable'+'.npz', pref_pct=pref_pct, total_count=total_count, pref_count=pref_count, rate_scores=rate_scores, pref_scores=pref_scores)
 
     print('Pref pct. mean over (p_abs, trainitrs)')
     print(np.mean(pref_pct, axis=1))

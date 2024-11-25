@@ -35,7 +35,7 @@ from lop.probits import std_norm_pdf, std_norm_cdf, calc_pdf_cdf_ratio
 from lop.utilities import d_log_pdf_gamma, log_pdf_gamma
 
 
-
+import pdb
 
 
 ## PreferenceProbit
@@ -47,7 +47,7 @@ class PreferenceProbit(ProbitBase):
     y_type = 'discrete'
 
     ## constructor
-    def __init__(self, sigma=1.0):
+    def __init__(self, sigma=1.0, optimize_parameters=True):
         self.set_sigma(sigma)
         self.log2pi = np.log(2.0*np.pi)
 
@@ -55,23 +55,32 @@ class PreferenceProbit(ProbitBase):
         self.sigma_k = 2.0
         self.sigma_theta = 0.1
 
+        self.optimize_parameters = optimize_parameters
+
     ## set_hyper
     # Sets the hyperparameters for the probit
     # @param hyper - a sequence with [sigma]
     def set_hyper(self, hyper):
-        self.set_sigma(hyper[0])
+        if self.optimize_parameters:
+            self.set_sigma(hyper[0])
 
     ## get_hyper
     # Gets a numpy array of hyperparameters for the probit
     def get_hyper(self):
-        return np.array([self.sigma])
+        if self.optimize_parameters:
+            return np.array([self.sigma])
+        else:
+            return np.array([])
 
     ## Performs random sampling using the same liklihood function used by the param
     # liklihood function
     # @return numpy array of independent samples.
     def randomize_hyper(self):
-        return np.array([
-            np.random.gamma(self.sigma_k, self.sigma_theta)])
+        if self.optimize_parameters:
+            return np.array([
+                np.random.gamma(self.sigma_k, self.sigma_theta)])
+        else:
+            return np.array([])
 
     ## set_sigma
     # Sets the sigma value, and also sets up a couple of useful constants to go with it.
@@ -129,6 +138,8 @@ class PreferenceProbit(ProbitBase):
     #
     # @return numpy array (gradient of probit with respect to hyper parameters)
     def grad_hyper(self, y, F):
+        if not self.optimize_parameters:
+            return np.array([])
         zk = self.z_k(y, F)
         pdf_cdf_ratio, pdf_cdf_ratio2 = calc_pdf_cdf_ratio(zk)
 
@@ -139,13 +150,23 @@ class PreferenceProbit(ProbitBase):
     ## param_likli
     # log liklihood of the parameter (prior)
     def param_likli(self):
-        return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)
+        if self.optimize_parameters:
+            if self.sigma <= 0:
+                return -5000
+            return 0
+            return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)
+        else:
+            return 0
 
     ## grad_param_likli
     # gradient of the log liklihood of the parameter (prior)
     # @return numpy array of gradient of each parameter
     def grad_param_likli(self):
-        return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)])
+        if self.optimize_parameters:
+            return np.array([0.0])
+            return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta)])
+        else:
+            return np.array([])
 
 
     ## calc_W
@@ -219,6 +240,9 @@ class PreferenceProbit(ProbitBase):
     #
     # @reutrn 2d matrix
     def calc_W_dHyper(self, y, F):
+        if not self.optimize_parameters:
+            return np.empty((0,))
+
         z = self.z_k(y, F)
         pdf_cdf_ratio, pdf_cdf_ratio2 = calc_pdf_cdf_ratio(z)
         pdf = std_norm_pdf(z)
@@ -230,7 +254,9 @@ class PreferenceProbit(ProbitBase):
         term2a = (1 / (2 * self.sigma * self.sigma * self.sigma)) * y[:,0] * y[:,0] * z * pdf / (cdf * cdf * cdf)
         term2b = -(cdf*cdf) + z*z*cdf*cdf + 3*z*pdf*cdf + 2 * pdf*pdf
 
-        dw_pairs = term1 - term2a*term2b
+        term2 = np.where((cdf * cdf * cdf) == 0, 0, term2a*term2b)
+
+        dw_pairs = term1 - term2
 
         dW = np.zeros((len(F), len(F)))
 
@@ -244,6 +270,9 @@ class PreferenceProbit(ProbitBase):
         dW = add_up_mat(idx2,  dw_pairs, dW)
         dW = add_up_mat(idx3,  dw_pairs, dW)
         dW = add_up_mat(idx4, -dw_pairs, dW)
+
+        if np.isnan(dW).any():
+            pdb.set_trace()
 
         return dW[np.newaxis, :, :]
 

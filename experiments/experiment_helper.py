@@ -158,14 +158,18 @@ def get_active_learner(selector, selection_type, rep_pt_type, UCB_scalar, defaul
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)   
     elif selector == 'SW_UCB_SPEAR':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)
     elif selector == 'SW_UCB_EPIC':
-        abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic')
-        pair = lop.AcquisitionSelection(M=M, alignment_f='epic')
+        abs_comp = lop.AbsAcquisition(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparision(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, alpha=alpha)   

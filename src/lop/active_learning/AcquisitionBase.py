@@ -33,6 +33,7 @@ import math
 import copy
 from lop.active_learning import ActiveLearner
 from lop.models import PreferenceGP, GP, PreferenceLinear
+import scipy.stats as st
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
 from itertools import combinations
@@ -185,11 +186,12 @@ class AcquisitionBase(ActiveLearner):
             pear_dis = np.sqrt(1 - np.corrcoef(all_rep)) / np.sqrt(2)
             return -pear_dis
         elif self.alignment_f == 'spearman':
-            ranked = np.argsort(all_rep, axis=1)
+            ranked = st.rankdata(all_rep, axis=1)
 
             spearman = np.corrcoef(ranked)
-            spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
-            return -spear_dis
+            
+            #spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            #return -spear_dis
             return spearman
 
         elif self.alignment_f == 'one':
@@ -232,13 +234,14 @@ class AcquisitionBase(ActiveLearner):
             pear_dis = np.sqrt(1 - pearson) / np.sqrt(2)
             return -pear_dis
         elif self.alignment_f == 'spearman':
-            ranked_1 = np.argsort(all_rep_1, axis=1)
-            ranked_2 = np.argsort(all_rep_2, axis=1)
+            ranked_1 = st.rankdata(all_rep_1, axis=1)
+            ranked_2 = st.rankdata(all_rep_2, axis=1)
 
             spearman = np.corrcoef(ranked_1, ranked_2)
+            #spearman = st.spearmanr(all_rep_1, all_rep_2, axis=1)[0]
             spearman = spearman[:M, M:]
-            spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
-            return -spear_dis
+            #spear_dis = np.sqrt(1 - spearman) / np.sqrt(2)
+            #return -spear_dis
             return spearman
 
         elif self.alignment_f == 'one':

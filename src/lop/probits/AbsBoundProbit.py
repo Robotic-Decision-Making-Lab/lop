@@ -181,6 +181,11 @@ class AbsBoundProbit(ProbitBase):
     def param_likli(self):
         if self.optimize_parameters:
             L_v = log_pdf_gamma(self.v, self.v_k, self.v_theta)
+            if self.v < 0:
+                L_v = -5000
+            else:
+                L_v = 0
+            
             if self.optimize_v_only:
                 return L_v
             return log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta) + L_v
@@ -194,6 +199,7 @@ class AbsBoundProbit(ProbitBase):
     def grad_param_likli(self):
         if self.optimize_parameters:
             if self.optimize_v_only:
+                return np.array([0.0])
                 return np.array([d_log_pdf_gamma(self.v, self.v_k, self.v_theta)])
             else:
                 return np.array([d_log_pdf_gamma(self.sigma, self.sigma_k, self.sigma_theta),

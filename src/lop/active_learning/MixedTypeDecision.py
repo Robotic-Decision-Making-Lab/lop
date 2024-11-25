@@ -24,6 +24,7 @@
 
 import numpy as np
 from lop.active_learning import RateChooseLearner
+import scipy.stats as st
 
 import pdb
 
@@ -78,7 +79,7 @@ class AlignmentDecision(RateChooseLearner):
                 select_pair = False
         else:
             # select using decision metric.
-            select_pair = self.determine_query_type(candidate_pts)
+            select_pair, rating_score, pref_score = self.determine_query_type(candidate_pts)
 
 
         
@@ -91,7 +92,7 @@ class AlignmentDecision(RateChooseLearner):
 
         self.num_calls += 1
         # return the selected indicies from pairwise select
-        return sel_idxs
+        return sel_idxs, rating_score, pref_score
 
 
     def determine_query_type(self, candidate_pts):
@@ -137,6 +138,7 @@ class AlignmentDecision(RateChooseLearner):
         rating_rep, rating_Q = self.pairwise_l.get_samples_from_model(candidate_pts, x_rep)
         
 
+
         ## Reset model and start evaluating samples
         self.model.y_train[0] = pref_data
         self.model.y_train[2] = rating_data
@@ -153,9 +155,9 @@ class AlignmentDecision(RateChooseLearner):
         print('Align Preference = ' +str(align_pref_mu) + ' align rate = ' + str(align_rate_mu))
 
 
-        ranked_full = np.argsort(mu)
-        ranked_pref = np.argsort(pref_rep, axis=1)
-        ranked_rating = np.argsort(rating_rep, axis=1)
+        ranked_full = st.rankdata(mu)
+        ranked_pref = st.rankdata(pref_rep, axis=1)
+        ranked_rating = st.rankdata(rating_rep, axis=1)
         # ranked_full = mu
         # ranked_pref = pref_rep
         # ranked_rating = rating_rep
@@ -168,7 +170,7 @@ class AlignmentDecision(RateChooseLearner):
               ' corr rating = ' + str(np.mean(corr_rating[:-1, -1])))
 
         self.pairwise_l.M = M_prev
-        return align_pref_mu > align_rate_mu
+        return align_pref_mu > align_rate_mu, align_rate_mu, align_pref_mu
 
 
     # @overide

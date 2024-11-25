@@ -36,6 +36,7 @@ from lop.models import PreferenceGP, GP, PreferenceLinear
 
 from lop.utilities import metropolis_hastings, sample_unique_sets
 
+
 from numba import jit
 
 import pdb
