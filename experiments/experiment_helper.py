@@ -275,7 +275,56 @@ def get_active_learner(selector, selection_type, rep_pt_type, UCB_scalar, defaul
                                     rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedComparisionEqualChecking(pairwise_l=pair, abs_l=abs_l, abs_comp=abs_comp, default_to_pareto=default_to_pareto, 
-                                    always_select_best=always_select_best)  
+                                    always_select_best=always_select_best)
+    elif selector == 'SW_MIX_RHO':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategy(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)              
+    elif selector == 'SW_MIX_LL':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategy(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)  
+    elif selector == 'SW_MIX_SPEAR':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategy(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)  
+    elif selector == 'SW_MIX_EPIC':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategy(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)
+    elif selector == 'SW_MIX_PEAK_RHO':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='rho',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategyPeak(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)              
+    elif selector == 'SW_MIX_PEAK_LL':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='loglikelihood',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategyPeak(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)  
+    elif selector == 'SW_MIX_PEAK_SPEAR':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategyPeak(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)  
+    elif selector == 'SW_MIX_PEAK_EPIC':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='epic',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategyPeak(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)  
+
 
 
     return al

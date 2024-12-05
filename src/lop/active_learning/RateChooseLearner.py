@@ -112,7 +112,7 @@ class MixedComparision(RateChooseLearner):
 
     ## Constructor
     # @param pairwise_l - the pairwise learning algorithm to use
-    # @param abs_l - the absloute learning algorithm to sue
+    # @param abs_l - the absloute learning algorithm to use
     # @param default_to_pareto - [opt default=False] sets whether to always assume
     #               prefering pareto optimal choices when selecting points, if not particulary told not to
     # @param alaways_select_best - [opt default=False] sets whether the select function should append the
