@@ -14,4 +14,4 @@ from .AcquisitionSelection import AcquisitionSelection
 from .AbsAcquisition import AbsAcquisition
 from .RateChooseLearner import RateChooseLearner, MixedComparision, MixedComparisionSetFixed, MixedComparisionEqualChecking, MixedAlternating
 from .MixedTypeDecision import AlignmentDecision
-from .MixedStrategy import MixedStrategy, MixedStrategyPeak, MixedStrategyPeak2, MixedStrategyPeak3 
+from .MixedStrategy import MixedStrategy, MixedStrategyPeak, MixedStrategyPeak2, MixedStrategyPeak3, MixedDecision

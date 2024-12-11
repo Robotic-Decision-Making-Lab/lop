@@ -48,7 +48,7 @@ do
             sel_type=switch
             alpha=0.5
 
-            for alpha in 0.07 0.1 0.01 0.15
+            for alpha in 1.0 #0.07 0.1 0.01 0.15
             do
                 for selc in SW_MIX_PEAK3_SPEAR
                 do
@@ -77,3 +77,30 @@ do
     done
 done
 
+for fake_func in min logistic linear
+do
+    for p_synth_abs in 0.7 0.8 0.95
+    do
+
+
+        for v in 60.0
+        do
+
+            sel_type=switch
+            alpha=0.5
+
+            for alpha in 0.0 10.0
+            do
+                for selc in SW_MIX_PEAK3_SPEAR
+                do
+                    for i_env in 0 1 2 3 4 5 6 7 8 9
+                    do
+                        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
+                    done
+                    wait
+                done
+            done
+
+        done
+    done
+done
