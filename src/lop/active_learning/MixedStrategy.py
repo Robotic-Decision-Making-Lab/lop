@@ -198,7 +198,7 @@ class MixedDecision(MixedStrategyPeak3):
         p_rate = self.mixed_probability()
 
         
-        if self.num_calls == 5 or self.num_calls == 10 or self.num_calls == 0:
+        if self.num_calls == 5 or self.num_calls == 10 or self.num_calls == 15:
             self.state = 3
 
 
