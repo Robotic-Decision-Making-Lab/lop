@@ -336,6 +336,12 @@ def get_active_learner(selector, selection_type, rep_pt_type, UCB_scalar, defaul
         abs_l = lop.UCBLearner(UCB_scalar)
         al = lop.MixedStrategyPeak3(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
                                     always_select_best=always_select_best, p_abs_param=alpha)
+    elif selector == 'SW_MIX_REV_PEAK_SPEAR':
+        pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
+                                    rep_Q_method = rep_type, rep_Q_data = rep_pt_data)
+        abs_l = lop.UCBLearner(UCB_scalar)
+        al = lop.MixedStrategyRevPeak(pairwise_l=pair, abs_l=abs_l, default_to_pareto=default_to_pareto, 
+                                    always_select_best=always_select_best, p_abs_param=alpha)
     elif selector == 'SW_MIX_DEC_SPEAR':
         pair = lop.AcquisitionSelection(M=M, alignment_f='spearman',
                                     rep_Q_method = rep_type, rep_Q_data = rep_pt_data)

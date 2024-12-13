@@ -153,6 +153,23 @@ class MixedStrategyPeak3(MixedStrategy):
 
 
 
+class MixedStrategyRevPeak(MixedStrategy):
+
+    #@overide
+    ## mixed_probability
+    # This function outputs the probability of selecting a rating query
+    # For this subclass, the probability is a peaky, starting with a high chance
+    # for a preference query, then likely 50-50, likely a rating query, then slowy
+    # dimenshing towards a preference query over time.
+    def mixed_probability(self):
+        if self.num_calls == 0:
+            return 0.9
+        elif self.num_calls == 1:
+            return 0.1
+        else:
+            return self.p_abs_param
+
+
 
 
 

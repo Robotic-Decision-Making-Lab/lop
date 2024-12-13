@@ -107,7 +107,7 @@ possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'MUTUAL_INFO', 'MUTUAL_INFO_PE
                         'SW_MIX_PEAK_RHO', 'SW_MIX_PEAK_EPIC', 'SW_MIX_PEAK_LL', 'SW_MIX_PEAK_SPEAR', \
                         'SW_MIX_PEAK2_SPEAR', 'SW_MIX_PEAK2_EPIC', 'SW_MIX_PEAK2_LL', 'SW_MIX_PEAK2_SPEAR', \
                         'SW_MIX_PEAK3_SPEAR', 'SW_MIX_PEAK3_EPIC', 'SW_MIX_PEAK3_LL', 'SW_MIX_PEAK3_SPEAR', \
-                        'SW_MIX_DEC_SPEAR', \
+                        'SW_MIX_DEC_SPEAR', 'SW_MIX_REV_PEAK_SPEAR', \
                         'ABS_ACQ_RHO', 'ABS_ACQ_LL', 'ABS_ACQ_EPIC', 'ABS_ACQ_SPEAR',\
                         'ABS_BAYES_PROBIT']
 possible_selection_types = ['choose1', 'ranking', 'rating', 'switch']
