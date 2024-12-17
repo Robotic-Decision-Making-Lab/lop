@@ -12,7 +12,7 @@ trap killgroup INT TERM
 
 # perfect, human_choice
 #user_type=human_choice
-number_runs=2
+number_runs=25
 #hyper_sel=no
 #model=gp
 
