@@ -12,7 +12,7 @@ trap killgroup INT TERM
 
 # perfect, human_choice
 #user_type=human_choice
-number_runs=20
+number_runs=25
 #hyper_sel=no
 #model=gp
 
@@ -36,31 +36,12 @@ sigma_pair=0.2
 rbf_l=1.2
 
 
-# for fake_func in min logistic linear
-# do
-#     for p_synth_abs in 0.7 0.8 0.95
-#     do
 
-#         sel_type=switch
-#         alpha=0.5
-
-#         for selc in ACQ_SPEAR ACQ_LL ACQ_EPIC ACQ_RHO
-#         do
-#             for i_env in 0 1 2 3 4 5 6 7 8 9
-#             do
-#                 stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-#             done
-#             wait
-#         done
-
-        
-#     done
-# done
 
 
 alpha=0.5
 
-selectors=("SW_UCB_SPEAR" "SW_UCB_LL" "SW_UCB_EPIC" "SW_UCB_RHO" "ACQ_SPEAR" "ACQ_LL" "ACQ_EPIC" "ACQ_RHO" "ABS_ACQ_SPEAR" "ABS_ACQ_LL" "ABS_ACQ_EPIC" "ABS_ACQ_RHO")
+selectors=("SW_UCB_SPEAR" "SW_UCB_LL" "SW_UCB_EPIC" "SW_UCB_RHO" "ACQ_SPEAR" "ACQ_LL" "ACQ_EPIC" "ACQ_RHO" "ABS_ACQ_SPEAR" "ABS_ACQ_LL" "ABS_ACQ_EPIC" "ABS_ACQ_RHO" "MUTUAL_INFO" "RANDOM")
 rate_selectors=("UCB")
 
 ######################################## MIN FUNCTION
