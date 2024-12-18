@@ -109,7 +109,7 @@ class AcquisitionBase(ActiveLearner):
             Q = np.empty((combs.shape[0] * 10, combs.shape[1]), dtype=int)
 
             for i in range(10):
-                Q[i*combs.shape[0]:(i+1)*combs.shape[0]] = combs + (i*combs.shape[0])
+                Q[i*combs.shape[0]:(i+1)*combs.shape[0]] = combs + (i*num_per_env)
 
             return X_pts, Q
 
@@ -147,8 +147,7 @@ class AcquisitionBase(ActiveLearner):
             probit_mat = np.array([self.model.probits[0].likelihood_all_pairs(w) for w in all_rep])
             
 
-            
-            q_best_w = np.argmax(all_rep[:,Q_rep], axis=1)
+            q_best_w = np.argmax(all_rep[:,Q_rep], axis=2)
 
             p_q = np.zeros((self.M, Q_rep.shape[1], Q_rep.shape[0]))
 
@@ -169,7 +168,6 @@ class AcquisitionBase(ActiveLearner):
 
             # calculate the probability of p(q=argmax Rw| Q,Rw')
             p_q_mod = np.swapaxes(p_q, 1,2)
-            pdb.set_trace()
             g = np.sum(np.log(p_q_mod[:,np.arange(Q_rep.shape[0]), q_best_w]), axis=2)
 
             f = g + g.T
