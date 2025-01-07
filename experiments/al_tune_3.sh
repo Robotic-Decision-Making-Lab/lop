@@ -14,9 +14,6 @@ trap killgroup INT TERM
 
 for i in {1..500}
 do
-    bash al_psynth_9_way_unknown.sh
-    sleep 30m
-    bash al_psynth_9_way_known.sh
-    sleep 30m
+    bash al_psynth_9_way_known_tune_selected.sh
 done
 
