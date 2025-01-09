@@ -14,10 +14,7 @@ trap killgroup INT TERM
 
 for i in {1..500}
 do
-    echo "Starting main"
-    bash al_psynth_tune7_home.sh
-    echo "Sleeping"
+    bash al_psynth_long1.sh
     sleep 1m
-    echo "ending"
 done
 
