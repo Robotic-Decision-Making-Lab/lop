@@ -53,6 +53,8 @@ rate_selectors=("UCB")
 
 ####################
 
+fake_func=linear
+p_synth_abs=0.8
 
 
 
@@ -85,10 +87,7 @@ do
     echo "\finished v=$v  sigma_pair= $sigma_pair"
 done
 
-fake_func=linear
-p_synth_abs=0.8
 
-echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
