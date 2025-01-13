@@ -62,6 +62,7 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
+<<<<<<< HEAD
 sigma_pair=1.05
 for selc in ${selectors[@]};
 do
@@ -100,6 +101,8 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=41.0
+=======
+>>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 sigma_pair=1.0
 for selc in ${selectors[@]};
 do
@@ -118,6 +121,7 @@ p_synth_abs=0.8
 echo "$fake_func $p_synth_abs"
 
 sel_type=switch
+<<<<<<< HEAD
 v=39.0
 sigma_pair=1.0
 for selc in ${selectors[@]};
@@ -156,6 +160,8 @@ p_synth_abs=0.8
 echo "$fake_func $p_synth_abs"
 
 sel_type=switch
+=======
+>>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 v=40.0
 sigma_pair=2.0
 for selc in ${selectors[@]};
@@ -176,6 +182,7 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
+<<<<<<< HEAD
 sigma_pair=1.02
 for selc in ${selectors[@]};
 do
@@ -199,6 +206,8 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
+=======
+>>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 sigma_pair=0.98
 for selc in ${selectors[@]};
 do
@@ -210,9 +219,12 @@ do
     wait
     echo "    finished v=$v  sigma_pair= $sigma_pair"
 done
+<<<<<<< HEAD
 
 fake_func=linear
 p_synth_abs=0.8
 
 echo "$fake_func $p_synth_abs"
 
+=======
+>>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
