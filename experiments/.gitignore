@@ -1,6 +1,7 @@
 results/
 home_comp_results/
 results_min_08_partial/
+svgs/
 
 **.rew
 *.png
