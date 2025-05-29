@@ -62,47 +62,6 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
-<<<<<<< HEAD
-sigma_pair=1.05
-for selc in ${selectors[@]};
-do
-    echo "    starting v=$v  sigma_pair= $sigma_pair"
-    for i_env in 0 1 2 3 4 5 6 7 8 9
-    do
-        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-    done
-    wait
-    echo "    finished v=$v  sigma_pair= $sigma_pair"
-done
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-sel_type=switch
-v=40.0
-sigma_pair=0.95
-for selc in ${selectors[@]};
-do
-    echo "    starting v=$v  sigma_pair= $sigma_pair"
-    for i_env in 0 1 2 3 4 5 6 7 8 9
-    do
-        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-    done
-    wait
-    echo "    finished v=$v  sigma_pair= $sigma_pair"
-done
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-sel_type=switch
-v=41.0
-=======
->>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 sigma_pair=1.0
 for selc in ${selectors[@]};
 do
@@ -121,47 +80,6 @@ p_synth_abs=0.8
 echo "$fake_func $p_synth_abs"
 
 sel_type=switch
-<<<<<<< HEAD
-v=39.0
-sigma_pair=1.0
-for selc in ${selectors[@]};
-do
-    echo "    starting v=$v  sigma_pair= $sigma_pair"
-    for i_env in 0 1 2 3 4 5 6 7 8 9
-    do
-        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-    done
-    wait
-    echo "    finished v=$v  sigma_pair= $sigma_pair"
-done
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-sel_type=switch
-v=40.0
-sigma_pair=0.5
-for selc in ${selectors[@]};
-do
-    echo "    starting v=$v  sigma_pair= $sigma_pair"
-    for i_env in 0 1 2 3 4 5 6 7 8 9
-    do
-        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-    done
-    wait
-    echo "    finished v=$v  sigma_pair= $sigma_pair"
-done
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-sel_type=switch
-=======
->>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 v=40.0
 sigma_pair=2.0
 for selc in ${selectors[@]};
@@ -182,32 +100,6 @@ echo "$fake_func $p_synth_abs"
 
 sel_type=switch
 v=40.0
-<<<<<<< HEAD
-sigma_pair=1.02
-for selc in ${selectors[@]};
-do
-    echo "    starting v=$v  sigma_pair= $sigma_pair"
-    for i_env in 0 1 2 3 4 5 6 7 8 9
-    do
-        stdbuf -oL python3 single_experiment.py --env $i_env --model $model --selector $selc --sel_type $sel_type --num_runs $number_runs --num_alts $num_alts --user $user --hyper $hyper_sel --def_pareto $def_pareto --fake_func $fake_func --kmedoid $kmedoid --p_synth_pair $p_synth_pair --p_synth_abs $p_synth_abs --sigma_pair $sigma_pair --sigma_abs $sigma_abs --v_abs $v --alpha $alpha --rbf_sigma $rbf_sigma --rbf_l $rbf_l  > results/console_output_${selc}_${model}_${i_env}_${hyper_sel}_${fake_func}.txt 2>&1 & 
-    done
-    wait
-    echo "    finished v=$v  sigma_pair= $sigma_pair"
-done
-
-
-###
-
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-sel_type=switch
-v=40.0
-=======
->>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
 sigma_pair=0.98
 for selc in ${selectors[@]};
 do
@@ -219,12 +111,3 @@ do
     wait
     echo "    finished v=$v  sigma_pair= $sigma_pair"
 done
-<<<<<<< HEAD
-
-fake_func=linear
-p_synth_abs=0.8
-
-echo "$fake_func $p_synth_abs"
-
-=======
->>>>>>> 93f32ad8b8ef99ab268801ca86697dea2eb3f54d
