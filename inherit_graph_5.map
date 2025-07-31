@@ -1,5 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classlop_1_1utilities_1_1synthetic__user_1_1SyntheticUser.html" title=" " alt="" coords="5,39,164,80"/>
-<area shape="rect" id="node2" href="$classlop_1_1utilities_1_1synthetic__user_1_1HumanChoiceUser.html" title=" " alt="" coords="212,5,393,47"/>
-<area shape="rect" id="node3" href="$classlop_1_1utilities_1_1synthetic__user_1_1PerfectUser.html" title=" " alt="" coords="223,71,382,112"/>
+<area shape="rect" id="Node000000" href="$classlop_1_1utilities_1_1synthetic__user_1_1SyntheticUser.html" title=" " alt="" coords="5,37,164,77"/>
+<area shape="rect" id="Node000001" href="$classlop_1_1utilities_1_1synthetic__user_1_1HumanChoiceUser.html" title=" " alt="" coords="212,5,393,45"/>
+<area shape="poly" id="edge50_Node000000_Node000001" title=" " alt="" coords="177,41,211,36,212,41,178,46"/>
+<area shape="rect" id="Node000003" href="$classlop_1_1utilities_1_1synthetic__user_1_1PerfectUser.html" title=" " alt="" coords="223,69,382,109"/>
+<area shape="poly" id="edge52_Node000000_Node000003" title=" " alt="" coords="178,68,223,75,223,80,178,74"/>
+<area shape="rect" id="Node000002" href="$classlop_1_1utilities_1_1HumanChoiceUser2_1_1HumanChoiceUser2.html" title=" " alt="" coords="441,5,635,45"/>
+<area shape="poly" id="edge51_Node000001_Node000002" title=" " alt="" coords="408,23,441,23,441,28,408,28"/>
 </map>

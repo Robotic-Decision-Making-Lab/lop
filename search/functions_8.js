@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['hyper_5fliklihood_1080',['hyper_liklihood',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a56f44a14e3d30670d3aef1e99b548fd3',1,'lop.models.PreferenceGP.PreferenceGP.hyper_liklihood()'],['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#a707b8a5e2107a86739774045f88e8c13',1,'lop.models.PreferenceModel.PreferenceModel.hyper_liklihood()']]],
-  ['hyperparameter_5fobj_1081',['hyperparameter_obj',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a9cb63ba443ad62ecb28a6b10d2bdffa1',1,'lop::models::PreferenceGP::PreferenceGP']]],
-  ['hyperparameter_5fsearch_1082',['hyperparameter_search',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a44388f9cfe75499e72f7be49bb57b096',1,'lop::models::PreferenceGP::PreferenceGP']]],
-  ['hyperparamter_5fobj_5fgrad_1083',['hyperparamter_obj_grad',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#aa298c357c617f57bbd86d857f8e0ed40',1,'lop::models::PreferenceGP::PreferenceGP']]]
+  ['hyper_5fliklihood_0',['hyper_liklihood',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a662ecaa0d259e61347b313517dc8271a',1,'lop.models.PreferenceGP.PreferenceGP.hyper_liklihood()'],['../classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html#ae99e1d460ba9a0e72bf3607f5ac22847',1,'lop.models.PreferenceModel.PreferenceModel.hyper_liklihood()']]],
+  ['hyperparameter_5fobj_1',['hyperparameter_obj',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#afe72b0ad0acfc97eb745213c3cb54384',1,'lop::models::PreferenceGP::PreferenceGP']]],
+  ['hyperparameter_5fsearch_2',['hyperparameter_search',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#af599e5f91f88073eb33b07a56c210f62',1,'lop::models::PreferenceGP::PreferenceGP']]],
+  ['hyperparamter_5fobj_5fgrad_3',['hyperparamter_obj_grad',['../classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html#a0a3810cae53ccc7d61cbe12083f039c9',1,'lop::models::PreferenceGP::PreferenceGP']]]
 ];

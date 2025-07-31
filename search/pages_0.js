@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['learning_20objective_20functions_20from_20preferences_20_28lop_29_1493',['Learning Objective functions from Preferences (LOP)',['../md_README.html',1,'']]]
+  ['2022_20study_0',['Study analysis of 2022 study',['../md_other_2study__analysis__2022_2README.html',1,'']]]
 ];

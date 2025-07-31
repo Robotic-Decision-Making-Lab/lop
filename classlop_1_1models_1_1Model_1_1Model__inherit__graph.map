@@ -1,8 +1,13 @@
 <map id="lop.models.Model.Model" name="lop.models.Model.Model">
-<area shape="rect" id="node1" title=" " alt="" coords="5,64,188,91"/>
-<area shape="rect" id="node2" href="$classlop_1_1models_1_1GP_1_1GP.html" title=" " alt="" coords="274,5,410,32"/>
-<area shape="rect" id="node3" href="$classlop_1_1models_1_1Model_1_1SimplelestModel.html" title="SimplelestModel A simple model that just outputs exactly it&#39;s input no matter what." alt="" coords="237,57,447,98"/>
-<area shape="rect" id="node4" href="$classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="236,122,448,163"/>
-<area shape="rect" id="node5" href="$classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="507,89,695,130"/>
-<area shape="rect" id="node6" href="$classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html" title=" " alt="" coords="496,154,707,195"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,188,88"/>
+<area shape="rect" id="Node000002" href="$classlop_1_1models_1_1GP_1_1GP.html" title=" " alt="" coords="274,5,410,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,57,286,28,288,33,166,62"/>
+<area shape="rect" id="Node000003" href="$classlop_1_1models_1_1Model_1_1SimplelestModel.html" title="SimplelestModel A simple model that just outputs exactly it&#39;s input no matter what." alt="" coords="237,55,447,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,73,236,73,236,78,201,78"/>
+<area shape="rect" id="Node000004" href="$classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="236,119,448,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="160,89,265,117,264,122,159,94"/>
+<area shape="rect" id="Node000005" href="$classlop_1_1models_1_1PreferenceGP_1_1PreferenceGP.html" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="507,87,695,127"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="461,122,507,116,507,122,462,127"/>
+<area shape="rect" id="Node000006" href="$classlop_1_1models_1_1PreferenceLinear_1_1PreferenceLinear.html" title=" " alt="" coords="496,151,707,191"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="462,151,496,156,496,161,461,157"/>
 </map>

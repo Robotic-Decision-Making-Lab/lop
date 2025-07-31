@@ -1,5 +1,7 @@
 <map id="lop.models.PreferenceGP.PreferenceGP" name="lop.models.PreferenceGP.PreferenceGP">
-<area shape="rect" id="node1" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="17,169,205,211"/>
-<area shape="rect" id="node2" href="$classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="5,80,217,121"/>
-<area shape="rect" id="node3" href="$classlop_1_1models_1_1Model_1_1Model.html" title=" " alt="" coords="20,5,203,32"/>
+<area shape="rect" id="Node000001" title="PreferenceGP A Gaussian Process implementation that handles ordered pairs of preferences for the trai..." alt="" coords="17,167,205,207"/>
+<area shape="rect" id="Node000002" href="$classlop_1_1models_1_1PreferenceModel_1_1PreferenceModel.html" title=" " alt="" coords="5,79,217,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,133,114,166,109,166,109,133"/>
+<area shape="rect" id="Node000003" href="$classlop_1_1models_1_1Model_1_1Model.html" title=" " alt="" coords="20,5,203,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,44,114,79,109,79,109,44"/>
 </map>

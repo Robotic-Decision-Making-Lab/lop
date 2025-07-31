@@ -1,4 +1,20 @@
 var searchData=
 [
-  ['read_5fstudy_864',['read_study',['../namespaceread__study.html',1,'']]]
+  ['plot_5fbeta_5fprior_0',['plot_beta_prior',['../namespaceplot__beta__prior.html',1,'']]],
+  ['plot_5ffake_5ffunction_1',['plot_fake_function',['../namespaceplot__fake__function.html',1,'']]],
+  ['plot_5fgamma_5fdist_2',['plot_gamma_dist',['../namespaceplot__gamma__dist.html',1,'']]],
+  ['plot_5fmcmc_5fsampling_3',['plot_mcmc_sampling',['../namespaceplot__mcmc__sampling.html',1,'']]],
+  ['plot_5fsampling_5fnpz_4',['plot_sampling_npz',['../namespaceplot__sampling__npz.html',1,'']]],
+  ['pref_5fgp_5',['pref_gp',['../namespacepref__gp.html',1,'']]],
+  ['pref_5fgp_5fabs_5fbound_6',['pref_gp_abs_bound',['../namespacepref__gp__abs__bound.html',1,'']]],
+  ['pref_5fgp_5fabs_5fpair_7',['pref_gp_abs_pair',['../namespacepref__gp__abs__pair.html',1,'']]],
+  ['pref_5fgp_5fbreak_5fit_8',['pref_gp_break_it',['../namespacepref__gp__break__it.html',1,'']]],
+  ['pref_5fgp_5fordinal_9',['pref_gp_ordinal',['../namespacepref__gp__ordinal.html',1,'']]],
+  ['pref_5fgp_5fpairwise_5fordinal_10',['pref_gp_pairwise_ordinal',['../namespacepref__gp__pairwise__ordinal.html',1,'']]],
+  ['pref_5fgp_5fsmall_5fnumber_11',['pref_gp_small_number',['../namespacepref__gp__small__number.html',1,'']]],
+  ['pref_5fgp_5fucb_5flearner_12',['pref_gp_ucb_learner',['../namespacepref__gp__ucb__learner.html',1,'']]],
+  ['pref_5flinear_13',['pref_linear',['../namespacepref__linear.html',1,'']]],
+  ['pref_5flinear_5flearner_14',['pref_linear_learner',['../namespacepref__linear__learner.html',1,'']]],
+  ['prior_5fonly_15',['prior_only',['../namespaceprior__only.html',1,'']]],
+  ['probability_5flearner_5fexample_16',['probability_learner_example',['../namespaceprobability__learner__example.html',1,'']]]
 ];

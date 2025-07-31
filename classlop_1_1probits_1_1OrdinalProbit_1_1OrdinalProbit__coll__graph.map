@@ -1,4 +1,5 @@
 <map id="lop.probits.OrdinalProbit.OrdinalProbit" name="lop.probits.OrdinalProbit.OrdinalProbit">
-<area shape="rect" id="node1" title="OrdinalProbit This is almost directly Nick&#39;s code, for Ordinal regression." alt="" coords="33,80,217,121"/>
-<area shape="rect" id="node2" href="$classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html" title="ProbitBase Abstract class for a probit for the user GP." alt="" coords="5,5,244,32"/>
+<area shape="rect" id="Node000001" title="OrdinalProbit This is almost directly Nick&#39;s code, for Ordinal regression." alt="" coords="33,79,217,119"/>
+<area shape="rect" id="Node000002" href="$classlop_1_1probits_1_1ProbitBase_1_1ProbitBase.html" title="ProbitBase Abstract class for a probit for the user GP." alt="" coords="5,5,244,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,44,127,79,122,79,122,44"/>
 </map>
