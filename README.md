@@ -72,11 +72,16 @@ for i in range(...):
 
 In the examples scripts there are several different examples to see different aspects of the preference learning. 
 
-For a basic usage of the Preference based Gaussian Process, see examples/models/pref_gp.py
+For a basic usage of the Preference based Gaussian Process, see 
+```python3 examples/models/pref_gp.py```
 
-For active learning with preferences see examples/active_learning/pref_gp_ucb_learner.py which has several different options for selecting different active learning.
+For active learning with preferences see 
+```python3 examples/active_learning/pref_gp_ucb_learner.py  --selector ACQ_SPEAR```
+ which has several different options for selecting different active learning.
 
-For mixed-type query selection see examples/active_learning/switch_gp_learner.py which also has different options for different active learning.
+For mixed-type query selection see 
+```python3 examples/active_learning/switch_gp_learner.py``` 
+which also has different options for different active learning.
 
 For hyperparameter optimization [SUPER FINICKY AND ONLY KIND OF WORKS] examples/hyperparameters/hyperparameter_gp.py
 

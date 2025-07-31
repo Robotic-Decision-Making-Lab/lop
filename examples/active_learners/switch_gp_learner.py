@@ -76,7 +76,7 @@ possible_selectors = ['UCB', 'SGV_UCB', 'RANDOM', 'ABS_BAYES_PROBIT', 'ACQ_RHO',
                       'SW_UCB_RHO', 'SW_UCB_LL', 'SW_UCB_SPEAR']
 
 def main():
-    parser = argparse.ArgumentParser(description='bimodal example with different models and active learners')
+    parser = argparse.ArgumentParser(description='switch gp example with different models and active learners')
     parser.add_argument('--selector', type=str, default='BAYES_INFO_GAIN', help='Set the selectors to use options '+str(possible_selectors))
     parser.add_argument('--model', type=str, default='gp', help='Set the model to '+str(possible_models))
     parser.add_argument('--num_itr', type=int, default=20, help='Number of iterations to run the solver default=20')
