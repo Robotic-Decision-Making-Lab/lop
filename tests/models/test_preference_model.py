@@ -276,5 +276,5 @@ def test_preference_model_get_set_hyperparameters_multiple_y_trains():
 
     p = m.get_hyper()
 
-    assert len(p) == 3
+    assert len(p) == 2
 

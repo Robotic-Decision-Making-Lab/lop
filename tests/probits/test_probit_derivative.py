@@ -106,7 +106,7 @@ def test_preference_probit_param_likli():
 ########### abs_bound tests
 
 def test_abs_bound_probit_calc_W_df():
-    pro = lop.AbsBoundProbit()
+    pro = lop.AbsBoundProbit(optimize_v_only=False)
 
     #X_train = np.array([0,1,2])
     F = np.array([0.4, 0.3, 0.6])
@@ -124,7 +124,7 @@ def test_abs_bound_probit_calc_W_df():
 
 
 def test_abs_bound_probit_calc_W_dHyper():
-    pro = lop.AbsBoundProbit()
+    pro = lop.AbsBoundProbit(optimize_v_only=False)
 
     #X_train = np.array([0,1,2])
     F = np.array([0.4, 0.3, 0.6])
@@ -140,7 +140,7 @@ def test_abs_bound_probit_calc_W_dHyper():
     assert not np.isnan(dW).any()
 
 def test_abs_bound_probit_derivative_hyper():
-    pro = lop.AbsBoundProbit()
+    pro = lop.AbsBoundProbit(optimize_v_only=False)
 
     #X_train = np.array([0,1,2])
     F = np.array([0.4, 0.3, 0.6])
@@ -153,7 +153,7 @@ def test_abs_bound_probit_derivative_hyper():
     assert not np.isnan(grad).all()
 
 def test_abs_bound_param_likli():
-    pp = lop.AbsBoundProbit()
+    pp = lop.AbsBoundProbit(optimize_v_only=False)
 
     likli = pp.param_likli()
 

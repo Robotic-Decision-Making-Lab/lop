@@ -147,7 +147,7 @@ def test_abs_bound_probit_likelihood_not_all_indicies():
 
 
 def test_abs_bound_hyper_modification():
-    probit = lop.AbsBoundProbit()
+    probit = lop.AbsBoundProbit(optimize_v_only=False)
 
     param = probit.get_hyper()
 
