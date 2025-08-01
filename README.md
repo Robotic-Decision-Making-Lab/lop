@@ -90,5 +90,5 @@ For hyperparameter optimization [SUPER FINICKY AND ONLY KIND OF WORKS] examples/
 Encoding a single pairwise preference (example1 > example2) for the GP.
 These are encoded as ```(preference, index1, index2)```.
 Where, preference/dk is -1 indicates f(index1) > f(index2), 1 indicates f(index1) < f(index2).
-This can be automatically encoded using lop.dk(value1, value2).
+This can be automatically encoded using lop.get_dk(value1, value2).
 
