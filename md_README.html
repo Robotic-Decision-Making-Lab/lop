@@ -125,7 +125,7 @@ $(function() {
 </div><!-- fragment --><p> which also has different options for different active learning.</p>
 <p>For hyperparameter optimization [SUPER FINICKY AND ONLY KIND OF WORKS] <a class="el" href="hyperparameter__gp_8py.html">examples/hyperparameters/hyperparameter_gp.py</a></p>
 <h2>Pairwise preferences</h2>
-<p>Encoding a single pairwise preference (example1 &gt; example2) for the GP. These are encoded as <code>(preference, index1, index2)</code>. Where, preference/dk is -1 indicates f(index1) &gt; f(index2), 1 indicates f(index1) &lt; f(index2). This can be automatically encoded using lop.dk(value1, value2). </p>
+<p>Encoding a single pairwise preference (example1 &gt; example2) for the GP. These are encoded as <code>(preference, index1, index2)</code>. Where, preference/dk is -1 indicates f(index1) &gt; f(index2), 1 indicates f(index1) &lt; f(index2). This can be automatically encoded using lop.get_dk(value1, value2). </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
