@@ -98,6 +98,8 @@ def test_pref_GP_function():
             assert y[1] < y[i]
 
 
+
+
 def test_pref_GP_abs_bound():
     gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.7), normalize_positive=True)
 
@@ -106,6 +108,31 @@ def test_pref_GP_abs_bound():
 
     gp.add(X_train, y_train, type='abs')
     
+    assert gp is not None
+
+    gp.optimize()
+
+    assert gp is not None
+    assert gp.optimized
+    assert gp.n_loops > 0 and gp.n_loops < 90
+
+    X = np.array([1.5,1.7,3.2])
+    y = gp(X)
+
+    assert isinstance(y, np.ndarray)
+    assert not np.isnan(y).any()
+
+
+def test_pref_GP_abs_bound_single_rate():
+    gp = lop.PreferenceGP(lop.RBF_kern(1.0, 0.7), pareto_pairs=True)
+
+    X_train = np.array([0.2])
+    y_train = f_sq(X_train)
+
+    #pdb.set_trace()
+
+    gp.add(X_train, y_train, type='abs')
+
     assert gp is not None
 
     gp.optimize()

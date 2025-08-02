@@ -251,8 +251,7 @@ class PreferenceModel(Model):
 
             self.y_train[self.probit_idxs[type]] = (v, idxs)
 
-
-        if self.pareto_pairs:
+        if self.pareto_pairs and len(self.X_train) > 1:
             pairs = []
             d_better = get_dk(1,0)
             # Go through each new sample and check if it pareto optimal to others
