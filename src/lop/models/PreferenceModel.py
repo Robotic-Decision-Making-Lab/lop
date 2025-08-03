@@ -164,7 +164,7 @@ class PreferenceModel(Model):
     ## reset
     # This function resets all points for the GP
     def reset(self):
-        self.y_train = [None] * len(self.probit_idxs)
+        self.y_train = [None for i in range(len(self.probit_idxs))]
         self.X_train = None
         self.prior_idx = None
 
@@ -261,7 +261,7 @@ class PreferenceModel(Model):
                 cur_pairs = [(d_better, i+len_X, j) for j in range(len(dominate)) if dominate[j]]
                 pairs += cur_pairs
 
-            if self.y_train[self.probit_idxs['relative_discrete']] is None:
+            if self.y_train[self.probit_idxs['relative_discrete']] is None and len(pairs) > 0:
                 self.y_train[self.probit_idxs['relative_discrete']] = np.array(pairs)
             else:
                 # only add pairs if there is any pareto pairs to add.

@@ -332,8 +332,8 @@ class PreferenceGP(PreferenceModel):
             # end if for k_fold < 2
 
 
-        print('Output hyperparameters')
-        print(self.get_hyper())
+        #print('Output hyperparameters')
+        #print(self.get_hyper())
         self.find_mode(self.X_train, self.y_train)
         self.optimized = True
 
